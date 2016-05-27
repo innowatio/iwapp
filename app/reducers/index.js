@@ -2,10 +2,12 @@ import {combineReducers} from "redux";
 
 import navigation from "./navigation";
 import collections from "./collections";
+import userId from "./user-id";
 
 const rootReducer = combineReducers({
+    collections,
     navigation,
-    collections
+    userId
 });
 
 export default rootReducer;

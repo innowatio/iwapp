@@ -11,7 +11,9 @@
         "React": true,
         "ReactDOM": true,
         "expect": true,
-        "enzyme": true
+        "enzyme": true,
+        "sinon": true,
+        "TestUtils": true
     },
     "plugins": [
         "react",

@@ -1,11 +1,13 @@
 import React, {Component, PropTypes} from "react";
 import {StyleSheet, View} from "react-native";
+import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import {equals, last, identity} from "ramda";
-
 import {DefaultRenderer} from "react-native-router-flux";
-import {popNavigator} from "../actions/navigation";
-import store from "../lib/store";
+
+import asteroid from "../lib/asteroid";
+import Login from "./login";
+import {onLogin, onLogout} from "../actions/user-id";
 
 const style = StyleSheet.create({
     container: {
@@ -18,10 +20,23 @@ const style = StyleSheet.create({
 class Root extends Component {
 
     static propTypes = {
-        navigationScene: PropTypes.arrayOf(PropTypes.string),
+        navigationScene: PropTypes.arrayOf(PropTypes.string).isRequired,
         navigationState: PropTypes.shape({
-            children: PropTypes.array.isRequired
-        }).isRequired
+            children: PropTypes.arrayOf(PropTypes.object).isRequired
+        }).isRequired,
+        onLogin: PropTypes.func.isRequired,
+        onLogout: PropTypes.func.isRequired,
+        userId: PropTypes.string
+    }
+
+    componentDidMount () {
+        asteroid.on("loggedIn", this.props.onLogin);
+        asteroid.on("loggedOut", this.props.onLogout);
+    }
+
+    componentWillUnmount () {
+        asteroid.off("loggedIn", this.props.onLogin);
+        asteroid.off("loggedOut", this.props.onLogout);
     }
 
     getNavigationChildrenIndex () {
@@ -30,19 +45,27 @@ class Root extends Component {
         return scenes.findIndex(scene => equals(scene.sceneKey, currentScene));
     }
 
-    onPop () {
-        store.dispatch(popNavigator());
+    getNavigationState () {
+        const sceneIndex = this.getNavigationChildrenIndex();
+        return this.props.navigationState.children[sceneIndex];
+    }
+
+    renderView () {
+        return this.props.userId ? (
+            <DefaultRenderer
+                navigationState={this.getNavigationState()}
+                onNavigate={identity()}
+            />
+        ) : (
+            <Login asteroid={asteroid} />
+        );
     }
 
     render () {
-        const sceneIndex = this.getNavigationChildrenIndex();
         // FIXME: onNavigate when RN 0.26
         return (
             <View style={style.container}>
-                <DefaultRenderer
-                    navigationState={this.props.navigationState.children[sceneIndex]}
-                    onNavigate={identity()}
-                />
+                {this.renderView()}
             </View>
         );
     }
@@ -51,7 +74,14 @@ class Root extends Component {
 
 function mapStateToProps (state) {
     return {
-        navigationScene: state.navigation
+        navigationScene: state.navigation,
+        userId: state.userId
     };
 }
-export default connect(mapStateToProps)(Root);
+function mapDispatchToProps (dispatch) {
+    return {
+        onLogin: bindActionCreators(onLogin, dispatch),
+        onLogout: bindActionCreators(onLogout, dispatch)
+    };
+}
+export default connect(mapStateToProps, mapDispatchToProps)(Root);

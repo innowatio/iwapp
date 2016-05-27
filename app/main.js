@@ -7,11 +7,10 @@ import store from "./lib/store";
 import asteroid from "./lib/asteroid";
 import {syncStoreAndAsteroid} from "./lib/asteroid-redux";
 
-syncStoreAndAsteroid(store, asteroid);
-
 export default class Main extends Component {
 
     componentDidMount () {
+        syncStoreAndAsteroid(store, asteroid);
         codePush.sync();
     }
 

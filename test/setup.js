@@ -5,6 +5,8 @@ import chai from "chai";
 import ReactTestUtils from "react-addons-test-utils";
 import chaiEnzyme from "chai-enzyme";
 import ReactDOM from "react-dom";
+import sinon from "sinon";
+import sinonChai from "sinon-chai";
 import ws from "ws";
 
 // This function is for fix an issue with `react-native-router-flux`, that import
@@ -40,7 +42,11 @@ register(config);
 // Setup globals / chai
 global.__DEV__ = true;
 global.expect = chai.expect;
+global.sinon = sinon;
+chai.use(sinonChai);
 chai.use(chaiEnzyme());
+
+// Setup global WebSocket
 global.WebSocket = ws;
 
 // Setup mocks

@@ -1,11 +1,11 @@
 import React from "react";
 import {Router, Scene, Reducer} from "react-native-router-flux";
 
-import Root from "../views/root";
-import Home from "../views/home";
-import store from "./store";
-import {pushNavigator, popNavigator} from "../actions/navigation";
 import asteroid from "./asteroid";
+import Home from "../views/home";
+import {pushNavigator, popNavigator} from "../actions/navigation";
+import Root from "../views/root";
+import store from "./store";
 
 function dispatchAction (action) {
     switch (action.type) {

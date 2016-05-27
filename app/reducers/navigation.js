@@ -1,13 +1,13 @@
 import {dropLast} from "ramda";
 
-import {PUSH, POP} from "../actions/navigation";
+import {PUSH_SCENE, POP_SCENE} from "../actions/navigation";
 
 export default function navigation (state = ["home"], {type, payload}) {
     switch (type) {
-        case PUSH: {
+        case PUSH_SCENE: {
             return state.concat([payload]);
         }
-        case POP: {
+        case POP_SCENE: {
             return state.length > 1 ? dropLast(1, state) : state;
         }
         default: {

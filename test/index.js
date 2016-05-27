@@ -5,18 +5,18 @@ import {iwwaMobile as iwwaMobileIos} from "../index.ios.js";
 
 describe("<iwwaMobile /> [CASE: android]", () => {
 
-    it("should render", () => {
-        const wrapper = shallow(<iwwaMobileAndroid />);
-        expect(wrapper.length).to.equal(1);
+    it("render the app", () => {
+        const iwapp = shallow(<iwwaMobileAndroid />);
+        expect(iwapp).to.have.length(1);
     });
 
 });
 
 describe("<iwwaMobile /> [CASE: ios]", () => {
 
-    it("should render", () => {
-        const wrapper = shallow(<iwwaMobileIos />);
-        expect(wrapper.length).to.equal(1);
+    it("render the app", () => {
+        const iwapp = shallow(<iwwaMobileIos />);
+        expect(iwapp).to.have.length(1);
     });
 
 });
