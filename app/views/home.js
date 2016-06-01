@@ -2,6 +2,7 @@ import React, {Component, PropTypes} from "react";
 import IPropTypes from "react-immutable-proptypes";
 import {View, TouchableOpacity} from "react-native";
 import {connect} from "react-redux";
+
 import Text from "../components/text-lato";
 
 class Home extends Component {

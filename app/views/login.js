@@ -1,10 +1,11 @@
 import React, {Component, PropTypes} from "react";
-import {Image, Linking, StyleSheet, TextInput, View} from "react-native";
+import {Image, Linking, StyleSheet, View} from "react-native";
 import Button from "react-native-button";
 import {Actions} from "react-native-router-flux";
 import {partial} from "ramda";
 
 import Text from "../components/text-lato";
+import TextInput from "../components/text-input-lato";
 
 const styles = StyleSheet.create({
     container: {
@@ -18,7 +19,6 @@ const styles = StyleSheet.create({
     backgroundImage: {
         width: null,
         height: null,
-        alignSelf: "cover",
         flex: 1
     },
     logoTitle: {
@@ -124,6 +124,7 @@ export default class Login extends Component {
                             placeholder={"Email"}
                             placeholderTextColor={"white"}
                             style={styles.inputEmail}
+                            underlineColorAndroid={"transparent"}
                             value={this.state.email}
                         />
                     </View>

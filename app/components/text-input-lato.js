@@ -1,5 +1,5 @@
 import React, {cloneElement, Component, PropTypes} from "react";
-import {Text} from "react-native";
+import {TextInput} from "react-native";
 
 import getStyle from "../lib/get-rn-style";
 
@@ -13,10 +13,10 @@ export default class TextLato extends Component {
     }
 
     render () {
-        const text = (
-            <Text {...this.props}/>
+        const textInput = (
+            <TextInput {...this.props}/>
         );
-        return cloneElement(text, {
+        return cloneElement(textInput, {
             style: [{
                 fontFamily: "lato"
             }, getStyle(this.props.style)]
