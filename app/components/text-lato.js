@@ -1,7 +1,7 @@
 import React, {cloneElement, Component, PropTypes} from "react";
 import {Text} from "react-native";
 
-import getStyle from "../lib/get-rn-style";
+import getStyle from "../lib/get-style";
 
 export default class TextLato extends Component {
 

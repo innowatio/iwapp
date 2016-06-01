@@ -3,6 +3,6 @@ import {is} from "ramda";
 // import StyleSheetRegistry from "react/lib/ReactNativePropRegistry";
 import {getByID} from "react-native/Libraries/ReactNative/ReactNativePropRegistry";
 
-export default function getStyle (style) {
+export default function getStyle (style = {}) {
     return is(Number, style) ? getByID(style) : style;
 }

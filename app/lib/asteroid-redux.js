@@ -12,16 +12,10 @@ function dispatchChangeCollections (store, collections) {
 export function syncStoreAndAsteroid (store, asteroid) {
     asteroid.on(
         "collections:change",
-        debounce(
-            partial(dispatchChangeCollections, [store, asteroid.collections]),
-            150
-        )
+        debounce(partial(dispatchChangeCollections, [store, asteroid.collections]), 150)
     );
     asteroid.off(
         "collections:change",
-        debounce(
-            partial(dispatchChangeCollections, [store, Map()]),
-            150
-        )
+        debounce(partial(dispatchChangeCollections, [store, Map()]), 150)
     );
 }
