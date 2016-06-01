@@ -1,7 +1,9 @@
 import React, {Component, PropTypes} from "react";
-import {StyleSheet, Text, TextInput, TouchableOpacity, View} from "react-native";
+import {StyleSheet, TextInput, TouchableOpacity, View} from "react-native";
 import {Actions} from "react-native-router-flux";
 import {partial} from "ramda";
+
+import Text from "../components/text-lato";
 
 const styles = StyleSheet.create({
     container: {
@@ -12,12 +14,14 @@ const styles = StyleSheet.create({
     inputEmail: {
         height: 40,
         borderColor: "gray",
-        borderWidth: 1
+        borderWidth: 1,
+        fontFamily: "lato"
     },
     inputPassword: {
         height: 40,
         borderColor: "gray",
-        borderWidth: 1
+        borderWidth: 1,
+        fontFamily: "lato"
     }
 });
 

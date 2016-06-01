@@ -1,7 +1,8 @@
 import React, {Component, PropTypes} from "react";
 import IPropTypes from "react-immutable-proptypes";
-import {Text, View, TouchableOpacity} from "react-native";
+import {View, TouchableOpacity} from "react-native";
 import {connect} from "react-redux";
+import Text from "../components/text-lato";
 
 class Home extends Component {
 
@@ -19,7 +20,7 @@ class Home extends Component {
             <View>
                 <Text>{"Home page"}</Text>
                 <TouchableOpacity onPress={this.onLogout.bind(this)}>
-                    <Text>{"LOGOUT"}</Text>
+                    <Text>{"logout"}</Text>
                 </TouchableOpacity>
             </View>
         );

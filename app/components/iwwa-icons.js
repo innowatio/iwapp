@@ -1,9 +1,11 @@
 /**
  * IwwaIcons icon set component.
  * Usage: <IwwaIcons name="icon-name" size={20} color="#4F8EF7" />
+ *
  * This file is created with command:
  *
  * ./node_modules/.bin/generate-icon node_modules/iwwa-icons/css/styles.css --componentName=IwwaIcons --fontFamily=iwwa > app/components/iwwa-icons.js
+ *
  * After that, you should add the font to assets of android and ios.
  */
 

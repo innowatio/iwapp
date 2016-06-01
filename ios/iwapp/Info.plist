@@ -49,6 +49,9 @@
 	</dict>
 	<key>UIAppFonts</key>
 	<array>
+		<string>Lato-Light.ttf</string>
+		<string>Lato-Regular.ttf</string>
+		<string>Lato-Bold.ttf</string>
 		<string>iwwa.ttf</string>
 		<string>Entypo.ttf</string>
 		<string>EvilIcons.ttf</string>

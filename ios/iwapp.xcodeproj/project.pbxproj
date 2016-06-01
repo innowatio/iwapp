@@ -24,11 +24,13 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		1E62EE03BD494806BFCC16C3 /* libRNVectorIcons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AE531FE40534AD6BEA2B60A /* libRNVectorIcons.a */; };
-		342D1688CEE745C0ABC2FB56 /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 563D2DF4411A42AE8AF977C7 /* Entypo.ttf */; };
 		486EBCEE26F141F28B2E1063 /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0A7CE644DF5D4AE887DFE5E4 /* Octicons.ttf */; };
 		5AF929C4274A47A0AFDC1A90 /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5E1F76705F7B49218502628E /* Zocial.ttf */; };
 		6B77AB5D1CE5C9D2001C6650 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B77AB5C1CE5C9D2001C6650 /* libz.tbd */; };
-		6BCD07BB1CFDF47D000627E4 /* iwwa.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6BCD07BA1CFDF47D000627E4 /* iwwa.ttf */; };
+		6BE5B2061CFED3B800D94AB2 /* Lato-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6BE5B2031CFED3B800D94AB2 /* Lato-Bold.ttf */; };
+		6BE5B2071CFED3B800D94AB2 /* Lato-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6BE5B2041CFED3B800D94AB2 /* Lato-Light.ttf */; };
+		6BE5B2081CFED3B800D94AB2 /* Lato-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6BE5B2051CFED3B800D94AB2 /* Lato-Regular.ttf */; };
+		6BE5B2331CFED68700D94AB2 /* iwwa.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6BE5B2321CFED68700D94AB2 /* iwwa.ttf */; };
 		796CCFEF89424BDA854BF5B4 /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1CCC0FCEFE50423B82521737 /* Ionicons.ttf */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		935BB89470184028AB530704 /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C52A87BA563A42C395B76A5F /* EvilIcons.ttf */; };
@@ -157,10 +159,12 @@
 		1CF5D3BDF88F4B3580466E2D /* CodePush.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = CodePush.xcodeproj; path = "../node_modules/react-native-code-push/ios/CodePush.xcodeproj"; sourceTree = "<group>"; };
 		2D7546CCA01E44D19CF50BDA /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
 		43B89734CFB04500AE6D86E9 /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
-		563D2DF4411A42AE8AF977C7 /* Entypo.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Entypo.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Entypo.ttf"; sourceTree = "<group>"; };
 		5E1F76705F7B49218502628E /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
 		6B77AB5C1CE5C9D2001C6650 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
-		6BCD07BA1CFDF47D000627E4 /* iwwa.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = iwwa.ttf; sourceTree = "<group>"; };
+		6BE5B2031CFED3B800D94AB2 /* Lato-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Bold.ttf"; sourceTree = "<group>"; };
+		6BE5B2041CFED3B800D94AB2 /* Lato-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Light.ttf"; sourceTree = "<group>"; };
+		6BE5B2051CFED3B800D94AB2 /* Lato-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Regular.ttf"; sourceTree = "<group>"; };
+		6BE5B2321CFED68700D94AB2 /* iwwa.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = iwwa.ttf; path = "../node_modules/iwwa-icons/fonts/iwwa.ttf"; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		8115AE1B26194722B3320F86 /* libCodePush.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libCodePush.a; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
@@ -348,7 +352,6 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				6BCD07BA1CFDF47D000627E4 /* iwwa.ttf */,
 				6B77AB5C1CE5C9D2001C6650 /* libz.tbd */,
 				13B07FAE1A68108700A75B9A /* iwapp */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
@@ -372,7 +375,10 @@
 		CB704790333D44E7A1D5FF9F /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				563D2DF4411A42AE8AF977C7 /* Entypo.ttf */,
+				6BE5B2321CFED68700D94AB2 /* iwwa.ttf */,
+				6BE5B2031CFED3B800D94AB2 /* Lato-Bold.ttf */,
+				6BE5B2041CFED3B800D94AB2 /* Lato-Light.ttf */,
+				6BE5B2051CFED3B800D94AB2 /* Lato-Regular.ttf */,
 				C52A87BA563A42C395B76A5F /* EvilIcons.ttf */,
 				016965D272CC4EF3AAB0C5B0 /* FontAwesome.ttf */,
 				2D7546CCA01E44D19CF50BDA /* Foundation.ttf */,
@@ -606,10 +612,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6BCD07BB1CFDF47D000627E4 /* iwwa.ttf in Resources */,
+				6BE5B2331CFED68700D94AB2 /* iwwa.ttf in Resources */,
+				6BE5B2061CFED3B800D94AB2 /* Lato-Bold.ttf in Resources */,
+				6BE5B2071CFED3B800D94AB2 /* Lato-Light.ttf in Resources */,
+				6BE5B2081CFED3B800D94AB2 /* Lato-Regular.ttf in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
-				342D1688CEE745C0ABC2FB56 /* Entypo.ttf in Resources */,
 				935BB89470184028AB530704 /* EvilIcons.ttf in Resources */,
 				B61D6C079282448BB3BC9311 /* FontAwesome.ttf in Resources */,
 				01E539F37B704854A0562A2F /* Foundation.ttf in Resources */,
