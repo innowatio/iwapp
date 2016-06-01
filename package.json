@@ -37,6 +37,7 @@
     "react": "^0.14.8",
     "react-immutable-proptypes": "^1.7.1",
     "react-native": "^0.25.1",
+    "react-native-button": "^1.6.0",
     "react-native-code-push": "^1.12.0-beta",
     "react-native-router-flux": "github:aksonov/react-native-router-flux#0.26-wip",
     "react-native-storage-wrapper": "^0.1.0",
