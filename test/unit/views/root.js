@@ -5,6 +5,7 @@ import {identity} from "ramda";
 
 import Login from "views/login";
 import Root from "views/root";
+import Header from "components/header";
 
 describe("`Root` view", () => {
 
@@ -36,7 +37,7 @@ describe("`Root` view", () => {
                 userId={"userId"}
             />
         );
-        expect(rootView.find(View)).to.have.length(1);
+        expect(rootView.find(View).length).to.be.at.least(1);
     });
 
     it("renders `Login` view if `userId` is not specified with the correct props", () => {
@@ -53,7 +54,7 @@ describe("`Root` view", () => {
         expect(rootView.find(Login).prop("asteroid")).to.equal(asteroid);
     });
 
-    it("renders `DefaultRenderer` view with the correct props if `userId` is specified", () => {
+    it("renders `Header` and `DefaultRenderer` view with the correct props if `userId` is specified", () => {
         const scene = {};
         RootView.prototype.getNavigationState = sinon.stub().returns(scene);
         const rootView = shallow(
@@ -66,6 +67,7 @@ describe("`Root` view", () => {
             />
         );
         expect(rootView.find(DefaultRenderer)).to.have.length(1);
+        expect(rootView.find(Header)).to.have.length(1);
         expect(rootView.find(DefaultRenderer).prop("navigationState")).to.equal(scene);
         expect(rootView.find(DefaultRenderer).prop("onNavigate")).to.equal(identity);
     });

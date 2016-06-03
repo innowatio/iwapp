@@ -8,12 +8,11 @@ import {DefaultRenderer} from "react-native-router-flux";
 import asteroid from "../lib/asteroid";
 import Login from "./login";
 import {onLogin, onLogout} from "../actions/user-id";
+import Header from "../components/header";
 
 const style = StyleSheet.create({
     container: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center"
+        flex: 1
     }
 });
 
@@ -52,10 +51,13 @@ class Root extends Component {
 
     renderView () {
         return this.props.userId ? (
-            <DefaultRenderer
-                navigationState={this.getNavigationState()}
-                onNavigate={identity()}
-            />
+            <View>
+                <Header />
+                <DefaultRenderer
+                    navigationState={this.getNavigationState()}
+                    onNavigate={identity()}
+                />
+            </View>
         ) : (
             <Login asteroid={asteroid} />
         );

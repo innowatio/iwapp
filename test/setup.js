@@ -21,7 +21,8 @@ const modulesToCompile = [
     "react-native",
     "react-native-router-flux",
     "react-native-mock",
-    "react-native-tab-navigator"
+    "react-native-tab-navigator",
+    "native-base"
 ].map((moduleName) => new RegExp(`/node_modules/${moduleName}`));
 
 const rcPath = path.join(__dirname, "..", ".babelrc");
