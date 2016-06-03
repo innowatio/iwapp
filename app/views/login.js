@@ -31,31 +31,31 @@ const styles = StyleSheet.create({
         marginBottom: 30,
         fontSize: 14
     },
-    inputEmailWrp: {
+    inputWrp: {
         borderWidth: 1,
         borderColor: "#979fd1",
         backgroundColor: "rgba(0, 0, 0, 0.2)",
         borderTopLeftRadius: 10,
         borderTopRightRadius: 10,
-        padding: 4
-    },
-    inputPasswordWrp: {
-        borderWidth: 1,
-        borderColor: "#979fd1",
-        backgroundColor: "rgba(0, 0, 0, 0.2)",
         borderBottomLeftRadius: 10,
         borderBottomRightRadius: 10,
-        padding: 4
+        alignSelf: "stretch"
+    },
+    inputSeparator: {
+        borderTopWidth: 1,
+        borderColor: "#979fd1"
     },
     inputEmail: {
         height: 40,
         color: "white",
-        fontFamily: "lato"
+        fontFamily: "lato",
+        margin: 4
     },
     inputPassword: {
         height: 40,
         color: "white",
-        fontFamily: "lato"
+        fontFamily: "lato",
+        margin: 4
     },
     buttonLogin: {
         padding:10,
@@ -115,7 +115,7 @@ export default class Login extends Component {
                 <View style={styles.container}>
                     <Text style={styles.logoTitle}>{"e-coach"}</Text>
                     <Text style={styles.logoDescription}>{"innowatio"}</Text>
-                    <View style={styles.inputEmailWrp}>
+                    <View style={styles.inputWrp}>
                         <TextInput
                             autoCapitalize={"none"}
                             autoCorrect={false}
@@ -127,8 +127,7 @@ export default class Login extends Component {
                             underlineColorAndroid={"transparent"}
                             value={this.state.email}
                         />
-                    </View>
-                    <View style={styles.inputPasswordWrp}>
+                        <View style={styles.inputSeparator} />
                         <TextInput
                             autoCapitalize={"none"}
                             autoCorrect={false}
