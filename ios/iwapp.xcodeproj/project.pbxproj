@@ -5,6 +5,7 @@
 	};
 	objectVersion = 46;
 	objects = {
+
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -26,9 +27,9 @@
 		486EBCEE26F141F28B2E1063 /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0A7CE644DF5D4AE887DFE5E4 /* Octicons.ttf */; };
 		5AF929C4274A47A0AFDC1A90 /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5E1F76705F7B49218502628E /* Zocial.ttf */; };
 		6B77AB5D1CE5C9D2001C6650 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B77AB5C1CE5C9D2001C6650 /* libz.tbd */; };
-		6BE5B2061CFED3B800D94AB2 /* Lato-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6BE5B2031CFED3B800D94AB2 /* Lato-Bold.ttf */; };
-		6BE5B2071CFED3B800D94AB2 /* Lato-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6BE5B2041CFED3B800D94AB2 /* Lato-Light.ttf */; };
-		6BE5B2081CFED3B800D94AB2 /* Lato-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6BE5B2051CFED3B800D94AB2 /* Lato-Regular.ttf */; };
+		6B8D2F9F1D017DD30089933D /* Lato-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6BE5B2031CFED3B800D94AB2 /* Lato-Bold.ttf */; };
+		6B8D2FA01D017DDA0089933D /* Lato-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6BE5B2041CFED3B800D94AB2 /* Lato-Light.ttf */; };
+		6B8D2FA11D017DE00089933D /* Lato-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6BE5B2051CFED3B800D94AB2 /* Lato-Regular.ttf */; };
 		6BE5B2331CFED68700D94AB2 /* iwwa.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6BE5B2321CFED68700D94AB2 /* iwwa.ttf */; };
 		796CCFEF89424BDA854BF5B4 /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1CCC0FCEFE50423B82521737 /* Ionicons.ttf */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
@@ -611,10 +612,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6B8D2FA11D017DE00089933D /* Lato-Regular.ttf in Resources */,
+				6B8D2FA01D017DDA0089933D /* Lato-Light.ttf in Resources */,
+				6B8D2F9F1D017DD30089933D /* Lato-Bold.ttf in Resources */,
 				6BE5B2331CFED68700D94AB2 /* iwwa.ttf in Resources */,
-				6BE5B2061CFED3B800D94AB2 /* Lato-Bold.ttf in Resources */,
-				6BE5B2071CFED3B800D94AB2 /* Lato-Light.ttf in Resources */,
-				6BE5B2081CFED3B800D94AB2 /* Lato-Regular.ttf in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
 				935BB89470184028AB530704 /* EvilIcons.ttf in Resources */,
