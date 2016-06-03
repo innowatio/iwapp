@@ -1,5 +1,5 @@
 import React, {Component, PropTypes} from "react";
-import {StyleSheet, View} from "react-native";
+import {StatusBar, StyleSheet, View} from "react-native";
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import {equals, last, identity} from "ramda";
@@ -52,6 +52,7 @@ class Root extends Component {
     renderView () {
         return this.props.userId ? (
             <View>
+                <StatusBar hidden={true} />
                 <Header />
                 <DefaultRenderer
                     navigationState={this.getNavigationState()}

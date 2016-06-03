@@ -3,7 +3,7 @@ import {TextInput} from "react-native";
 
 import getStyle from "../lib/get-style";
 
-export default class TextLato extends Component {
+export default class TextInputLato extends Component {
 
     static propTypes = {
         style: PropTypes.oneOfType([

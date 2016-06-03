@@ -1,11 +1,11 @@
 import React, {Component, PropTypes} from "react";
-import {Image, Linking, StyleSheet, View} from "react-native";
+import {Image, StatusBar, StyleSheet, View} from "react-native";
 import Button from "react-native-button";
-import {Actions} from "react-native-router-flux";
 import {partial} from "ramda";
 
 import Text from "../components/text-lato";
 import TextInput from "../components/text-input-lato";
+import * as colors from "../lib/colors";
 
 const styles = StyleSheet.create({
     container: {
@@ -78,6 +78,25 @@ const styles = StyleSheet.create({
     linkText: {
         color: "white",
         marginTop: 8
+    },
+    errorLoginContainer: {
+        borderWidth: 1,
+        borderColor: colors.borderErrorLogin,
+        backgroundColor: colors.backgroundErrorLogin,
+        borderTopLeftRadius: 10,
+        borderTopRightRadius: 10,
+        borderBottomLeftRadius: 10,
+        borderBottomRightRadius: 10,
+        alignSelf: "stretch",
+        marginBottom: 20,
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center"
+    },
+    errorLogin: {
+        fontWeight: "bold",
+        alignSelf: "center",
+        margin: 20
     }
 });
 
@@ -91,7 +110,8 @@ export default class Login extends Component {
         super(props);
         this.state = {
             email: undefined,
-            password: undefined
+            password: undefined,
+            errorLogin: false
         };
     }
 
@@ -100,21 +120,38 @@ export default class Login extends Component {
             email: this.state.email,
             password: this.state.password
         };
-        this.props.asteroid.loginWithPassword(credentials)
-            .then(Actions.logged)
-            .catch(Actions.errorLogin);
+        this.setLoginError(null);
+        this.props.asteroid.loginWithPassword(credentials).catch(::this.setLoginError);
+    }
+
+    setLoginError (error) {
+        this.setState({
+            loginError: error ? true : false
+        });
     }
 
     onChangeText (textType, text) {
         this.setState({[textType]: text});
     }
 
+    renderErrorLogin () {
+        return this.state.loginError ? (
+            <View style={styles.errorLoginContainer}>
+                <Text style={styles.errorLogin}>
+                    {"Login non riuscito: email o password errate"}
+                </Text>
+            </View>
+        ) : null;
+    }
+
     render () {
         return (
             <Image source={require("../assets/img/bg_login.png")} style={styles.backgroundImage}>
+                <StatusBar hidden={true} />
                 <View style={styles.container}>
                     <Text style={styles.logoTitle}>{"e-coach"}</Text>
                     <Text style={styles.logoDescription}>{"innowatio"}</Text>
+                    {this.renderErrorLogin()}
                     <View style={styles.inputWrp}>
                         <TextInput
                             autoCapitalize={"none"}
@@ -141,9 +178,7 @@ export default class Login extends Component {
                             value={this.state.password}
                         />
                     </View>
-                    <Text style={styles.linkText}
-                        onPress={() => Linking.openURL("#")}
-                    >
+                    <Text style={styles.linkText}>
                         {"Hai dimenticato la password?"}
                     </Text>
                     <Button
@@ -153,9 +188,7 @@ export default class Login extends Component {
                         <Text style={styles.buttonLoginText}>{"ACCEDI"}</Text>
                     </Button>
                     <View style={styles.linkSignupWrp}>
-                        <Text style={styles.linkText}
-                            onPress={() => Linking.openURL("#")}
-                        >
+                        <Text style={styles.linkText}>
                             {"Non hai un account? Registrati!"}
                         </Text>
                     </View>

@@ -7,6 +7,7 @@ import chaiEnzyme from "chai-enzyme";
 import ReactDOM from "react-dom";
 import sinon from "sinon";
 import sinonChai from "sinon-chai";
+import chaiAsPromise from "chai-as-promised";
 import ws from "ws";
 
 // This function is for fix an issue with `react-native-router-flux`, that import
@@ -45,6 +46,7 @@ global.__DEV__ = true;
 global.expect = chai.expect;
 global.sinon = sinon;
 chai.use(sinonChai);
+chai.use(chaiAsPromise);
 chai.use(chaiEnzyme());
 
 // Setup global WebSocket

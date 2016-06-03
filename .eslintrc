@@ -8,6 +8,7 @@
         "node": true
     },
     "globals": {
+        "Promise": true,
         "React": true,
         "ReactDOM": true,
         "expect": true,
