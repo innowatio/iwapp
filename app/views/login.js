@@ -51,17 +51,29 @@ const styles = StyleSheet.create({
         borderTopWidth: 1,
         borderColor: "#979fd1"
     },
-    // inputEmail: {
+    // inputEmailWrp: {
     //     height: 40,
+    //     borderWidth: 1,
+    //     borderColor: "#979fd1",
+    //     backgroundColor: "rgba(0, 0, 0, 0.2)",
+    //     borderTopLeftRadius: 10,
+    //     borderTopRightRadius: 10,
     //     color: "white",
     //     fontFamily: "lato",
-    //     margin: 4
+    //     margin: 4,
+    //     alignSelf: "stretch"
     // },
-    // inputPassword: {
+    // inputPasswordWrp: {
     //     height: 40,
+    //     borderWidth: 1,
+    //     borderColor: "#979fd1",
+    //     backgroundColor: "rgba(0, 0, 0, 0.2)",
+    //     borderBottomLeftRadius: 10,
+    //     borderBottomRightRadius: 10,
     //     color: "white",
     //     fontFamily: "lato",
-    //     margin: 4
+    //     margin: 4,
+    //     alignSelf: "stretch"
     // },
     inputIcon: {
         left: 5,
@@ -190,8 +202,6 @@ export default class Login extends Component {
                             value={this.state.email}
                         />
                         <View style={styles.inputSeparator} />
-                    </View>
-                    <View style={styles.inputWrp}>
                         <Icon
                             name="iw-lock"
                             size={20}
