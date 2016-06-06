@@ -1,6 +1,6 @@
 import {shallow} from "enzyme";
 import Button from "react-native-button";
-import {Image, StatusBar} from "react-native";
+import {Image} from "react-native";
 
 import Login from "views/login";
 import TextInputLato from "components/text-input-lato";
@@ -13,11 +13,6 @@ describe("`login` view", () => {
     it("renders an `Image`", () => {
         const login = shallow(<Login asteroid={asteroid} />);
         expect(login.find(Image)).to.have.length(1);
-    });
-
-    it("hide the `StatusBar`", () => {
-        const login = shallow(<Login asteroid={asteroid} />);
-        expect(login.contains(<StatusBar hidden={true} />)).to.equal(true);
     });
 
     it("renders 2 `TextInputLato`", () => {

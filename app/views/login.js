@@ -1,5 +1,5 @@
 import React, {Component, PropTypes} from "react";
-import {Image, StatusBar, StyleSheet, View} from "react-native";
+import {Image, StyleSheet, View} from "react-native";
 import Button from "react-native-button";
 import {partial} from "ramda";
 
@@ -58,11 +58,11 @@ const styles = StyleSheet.create({
         margin: 4
     },
     buttonLogin: {
-        padding:10,
-        width:200,
-        height:40,
-        overflow:"hidden",
-        borderRadius:15,
+        padding: 10,
+        width: 200,
+        height: 40,
+        overflow: "hidden",
+        borderRadius: 15,
         backgroundColor: "#E2417D",
         marginTop: 25
     },
@@ -147,7 +147,6 @@ export default class Login extends Component {
     render () {
         return (
             <Image source={require("../assets/img/bg_login.png")} style={styles.backgroundImage}>
-                <StatusBar hidden={true} />
                 <View style={styles.container}>
                     <Text style={styles.logoTitle}>{"e-coach"}</Text>
                     <Text style={styles.logoDescription}>{"innowatio"}</Text>
