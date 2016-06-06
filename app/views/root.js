@@ -2,7 +2,7 @@ import React, {Component, PropTypes} from "react";
 import {StatusBar, StyleSheet, View} from "react-native";
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
-import {equals, last, identity} from "ramda";
+import {equals, last} from "ramda";
 import {DefaultRenderer} from "react-native-router-flux";
 
 import asteroid from "../lib/asteroid";
@@ -25,6 +25,7 @@ class Root extends Component {
         }).isRequired,
         onLogin: PropTypes.func.isRequired,
         onLogout: PropTypes.func.isRequired,
+        onNavigate: PropTypes.func.isRequired,
         userId: PropTypes.string
     }
 
@@ -56,7 +57,7 @@ class Root extends Component {
                 <Header />
                 <DefaultRenderer
                     navigationState={this.getNavigationState()}
-                    onNavigate={identity()}
+                    onNavigate={this.props.onNavigate}
                 />
             </View>
         ) : (
@@ -65,7 +66,6 @@ class Root extends Component {
     }
 
     render () {
-        // FIXME: onNavigate when RN 0.26
         return (
             <View style={style.container}>
                 {this.renderView()}

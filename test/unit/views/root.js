@@ -1,7 +1,6 @@
 import {shallow} from "enzyme";
 import {View} from "react-native";
 import {DefaultRenderer} from "react-native-router-flux";
-import {identity} from "ramda";
 
 import Login from "views/login";
 import Root from "views/root";
@@ -10,6 +9,7 @@ import Header from "components/header";
 describe("`Root` view", () => {
 
     const asteroid = {};
+    const onNavigate = sinon.spy();
 
     before(() => {
         Root.__Rewire__("asteroid", asteroid);
@@ -17,6 +17,10 @@ describe("`Root` view", () => {
 
     after(() => {
         Root.__ResetDependency__("asteroid");
+    });
+
+    afterEach(() => {
+        onNavigate.reset();
     });
 
     const RootView = Root.__get__("Root");
@@ -34,6 +38,7 @@ describe("`Root` view", () => {
                 navigationState={navigationState}
                 onLogin={sinon.spy()}
                 onLogout={sinon.spy()}
+                onNavigate={onNavigate}
                 userId={"userId"}
             />
         );
@@ -47,6 +52,7 @@ describe("`Root` view", () => {
                 navigationState={navigationState}
                 onLogin={sinon.spy()}
                 onLogout={sinon.spy()}
+                onNavigate={onNavigate}
                 userId={null}
             />
         );
@@ -63,13 +69,14 @@ describe("`Root` view", () => {
                 navigationState={navigationState}
                 onLogin={sinon.spy()}
                 onLogout={sinon.spy()}
+                onNavigate={onNavigate}
                 userId={"userId"}
             />
         );
         expect(rootView.find(DefaultRenderer)).to.have.length(1);
         expect(rootView.find(Header)).to.have.length(1);
         expect(rootView.find(DefaultRenderer).prop("navigationState")).to.equal(scene);
-        expect(rootView.find(DefaultRenderer).prop("onNavigate")).to.equal(identity);
+        expect(rootView.find(DefaultRenderer).prop("onNavigate")).to.equal(onNavigate);
     });
 
     describe("`getNavigationState` function", () => {

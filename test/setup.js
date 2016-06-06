@@ -61,10 +61,6 @@ global.React = React;
 global.ReactDOM = ReactDOM;
 global.TestUtils = ReactTestUtils;
 
-// FIXME: This is a little hack, for an error while require react-native-vector-icons.
-// TypeError: Function.prototype.toString is not generic
-global.Function.prototype.toString = Object.prototype.toString;
-
 React.NavigationExperimental = {
     AnimatedView: React.View,
     Card: React.View
