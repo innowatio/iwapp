@@ -3,6 +3,7 @@ import {Image, StatusBar, StyleSheet, View} from "react-native";
 import Button from "react-native-button";
 import {partial} from "ramda";
 
+import Icon from "../components/iwwa-icons";
 import Text from "../components/text-lato";
 import TextInput from "../components/text-input-lato";
 import * as colors from "../lib/colors";
@@ -19,7 +20,12 @@ const styles = StyleSheet.create({
     backgroundImage: {
         width: null,
         height: null,
+        justifyContent: "center",
+        alignItems: "center",
         flex: 1
+    },
+    logoIcon: {
+        lineHeight: 130
     },
     logoTitle: {
         color: "white",
@@ -45,17 +51,21 @@ const styles = StyleSheet.create({
         borderTopWidth: 1,
         borderColor: "#979fd1"
     },
-    inputEmail: {
-        height: 40,
-        color: "white",
-        fontFamily: "lato",
-        margin: 4
-    },
-    inputPassword: {
-        height: 40,
-        color: "white",
-        fontFamily: "lato",
-        margin: 4
+    // inputEmail: {
+    //     height: 40,
+    //     color: "white",
+    //     fontFamily: "lato",
+    //     margin: 4
+    // },
+    // inputPassword: {
+    //     height: 40,
+    //     color: "white",
+    //     fontFamily: "lato",
+    //     margin: 4
+    // },
+    inputIcon: {
+        left: 5,
+        width: 20
     },
     buttonLogin: {
         padding:10,
@@ -73,7 +83,8 @@ const styles = StyleSheet.create({
     },
     linkSignupWrp: {
         flexDirection: "row",
-        alignItems: "flex-end"
+        alignItems: "flex-end",
+        height: 90
     },
     linkText: {
         color: "white",
@@ -144,15 +155,29 @@ export default class Login extends Component {
         ) : null;
     }
 
+    // placeholder={<Text>"email" <Icon name={"iw-user"}/></Text>}
     render () {
         return (
             <Image source={require("../assets/img/bg_login.png")} style={styles.backgroundImage}>
                 <StatusBar hidden={true} />
                 <View style={styles.container}>
+                    <Icon
+                        name="iw-innowatio-logo"
+                        size={150}
+                        color="#fff"
+                        style={styles.logoIcon}
+                    />
                     <Text style={styles.logoTitle}>{"e-coach"}</Text>
                     <Text style={styles.logoDescription}>{"innowatio"}</Text>
+
                     {this.renderErrorLogin()}
                     <View style={styles.inputWrp}>
+                        <Icon
+                            name="iw-user"
+                            size={20}
+                            color="#fff"
+                            style={styles.inputIcon}
+                        />
                         <TextInput
                             autoCapitalize={"none"}
                             autoCorrect={false}
@@ -160,11 +185,19 @@ export default class Login extends Component {
                             onChangeText={partial(::this.onChangeText, ["email"])}
                             placeholder={"Email"}
                             placeholderTextColor={"white"}
-                            style={styles.inputEmail}
+                            style={{height: 40, color: "white", fontFamily: "lato"}}
                             underlineColorAndroid={"transparent"}
                             value={this.state.email}
                         />
                         <View style={styles.inputSeparator} />
+                    </View>
+                    <View style={styles.inputWrp}>
+                        <Icon
+                            name="iw-lock"
+                            size={20}
+                            color="#fff"
+                            style={styles.inputIcon}
+                        />
                         <TextInput
                             autoCapitalize={"none"}
                             autoCorrect={false}
@@ -173,7 +206,7 @@ export default class Login extends Component {
                             placeholder={"Password"}
                             placeholderTextColor={"white"}
                             secureTextEntry={true}
-                            style={styles.inputPassword}
+                            style={{height: 40, color: "white", fontFamily: "lato"}}
                             underlineColorAndroid={"transparent"}
                             value={this.state.password}
                         />

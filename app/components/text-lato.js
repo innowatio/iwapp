@@ -22,5 +22,4 @@ export default class TextLato extends Component {
             }, getStyle(this.props.style)]
         });
     }
-
 }
