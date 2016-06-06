@@ -1,5 +1,5 @@
 import React, {Component, PropTypes} from "react";
-import {StyleSheet, View} from "react-native";
+import {StatusBar, StyleSheet, ScrollView, View} from "react-native";
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import {equals, last} from "ramda";
@@ -7,10 +7,12 @@ import {DefaultRenderer} from "react-native-router-flux";
 
 import asteroid from "../lib/asteroid";
 import Login from "./login";
+import KeyboardSpacer from "../components/keyboard-spacer";
 import {onLogin, onLogout} from "../actions/user-id";
 import Header from "../components/header";
+import {primaryBlue} from "../lib/colors";
 
-const style = StyleSheet.create({
+const styles = StyleSheet.create({
     container: {
         flex: 1
     }
@@ -66,9 +68,19 @@ class Root extends Component {
 
     render () {
         return (
-            <View style={style.container}>
+            <ScrollView
+                alwaysBounceVertical={false}
+                automaticallyAdjustContentInsets={true}
+                contentContainerStyle={styles.container}
+                keyboardShouldPersistTaps={true}
+            >
+                <StatusBar
+                    backgroundColor={primaryBlue}
+                    barStyle="light-content"
+                />
                 {this.renderView()}
-            </View>
+                <KeyboardSpacer />
+            </ScrollView>
         );
     }
 

@@ -1,5 +1,5 @@
 import {shallow} from "enzyme";
-import {View} from "react-native";
+import {ScrollView, StatusBar} from "react-native";
 import {DefaultRenderer} from "react-native-router-flux";
 
 import Login from "views/login";
@@ -10,13 +10,16 @@ describe("`Root` view", () => {
 
     const asteroid = {};
     const onNavigate = sinon.spy();
+    const primaryBlue = "primaryBlue";
 
     before(() => {
         Root.__Rewire__("asteroid", asteroid);
+        Root.__Rewire__("primaryBlue", primaryBlue);
     });
 
     after(() => {
         Root.__ResetDependency__("asteroid");
+        Root.__ResetDependency__("primaryBlue");
     });
 
     afterEach(() => {
@@ -31,7 +34,7 @@ describe("`Root` view", () => {
         }]
     };
 
-    it("renders a `View`", () => {
+    it("renders a `ScrollView` with correct props", () => {
         const rootView = shallow(
             <RootView
                 navigationScene={["home"]}
@@ -42,7 +45,28 @@ describe("`Root` view", () => {
                 userId={"userId"}
             />
         );
-        expect(rootView.find(View).length).to.be.at.least(1);
+        expect(rootView.find(ScrollView).length).to.equal(1);
+        expect(rootView.find(ScrollView).prop("alwaysBounceVertical")).to.equal(false);
+        expect(rootView.find(ScrollView).prop("automaticallyAdjustContentInsets")).to.equal(true);
+        expect(rootView.find(ScrollView).prop("keyboardShouldPersistTaps")).to.equal(true);
+    });
+
+    it("renders a `StatusBar` with correct props", () => {
+        const rootView = shallow(
+            <RootView
+                navigationScene={["home"]}
+                navigationState={navigationState}
+                onLogin={sinon.spy()}
+                onLogout={sinon.spy()}
+                onNavigate={onNavigate}
+                userId={"userId"}
+            />
+        );
+        expect(rootView.find(StatusBar).length).to.equal(1);
+        expect(rootView.find(StatusBar).props()).to.deep.equal({
+            backgroundColor: "primaryBlue",
+            barStyle: "light-content"
+        });
     });
 
     it("renders `Login` view if `userId` is not specified with the correct props", () => {

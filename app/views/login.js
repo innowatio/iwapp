@@ -51,30 +51,6 @@ const styles = StyleSheet.create({
         borderTopWidth: 1,
         borderColor: "#979fd1"
     },
-    // inputEmailWrp: {
-    //     height: 40,
-    //     borderWidth: 1,
-    //     borderColor: "#979fd1",
-    //     backgroundColor: "rgba(0, 0, 0, 0.2)",
-    //     borderTopLeftRadius: 10,
-    //     borderTopRightRadius: 10,
-    //     color: "white",
-    //     fontFamily: "lato",
-    //     margin: 4,
-    //     alignSelf: "stretch"
-    // },
-    // inputPasswordWrp: {
-    //     height: 40,
-    //     borderWidth: 1,
-    //     borderColor: "#979fd1",
-    //     backgroundColor: "rgba(0, 0, 0, 0.2)",
-    //     borderBottomLeftRadius: 10,
-    //     borderBottomRightRadius: 10,
-    //     color: "white",
-    //     fontFamily: "lato",
-    //     margin: 4,
-    //     alignSelf: "stretch"
-    // },
     inputIcon: {
         left: 5,
         width: 20
@@ -167,7 +143,6 @@ export default class Login extends Component {
         ) : null;
     }
 
-    // placeholder={<Text>"email" <Icon name={"iw-user"}/></Text>}
     render () {
         return (
             <Image source={require("../assets/img/bg_login.png")} style={styles.backgroundImage}>
@@ -183,42 +158,46 @@ export default class Login extends Component {
 
                     {this.renderErrorLogin()}
                     <View style={styles.inputWrp}>
-                        <Icon
-                            name="iw-user"
-                            size={20}
-                            color="#fff"
-                            style={styles.inputIcon}
-                        />
-                        <TextInput
-                            autoCapitalize={"none"}
-                            autoCorrect={false}
-                            keyboardType={"email-address"}
-                            onChangeText={partial(::this.onChangeText, ["email"])}
-                            placeholder={"Email"}
-                            placeholderTextColor={"white"}
-                            style={{height: 40, color: "white", fontFamily: "lato"}}
-                            underlineColorAndroid={"transparent"}
-                            value={this.state.email}
-                        />
+                        <View style={{top: 20}}>
+                            <Icon
+                                name="iw-user"
+                                size={20}
+                                color="#fff"
+                                style={styles.inputIcon}
+                            />
+                            <TextInput
+                                autoCapitalize={"none"}
+                                autoCorrect={false}
+                                keyboardType={"email-address"}
+                                onChangeText={partial(::this.onChangeText, ["email"])}
+                                placeholder={"Email"}
+                                placeholderTextColor={"white"}
+                                style={{height: 40, color: "white", paddingLeft: 40, top: -30}}
+                                underlineColorAndroid={"transparent"}
+                                value={this.state.email}
+                            />
+                        </View>
                         <View style={styles.inputSeparator} />
-                        <Icon
-                            name="iw-lock"
-                            size={20}
-                            color="#fff"
-                            style={styles.inputIcon}
-                        />
-                        <TextInput
-                            autoCapitalize={"none"}
-                            autoCorrect={false}
-                            keyboardType={"default"}
-                            onChangeText={partial(::this.onChangeText, ["password"])}
-                            placeholder={"Password"}
-                            placeholderTextColor={"white"}
-                            secureTextEntry={true}
-                            style={{height: 40, color: "white", fontFamily: "lato"}}
-                            underlineColorAndroid={"transparent"}
-                            value={this.state.password}
-                        />
+                        <View style={{top: 20}}>
+                            <Icon
+                                name="iw-lock"
+                                size={20}
+                                color="#fff"
+                                style={styles.inputIcon}
+                            />
+                            <TextInput
+                                autoCapitalize={"none"}
+                                autoCorrect={false}
+                                keyboardType={"default"}
+                                onChangeText={partial(::this.onChangeText, ["password"])}
+                                placeholder={"Password"}
+                                placeholderTextColor={"white"}
+                                secureTextEntry={true}
+                                style={{height: 40, color: "white", paddingLeft: 40, top: -30}}
+                                underlineColorAndroid={"transparent"}
+                                value={this.state.password}
+                            />
+                        </View>
                     </View>
                     <Text style={styles.linkText}>
                         {"Hai dimenticato la password?"}

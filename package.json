@@ -38,6 +38,7 @@
     "react-native": "^0.26.3",
     "react-native-button": "^1.6.0",
     "react-native-code-push": "^1.12.0-beta",
+    "react-native-keyboard-spacer": "^0.2.0",
     "react-native-router-flux": "^3.26.16",
     "react-native-storage-wrapper": "^0.1.0",
     "react-native-vector-icons": "^2.0.3",
