@@ -45,15 +45,17 @@ const styles = StyleSheet.create({
         borderTopRightRadius: 10,
         borderBottomLeftRadius: 10,
         borderBottomRightRadius: 10,
-        alignSelf: "stretch"
+        alignSelf: "stretch",
+        lineHeight: 20
     },
     inputSeparator: {
         borderTopWidth: 1,
         borderColor: "#979fd1"
     },
     inputIcon: {
-        left: 5,
-        width: 20
+        left: 10,
+        width: 26,
+        height: 26
     },
     buttonLogin: {
         padding: 10,
@@ -62,7 +64,8 @@ const styles = StyleSheet.create({
         overflow: "hidden",
         borderRadius: 15,
         backgroundColor: "#E2417D",
-        marginTop: 25
+        marginTop: 25,
+        marginBottom: 20
     },
     buttonLoginText: {
         color: "white",
@@ -71,8 +74,7 @@ const styles = StyleSheet.create({
     },
     linkSignupWrp: {
         flexDirection: "row",
-        alignItems: "flex-end",
-        height: 90
+        alignItems: "flex-end"
     },
     linkText: {
         color: "white",
@@ -88,6 +90,7 @@ const styles = StyleSheet.create({
         borderBottomRightRadius: 10,
         alignSelf: "stretch",
         marginBottom: 20,
+        padding: 0,
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center"
@@ -95,7 +98,8 @@ const styles = StyleSheet.create({
     errorLogin: {
         fontWeight: "bold",
         alignSelf: "center",
-        margin: 20
+        margin: 20,
+        color: colors.textWhite
     }
 });
 
@@ -158,10 +162,10 @@ export default class Login extends Component {
 
                     {this.renderErrorLogin()}
                     <View style={styles.inputWrp}>
-                        <View style={{top: 20}}>
+                        <View style={{top: 15}}>
                             <Icon
                                 name="iw-user"
-                                size={20}
+                                size={26}
                                 color="#fff"
                                 style={styles.inputIcon}
                             />
@@ -172,16 +176,16 @@ export default class Login extends Component {
                                 onChangeText={partial(::this.onChangeText, ["email"])}
                                 placeholder={"Email"}
                                 placeholderTextColor={"white"}
-                                style={{height: 40, color: "white", paddingLeft: 40, top: -30}}
+                                style={{height: 35, color: "white", paddingLeft: 45, top: -25}}
                                 underlineColorAndroid={"transparent"}
                                 value={this.state.email}
                             />
                         </View>
                         <View style={styles.inputSeparator} />
-                        <View style={{top: 20}}>
+                        <View style={{top: 15}}>
                             <Icon
                                 name="iw-lock"
-                                size={20}
+                                size={26}
                                 color="#fff"
                                 style={styles.inputIcon}
                             />
@@ -193,7 +197,7 @@ export default class Login extends Component {
                                 placeholder={"Password"}
                                 placeholderTextColor={"white"}
                                 secureTextEntry={true}
-                                style={{height: 40, color: "white", paddingLeft: 40, top: -30}}
+                                style={{height: 35, color: "white", paddingLeft: 45, top: -25}}
                                 underlineColorAndroid={"transparent"}
                                 value={this.state.password}
                             />
