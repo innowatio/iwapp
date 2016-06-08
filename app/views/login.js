@@ -9,35 +9,43 @@ import TextInput from "../components/text-input-lato";
 import * as colors from "../lib/colors";
 
 const styles = StyleSheet.create({
-    backgroundImage: {
-        width: null,
-        height: null,
-        justifyContent: "center",
-        alignItems: "center",
-        flex: 1
-    },
-    buttonLogin: {
-        padding: 10,
-        width: 200,
-        height: 40,
-        overflow: "hidden",
-        borderRadius: 15,
-        backgroundColor: colors.buttonPrimary,
-        marginTop: 25,
-        marginBottom: 20
-    },
-    buttonLoginText: {
-        color: colors.textWhite,
-        fontSize: 16,
-        textAlign: "center"
-    },
     container: {
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
         backgroundColor: colors.transparent,
         flexDirection: "column",
-        padding: 20
+        paddingLeft: 20,
+        paddingRight: 20,
+        width:350
+    },
+    backgroundImage: {
+        flex: 1,
+        width: null,
+        height: null,
+        justifyContent: "center",
+        alignItems: "center"
+    },
+    // logoWrp: {
+    //     flex: 2,
+    //     flexDirection: "column",
+    //     alignItems: "center",
+    //     justifyContent: "center"
+    // },
+    logoIcon: {
+        height: 130,
+        marginTop: 0,
+        marginLeft: 20
+    },
+    logoTitle: {
+        color: colors.white,
+        margin: 0,
+        fontSize: 26
+    },
+    logoDescription: {
+        color: colors.white,
+        marginBottom: 20,
+        fontSize: 14
     },
     errorLoginContainer: {
         borderWidth: 1,
@@ -58,7 +66,7 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         alignSelf: "center",
         margin: 20,
-        color: colors.textWhite
+        color: colors.white
     },
     inputWrp: {
         borderWidth: 1,
@@ -80,22 +88,14 @@ const styles = StyleSheet.create({
         height: 26
     },
     linkSignupWrp: {
+        flex: 1,
         flexDirection: "row",
-        alignItems: "flex-end"
+        alignItems: "flex-end",
+        marginBottom: 10
     },
     linkText: {
-        color: colors.textWhite,
+        color: colors.white,
         marginTop: 8
-    },
-    logoTitle: {
-        color: colors.textWhite,
-        marginBottom: 0,
-        fontSize: 26
-    },
-    logoDescription: {
-        color: colors.textWhite,
-        marginBottom: 30,
-        fontSize: 14
     },
     textInputWrp: {
         top: 15
@@ -103,8 +103,24 @@ const styles = StyleSheet.create({
     textInput: {
         height: 35,
         color: colors.white,
+        fontSize: 14,
         paddingLeft: 45,
-        top: -25
+        top: -28
+    },
+    buttonLogin: {
+        padding: 10,
+        width: 200,
+        height: 40,
+        overflow: "hidden",
+        borderRadius: 15,
+        backgroundColor: colors.buttonPrimary,
+        marginTop: 25,
+        marginBottom: 20
+    },
+    buttonLoginText: {
+        color: colors.white,
+        fontSize: 16,
+        textAlign: "center"
     }
 });
 
@@ -164,7 +180,6 @@ export default class Login extends Component {
                     />
                     <Text style={styles.logoTitle}>{"e-coach"}</Text>
                     <Text style={styles.logoDescription}>{"innowatio"}</Text>
-
                     {this.renderErrorLogin()}
                     <View style={styles.inputWrp}>
                         <View style={styles.textInputWrp}>

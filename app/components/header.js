@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
         alignSelf: "center",
         borderRadius: 100,
         borderWidth: 1,
-        borderColor: colors.white,
+        borderColor: colors.IconWhite,
         padding: 5
     }
 });
@@ -54,10 +54,10 @@ export default class Header extends Component {
         return (
             <View style={styles.leftHeader}>
                 <Button style={styles.iconRightButton} transparent={true}>
-                    <Icon color={colors.white} name={"iw-menu"} size={50} />
+                    <Icon color={colors.IconWhite} name={"iw-menu"} size={50} />
                 </Button>
                 <Button style={styles.iconRightButton} transparent={true}>
-                    <Icon color={colors.white} name={"iw-innowatio-logo"} size={35} />
+                    <Icon color={colors.IconWhite} name={"iw-innowatio-logo"} size={35} />
                 </Button>
             </View>
         );
@@ -67,10 +67,10 @@ export default class Header extends Component {
         return (
             <View style={styles.rightHeader}>
                 <Button style={styles.iconAlarmButton} transparent={true}>
-                    <Icon color={colors.white} name={"iw-alarms"} size={25} />
+                    <Icon color={colors.IconWhite} name={"iw-alarms"} size={25} />
                 </Button>
                 <Button style={styles.iconUserButton} transparent={true} >
-                    <Icon color={colors.white} name={"iw-user"} size={23} />
+                    <Icon color={colors.IconWhite} name={"iw-user"} size={23} />
                 </Button>
             </View>
         );

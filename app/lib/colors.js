@@ -8,6 +8,6 @@ export const loginTextBackground = "rgba(0, 0, 0, 0.2)";
 export const loginTextBorder = "#979fd1";
 export const primaryBlue = "#3E50B4";
 export const secondaryBlue = "#536DFE";
-export const textWhite = "#ffffff";
 export const transparent = "transparent";
 export const white = "#ffffff";
+export const backgroundBlackOpacity = "rgba(0, 0, 0, 0.5)";
