@@ -10,16 +10,16 @@ describe("`Root` view", () => {
 
     const asteroid = {};
     const onNavigate = sinon.spy();
-    const primaryBlue = "primaryBlue";
+    const secondaryBlue = "secondaryBlue";
 
     before(() => {
         Root.__Rewire__("asteroid", asteroid);
-        Root.__Rewire__("primaryBlue", primaryBlue);
+        Root.__Rewire__("secondaryBlue", secondaryBlue);
     });
 
     after(() => {
         Root.__ResetDependency__("asteroid");
-        Root.__ResetDependency__("primaryBlue");
+        Root.__ResetDependency__("secondaryBlue");
     });
 
     afterEach(() => {
@@ -64,7 +64,7 @@ describe("`Root` view", () => {
         );
         expect(rootView.find(StatusBar).length).to.equal(1);
         expect(rootView.find(StatusBar).props()).to.deep.equal({
-            backgroundColor: "primaryBlue",
+            backgroundColor: "secondaryBlue",
             barStyle: "light-content"
         });
     });

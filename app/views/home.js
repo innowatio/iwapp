@@ -1,10 +1,14 @@
 import React, {Component, PropTypes} from "react";
 import IPropTypes from "react-immutable-proptypes";
-import {View, TouchableOpacity} from "react-native";
+import {Dimensions, Switch, View, TouchableOpacity} from "react-native";
 import {connect} from "react-redux";
 import {Content} from "native-base";
+import Swiper from "react-native-swiper";
+import moment from "moment";
 
 import Text from "../components/text-lato";
+import Highcharts from "../components/highchart";
+import {background} from "../lib/colors";
 
 class Home extends Component {
 
@@ -13,20 +17,57 @@ class Home extends Component {
         collections: IPropTypes.map.isRequired
     }
 
+    componentDidMount () {
+        this.props.asteroid.subscribe("sites");
+        this.subscribeToMisure(this.props);
+    }
+
     onLogout () {
         this.props.asteroid.logout();
     }
 
+    subscribeToMisure (props) {
+        const sensor = "IT001";
+        const day = moment.utc().format("YYYY-MM-DD");
+        const measurementType = "activeEnergy";
+        const sources = ["reading", "forecast"];
+        sources.forEach(source => {
+            props.asteroid.subscribe(
+                "dailyMeasuresBySensor",
+                sensor,
+                day,
+                day,
+                source,
+                measurementType
+            );
+        });
+    }
+
     render () {
+        const {height} = Dimensions.get("window");
         return (
-            <View>
-                <Content>
+            <Content style={{backgroundColor: background}}>
+                <View style={{height: height * 0.35}}>
                     <Text>{"Home page"}</Text>
                     <TouchableOpacity onPress={this.onLogout.bind(this)}>
                         <Text>{"logout"}</Text>
                     </TouchableOpacity>
-                </Content>
-            </View>
+                </View>
+                <Swiper height={height * 0.55} index={0} loop={false} showButtons={true}>
+                    <View>
+                        <View style={{height: height * 0.2}}>
+                            <Text>{"Altro"}</Text>
+                        </View>
+                        <Highcharts height={height * 0.2} />
+                        <View>
+                            <Switch style={{alignSelf: "flex-start"}} />
+                        </View>
+                    </View>
+                    <View>
+                        <Text>{"Grafico a torta"}</Text>
+                    </View>
+                </Swiper>
+            </Content>
         );
     }
 

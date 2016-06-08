@@ -10,7 +10,7 @@ import Login from "./login";
 import KeyboardSpacer from "../components/keyboard-spacer";
 import {onLogin, onLogout} from "../actions/user-id";
 import Header from "../components/header";
-import {primaryBlue} from "../lib/colors";
+import {secondaryBlue} from "../lib/colors";
 
 const styles = StyleSheet.create({
     container: {
@@ -75,7 +75,7 @@ class Root extends Component {
                 keyboardShouldPersistTaps={true}
             >
                 <StatusBar
-                    backgroundColor={primaryBlue}
+                    backgroundColor={secondaryBlue}
                     barStyle="light-content"
                 />
                 {this.renderView()}

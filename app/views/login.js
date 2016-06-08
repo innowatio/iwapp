@@ -24,9 +24,6 @@ const styles = StyleSheet.create({
         alignItems: "center",
         flex: 1
     },
-    logoIcon: {
-        lineHeight: 130
-    },
     logoTitle: {
         color: "white",
         marginBottom: 0,
@@ -45,8 +42,7 @@ const styles = StyleSheet.create({
         borderTopRightRadius: 10,
         borderBottomLeftRadius: 10,
         borderBottomRightRadius: 10,
-        alignSelf: "stretch",
-        lineHeight: 20
+        alignSelf: "stretch"
     },
     inputSeparator: {
         borderTopWidth: 1,
