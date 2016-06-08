@@ -9,14 +9,6 @@ import TextInput from "../components/text-input-lato";
 import * as colors from "../lib/colors";
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: "transparent",
-        flexDirection: "column",
-        padding: 20
-    },
     backgroundImage: {
         width: null,
         height: null,
@@ -24,57 +16,28 @@ const styles = StyleSheet.create({
         alignItems: "center",
         flex: 1
     },
-    logoTitle: {
-        color: "white",
-        marginBottom: 0,
-        fontSize: 26
-    },
-    logoDescription: {
-        color: "white",
-        marginBottom: 30,
-        fontSize: 14
-    },
-    inputWrp: {
-        borderWidth: 1,
-        borderColor: "#979fd1",
-        backgroundColor: "rgba(0, 0, 0, 0.2)",
-        borderTopLeftRadius: 10,
-        borderTopRightRadius: 10,
-        borderBottomLeftRadius: 10,
-        borderBottomRightRadius: 10,
-        alignSelf: "stretch"
-    },
-    inputSeparator: {
-        borderTopWidth: 1,
-        borderColor: "#979fd1"
-    },
-    inputIcon: {
-        left: 10,
-        width: 26,
-        height: 26
-    },
     buttonLogin: {
         padding: 10,
         width: 200,
         height: 40,
         overflow: "hidden",
         borderRadius: 15,
-        backgroundColor: "#E2417D",
+        backgroundColor: colors.buttonPrimary,
         marginTop: 25,
         marginBottom: 20
     },
     buttonLoginText: {
-        color: "white",
+        color: colors.textWhite,
         fontSize: 16,
         textAlign: "center"
     },
-    linkSignupWrp: {
-        flexDirection: "row",
-        alignItems: "flex-end"
-    },
-    linkText: {
-        color: "white",
-        marginTop: 8
+    container: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: colors.transparent,
+        flexDirection: "column",
+        padding: 20
     },
     errorLoginContainer: {
         borderWidth: 1,
@@ -96,6 +59,52 @@ const styles = StyleSheet.create({
         alignSelf: "center",
         margin: 20,
         color: colors.textWhite
+    },
+    inputWrp: {
+        borderWidth: 1,
+        borderColor: colors.loginTextBorder,
+        backgroundColor: colors.loginTextBackground,
+        borderTopLeftRadius: 10,
+        borderTopRightRadius: 10,
+        borderBottomLeftRadius: 10,
+        borderBottomRightRadius: 10,
+        alignSelf: "stretch"
+    },
+    inputSeparator: {
+        borderTopWidth: 1,
+        borderColor: colors.loginTextBorder
+    },
+    inputIcon: {
+        left: 10,
+        width: 26,
+        height: 26
+    },
+    linkSignupWrp: {
+        flexDirection: "row",
+        alignItems: "flex-end"
+    },
+    linkText: {
+        color: colors.textWhite,
+        marginTop: 8
+    },
+    logoTitle: {
+        color: colors.textWhite,
+        marginBottom: 0,
+        fontSize: 26
+    },
+    logoDescription: {
+        color: colors.textWhite,
+        marginBottom: 30,
+        fontSize: 14
+    },
+    textInputWrp: {
+        top: 15
+    },
+    textInput: {
+        height: 35,
+        color: colors.white,
+        paddingLeft: 45,
+        top: -25
     }
 });
 
@@ -148,9 +157,9 @@ export default class Login extends Component {
             <Image source={require("../assets/img/bg_login.png")} style={styles.backgroundImage}>
                 <View style={styles.container}>
                     <Icon
+                        color="#fff"
                         name="iw-innowatio-logo"
                         size={150}
-                        color="#fff"
                         style={styles.logoIcon}
                     />
                     <Text style={styles.logoTitle}>{"e-coach"}</Text>
@@ -158,11 +167,11 @@ export default class Login extends Component {
 
                     {this.renderErrorLogin()}
                     <View style={styles.inputWrp}>
-                        <View style={{top: 15}}>
+                        <View style={styles.textInputWrp}>
                             <Icon
+                                color="#fff"
                                 name="iw-user"
                                 size={26}
-                                color="#fff"
                                 style={styles.inputIcon}
                             />
                             <TextInput
@@ -172,17 +181,17 @@ export default class Login extends Component {
                                 onChangeText={partial(::this.onChangeText, ["email"])}
                                 placeholder={"Email"}
                                 placeholderTextColor={"white"}
-                                style={{height: 35, color: "white", paddingLeft: 45, top: -25}}
+                                style={styles.textInput}
                                 underlineColorAndroid={"transparent"}
                                 value={this.state.email}
                             />
                         </View>
                         <View style={styles.inputSeparator} />
-                        <View style={{top: 15}}>
+                        <View style={styles.textInputWrp}>
                             <Icon
+                                color="#fff"
                                 name="iw-lock"
                                 size={26}
-                                color="#fff"
                                 style={styles.inputIcon}
                             />
                             <TextInput
@@ -193,7 +202,7 @@ export default class Login extends Component {
                                 placeholder={"Password"}
                                 placeholderTextColor={"white"}
                                 secureTextEntry={true}
-                                style={{height: 35, color: "white", paddingLeft: 45, top: -25}}
+                                style={styles.textInput}
                                 underlineColorAndroid={"transparent"}
                                 value={this.state.password}
                             />

@@ -53,11 +53,11 @@ export default class Header extends Component {
     renderLeftButton () {
         return (
             <View style={styles.leftHeader}>
-                <Button transparent={true} style={styles.iconRightButton}>
-                    <Icon name={"iw-menu"} size={50} color={colors.white} />
+                <Button style={styles.iconRightButton} transparent={true}>
+                    <Icon color={colors.white} name={"iw-menu"} size={50} />
                 </Button>
-                <Button transparent={true} style={styles.iconRightButton}>
-                    <Icon name={"iw-innowatio-logo"} size={35} color={colors.white} />
+                <Button style={styles.iconRightButton} transparent={true}>
+                    <Icon color={colors.white} name={"iw-innowatio-logo"} size={35} />
                 </Button>
             </View>
         );
@@ -66,11 +66,11 @@ export default class Header extends Component {
     renderRightButton () {
         return (
             <View style={styles.rightHeader}>
-                <Button transparent={true} style={[styles.iconAlarmButton]}>
-                    <Icon name={"iw-alarms"} size={25} color={colors.white} />
+                <Button style={styles.iconAlarmButton} transparent={true}>
+                    <Icon color={colors.white} name={"iw-alarms"} size={25} />
                 </Button>
-                <Button transparent={true} style={[styles.iconUserButton]}>
-                    <Icon name={"iw-user"} size={23} color={colors.white} />
+                <Button style={styles.iconUserButton} transparent={true} >
+                    <Icon color={colors.white} name={"iw-user"} size={23} />
                 </Button>
             </View>
         );

@@ -1,6 +1,6 @@
 import React, {Component, PropTypes} from "react";
 import IPropTypes from "react-immutable-proptypes";
-import {Dimensions, Switch, View, TouchableOpacity} from "react-native";
+import {Dimensions, StyleSheet, Switch, View, TouchableOpacity} from "react-native";
 import {connect} from "react-redux";
 import {Content} from "native-base";
 import Swiper from "react-native-swiper";
@@ -9,6 +9,12 @@ import moment from "moment";
 import Text from "../components/text-lato";
 import Highcharts from "../components/highchart";
 import {background} from "../lib/colors";
+
+const styles = StyleSheet.create({
+    switch: {
+        alignSelf: "flex-start"
+    }
+});
 
 class Home extends Component {
 
@@ -60,7 +66,7 @@ class Home extends Component {
                         </View>
                         <Highcharts height={height * 0.2} />
                         <View>
-                            <Switch style={{alignSelf: "flex-start"}} />
+                            <Switch style={styles.switch} />
                         </View>
                     </View>
                     <View>

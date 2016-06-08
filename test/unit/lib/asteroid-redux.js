@@ -1,5 +1,3 @@
-import {Map} from "immutable";
-
 import {syncStoreAndAsteroid, __RewireAPI__ as asteroidReduxRewireAPI} from "lib/asteroid-redux";
 
 describe("`asteroid-redux`", () => {

@@ -31,8 +31,8 @@ function reducerCreate (params) {
 
 const scene = (
     <Router asteroid={asteroid} createReducer={reducerCreate}>
-        <Scene key="root" component={Root}>
-            <Scene key="home" component={Home} />
+        <Scene component={Root} key="root">
+            <Scene component={Home} key="home" />
         </Scene>
     </Router>
 );
