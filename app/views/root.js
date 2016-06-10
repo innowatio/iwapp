@@ -11,7 +11,7 @@ import Login from "./login";
 import {onLogin, onLogout} from "../actions/user-id";
 import KeyboardSpacer from "../components/keyboard-spacer";
 import Header from "../components/header";
-import Menu from "../components/side-menu";
+import SideMenu from "../components/side-menu";
 import {secondaryBlue} from "../lib/colors";
 
 const styles = StyleSheet.create({
@@ -70,7 +70,7 @@ class Root extends Component {
     renderView () {
         return this.props.userId ? (
             <Drawer
-                content={<Menu />}
+                content={<SideMenu asteroid={asteroid} />}
                 open={this.state.open}
                 openDrawerOffset={0.35}
                 tapToClose={true}

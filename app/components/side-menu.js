@@ -1,20 +1,14 @@
 import {Content, List, ListItem} from "native-base";
-import React, {Component} from "react";
+import React, {Component, PropTypes} from "react";
 import {Dimensions, StyleSheet, View, TouchableOpacity} from "react-native";
 import {Actions} from "react-native-router-flux";
 
 import IconIwwa from "./iwwa-icons";
 import Text from "../components/text-lato";
+import DropDown from "../components/dropdown";
 import * as colors from "../lib/colors";
 
 const styles = StyleSheet.create({
-    header: {
-        backgroundColor: colors.secondaryBlue,
-        justifyContent: "space-around",
-        flexDirection: "row",
-        alignItems: "center",
-        height: 50
-    },
     rightIcon: {
         justifyContent: "flex-start",
         alignItems: "center",
@@ -32,13 +26,32 @@ const styles = StyleSheet.create({
 
 export default class SideMenu extends Component {
 
+    static propTypes = {
+        asteroid: PropTypes.object.isRequired
+    }
+
+    onLogout () {
+        this.props.asteroid.logout();
+    }
+
+    onSelectionChanged (event) {
+        console.log(event);
+    }
+
     render () {
         const {height} = Dimensions.get("window");
+        const items = [{
+            title: "Progetto XYZ"
+        }, {
+            title: "Progetto XYZ"
+        }, {
+            title: "Progetto XYZ"
+        }, {
+            title: "Progetto XYZ"
+        }];
         return (
             <Content>
-                <View style={styles.header}>
-                    <Text>{"Progetto XYZ"}</Text>
-                </View>
+                <DropDown onSelectionChanged={this.onSelectionChanged.bind(this)} optionItems={items} titlePlaceholder={"Progetto XYZ"} />
 
                 <View style={{height: height * .78, backgroundColor: colors.primaryBlue}}>
                     <Content>
@@ -73,6 +86,12 @@ export default class SideMenu extends Component {
                                     <Text style={styles.itemText}>{"Risparmio energetico"}</Text>
                                 </TouchableOpacity>
                             </ListItem>
+                            <ListItem>
+                                <TouchableOpacity style={styles.rightIcon}>
+                                    <IconIwwa name={"iw-info"} size={20} style={styles.itemIcon} />
+                                    <Text style={styles.itemText}>{"Report"}</Text>
+                                </TouchableOpacity>
+                            </ListItem>
                         </List>
                     </Content>
                 </View>
@@ -81,7 +100,7 @@ export default class SideMenu extends Component {
                     <Content>
                         <List>
                             <ListItem>
-                                <TouchableOpacity style={styles.rightIcon}>
+                                <TouchableOpacity onPress={this.onLogout.bind(this)} style={styles.rightIcon}>
                                     <IconIwwa name={"iw-logout"} size={20} style={styles.itemIcon} />
                                     <Text style={styles.itemText}>{"Logout"}</Text>
                                 </TouchableOpacity>

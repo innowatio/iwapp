@@ -38,6 +38,7 @@ const scene = (
             <Scene component={Stats} key="smart" />
             <Scene component={Stats} key="badgeboard" />
             <Scene component={Stats} key="energy" />
+            <Scene component={Stats} key="report" />
         </Scene>
     </Router>
 );
