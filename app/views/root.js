@@ -1,3 +1,4 @@
+import Drawer from "react-native-drawer";
 import React, {Component, PropTypes} from "react";
 import {StatusBar, StyleSheet, ScrollView, View} from "react-native";
 import {bindActionCreators} from "redux";
@@ -7,9 +8,10 @@ import {DefaultRenderer} from "react-native-router-flux";
 
 import asteroid from "../lib/asteroid";
 import Login from "./login";
-import KeyboardSpacer from "../components/keyboard-spacer";
 import {onLogin, onLogout} from "../actions/user-id";
+import KeyboardSpacer from "../components/keyboard-spacer";
 import Header from "../components/header";
+import Menu from "../components/side-menu";
 import {secondaryBlue} from "../lib/colors";
 
 const styles = StyleSheet.create({
@@ -29,6 +31,13 @@ class Root extends Component {
         onLogout: PropTypes.func.isRequired,
         onNavigate: PropTypes.func.isRequired,
         userId: PropTypes.string
+    }
+
+    constructor () {
+        super();
+        this.state = {
+            open: false
+        };
     }
 
     componentDidMount () {
@@ -52,15 +61,30 @@ class Root extends Component {
         return this.props.navigationState.children[sceneIndex];
     }
 
+    toggleHamburger () {
+        this.setState({
+            open: true
+        });
+    }
+
     renderView () {
         return this.props.userId ? (
-            <View>
-                <Header />
-                <DefaultRenderer
-                    navigationState={this.getNavigationState()}
-                    onNavigate={this.props.onNavigate}
-                />
-            </View>
+            <Drawer
+                content={<Menu />}
+                open={this.state.open}
+                openDrawerOffset={0.35}
+                tapToClose={true}
+                type="displace"
+            >
+                <View>
+                    <Header onToggleHamburger={this.toggleHamburger.bind(this)} />
+                    <DefaultRenderer
+                        navigationState={this.getNavigationState()}
+                        onNavigate={this.props.onNavigate}
+                    />
+                </View>
+            </Drawer>
+            
         ) : (
             <Login asteroid={asteroid} />
         );

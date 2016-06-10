@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, {Component, PropTypes} from "react";
 import {StyleSheet, View, TouchableOpacity} from "react-native";
 
 import Icon from "./iwwa-icons";
@@ -13,7 +13,8 @@ const styles = StyleSheet.create({
     header: {
         flexDirection: "row",
         alignItems: "center",
-        justifyContent: "space-between"
+        justifyContent: "space-between",
+        height: 40
         // shadowColor: colors.white,
         // shadowOffset: {width: 0, height: 2},
         // shadowOpacity: 0.1,
@@ -49,10 +50,15 @@ const styles = StyleSheet.create({
 
 export default class Header extends Component {
 
+    static propTypes = {
+        onToggleHamburger: PropTypes.func.isRequired
+    }
+
     renderLeftButton () {
+        const {onToggleHamburger} = this.props;
         return (
             <View style={styles.leftHeader}>
-                <TouchableOpacity style={styles.iconRightButton} transparent={true}>
+                <TouchableOpacity onPress={onToggleHamburger} style={styles.iconRightButton} transparent={true}>
                     <Icon color={colors.iconWhite} name={"iw-menu"} size={40} />
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.iconRightButton} transparent={true}>
