@@ -1,5 +1,5 @@
 import React, {Component, PropTypes} from "react";
-import {Platform, TouchableOpacity, WebView, View, Text, UIManager} from "react-native";
+import {Platform, WebView} from "react-native";
 import IPropTypes from "react-immutable-proptypes";
 import shallowCompare from "react-addons-shallow-compare";
 
@@ -32,14 +32,7 @@ export default class Highcharts extends Component {
 
     componentDidUpdate () {
         if (Platform.OS === "android") {
-            console.log("UPDATE");
-            console.log(this.props.charts);
-            console.log(this.refs.highchartsWebview);
-            UIManager.dispatchViewManagerCommand(
-              this.refs.highchartsWebview.getWebViewHandle(),
-              UIManager.RCTWebView.Commands.reload,
-              null
-            );
+            this.refs.highchartsWebview.reload();
         }
     }
 
@@ -78,18 +71,16 @@ export default class Highcharts extends Component {
                     }
                 }
             },
-            tooltip: {
-                enabled: false
-            },
             series: this.getSeries(),
             title: null,
             xAxis: {
                 type: "datetime"
             },
             yAxis: {
-                title: {
-                    text: null
-                }
+                labels: {
+                    format: "{value}"
+                },
+                title: {text: null}
             }
         };
     }
@@ -117,27 +108,16 @@ export default class Highcharts extends Component {
         );
     }
 
-    onPress () {
-        console.log("press");
-        this.forceUpdate();
-        // this.refs.highchartsWebview.reload();
-    }
-
     render () {
         const html = this.getHTML();
         return (
-            <View>
-                <TouchableOpacity onPress={::this.onPress}>
-                    <Text>{"Update"}</Text>
-                </TouchableOpacity>
-                <WebView
-                    javaScriptEnabled={true}
-                    ref="highchartsWebview"
-                    scrollEnabled={false}
-                    source={{html}}
-                    style={{height: this.props.height}}
-                />
-            </View>
+            <WebView
+                javaScriptEnabled={true}
+                ref="highchartsWebview"
+                scrollEnabled={false}
+                source={{html}}
+                style={{height: this.props.height + 15}}
+            />
         );
     }
 

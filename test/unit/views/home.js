@@ -16,7 +16,9 @@ describe("`Home` view", () => {
     const home = {
         charts: [{
             sensorId: "sensorId",
-            source: "source"
+            source: "source",
+            day: "day",
+            measurementType: "measurementType"
         }]
     };
     const toggleForecast = sinon.spy();
@@ -87,7 +89,9 @@ describe("`Home` view", () => {
             aggregates: fromJS({"_id": "sensorId-day-source-measurementType"}),
             charts: [{
                 sensorId: "sensorId",
-                source: "source"
+                source: "source",
+                day: "day",
+                measurementType: "measurementType"
             }],
             height: 20
         });
@@ -98,7 +102,9 @@ describe("`Home` view", () => {
             aggregates: Map(),
             charts: [{
                 sensorId: "sensorId",
-                source: "source"
+                source: "source",
+                day: "day",
+                measurementType: "measurementType"
             }],
             height: 20
         });

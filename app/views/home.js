@@ -15,8 +15,21 @@ import {toggleForecast} from "../actions/home";
 const styles = StyleSheet.create({
     switch: {
         alignSelf: "flex-start",
-        marginTop: 10,
+        marginTop: 3,
         marginLeft: 10
+    },
+    switchContainer: {
+        flexDirection: "row"
+    },
+    switchTextContainer: {
+        flexDirection: "column",
+        marginLeft: 10
+    },
+    switchTextHeader: {
+        fontWeight: "bold"
+    },
+    switchText: {
+        fontSize: 12
     }
 });
 
@@ -61,6 +74,33 @@ class Home extends Component {
         });
     }
 
+    renderSecondSwitchView (height) {
+        return (
+            <View>
+                <View style={{height: height * 0.2}}>
+                    <Text>{"Altro"}</Text>
+                </View>
+                <Highcharts
+                    aggregates={this.props.collections.get("readings-daily-aggregates") || Map()}
+                    charts={this.props.home.charts}
+                    height={height * 0.2}
+                />
+                <View style={styles.switchContainer}>
+                    <Switch
+                        index={1}
+                        onValueChange={this.props.toggleForecast}
+                        style={styles.switch}
+                        value={this.props.home.charts.length === 2}
+                    />
+                    <View style={styles.switchTextContainer}>
+                        <Text style={styles.switchTextHeader}>{"Consumi previsti"}</Text>
+                        <Text style={styles.switchText}>{"basati sulla tua giornata tipo"}</Text>
+                    </View>
+                </View>
+            </View>
+        );
+    }
+
     render () {
         const {height} = Dimensions.get("window");
         return (
@@ -76,26 +116,7 @@ class Home extends Component {
                         <Text>{"Consumi"}</Text>
                     </View>
                     <View>
-                        <View style={{height: height * 0.2}}>
-                            <Text>{"Altro"}</Text>
-                        </View>
-                        <Highcharts
-                            aggregates={this.props.collections.get("readings-daily-aggregates") || Map()}
-                            charts={this.props.home.charts}
-                            height={height * 0.2}
-                            ref="highcharts"
-                        />
-                        <View>
-                            <Switch
-                                index={1}
-                                onValueChange={value => {
-                                    this.props.toggleForecast(value);
-                                    this.refs.highcharts.forceUpdate();
-                                }}
-                                style={styles.switch}
-                                value={this.props.home.charts.length === 2}
-                            />
-                        </View>
+                        {this.renderSecondSwitchView(height)}
                     </View>
                     <View>
                         <Text>{"Grafico a torta"}</Text>
