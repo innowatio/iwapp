@@ -77,17 +77,21 @@ export default class DropDown extends Component {
 
     renderDropDown () {
         const {height} = Dimensions.get("window");
-        return this.state.showItems ? (
-            <Animated.View style={{
+        const styleView = StyleSheet.create({
+            view: {
                 height: height,
                 borderTopWidth: 1,
                 borderTopColor: colors.white,
                 backgroundColor: colors.secondaryBlue,
                 transform: [
-                    {translateY: this.state.slidingAnimationValue}
+                    {
+                        translateY: this.state.slidingAnimationValue
+                    }
                 ]
-            }}
-            >
+            }
+        });
+        return this.state.showItems ? (
+            <Animated.View style={styleView.view}>
                 <List>
                     {this.renderOptionItems()}
                 </List>
