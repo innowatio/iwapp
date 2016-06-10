@@ -35,6 +35,7 @@
     "native-base": "^0.4.0",
     "ramda": "^0.21.0",
     "react": "15.0.2",
+    "react-addons-shallow-compare": "15.0.2",
     "react-immutable-proptypes": "^1.7.1",
     "react-native": "^0.26.3",
     "react-native-button": "^1.6.0",

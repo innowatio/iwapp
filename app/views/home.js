@@ -1,18 +1,22 @@
+import {Map} from "immutable";
+import {Content} from "native-base";
 import React, {Component, PropTypes} from "react";
 import IPropTypes from "react-immutable-proptypes";
 import {Dimensions, StyleSheet, Switch, View, TouchableOpacity} from "react-native";
 import {connect} from "react-redux";
-import {Content} from "native-base";
 import Swiper from "react-native-swiper";
-import moment from "moment";
+import {bindActionCreators} from "redux";
 
+import Highcharts from "../components/highcharts";
 import Text from "../components/text-lato";
-import Highcharts from "../components/highchart";
 import {background} from "../lib/colors";
+import {toggleForecast} from "../actions/home";
 
 const styles = StyleSheet.create({
     switch: {
-        alignSelf: "flex-start"
+        alignSelf: "flex-start",
+        marginTop: 10,
+        marginLeft: 10
     }
 });
 
@@ -20,31 +24,39 @@ class Home extends Component {
 
     static propTypes = {
         asteroid: PropTypes.object.isRequired,
-        collections: IPropTypes.map.isRequired
+        collections: IPropTypes.map.isRequired,
+        home: PropTypes.shape({
+            charts: PropTypes.arrayOf(PropTypes.shape({
+                sensorId: PropTypes.string,
+                source: PropTypes.string
+            }))
+        }).isRequired,
+        toggleForecast: PropTypes.func.isRequired
     }
 
     componentDidMount () {
         this.props.asteroid.subscribe("sites");
-        this.subscribeToMisure(this.props);
+        this.subscribeToMeasure(this.props);
+    }
+
+    componentWillReceiveProps (nextProps) {
+        this.subscribeToMeasure(nextProps);
     }
 
     onLogout () {
         this.props.asteroid.logout();
     }
 
-    subscribeToMisure (props) {
-        const sensor = "IT001";
-        const day = moment.utc().format("YYYY-MM-DD");
-        const measurementType = "activeEnergy";
-        const sources = ["reading", "forecast"];
-        sources.forEach(source => {
+    subscribeToMeasure (props) {
+        const charts = props.home.charts;
+        charts.forEach(chart => {
             props.asteroid.subscribe(
                 "dailyMeasuresBySensor",
-                sensor,
-                day,
-                day,
-                source,
-                measurementType
+                chart.sensorId,
+                chart.day,
+                chart.day,
+                chart.source,
+                chart.measurementType
             );
         });
     }
@@ -61,12 +73,28 @@ class Home extends Component {
                 </View>
                 <Swiper height={height * 0.55} index={0} loop={false} showButtons={true}>
                     <View>
+                        <Text>{"Consumi"}</Text>
+                    </View>
+                    <View>
                         <View style={{height: height * 0.2}}>
                             <Text>{"Altro"}</Text>
                         </View>
-                        <Highcharts height={height * 0.2} />
+                        <Highcharts
+                            aggregates={this.props.collections.get("readings-daily-aggregates") || Map()}
+                            charts={this.props.home.charts}
+                            height={height * 0.2}
+                            ref="highcharts"
+                        />
                         <View>
-                            <Switch style={styles.switch} />
+                            <Switch
+                                index={1}
+                                onValueChange={value => {
+                                    this.props.toggleForecast(value);
+                                    this.refs.highcharts.forceUpdate();
+                                }}
+                                style={styles.switch}
+                                value={this.props.home.charts.length === 2}
+                            />
                         </View>
                     </View>
                     <View>
@@ -81,7 +109,13 @@ class Home extends Component {
 
 function mapStateToProps (state) {
     return {
-        collections: state.collections
+        collections: state.collections,
+        home: state.home
     };
 }
-export default connect(mapStateToProps)(Home);
+function mapDispatchToProps (dispatch) {
+    return {
+        toggleForecast: bindActionCreators(toggleForecast, dispatch)
+    };
+}
+export default connect(mapStateToProps, mapDispatchToProps)(Home);
