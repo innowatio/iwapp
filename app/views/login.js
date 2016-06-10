@@ -26,15 +26,9 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center"
     },
-    // logoWrp: {
-    //     flex: 2,
-    //     flexDirection: "column",
-    //     alignItems: "center",
-    //     justifyContent: "center"
-    // },
     logoIcon: {
         height: 130,
-        marginTop: 0,
+        marginTop: 50,
         marginLeft: 20
     },
     logoTitle: {
