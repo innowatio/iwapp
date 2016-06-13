@@ -13,7 +13,7 @@ import Highcharts from "../components/highcharts";
 import Text from "../components/text-lato";
 import {toggleForecast} from "../actions/home";
 import getDailySumConsumption from "../lib/get-daily-sum-consumption";
-import Icon from "../components/iwwa-icons";
+import Icon from "../components/iwapp-icons";
 import * as colors from "../lib/colors";
 
 const styles = StyleSheet.create({
