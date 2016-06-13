@@ -1,5 +1,5 @@
 import React, {Component, PropTypes} from "react";
-import {Image, StyleSheet, View} from "react-native";
+import {Dimensions, Image, StyleSheet, View} from "react-native";
 import Button from "react-native-button";
 import {partial} from "ramda";
 
@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
         marginBottom: 20
     },
     buttonLoginText: {
-        color: colors.textWhite,
+        color: colors.white,
         fontSize: 16,
         textAlign: "center"
     },
@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         alignSelf: "center",
         margin: 20,
-        color: colors.textWhite
+        color: colors.white
     },
     inputWrp: {
         borderWidth: 1,
@@ -81,20 +81,26 @@ const styles = StyleSheet.create({
     },
     linkSignupWrp: {
         flexDirection: "row",
-        alignItems: "flex-end"
+        alignItems: "flex-end",
+        marginBottom: 10
     },
     linkText: {
-        color: colors.textWhite,
+        color: colors.white,
         marginTop: 8
     },
+    logoIcon: {
+        height: 130,
+        marginTop: 50,
+        marginLeft: 20
+    },
     logoTitle: {
-        color: colors.textWhite,
+        color: colors.white,
         marginBottom: 0,
         fontSize: 26
     },
     logoDescription: {
-        color: colors.textWhite,
-        marginBottom: 30,
+        color: colors.white,
+        marginBottom: 20,
         fontSize: 14
     },
     textInputWrp: {
@@ -153,6 +159,7 @@ export default class Login extends Component {
     }
 
     render () {
+        const {width} = Dimensions.get("window");
         return (
             <Image source={require("../assets/img/bg_login.png")} style={styles.backgroundImage}>
                 <View style={styles.container}>
@@ -181,7 +188,7 @@ export default class Login extends Component {
                                 onChangeText={partial(::this.onChangeText, ["email"])}
                                 placeholder={"Email"}
                                 placeholderTextColor={"white"}
-                                style={styles.textInput}
+                                style={[styles.textInput, {width: width * 0.9}]}
                                 underlineColorAndroid={"transparent"}
                                 value={this.state.email}
                             />

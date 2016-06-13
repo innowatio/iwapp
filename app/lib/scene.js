@@ -3,6 +3,7 @@ import {Router, Scene, Reducer} from "react-native-router-flux";
 
 import asteroid from "./asteroid";
 import Home from "../views/home";
+import Stats from "../views/stats";
 import {pushNavigator, popNavigator} from "../actions/navigation";
 import Root from "../views/root";
 import store from "./store";
@@ -33,6 +34,11 @@ const scene = (
     <Router asteroid={asteroid} createReducer={reducerCreate}>
         <Scene component={Root} key="root">
             <Scene component={Home} key="home" />
+            <Scene component={Stats} key="stats" />
+            <Scene component={Stats} key="smart" />
+            <Scene component={Stats} key="badgeboard" />
+            <Scene component={Stats} key="energy" />
+            <Scene component={Stats} key="report" />
         </Scene>
     </Router>
 );

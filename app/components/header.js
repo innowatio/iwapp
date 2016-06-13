@@ -1,24 +1,24 @@
-import React, {Component} from "react";
-import {StyleSheet, View} from "react-native";
-import {Button} from "native-base";
+import React, {Component, PropTypes} from "react";
+import {StyleSheet, View, TouchableOpacity} from "react-native";
 
 import Icon from "./iwwa-icons";
 import * as colors from "../lib/colors";
 
 const styles = StyleSheet.create({
-    header: {
+    headerWrp: {
         backgroundColor: colors.primaryBlue,
-        justifyContent: "space-between",
+        paddingVertical: 5,
+        paddingHorizontal: 3
+    },
+    header: {
         flexDirection: "row",
         alignItems: "center",
-        padding: 15,
-        paddingLeft: 3,
-        paddingRight: 3,
-        shadowColor: colors.black,
-        shadowOffset: {width: 0, height: 2},
-        shadowOpacity: 0.1,
-        shadowRadius: 1.5,
-        height: 60
+        justifyContent: "space-between",
+        height: 40
+        // shadowColor: colors.white,
+        // shadowOffset: {width: 0, height: 2},
+        // shadowOpacity: 0.1,
+        // shadowRadius: 1.5
     },
     leftHeader: {
         justifyContent: "flex-start",
@@ -43,22 +43,27 @@ const styles = StyleSheet.create({
         alignSelf: "center",
         borderRadius: 100,
         borderWidth: 1,
-        borderColor: colors.white,
+        borderColor: colors.iconWhite,
         padding: 5
     }
 });
 
 export default class Header extends Component {
 
+    static propTypes = {
+        onToggleHamburger: PropTypes.func.isRequired
+    }
+
     renderLeftButton () {
+        const {onToggleHamburger} = this.props;
         return (
             <View style={styles.leftHeader}>
-                <Button style={styles.iconRightButton} transparent={true}>
-                    <Icon color={colors.white} name={"iw-menu"} size={50} />
-                </Button>
-                <Button style={styles.iconRightButton} transparent={true}>
-                    <Icon color={colors.white} name={"iw-innowatio-logo"} size={35} />
-                </Button>
+                <TouchableOpacity onPress={onToggleHamburger} style={styles.iconRightButton} transparent={true}>
+                    <Icon color={colors.iconWhite} name={"iw-menu"} size={40} />
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.iconRightButton} transparent={true}>
+                    <Icon color={colors.iconWhite} name={"iw-innowatio-logo"} size={35} />
+                </TouchableOpacity>
             </View>
         );
     }
@@ -66,21 +71,23 @@ export default class Header extends Component {
     renderRightButton () {
         return (
             <View style={styles.rightHeader}>
-                <Button style={styles.iconAlarmButton} transparent={true}>
-                    <Icon color={colors.white} name={"iw-alarms"} size={25} />
-                </Button>
-                <Button style={styles.iconUserButton} transparent={true} >
-                    <Icon color={colors.white} name={"iw-user"} size={23} />
-                </Button>
+                <TouchableOpacity style={styles.iconAlarmButton} transparent={true}>
+                    <Icon color={colors.iconWhite} name={"iw-alarms"} size={25} />
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.iconUserButton} transparent={true}>
+                    <Icon color={colors.iconWhite} name={"iw-user"} size={23} />
+                </TouchableOpacity>
             </View>
         );
     }
 
     render () {
         return (
-            <View style={styles.header}>
-                {this.renderLeftButton()}
-                {this.renderRightButton()}
+            <View style={styles.headerWrp}>
+                <View style={styles.header}>
+                    {this.renderLeftButton()}
+                    {this.renderRightButton()}
+                </View>
             </View>
         );
     }

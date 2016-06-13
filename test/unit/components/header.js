@@ -1,5 +1,5 @@
 import {shallow} from "enzyme";
-import {Button} from "native-base";
+import {TouchableOpacity} from "react-native";
 
 import Header from "components/header";
 import Icon from "components/iwwa-icons";
@@ -8,7 +8,7 @@ describe("`Header` component", () => {
 
     it("renders 4 buttons", () => {
         const header = shallow(<Header />);
-        expect(header.find(Button)).to.have.length(4);
+        expect(header.find(TouchableOpacity)).to.have.length(4);
     });
 
     it("renders 4 icons", () => {
