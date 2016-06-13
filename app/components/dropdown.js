@@ -1,9 +1,9 @@
 import {List, ListItem} from "native-base";
 import React, {Component, PropTypes} from "react";
 import {Animated, Dimensions, StyleSheet, View, TouchableOpacity} from "react-native";
+import FaIcons from "react-native-vector-icons/FontAwesome";
 
-import IconIwwa from "./iwwa-icons";
-import Text from "../components/text-lato";
+import Text from "./text-lato";
 import * as colors from "../lib/colors";
 
 const styles = StyleSheet.create({
@@ -106,7 +106,7 @@ export default class DropDown extends Component {
                 <TouchableOpacity onPress={this.toggleItems.bind(this)}>
                     <View style={styles.header}>
                         <Text style={{color: colors.white}}>{titlePlaceholder ? titlePlaceholder : "Select an item"}</Text>
-                        <IconIwwa name={this.state.showItems ? "iw-arrow-up" : "iw-arrow-down"} size={20} style={styles.itemIcon} />
+                        <FaIcons name={this.state.showItems ? "angle-up" : "angle-down"} size={26} style={styles.itemIcon} />
                     </View>
                 </TouchableOpacity>
                 {this.renderDropDown()}

@@ -27,8 +27,9 @@
   "dependencies": {
     "asteroid": "github:mondora/asteroid#3.0.0-alpha",
     "asteroid-immutable-collections-mixin": "^3.0.0",
+    "font-awesome": "^4.6.3",
     "immutable": "^3.8.1",
-    "iwwa-icons": "^1.0.7",
+    "iwapp-icons": "^1.0.0",
     "lodash.debounce": "^4.0.6",
     "lodash.get": "^4.3.0",
     "moment": "^2.13.0",

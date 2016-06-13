@@ -3,7 +3,7 @@ import {Image, StyleSheet, View} from "react-native";
 import Button from "react-native-button";
 import {partial} from "ramda";
 
-import Icon from "../components/iwwa-icons";
+import Icon from "../components/iwapp-icons";
 import Text from "../components/text-lato";
 import TextInput from "../components/text-input-lato";
 import * as colors from "../lib/colors";
@@ -82,7 +82,6 @@ const styles = StyleSheet.create({
         height: 26
     },
     linkSignupWrp: {
-        flex: 1,
         flexDirection: "row",
         alignItems: "flex-end",
         marginBottom: 10

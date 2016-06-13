@@ -6,7 +6,7 @@ import {Content} from "native-base";
 import Swiper from "react-native-swiper";
 import moment from "moment";
 
-import Icon from "../components/iwwa-icons";
+import Icon from "../components/iwapp-icons";
 import Text from "../components/text-lato";
 import Highcharts from "../components/highchart";
 import * as colors from "../lib/colors";
@@ -45,7 +45,10 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "stretch",
         justifyContent: "space-around",
-        paddingVertical: 10
+        height: 80
+    },
+    icon: {
+        height: 75
     },
     climateVariablesWrp: {
         flexDirection: "row",
@@ -68,19 +71,20 @@ const styles = StyleSheet.create({
     },
     textDegreesWrp: {
         flexDirection: "column",
-        alignItems: "flex-end",
+        alignItems: "center",
         justifyContent: "center"
     },
     textDegrees: {
         color: colors.white,
         fontSize: 66,
+        height: 80,
         textAlign: "center",
         fontWeight: "bold"
     },
     textDescDegrees: {
         color: colors.white,
         fontSize: 14,
-        marginRight: 16,
+        marginRight: 15,
         textAlign: "center"
     },
     switch: {
@@ -134,8 +138,9 @@ class Home extends Component {
                                     <View style={styles.iconWrp}>
                                         <Icon
                                             color="#fff"
-                                            name="iw-calendar"
-                                            size={55}
+                                            name="iw-clouds"
+                                            size={95}
+                                            style={styles.icon}
                                         />
                                     </View>
                                     <View style={styles.climateVariablesWrp}>

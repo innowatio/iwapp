@@ -2,7 +2,7 @@ import {shallow} from "enzyme";
 import {TouchableOpacity} from "react-native";
 
 import Header from "components/header";
-import Icon from "components/iwwa-icons";
+import Icon from "components/iwapp-icons";
 
 describe("`Header` component", () => {
 
@@ -20,7 +20,7 @@ describe("`Header` component", () => {
         const header = shallow(<Header />);
         expect(header.find(Icon).get(0).props.name).to.equal("iw-menu");
         expect(header.find(Icon).get(1).props.name).to.equal("iw-innowatio-logo");
-        expect(header.find(Icon).get(2).props.name).to.equal("iw-alarms");
+        expect(header.find(Icon).get(2).props.name).to.equal("iw-alarm");
         expect(header.find(Icon).get(3).props.name).to.equal("iw-user");
     });
 

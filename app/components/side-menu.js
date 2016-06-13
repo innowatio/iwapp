@@ -3,7 +3,7 @@ import React, {Component, PropTypes} from "react";
 import {Dimensions, StyleSheet, View, TouchableOpacity} from "react-native";
 import {Actions} from "react-native-router-flux";
 
-import IconIwwa from "./iwwa-icons";
+import Icon from "./iwapp-icons";
 import Text from "../components/text-lato";
 import DropDown from "../components/dropdown";
 import * as colors from "../lib/colors";
@@ -58,37 +58,37 @@ export default class SideMenu extends Component {
                         <List>
                             <ListItem>
                                 <TouchableOpacity onPress={() => Actions.home()} style={styles.rightIcon}>
-                                    <IconIwwa name={"iw-dashboard"} size={20} style={styles.itemIcon} />
+                                    <Icon name={"iw-overview"} size={24} style={styles.itemIcon} />
                                     <Text style={styles.itemText}>{"Overview"}</Text>
                                 </TouchableOpacity>
                             </ListItem>
                             <ListItem>
                                 <TouchableOpacity onPress={() => Actions.stats()} style={styles.rightIcon}>
-                                    <IconIwwa name={"iw-chart-style1"} size={20} style={styles.itemIcon} />
+                                    <Icon name={"iw-chart"} size={24} style={styles.itemIcon} />
                                     <Text style={styles.itemText}>{"Statistiche"}</Text>
                                 </TouchableOpacity>
                             </ListItem>
                             <ListItem>
                                 <TouchableOpacity style={styles.rightIcon}>
-                                    <IconIwwa name={"iw-gauge"} size={20} style={styles.itemIcon} />
+                                    <Icon name={"iw-gauge"} size={24} style={styles.itemIcon} />
                                     <Text style={styles.itemText}>{"Il mio smartmeter"}</Text>
                                 </TouchableOpacity>
                             </ListItem>
                             <ListItem>
                                 <TouchableOpacity style={styles.rightIcon}>
-                                    <IconIwwa name={"iw-assign"} size={20} style={styles.itemIcon} />
+                                    <Icon name={"iw-badge"} size={24} style={styles.itemIcon} />
                                     <Text style={styles.itemText}>{"Badgeboard"}</Text>
                                 </TouchableOpacity>
                             </ListItem>
                             <ListItem>
                                 <TouchableOpacity style={styles.rightIcon}>
-                                    <IconIwwa name={"iw-lightbulb"} size={20} style={styles.itemIcon} />
+                                    <Icon name={"iw-lightbulb"} size={24} style={styles.itemIcon} />
                                     <Text style={styles.itemText}>{"Risparmio energetico"}</Text>
                                 </TouchableOpacity>
                             </ListItem>
                             <ListItem>
                                 <TouchableOpacity style={styles.rightIcon}>
-                                    <IconIwwa name={"iw-info"} size={20} style={styles.itemIcon} />
+                                    <Icon name={"iw-report"} size={24} style={styles.itemIcon} />
                                     <Text style={styles.itemText}>{"Report"}</Text>
                                 </TouchableOpacity>
                             </ListItem>
@@ -101,7 +101,7 @@ export default class SideMenu extends Component {
                         <List>
                             <ListItem>
                                 <TouchableOpacity onPress={this.onLogout.bind(this)} style={styles.rightIcon}>
-                                    <IconIwwa name={"iw-logout"} size={20} style={styles.itemIcon} />
+                                    <Icon name={"iw-logout"} size={24} style={styles.itemIcon} />
                                     <Text style={styles.itemText}>{"Logout"}</Text>
                                 </TouchableOpacity>
                             </ListItem>

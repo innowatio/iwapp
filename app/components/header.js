@@ -1,7 +1,7 @@
 import React, {Component, PropTypes} from "react";
 import {StyleSheet, View, TouchableOpacity} from "react-native";
 
-import Icon from "./iwwa-icons";
+import Icon from "./iwapp-icons";
 import * as colors from "../lib/colors";
 
 const styles = StyleSheet.create({
@@ -72,7 +72,7 @@ export default class Header extends Component {
         return (
             <View style={styles.rightHeader}>
                 <TouchableOpacity style={styles.iconAlarmButton} transparent={true}>
-                    <Icon color={colors.iconWhite} name={"iw-alarms"} size={25} />
+                    <Icon color={colors.iconWhite} name={"iw-alarm"} size={25} />
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.iconUserButton} transparent={true}>
                     <Icon color={colors.iconWhite} name={"iw-user"} size={23} />
