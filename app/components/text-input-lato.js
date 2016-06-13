@@ -8,7 +8,8 @@ export default class TextInputLato extends Component {
     static propTypes = {
         style: PropTypes.oneOfType([
             PropTypes.object,
-            PropTypes.number
+            PropTypes.number,
+            PropTypes.array
         ])
     }
 

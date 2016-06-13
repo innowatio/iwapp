@@ -11,8 +11,7 @@
     "dev:server": "node node_modules/react-native/local-cli/cli.js start --reset-cache",
     "dev:test": "npm run test -- --watch",
     "lint": "eslint app index.* test --ext .js",
-    "test": "NODE_ENV=test NODE_PATH=app mocha --compilers js:babel-core/register --require test/setup --recursive test",
-    "travis-deploy": "code-push-travis"
+    "test": "NODE_ENV=test NODE_PATH=app mocha --compilers js:babel-core/register --require test/setup --recursive test"
   },
   "repository": {
     "type": "git",
@@ -36,6 +35,7 @@
     "native-base": "^0.4.0",
     "ramda": "^0.21.0",
     "react": "15.0.2",
+    "react-addons-shallow-compare": "15.0.2",
     "react-immutable-proptypes": "^1.7.1",
     "react-native": "^0.26.3",
     "react-native-button": "^1.6.0",

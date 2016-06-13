@@ -1,17 +1,30 @@
+import {Map} from "immutable";
+import moment from "moment";
+import {Content} from "native-base";
 import React, {Component, PropTypes} from "react";
 import IPropTypes from "react-immutable-proptypes";
 import {Dimensions, Image, StyleSheet, Switch, View} from "react-native";
 import {connect} from "react-redux";
-import {Content} from "native-base";
 import Swiper from "react-native-swiper";
-import moment from "moment";
+import {bindActionCreators} from "redux";
+import {last} from "ramda";
 
-import Icon from "../components/iwapp-icons";
+import Highcharts from "../components/highcharts";
 import Text from "../components/text-lato";
-import Highcharts from "../components/highchart";
+import {toggleForecast} from "../actions/home";
+import getDailySumConsumption from "../lib/get-daily-sum-consumption";
+import Icon from "../components/iwwa-icons";
 import * as colors from "../lib/colors";
 
 const styles = StyleSheet.create({
+    consumptionContainer: {
+        flexDirection: "row",
+        justifyContent: "space-around",
+        paddingTop: 20
+    },
+    powerContainer: {
+        flexDirection: "column"
+    },
     container: {
         flex: 1,
         justifyContent: "center",
@@ -87,8 +100,51 @@ const styles = StyleSheet.create({
         marginRight: 15,
         textAlign: "center"
     },
+    summaryConsumptionContainer: {
+        flexDirection: "column"
+    },
+    summaryConsumption: {
+        flexDirection: "row",
+        margin: 10
+    },
+    consumptionNumber: {
+        paddingRight: 5,
+        fontSize: 30,
+        fontWeight: "bold",
+        textAlign: "center",
+        color: colors.primaryBlue
+    },
+    consumptionUnitOfMeasurement: {
+        marginTop: 10,
+        color: colors.primaryBlue
+    },
+    powerNumber: {
+        fontSize: 30,
+        textAlign: "center",
+        fontWeight: "bold",
+        color: colors.powerNumber
+    },
+    powerUnitOfMeasurement: {
+        color: colors.powerNumber,
+        textAlign: "center"
+    },
     switch: {
-        alignSelf: "flex-start"
+        alignSelf: "flex-start",
+        marginTop: 3,
+        marginLeft: 10
+    },
+    switchContainer: {
+        flexDirection: "row"
+    },
+    switchTextContainer: {
+        flexDirection: "column",
+        marginLeft: 10
+    },
+    switchTextHeader: {
+        fontWeight: "bold"
+    },
+    switchText: {
+        fontSize: 12
     }
 });
 
@@ -96,33 +152,120 @@ class Home extends Component {
 
     static propTypes = {
         asteroid: PropTypes.object.isRequired,
-        collections: IPropTypes.map.isRequired
+        collections: IPropTypes.map.isRequired,
+        home: PropTypes.shape({
+            charts: PropTypes.arrayOf(PropTypes.shape({
+                sensorId: PropTypes.string,
+                source: PropTypes.string,
+                measurementType: PropTypes.string,
+                day: PropTypes.string
+            }))
+        }).isRequired,
+        toggleForecast: PropTypes.func.isRequired
     }
 
     componentDidMount () {
         this.props.asteroid.subscribe("sites");
-        this.subscribeToMisure(this.props);
+        this.subscribeToMeasure(this.props);
+    }
+
+    componentWillReceiveProps (nextProps) {
+        this.subscribeToMeasure(nextProps);
     }
 
     onLogout () {
         this.props.asteroid.logout();
     }
 
-    subscribeToMisure (props) {
-        const sensor = "IT001";
-        const day = moment.utc().format("YYYY-MM-DD");
-        const measurementType = "activeEnergy";
-        const sources = ["reading", "forecast"];
-        sources.forEach(source => {
+    subscribeToMeasure (props) {
+        const charts = props.home.charts;
+        charts.forEach(chart => {
             props.asteroid.subscribe(
                 "dailyMeasuresBySensor",
-                sensor,
-                day,
-                day,
-                source,
-                measurementType
+                chart.sensorId,
+                chart.day,
+                chart.day,
+                chart.source,
+                chart.measurementType
             );
         });
+        props.asteroid.subscribe(
+            "yearlyConsumptions",
+            charts[0].sensorId,
+            moment.utc().format("YYYY"),
+            "reading",
+            "activeEnergy"
+        );
+        props.asteroid.subscribe(
+            "dailyMeasuresBySensor",
+            charts[0].sensorId,
+            moment.utc().format("YYYY-MM-DD"),
+            moment.utc().format("YYYY-MM-DD"),
+            "reading",
+            "maxPower"
+        );
+    }
+
+    getSummaryConsumption () {
+        const consumptionAggregate = this.props.collections.get("consumptions-yearly-aggregates") || Map();
+        const dayOfYear = moment.utc().dayOfYear();
+        const sensorId = this.props.home.charts[0].sensorId;
+        const year = moment.utc().format("YYYY");
+        const source = "reading";
+        const measurementType = "activeEnergy";
+        return getDailySumConsumption(
+            consumptionAggregate,
+            {sensorId, year, source, measurementType},
+            dayOfYear
+        );
+    }
+
+    getRealTimePower () {
+        const readingsDailyAggregates = this.props.collections.get("readings-daily-aggregates") || Map();
+        const sensorId = this.props.home.charts[0].sensorId;
+        const day = moment.utc().format("YYYY-MM-DD");
+        const powerAggregate = readingsDailyAggregates.get(`${sensorId}-${day}-reading-maxPower`) || Map();
+        const powerValues = powerAggregate.get("measurementValues") || "";
+        const power = last(powerValues.split(","));
+        return parseFloat(power) || 0;
+    }
+
+    renderSecondSwitchView (height) {
+        console.log(this.getRealTimePower());
+        return (
+            <View>
+                <View style={[styles.consumptionContainer, {height: height * 0.2}]}>
+                    <View style={styles.summaryConsumptionContainer}>
+                        <Text>{"Consumo di oggi"}</Text>
+                        <View style={styles.summaryConsumption}>
+                            <Text style={styles.consumptionNumber}>{this.getSummaryConsumption().toFixed(1)}</Text>
+                            <Text style={styles.consumptionUnitOfMeasurement}>{"kWh"}</Text>
+                        </View>
+                    </View>
+                    <View style={styles.powerContainer}>
+                        <Text>{"Potenza attuale"}</Text>
+                        <Text style={styles.powerNumber}>{this.getRealTimePower().toFixed(1)}</Text>
+                        <Text style={styles.powerUnitOfMeasurement}>{"kW"}</Text>
+                    </View>
+                </View>
+                <Highcharts
+                    aggregates={this.props.collections.get("readings-daily-aggregates") || Map()}
+                    charts={this.props.home.charts}
+                    height={height * 0.2}
+                />
+                <View style={styles.switchContainer}>
+                    <Switch
+                        onValueChange={this.props.toggleForecast}
+                        style={styles.switch}
+                        value={this.props.home.charts.length === 2}
+                    />
+                    <View style={styles.switchTextContainer}>
+                        <Text style={styles.switchTextHeader}>{"Consumi previsti"}</Text>
+                        <Text style={styles.switchText}>{"basati sulla tua giornata tipo"}</Text>
+                    </View>
+                </View>
+            </View>
+        );
     }
 
     render () {
@@ -167,15 +310,12 @@ class Home extends Component {
                             </View>
                         </Image>
                     </View>
-                    <Swiper height={height * 0.56} index={0} loop={false} showButtons={true}>
+                    <Swiper height={height * 0.55} index={1} loop={false} showButtons={true}>
                         <View>
-                            <View style={{height: height * 0.1}}>
-                                <Text>{"Altro"}</Text>
-                            </View>
-                            <Highcharts height={height * 0.25} />
-                            <View>
-                                <Switch style={styles.switch} />
-                            </View>
+                            <Text>{"Consumi"}</Text>
+                        </View>
+                        <View>
+                            {this.renderSecondSwitchView(height)}
                         </View>
                         <View>
                             <Text>{"Grafico a torta"}</Text>
@@ -190,7 +330,13 @@ class Home extends Component {
 
 function mapStateToProps (state) {
     return {
-        collections: state.collections
+        collections: state.collections,
+        home: state.home
     };
 }
-export default connect(mapStateToProps)(Home);
+function mapDispatchToProps (dispatch) {
+    return {
+        toggleForecast: bindActionCreators(toggleForecast, dispatch)
+    };
+}
+export default connect(mapStateToProps, mapDispatchToProps)(Home);

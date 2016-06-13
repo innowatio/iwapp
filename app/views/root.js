@@ -84,7 +84,6 @@ class Root extends Component {
                     />
                 </View>
             </Drawer>
-            
         ) : (
             <Login asteroid={asteroid} />
         );
