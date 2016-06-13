@@ -7,7 +7,7 @@ describe("`home` reducers", () => {
         const defaultChartState = home.__get__("defaultChartState");
         expect(defaultChartState).to.deep.equal([{
             day: moment.utc().format("YYYY-MM-DD"),
-            sensorId: "IT001",
+            sensorId: "SitoDiTest1",
             source: "reading",
             measurementType: "activeEnergy"
         }]);

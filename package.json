@@ -11,8 +11,7 @@
     "dev:server": "node node_modules/react-native/local-cli/cli.js start --reset-cache",
     "dev:test": "npm run test -- --watch",
     "lint": "eslint app index.* test --ext .js",
-    "test": "NODE_ENV=test NODE_PATH=app mocha --compilers js:babel-core/register --require test/setup --recursive test",
-    "travis-deploy": "code-push-travis"
+    "test": "NODE_ENV=test NODE_PATH=app mocha --compilers js:babel-core/register --require test/setup --recursive test"
   },
   "repository": {
     "type": "git",

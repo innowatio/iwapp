@@ -10,4 +10,6 @@ script:
   - npm run config
   - npm run lint
   - npm run test
-  - npm run travis-deploy
+
+after-success:
+  - code-push-travis

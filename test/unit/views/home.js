@@ -25,9 +25,11 @@ describe("`Home` view", () => {
     const Dimensions = {
         get: sinon.stub().returns({height: 100})
     };
+    const getDailySumConsumption = sinon.spy();
 
     before(() => {
         Home.__Rewire__("Dimensions", Dimensions);
+        Home.__Rewire__("getDailySumConsumption", getDailySumConsumption);
         homeView = shallow(
             <HomeView
                 asteroid={asteroid}
@@ -47,6 +49,7 @@ describe("`Home` view", () => {
 
     after(() => {
         Home.__ResetDependency__("Dimensions");
+        Home.__ResetDependency__("getDailySumConsumption");
     });
 
     it("renders a `Content` component", () => {
@@ -254,12 +257,19 @@ describe("`Home` view", () => {
                 }
             };
             subscribeToMeasure(props);
-            expect(subscribe).to.have.callCount(1);
-            expect(subscribe).to.have.been.calledWithExactly(
+            expect(subscribe).to.have.callCount(2);
+            expect(subscribe.firstCall).to.have.been.calledWithExactly(
                 "dailyMeasuresBySensor",
                 "sensorId",
                 "1970-01-01",
                 "1970-01-01",
+                "reading",
+                "activeEnergy"
+            );
+            expect(subscribe.secondCall).to.have.been.calledWithExactly(
+                "yearlyConsumptions",
+                "sensorId",
+                "1970",
                 "reading",
                 "activeEnergy"
             );
@@ -286,7 +296,7 @@ describe("`Home` view", () => {
                 }
             };
             subscribeToMeasure(props);
-            expect(subscribe).to.have.callCount(2);
+            expect(subscribe).to.have.callCount(4);
             expect(subscribe.firstCall).to.have.been.calledWithExactly(
                 "dailyMeasuresBySensor",
                 "sensorId",
@@ -296,10 +306,24 @@ describe("`Home` view", () => {
                 "activeEnergy"
             );
             expect(subscribe.secondCall).to.have.been.calledWithExactly(
+                "yearlyConsumptions",
+                "sensorId",
+                "1970",
+                "reading",
+                "activeEnergy"
+            );
+            expect(subscribe.thirdCall).to.have.been.calledWithExactly(
                 "dailyMeasuresBySensor",
                 "sensorId",
                 "1970-01-01",
                 "1970-01-01",
+                "forecast",
+                "activeEnergy"
+            );
+            expect(subscribe.lastCall).to.have.been.calledWithExactly(
+                "yearlyConsumptions",
+                "sensorId",
+                "1970",
                 "forecast",
                 "activeEnergy"
             );

@@ -1,4 +1,5 @@
 import {Map} from "immutable";
+import moment from "moment";
 import {Content} from "native-base";
 import React, {Component, PropTypes} from "react";
 import IPropTypes from "react-immutable-proptypes";
@@ -11,8 +12,18 @@ import Highcharts from "../components/highcharts";
 import Text from "../components/text-lato";
 import {background} from "../lib/colors";
 import {toggleForecast} from "../actions/home";
+import getDailySumConsumption from "../lib/get-daily-sum-consumption";
 
 const styles = StyleSheet.create({
+    consumptionContainer: {
+        flexDirection: "row"
+    },
+    summaryConsumptionContainer: {
+        flexDirection: "column"
+    },
+    powerContainer: {
+        flexDirection: "row"
+    },
     switch: {
         alignSelf: "flex-start",
         marginTop: 3,
@@ -71,14 +82,44 @@ class Home extends Component {
                 chart.source,
                 chart.measurementType
             );
+            props.asteroid.subscribe(
+                "yearlyConsumptions",
+                chart.sensorId,
+                moment.utc(chart.day).format("YYYY"),
+                chart.source,
+                chart.measurementType
+            );
         });
+    }
+
+    getSummaryConsumption () {
+        const consumptionAggregate = this.props.collections.get("consumptions-yearly-aggregates") || Map();
+        const dayOfYear = moment.utc().dayOfYear();
+        const sensorId = this.props.home.charts[0].sensorId;
+        const year = moment.utc().format("YYYY");
+        const source = "reading";
+        const measurementType = "activeEnergy";
+        return getDailySumConsumption(
+            consumptionAggregate,
+            {sensorId, year, source, measurementType},
+            dayOfYear
+        );
     }
 
     renderSecondSwitchView (height) {
         return (
             <View>
-                <View style={{height: height * 0.2}}>
-                    <Text>{"Altro"}</Text>
+                <View style={[styles.consumptionContainer, {height: height * 0.2}]}>
+                    <View style={styles.summaryConsumptionContainer}>
+                        <Text>{"Consumo di oggi"}</Text>
+                        <View>
+                            <Text>{this.getSummaryConsumption()}</Text>
+                            <Text>{"kWh"}</Text>
+                        </View>
+                    </View>
+                    <View style={styles.powerContainer}>
+                        <Text>{"Potenza attuale"}</Text>
+                    </View>
                 </View>
                 <Highcharts
                     aggregates={this.props.collections.get("readings-daily-aggregates") || Map()}
@@ -87,7 +128,6 @@ class Home extends Component {
                 />
                 <View style={styles.switchContainer}>
                     <Switch
-                        index={1}
                         onValueChange={this.props.toggleForecast}
                         style={styles.switch}
                         value={this.props.home.charts.length === 2}
@@ -111,7 +151,7 @@ class Home extends Component {
                         <Text>{"logout"}</Text>
                     </TouchableOpacity>
                 </View>
-                <Swiper height={height * 0.55} index={0} loop={false} showButtons={true}>
+                <Swiper height={height * 0.55} index={1} loop={false} showButtons={true}>
                     <View>
                         <Text>{"Consumi"}</Text>
                     </View>
