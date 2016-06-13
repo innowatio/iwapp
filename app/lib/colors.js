@@ -10,6 +10,7 @@ export const loginTextBackground = "rgba(0, 0, 0, 0.2)";
 export const loginTextBorder = "#979fd1";
 // export const loginTextBorder = "rgba(255, 255, 255, 0.5)";
 export const primaryBlue = "#3E50B4";
+export const powerNumber = "#E2417D";
 export const secondaryBlue = "#536DFE";
 export const transparent = "transparent";
 export const white = "#ffffff";

@@ -7,6 +7,7 @@ import {Dimensions, Image, StyleSheet, Switch, View} from "react-native";
 import {connect} from "react-redux";
 import Swiper from "react-native-swiper";
 import {bindActionCreators} from "redux";
+import {last} from "ramda";
 
 import Highcharts from "../components/highcharts";
 import Text from "../components/text-lato";
@@ -17,13 +18,12 @@ import * as colors from "../lib/colors";
 
 const styles = StyleSheet.create({
     consumptionContainer: {
-        flexDirection: "row"
-    },
-    summaryConsumptionContainer: {
-        flexDirection: "column"
+        flexDirection: "row",
+        justifyContent: "space-around",
+        paddingTop: 20
     },
     powerContainer: {
-        flexDirection: "row"
+        flexDirection: "column"
     },
     container: {
         flex: 1,
@@ -96,6 +96,34 @@ const styles = StyleSheet.create({
         marginRight: 16,
         textAlign: "center"
     },
+    summaryConsumptionContainer: {
+        flexDirection: "column"
+    },
+    summaryConsumption: {
+        flexDirection: "row",
+        margin: 10
+    },
+    consumptionNumber: {
+        paddingRight: 5,
+        fontSize: 30,
+        fontWeight: "bold",
+        textAlign: "center",
+        color: colors.primaryBlue
+    },
+    consumptionUnitOfMeasurement: {
+        marginTop: 10,
+        color: colors.primaryBlue
+    },
+    powerNumber: {
+        fontSize: 30,
+        textAlign: "center",
+        fontWeight: "bold",
+        color: colors.powerNumber
+    },
+    powerUnitOfMeasurement: {
+        color: colors.powerNumber,
+        textAlign: "center"
+    },
     switch: {
         alignSelf: "flex-start",
         marginTop: 3,
@@ -124,7 +152,9 @@ class Home extends Component {
         home: PropTypes.shape({
             charts: PropTypes.arrayOf(PropTypes.shape({
                 sensorId: PropTypes.string,
-                source: PropTypes.string
+                source: PropTypes.string,
+                measurementType: PropTypes.string,
+                day: PropTypes.string
             }))
         }).isRequired,
         toggleForecast: PropTypes.func.isRequired
@@ -154,14 +184,22 @@ class Home extends Component {
                 chart.source,
                 chart.measurementType
             );
-            props.asteroid.subscribe(
-                "yearlyConsumptions",
-                chart.sensorId,
-                moment.utc(chart.day).format("YYYY"),
-                chart.source,
-                chart.measurementType
-            );
         });
+        props.asteroid.subscribe(
+            "yearlyConsumptions",
+            charts[0].sensorId,
+            moment.utc().format("YYYY"),
+            "reading",
+            "activeEnergy"
+        );
+        props.asteroid.subscribe(
+            "dailyMeasuresBySensor",
+            charts[0].sensorId,
+            moment.utc().format("YYYY-MM-DD"),
+            moment.utc().format("YYYY-MM-DD"),
+            "reading",
+            "maxPower"
+        );
     }
 
     getSummaryConsumption () {
@@ -178,19 +216,32 @@ class Home extends Component {
         );
     }
 
+    getRealTimePower () {
+        const readingsDailyAggregates = this.props.collections.get("readings-daily-aggregates") || Map();
+        const sensorId = this.props.home.charts[0].sensorId;
+        const day = moment.utc().format("YYYY-MM-DD");
+        const powerAggregate = readingsDailyAggregates.get(`${sensorId}-${day}-reading-maxPower`) || Map();
+        const powerValues = powerAggregate.get("measurementValues") || "";
+        const power = last(powerValues.split(","));
+        return parseFloat(power) || 0;
+    }
+
     renderSecondSwitchView (height) {
+        console.log(this.getRealTimePower());
         return (
             <View>
                 <View style={[styles.consumptionContainer, {height: height * 0.2}]}>
                     <View style={styles.summaryConsumptionContainer}>
                         <Text>{"Consumo di oggi"}</Text>
-                        <View>
-                            <Text>{this.getSummaryConsumption()}</Text>
-                            <Text>{"kWh"}</Text>
+                        <View style={styles.summaryConsumption}>
+                            <Text style={styles.consumptionNumber}>{this.getSummaryConsumption().toFixed(1)}</Text>
+                            <Text style={styles.consumptionUnitOfMeasurement}>{"kWh"}</Text>
                         </View>
                     </View>
                     <View style={styles.powerContainer}>
                         <Text>{"Potenza attuale"}</Text>
+                        <Text style={styles.powerNumber}>{this.getRealTimePower().toFixed(1)}</Text>
+                        <Text style={styles.powerUnitOfMeasurement}>{"kW"}</Text>
                     </View>
                 </View>
                 <Highcharts
