@@ -4,6 +4,7 @@ import {Router, Scene, Reducer} from "react-native-router-flux";
 import asteroid from "./asteroid";
 import Home from "../views/home";
 import Stats from "../views/stats";
+import Profile from "../views/profile";
 import {pushNavigator, popNavigator} from "../actions/navigation";
 import Root from "../views/root";
 import store from "./store";
@@ -39,6 +40,7 @@ const scene = (
             <Scene component={Stats} key="badgeboard" />
             <Scene component={Stats} key="energy" />
             <Scene component={Stats} key="report" />
+            <Scene component={Profile} key="profile" />
         </Scene>
     </Router>
 );

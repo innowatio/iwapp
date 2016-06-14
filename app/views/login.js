@@ -167,7 +167,7 @@ export default class Login extends Component {
             <Image source={require("../assets/img/bg_login.png")} style={styles.backgroundImage}>
                 <View style={styles.container}>
                     <Icon
-                        color="#fff"
+                        color={colors.iconWhite}
                         name="iw-innowatio-logo"
                         size={150}
                         style={styles.logoIcon}
@@ -178,7 +178,7 @@ export default class Login extends Component {
                     <View style={styles.inputWrp}>
                         <View style={styles.textInputWrp}>
                             <Icon
-                                color="#fff"
+                                color={colors.iconWhite}
                                 name="iw-user"
                                 size={26}
                                 style={styles.inputIcon}
@@ -198,7 +198,7 @@ export default class Login extends Component {
                         <View style={styles.inputSeparator} />
                         <View style={styles.textInputWrp}>
                             <Icon
-                                color="#fff"
+                                color={colors.iconWhite}
                                 name="iw-lock"
                                 size={26}
                                 style={styles.inputIcon}

@@ -280,7 +280,7 @@ class Home extends Component {
                                 <View>
                                     <View style={styles.iconWrp}>
                                         <Icon
-                                            color="#fff"
+                                            color={colors.iconWhite}
                                             name="iw-clouds"
                                             size={95}
                                             style={styles.icon}

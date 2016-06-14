@@ -1,5 +1,6 @@
 import React, {Component, PropTypes} from "react";
 import {StyleSheet, View, TouchableOpacity} from "react-native";
+import {Actions} from "react-native-router-flux";
 
 import Icon from "./iwapp-icons";
 import * as colors from "../lib/colors";
@@ -74,7 +75,7 @@ export default class Header extends Component {
                 <TouchableOpacity style={styles.iconAlarmButton} transparent={true}>
                     <Icon color={colors.iconWhite} name={"iw-alarm"} size={25} />
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.iconUserButton} transparent={true}>
+                <TouchableOpacity onPress={() => Actions.profile()} style={styles.iconUserButton} transparent={true}>
                     <Icon color={colors.iconWhite} name={"iw-user"} size={23} />
                 </TouchableOpacity>
             </View>
