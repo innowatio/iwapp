@@ -9,6 +9,16 @@ import sinon from "sinon";
 import sinonChai from "sinon-chai";
 import chaiAsPromise from "chai-as-promised";
 import ws from "ws";
+import hook from "node-hook";
+
+
+// Added test cross platform to handle the 
+const PLATFORM = process.env.PLATFORM || "android";
+
+function logLoadedFilename (source, filename) {
+    return `console.log(${filename});\n + ${source}`;
+}
+hook.hook(`.${PLATFORM}.js`, logLoadedFilename);
 
 // This function is for fix an issue with `react-native-router-flux`, that import
 //a png file without compile it. If require a png file, return null.
@@ -21,8 +31,6 @@ require.extensions[".png"] = noop;
 const modulesToCompile = [
     "react-native",
     "react-native-router-flux",
-    "react-native-mock",
-    "react-native-tab-navigator",
     "native-base"
 ].map((moduleName) => new RegExp(`/node_modules/${moduleName}`));
 
