@@ -1,16 +1,19 @@
 package com.iwapp;
 
+import android.content.Intent;
 import com.facebook.react.ReactActivity;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.microsoft.codepush.react.CodePush;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
+import com.dieam.reactnativepushnotification.ReactNativePushNotificationPackage;
 
 import java.util.Arrays;
 import java.util.List;
 
 public class MainActivity extends ReactActivity {
 
+    private ReactNativePushNotificationPackage mReactNativePushNotificationPackage;
 
     @Override
     protected String getJSBundleFile() {
@@ -41,10 +44,20 @@ public class MainActivity extends ReactActivity {
      */
     @Override
     protected List<ReactPackage> getPackages() {
+        mReactNativePushNotificationPackage = new ReactNativePushNotificationPackage(this);
         return Arrays.<ReactPackage>asList(
             new MainReactPackage(),
             new VectorIconsPackage(),
+            mReactNativePushNotificationPackage,
             new CodePush("xTVrVoCtzZvbHdvVh3glBfPduf0wEJoFqD2lb", this, BuildConfig.DEBUG)
         );
     }
+
+    // Add onNewIntent
+    @Override
+    protected void onNewIntent (Intent intent) {
+        super.onNewIntent(intent);
+        mReactNativePushNotificationPackage.newIntent(intent);
+    }
+
 }
