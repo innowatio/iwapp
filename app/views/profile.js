@@ -145,11 +145,11 @@ class Profile extends Component {
 
     getQuestionnaires () {
         return [
-            {color: colors.demographicsSection, name: "Demographics", key: "demographics", icon: "iw-demographics", value: "1", percentage: "100"},
-            {color: colors.buildingsSection, name: "Buildings", key: "buildings", icon: "iw-buildings", value: "0.3", percentage: "30"},
-            {color: colors.heatingSection, name: "Heating", key: "heating", icon: "iw-heating", value: "0.8", percentage: "80"},
-            {color: colors.coolingSection, name: "Cooling", key: "cooling", icon: "iw-cooling", value: "1", percentage: "100"},
-            {color: colors.statisticsSection, name: "Statistics", key: "statistics", icon: "iw-statistics", value: "0.5", percentage: "50"}
+            {color: colors.demographicsSection, name: "Demographics", key: "demographics", icon: "iw-demographics", value: 1, percentage: "100"},
+            {color: colors.buildingsSection, name: "Buildings", key: "buildings", icon: "iw-buildings", value: 0.3, percentage: "30"},
+            {color: colors.heatingSection, name: "Heating", key: "heating", icon: "iw-heating", value: 0.8, percentage: "80"},
+            {color: colors.coolingSection, name: "Cooling", key: "cooling", icon: "iw-cooling", value: 1, percentage: "100"},
+            {color: colors.statisticsSection, name: "Statistics", key: "statistics", icon: "iw-statistics", value: 0.5, percentage: "50"}
         ];
     }
 
