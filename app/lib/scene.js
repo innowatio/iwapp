@@ -5,6 +5,7 @@ import asteroid from "./asteroid";
 import Home from "../views/home";
 import Stats from "../views/stats";
 import Profile from "../views/profile";
+import ModifyProfile from "../views/modify-profile";
 import {pushNavigator, popNavigator} from "../actions/navigation";
 import Root from "../views/root";
 import store from "./store";
@@ -41,6 +42,7 @@ const scene = (
             <Scene component={Stats} key="energy" />
             <Scene component={Stats} key="report" />
             <Scene component={Profile} key="profile" />
+            <Scene component={ModifyProfile} key="modifyProfile" />
         </Scene>
     </Router>
 );

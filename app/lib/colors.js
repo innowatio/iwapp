@@ -6,6 +6,7 @@ export const iconWhite = "#ffffff";
 export const lineForecast = "#a8e1d4";
 export const lineReading = "#3E50B4";
 export const loginTextBackground = "rgba(0, 0, 0, 0.2)";
+export const titleLightBackground = "#eeeeee";
 // FIXME: https://github.com/facebook/react-native/issues/3652
 export const loginTextBorder = "#979fd1";
 // export const loginTextBorder = "rgba(255, 255, 255, 0.5)";

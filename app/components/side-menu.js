@@ -56,37 +56,37 @@ export default class SideMenu extends Component {
                 <View style={{height: (height * .78), backgroundColor: colors.primaryBlue}}>
                     <Content>
                         <List>
-                            <ListItem style={{borderColor: colors.primaryBlue}}>
+                            <ListItem key={"overview"} style={{borderColor: colors.primaryBlue}}>
                                 <TouchableOpacity onPress={() => Actions.home()} style={styles.rightIcon}>
                                     <Icon name={"iw-overview"} size={24} style={styles.itemIcon} />
                                     <Text style={styles.itemText}>{"Overview"}</Text>
                                 </TouchableOpacity>
                             </ListItem>
-                            <ListItem style={{borderColor: colors.primaryBlue}}>
+                            <ListItem key={"chart"} style={{borderColor: colors.primaryBlue}}>
                                 <TouchableOpacity onPress={() => Actions.stats()} style={styles.rightIcon}>
                                     <Icon name={"iw-chart"} size={24} style={styles.itemIcon} />
                                     <Text style={styles.itemText}>{"Statistiche"}</Text>
                                 </TouchableOpacity>
                             </ListItem>
-                            <ListItem style={{borderColor: colors.primaryBlue}}>
+                            <ListItem key={"gauge"} style={{borderColor: colors.primaryBlue}}>
                                 <TouchableOpacity style={styles.rightIcon}>
                                     <Icon name={"iw-gauge"} size={24} style={styles.itemIcon} />
                                     <Text style={styles.itemText}>{"Il mio smartmeter"}</Text>
                                 </TouchableOpacity>
                             </ListItem>
-                            <ListItem style={{borderColor: colors.primaryBlue}}>
+                            <ListItem key={"badge"} style={{borderColor: colors.primaryBlue}}>
                                 <TouchableOpacity style={styles.rightIcon}>
                                     <Icon name={"iw-badge"} size={24} style={styles.itemIcon} />
                                     <Text style={styles.itemText}>{"Badgeboard"}</Text>
                                 </TouchableOpacity>
                             </ListItem>
-                            <ListItem style={{borderColor: colors.primaryBlue}}>
+                            <ListItem key={"lightbulb"} style={{borderColor: colors.primaryBlue}}>
                                 <TouchableOpacity style={styles.rightIcon}>
                                     <Icon name={"iw-lightbulb"} size={24} style={styles.itemIcon} />
                                     <Text style={styles.itemText}>{"Risparmio energetico"}</Text>
                                 </TouchableOpacity>
                             </ListItem>
-                            <ListItem style={{borderColor: colors.primaryBlue}}>
+                            <ListItem key={"report"} style={{borderColor: colors.primaryBlue}}>
                                 <TouchableOpacity style={styles.rightIcon}>
                                     <Icon name={"iw-report"} size={24} style={styles.itemIcon} />
                                     <Text style={styles.itemText}>{"Report"}</Text>
@@ -98,7 +98,7 @@ export default class SideMenu extends Component {
                 <View style={{height: (height * .22) - (74), backgroundColor: colors.primaryBlue}}>
                     <Content>
                         <List>
-                            <ListItem style={{borderColor: colors.primaryBlue}}>
+                            <ListItem key={"logout"} style={{borderColor: colors.primaryBlue}}>
                                 <TouchableOpacity onPress={this.onLogout.bind(this)} style={styles.rightIcon}>
                                     <Icon name={"iw-logout"} size={24} style={styles.itemIcon} />
                                     <Text style={styles.itemText}>{"Logout"}</Text>

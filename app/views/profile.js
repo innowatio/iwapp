@@ -2,10 +2,13 @@ import {Content} from "native-base";
 import React, {Component} from "react";
 import {Dimensions, StyleSheet, TouchableOpacity, View} from "react-native";
 import * as Progress from "react-native-progress";
+import {Actions} from "react-native-router-flux";
 
 import Icon from "../components/iwapp-icons";
 import * as colors from "../lib/colors";
 import Text from "../components/text-lato";
+
+// const CameraRollView = require('./CameraRollView');
 
 const styles = StyleSheet.create({
     container: {
@@ -76,7 +79,7 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         backgroundColor: colors.secondaryBlue
     },
-    textProfile: {
+    textPhoto: {
         color: colors.white,
         fontSize: 40,
         fontWeight: "bold"
@@ -145,19 +148,20 @@ class Profile extends Component {
 
     getQuestionnaires () {
         return [
-            {color: colors.demographicsSection, name: "Demographics", key: "demographics", icon: "iw-demographics", value: "1", percentage: "100"},
-            {color: colors.buildingsSection, name: "Buildings", key: "buildings", icon: "iw-buildings", value: "0.3", percentage: "30"},
-            {color: colors.heatingSection, name: "Heating", key: "heating", icon: "iw-heating", value: "0.8", percentage: "80"},
-            {color: colors.coolingSection, name: "Cooling", key: "cooling", icon: "iw-cooling", value: "1", percentage: "100"},
-            {color: colors.statisticsSection, name: "Statistics", key: "statistics", icon: "iw-statistics", value: "0.5", percentage: "50"}
+            {color: colors.demographicsSection, name: "Demographics", key: "demographics", icon: "iw-demographics", value: 1, percentage: "100"},
+            {color: colors.buildingsSection, name: "Buildings", key: "buildings", icon: "iw-buildings", value: 0.3, percentage: "30"},
+            {color: colors.heatingSection, name: "Heating", key: "heating", icon: "iw-heating", value: 0.8, percentage: "80"},
+            {color: colors.coolingSection, name: "Cooling", key: "cooling", icon: "iw-cooling", value: 1, percentage: "100"},
+            {color: colors.statisticsSection, name: "Statistics", key: "statistics", icon: "iw-statistics", value: 0.5, percentage: "50"}
         ];
     }
 
     renderUserImage () {
+        // const {CameraRoll} = React;
         return (
             <View style={styles.userPhotoWrp}>
                 <View style={styles.photoWrp}>
-                    <Text style={styles.textProfile}>{"C"}</Text>
+                    <Text style={styles.textPhoto}>{"C"}</Text>
                 </View>
                 <TouchableOpacity style={styles.iconEditPhotoWrp} transparent={true}>
                     <Icon
@@ -177,7 +181,7 @@ class Profile extends Component {
     renderUserOption () {
         return (
             <View style={styles.iconsUserOptionsWrp}>
-                <TouchableOpacity style={styles.iconOptionsWrp} transparent={true}>
+                <TouchableOpacity onPress={Actions.modifyProfile} style={styles.iconOptionsWrp} transparent={true}>
                     <Icon
                         color={colors.iconWhite}
                         name="iw-edit"
@@ -226,7 +230,7 @@ class Profile extends Component {
                     <Icon
                         color={questionnaire.color}
                         name={questionnaire.icon}
-                        size={53}
+                        size={52}
                     />
                 </TouchableOpacity>
                 <View>
@@ -249,7 +253,7 @@ class Profile extends Component {
                 <Content style={{backgroundColor: colors.background}}>
                     <View style={styles.titleBarWrp}>
                         <View style={styles.titleBar}>
-                            <Text style={styles.title}>{"MY PROFILE"}</Text>
+                            <Text style={styles.title}>{"IL MIO PROFILO"}</Text>
                         </View>
                     </View>
                     <View style={[styles.contentUserWrp, {height: height * 0.2}]}>

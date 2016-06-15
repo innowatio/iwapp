@@ -189,9 +189,9 @@ export default class Login extends Component {
                                 keyboardType={"email-address"}
                                 onChangeText={partial(::this.onChangeText, ["email"])}
                                 placeholder={"Email"}
-                                placeholderTextColor={"white"}
+                                placeholderTextColor={colors.white}
                                 style={[styles.textInput, {width: width * 0.9}]}
-                                underlineColorAndroid={"transparent"}
+                                underlineColorAndroid={colors.transparent}
                                 value={this.state.email}
                             />
                         </View>
@@ -209,10 +209,10 @@ export default class Login extends Component {
                                 keyboardType={"default"}
                                 onChangeText={partial(::this.onChangeText, ["password"])}
                                 placeholder={"Password"}
-                                placeholderTextColor={"white"}
+                                placeholderTextColor={colors.white}
                                 secureTextEntry={true}
                                 style={styles.textInput}
-                                underlineColorAndroid={"transparent"}
+                                underlineColorAndroid={colors.transparent}
                                 value={this.state.password}
                             />
                         </View>
