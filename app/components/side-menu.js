@@ -8,6 +8,9 @@ import Text from "../components/text-lato";
 import DropDown from "../components/drop-down";
 import * as colors from "../lib/colors";
 
+// FIXME: NativeBase problem
+console.ignoredYellowBox = ['Warning: Each child in an array or iterator should have a unique "key" prop. Check the render method of `ListItemNB`.'];
+
 const styles = StyleSheet.create({
     rightIcon: {
         justifyContent: "flex-start",
@@ -36,6 +39,24 @@ export default class SideMenu extends Component {
 
     onSelectionChanged (event) {
         console.log(event);
+    }
+
+    getItemList () {
+        return [
+            {navigationTo: "home", icon: "iw-overview", text: "Overview"},
+            {navigationTo: "stats", icon: "iw-chart", text: "Statistiche"}
+        ];
+    }
+
+    renderItemList (item, index) {
+        return (
+            <ListItem key={index} style={{borderColor: colors.primaryBlue}}>
+                <TouchableOpacity onPress={() => Actions[item.navigationTo]()} style={styles.rightIcon}>
+                    <Icon name={item.icon} size={24} style={styles.itemIcon} />
+                    <Text style={styles.itemText}>{item.text}</Text>
+                </TouchableOpacity>
+            </ListItem>
+        );
     }
 
     render () {
