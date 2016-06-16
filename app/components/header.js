@@ -1,6 +1,7 @@
 import React, {Component, PropTypes} from "react";
 import {StyleSheet, View, TouchableOpacity} from "react-native";
 import {Actions} from "react-native-router-flux";
+import {last} from "ramda";
 
 import Icon from "./iwapp-icons";
 import * as colors from "../lib/colors";
@@ -16,10 +17,6 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "space-between",
         height: 40
-        // shadowColor: colors.white,
-        // shadowOffset: {width: 0, height: 2},
-        // shadowOpacity: 0.1,
-        // shadowRadius: 1.5
     },
     leftHeader: {
         justifyContent: "flex-start",
@@ -36,7 +33,6 @@ const styles = StyleSheet.create({
     iconAlarmButton: {
         alignSelf: "center",
         borderRadius: 100,
-        backgroundColor: colors.secondaryBlue,
         padding: 5,
         marginRight: 5
     },
@@ -52,17 +48,26 @@ const styles = StyleSheet.create({
 export default class Header extends Component {
 
     static propTypes = {
-        onToggleHamburger: PropTypes.func.isRequired
+        onToggleHamburger: PropTypes.func.isRequired,
+        selectedView: PropTypes.arrayOf(PropTypes.string).isRequired
     }
 
     renderLeftButton () {
         const {onToggleHamburger} = this.props;
         return (
             <View style={styles.leftHeader}>
-                <TouchableOpacity onPress={onToggleHamburger} style={styles.iconRightButton} transparent={true}>
+                <TouchableOpacity
+                    onPress={onToggleHamburger}
+                    style={styles.iconRightButton}
+                    transparent={true}
+                >
                     <Icon color={colors.iconWhite} name={"iw-menu"} size={40} />
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.iconRightButton} transparent={true}>
+                <TouchableOpacity
+                    onPress={() => Actions.home()}
+                    style={styles.iconRightButton}
+                    transparent={true}
+                >
                     <Icon color={colors.iconWhite} name={"iw-innowatio-logo"} size={35} />
                 </TouchableOpacity>
             </View>
@@ -70,12 +75,25 @@ export default class Header extends Component {
     }
 
     renderRightButton () {
+        const alarmColor = (
+            last(this.props.selectedView) === "notifications" ?
+            colors.buttonPrimary :
+            colors.secondaryBlue
+        );
         return (
             <View style={styles.rightHeader}>
-                <TouchableOpacity style={styles.iconAlarmButton} transparent={true}>
+                <TouchableOpacity
+                    onPress={() => Actions.notifications()}
+                    style={[styles.iconAlarmButton, {backgroundColor: alarmColor}]}
+                    transparent={true}
+                >
                     <Icon color={colors.iconWhite} name={"iw-alarm"} size={25} />
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => Actions.profile()} style={styles.iconUserButton} transparent={true}>
+                <TouchableOpacity
+                    onPress={() => Actions.profile()}
+                    style={styles.iconUserButton}
+                    transparent={true}
+                >
                     <Icon color={colors.iconWhite} name={"iw-user"} size={23} />
                 </TouchableOpacity>
             </View>

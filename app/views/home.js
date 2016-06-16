@@ -231,7 +231,6 @@ class Home extends Component {
     }
 
     renderSecondSwitchView (height) {
-        console.log(this.getRealTimePower());
         return (
             <View>
                 <View style={[styles.consumptionContainer, {height: height * 0.2}]}>

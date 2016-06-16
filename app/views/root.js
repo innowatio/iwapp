@@ -77,7 +77,10 @@ class Root extends Component {
                 type="displace"
             >
                 <View>
-                    <Header onToggleHamburger={this.toggleHamburger.bind(this)} />
+                    <Header
+                        onToggleHamburger={this.toggleHamburger.bind(this)}
+                        selectedView={this.props.navigationScene}
+                    />
                     <DefaultRenderer
                         navigationState={this.getNavigationState()}
                         onNavigate={this.props.onNavigate}

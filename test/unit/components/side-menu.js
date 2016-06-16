@@ -7,8 +7,10 @@ import Icon from "components/iwapp-icons";
 
 describe("`SideMenu` component", () => {
 
+    const asteroid = {};
+
     it("renders SideMenu", () => {
-        const dropDown = shallow(<SideMenu />);
+        const dropDown = shallow(<SideMenu asteroid={asteroid} />);
 
         expect(dropDown.find(DropDown)).to.have.length(1);
 
