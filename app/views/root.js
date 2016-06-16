@@ -63,22 +63,31 @@ class Root extends Component {
 
     toggleHamburger () {
         this.setState({
-            open: true
+            open: !this.state.open
+        });
+    }
+
+    closeHamburger () {
+        this.setState({
+            open: false
         });
     }
 
     renderView () {
         return this.props.userId ? (
             <Drawer
-                content={<SideMenu asteroid={asteroid} />}
+                captureGestures={true}
+                content={<SideMenu asteroid={asteroid} onTriggerClose={::this.closeHamburger} />}
+                onClose={::this.closeHamburger}
                 open={this.state.open}
                 openDrawerOffset={0.35}
+                panOpenMask={25}
                 tapToClose={true}
                 type="displace"
             >
                 <View>
                     <Header
-                        onToggleHamburger={this.toggleHamburger.bind(this)}
+                        onToggleHamburger={::this.toggleHamburger}
                         selectedView={this.props.navigationScene}
                     />
                     <DefaultRenderer

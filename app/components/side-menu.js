@@ -29,8 +29,16 @@ const styles = StyleSheet.create({
 
 export default class SideMenu extends Component {
 
+    constructor () {
+        super();
+        this.state = {
+            showMenuItems: true
+        };
+    }
+
     static propTypes = {
-        asteroid: PropTypes.object.isRequired
+        asteroid: PropTypes.object.isRequired,
+        onTriggerClose: PropTypes.func
     }
 
     onLogout () {
@@ -39,82 +47,75 @@ export default class SideMenu extends Component {
 
     onSelectionChanged (event) {
         console.log(event);
+        this.triggerClose();
     }
 
-    getItemList () {
-        return [
-            {navigationTo: "home", icon: "iw-overview", text: "Overview"},
-            {navigationTo: "stats", icon: "iw-chart", text: "Statistiche"}
+    onToggleItems (showItems) {
+        console.log(showItems);
+        this.setState({
+            showMenuItems: showItems
+        });
+    }
+
+    navigateTo (item) {
+        return () => {
+            this.triggerClose();
+            Actions[item.navigateTo]();
+        };
+    }
+
+    triggerClose () {
+        const {onTriggerClose} = this.props;
+        onTriggerClose();
+    }
+
+    renderMenuItems () {
+        const items = [
+            {
+                icon: "overview",
+                title: "Overview",
+                navigateTo: "home"
+            }, {
+                icon: "chart",
+                title: "Statistiche",
+                navigateTo: "stats"
+            }, {
+                icon: "gauge",
+                title: "Il mio smartmeter",
+                navigateTo: "home"
+            }, {
+                icon: "badge",
+                title: "Badgeboard",
+                navigateTo: "home"
+            }, {
+                icon: "lightbulb",
+                title: "Risparmio energetico",
+                navigateTo: "home"
+            }, {
+                icon: "report",
+                title: "Report",
+                navigateTo: "home"
+            }
         ];
-    }
-
-    renderItemList (item, index) {
-        return (
-            <ListItem key={index} style={{borderColor: colors.primaryBlue}}>
-                <TouchableOpacity onPress={() => Actions[item.navigationTo]()} style={styles.rightIcon}>
-                    <Icon name={item.icon} size={24} style={styles.itemIcon} />
-                    <Text style={styles.itemText}>{item.text}</Text>
+        return items.map(item => (
+            <ListItem key={item.icon} style={{borderColor: colors.primaryBlue}}>
+                <TouchableOpacity onPress={this.navigateTo(item)} style={styles.rightIcon}>
+                    <Icon name={`iw-${item.icon}`} size={24} style={styles.itemIcon} />
+                    <Text style={styles.itemText}>{item.title}</Text>
                 </TouchableOpacity>
             </ListItem>
-        );
+        ));
     }
 
-    render () {
+    renderMenu () {
         const {height} = Dimensions.get("window");
-        const items = [{
-            title: "Progetto XYZ"
-        }, {
-            title: "Progetto XYZ"
-        }, {
-            title: "Progetto XYZ"
-        }, {
-            title: "Progetto XYZ"
-        }];
-        return (
-            <Content>
-                <DropDown onSelectionChanged={this.onSelectionChanged.bind(this)} optionItems={items} titlePlaceholder={"Progetto XYZ"} />
-
+        const {showMenuItems} = this.state;
+        return showMenuItems ? (
+            <View>
                 <View style={{height: (height * .78), backgroundColor: colors.primaryBlue}}>
-                    <Content>
-                        <List>
-                            <ListItem key={"overview"} style={{borderColor: colors.primaryBlue}}>
-                                <TouchableOpacity onPress={() => Actions.home()} style={styles.rightIcon}>
-                                    <Icon name={"iw-overview"} size={24} style={styles.itemIcon} />
-                                    <Text style={styles.itemText}>{"Overview"}</Text>
-                                </TouchableOpacity>
-                            </ListItem>
-                            <ListItem key={"chart"} style={{borderColor: colors.primaryBlue}}>
-                                <TouchableOpacity onPress={() => Actions.stats()} style={styles.rightIcon}>
-                                    <Icon name={"iw-chart"} size={24} style={styles.itemIcon} />
-                                    <Text style={styles.itemText}>{"Statistiche"}</Text>
-                                </TouchableOpacity>
-                            </ListItem>
-                            <ListItem key={"gauge"} style={{borderColor: colors.primaryBlue}}>
-                                <TouchableOpacity style={styles.rightIcon}>
-                                    <Icon name={"iw-gauge"} size={24} style={styles.itemIcon} />
-                                    <Text style={styles.itemText}>{"Il mio smartmeter"}</Text>
-                                </TouchableOpacity>
-                            </ListItem>
-                            <ListItem key={"badge"} style={{borderColor: colors.primaryBlue}}>
-                                <TouchableOpacity style={styles.rightIcon}>
-                                    <Icon name={"iw-badge"} size={24} style={styles.itemIcon} />
-                                    <Text style={styles.itemText}>{"Badgeboard"}</Text>
-                                </TouchableOpacity>
-                            </ListItem>
-                            <ListItem key={"lightbulb"} style={{borderColor: colors.primaryBlue}}>
-                                <TouchableOpacity style={styles.rightIcon}>
-                                    <Icon name={"iw-lightbulb"} size={24} style={styles.itemIcon} />
-                                    <Text style={styles.itemText}>{"Risparmio energetico"}</Text>
-                                </TouchableOpacity>
-                            </ListItem>
-                            <ListItem key={"report"} style={{borderColor: colors.primaryBlue}}>
-                                <TouchableOpacity style={styles.rightIcon}>
-                                    <Icon name={"iw-report"} size={24} style={styles.itemIcon} />
-                                    <Text style={styles.itemText}>{"Report"}</Text>
-                                </TouchableOpacity>
-                            </ListItem>
-                        </List>
-                    </Content>
+                    <List>
+                        {this.renderMenuItems()}
+                    </List>
                 </View>
                 <View style={{height: (height * .22) - (74), backgroundColor: colors.primaryBlue}}>
                     <Content>
@@ -128,7 +129,31 @@ export default class SideMenu extends Component {
                         </List>
                     </Content>
                 </View>
-            </Content>
+            </View>
+        ) : null;
+    }
+
+    render () {
+        const items = [{
+            title: "Progetto XYZ"
+        }, {
+            title: "Progetto XYZ"
+        }, {
+            title: "Progetto XYZ"
+        }, {
+            title: "Progetto XYZ"
+        }];
+        return (
+            <View>
+                <DropDown
+                    onSelectionChanged={::this.onSelectionChanged}
+                    onToggleItems={::this.onToggleItems}
+                    optionItems={items}
+                    titlePlaceholder={"Progetto XYZ"}
+                />
+
+                {this.renderMenu()}
+            </View>
         );
     }
 }

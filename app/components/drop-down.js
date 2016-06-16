@@ -32,8 +32,9 @@ const styles = StyleSheet.create({
 export default class DropDown extends Component {
 
     static propTypes = {
-        onSelectionChanged: PropTypes.func,
-        optionItems: PropTypes.array,
+        onSelectionChanged: PropTypes.func.isRequired,
+        onToggleItems: PropTypes.func.isRequired,
+        optionItems: PropTypes.array.isRequired,
         titlePlaceholder: PropTypes.string
     }
 
@@ -49,6 +50,8 @@ export default class DropDown extends Component {
         this.setState({
             showItems: !this.state.showItems
         });
+        const {onToggleItems} = this.props;
+        onToggleItems(this.state.showItems);
 
         this.state.slidingAnimationValue.setValue(-25);
 
@@ -66,6 +69,7 @@ export default class DropDown extends Component {
         const {onSelectionChanged} = this.props;
         return () => {
             onSelectionChanged(event);
+            this.toggleItems();
         };
     }
 
