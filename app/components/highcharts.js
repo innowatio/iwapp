@@ -1,10 +1,16 @@
 import React, {Component, PropTypes} from "react";
-import {Platform, WebView} from "react-native";
+import {Platform, StyleSheet, WebView} from "react-native";
 import IPropTypes from "react-immutable-proptypes";
 import shallowCompare from "react-addons-shallow-compare";
 
 import readingsDailyAggregatesToHighchartsData from "../lib/readings-daily-aggregates-to-highcharts-data";
 import {lineReading, lineForecast} from "../lib/colors";
+
+const styles = StyleSheet.create({
+    webView: {
+        marginBottom: 15
+    }
+});
 
 export default class Highcharts extends Component {
 
@@ -116,7 +122,7 @@ export default class Highcharts extends Component {
                 ref="highchartsWebview"
                 scrollEnabled={false}
                 source={{html}}
-                style={{height: this.props.height + 15}}
+                style={[styles.webView, {height: this.props.height}]}
             />
         );
     }

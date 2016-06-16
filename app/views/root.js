@@ -1,6 +1,6 @@
 import Drawer from "react-native-drawer";
 import React, {Component, PropTypes} from "react";
-import {StatusBar, StyleSheet, ScrollView, View} from "react-native";
+import {Platform, StatusBar, StyleSheet, ScrollView, View} from "react-native";
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import {equals, last} from "ramda";
@@ -12,11 +12,15 @@ import {onLogin, onLogout} from "../actions/user-id";
 import KeyboardSpacer from "../components/keyboard-spacer";
 import Header from "../components/header";
 import SideMenu from "../components/side-menu";
-import {secondaryBlue} from "../lib/colors";
+import {primaryBlue, secondaryBlue} from "../lib/colors";
 
 const styles = StyleSheet.create({
     container: {
         flex: 1
+    },
+    statusBarHeightIOS: {
+        height: 22,
+        backgroundColor: primaryBlue
     }
 });
 
@@ -109,6 +113,7 @@ class Root extends Component {
                 contentContainerStyle={styles.container}
                 keyboardShouldPersistTaps={true}
             >
+                <View style={Platform.OS === "ios" ? styles.statusBarHeightIOS : null}/>
                 <StatusBar
                     backgroundColor={secondaryBlue}
                     barStyle="light-content"
