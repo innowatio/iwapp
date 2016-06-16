@@ -9,6 +9,7 @@ import Swiper from "react-native-swiper";
 import {bindActionCreators} from "redux";
 
 import ChartConsumption from "../components/chart-consumption";
+import InfoConsumption from "../components/info-consumption";
 import Weather from "../components/weather";
 import Text from "../components/text-lato";
 import {toggleForecast} from "../actions/home";
@@ -92,21 +93,25 @@ class Home extends Component {
 
     render () {
         const {height} = Dimensions.get("window");
+        const heightSwiper = height * 0.55;
         return (
             <View style={styles.container}>
                 <Content style={{backgroundColor: colors.background}}>
                     <View style={{height: height * 0.34}}>
                         <Weather />
                     </View>
-                    <Swiper height={height * 0.55} index={1} loop={false} showButtons={true}>
+                    <Swiper height={heightSwiper} index={1} loop={false} showButtons={true}>
                         <View>
-                            <Text>{"Consumi"}</Text>
+                            <InfoConsumption
+                                heightSwiper={heightSwiper}
+                            />
                         </View>
                         <View>
                             <ChartConsumption
                                 charts={this.props.home.charts}
                                 consumptionAggregates={this.getConsumptionAggregate()}
                                 dailyAggregates={this.getDailyAggregate()}
+                                heightSwiper={heightSwiper}
                                 onToggleSwitch={this.props.toggleForecast}
                             />
                         </View>

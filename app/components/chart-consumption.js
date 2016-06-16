@@ -2,7 +2,7 @@ import moment from "moment";
 import {last} from "ramda";
 import React, {Component, PropTypes} from "react";
 import IPropTypes from "react-immutable-proptypes";
-import {Dimensions, View, StyleSheet, Switch} from "react-native";
+import {View, StyleSheet, Switch} from "react-native";
 import shallowCompare from "react-addons-shallow-compare";
 
 import getDailySumConsumption from "../lib/get-daily-sum-consumption";
@@ -14,7 +14,8 @@ const styles = StyleSheet.create({
     consumptionContainer: {
         flexDirection: "row",
         justifyContent: "space-around",
-        paddingTop: 20
+        paddingTop: 20,
+        marginBottom: 25
     },
     powerContainer: {
         flexDirection: "column"
@@ -78,6 +79,7 @@ export default class ChartConsumption extends Component {
         })).isRequired,
         consumptionAggregates:IPropTypes.map,
         dailyAggregates: IPropTypes.map,
+        heightSwiper: PropTypes.number.isRequired,
         onToggleSwitch: PropTypes.func.isRequired
     }
 
@@ -101,17 +103,17 @@ export default class ChartConsumption extends Component {
     getRealTimePower () {
         const sensorId = this.props.charts[0].sensorId;
         const day = moment.utc().format("YYYY-MM-DD");
-        console.log(`${sensorId}-${day}-reading-maxPower`);
-        const powerValues = this.props.dailyAggregates.getIn([`${sensorId}-${day}-reading-maxPower`, "measurementValues"]) || "";
+        const powerValues = this.props.dailyAggregates.getIn(
+            [`${sensorId}-${day}-reading-maxPower`, "measurementValues"]
+        ) || "";
         const power = last(powerValues.split(","));
         return parseFloat(power) || 0;
     }
 
     render () {
-        const {height} = Dimensions.get("window");
         return (
             <View>
-                <View style={[styles.consumptionContainer, {height: height * 0.2}]}>
+                <View style={styles.consumptionContainer}>
                     <View style={styles.summaryConsumptionContainer}>
                         <Text>{"Consumo di oggi"}</Text>
                         <View style={styles.summaryConsumption}>
@@ -128,7 +130,7 @@ export default class ChartConsumption extends Component {
                 <Highcharts
                     aggregates={this.props.dailyAggregates}
                     charts={this.props.charts}
-                    height={height * 0.2}
+                    height={this.props.heightSwiper * 0.35}
                 />
                 <View style={styles.switchContainer}>
                     <Switch
