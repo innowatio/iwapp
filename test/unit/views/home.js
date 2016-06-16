@@ -1,10 +1,10 @@
 import {shallow} from "enzyme";
 import {Map, fromJS} from "immutable";
 import {Content} from "native-base";
-import {Switch} from "react-native";
 import Swiper from "react-native-swiper";
 
-import Highcharts from "components/highcharts";
+import ChartConsumption from "components/chart-consumption";
+import Weather from "components/weather";
 import Home from "views/home";
 
 describe("`Home` view", () => {
@@ -26,10 +26,16 @@ describe("`Home` view", () => {
         get: sinon.stub().returns({height: 100})
     };
     const getDailySumConsumption = sinon.stub().returns(1);
+    var homeView;
 
     before(() => {
         Home.__Rewire__("Dimensions", Dimensions);
         Home.__Rewire__("getDailySumConsumption", getDailySumConsumption);
+    });
+
+    beforeEach(() => {
+        toggleForecast.reset();
+        Dimensions.get.reset();
         homeView = shallow(
             <HomeView
                 asteroid={asteroid}
@@ -38,13 +44,6 @@ describe("`Home` view", () => {
                 toggleForecast={toggleForecast}
             />
         );
-    });
-
-    var homeView;
-
-    beforeEach(() => {
-        toggleForecast.reset();
-        Dimensions.get.reset();
     });
 
     after(() => {
@@ -64,20 +63,27 @@ describe("`Home` view", () => {
         expect(homeView.find(Swiper).children()).to.have.length(3);
     });
 
-    it("renders a `Highcharts` component", () => {
-        expect(homeView.find(Highcharts)).to.have.length(1);
+    it("renders a `Weather` component", () => {
+        expect(homeView.find(Weather)).to.have.length(1);
     });
 
-    it("renders a `Swiper` with `Highcharts` component in the second children", () => {
+    it("renders a `ChartConsumption` component", () => {
+        expect(homeView.find(ChartConsumption)).to.have.length(1);
+    });
+
+    it("renders a `Swiper` with `ChartConsumption` component in the second children", () => {
         const swiper = homeView.find(Swiper);
         const secondSwiperChildren = swiper.children().at(1);
-        expect(secondSwiperChildren.find(Highcharts)).to.have.length(1);
+        expect(secondSwiperChildren.find(ChartConsumption)).to.have.length(1);
     });
 
-    it("renders a `Highcharts` component with correct props [CASE: `readings-daily-aggregates` is defined]", () => {
+    it("renders a `ChartConsumption` component with correct props [CASE: collections are defined]", () => {
         const collectionsWithAggregate = fromJS({
             "readings-daily-aggregates": {
                 "_id": "sensorId-day-source-measurementType"
+            },
+            "consumptions-yearly-aggregates": {
+                "_id": "sensorId-year-source-measurementType"
             }
         });
         const homeWrp = shallow(
@@ -88,71 +94,31 @@ describe("`Home` view", () => {
                 toggleForecast={toggleForecast}
             />
         );
-        expect(homeWrp.find(Highcharts).props()).to.deep.equal({
-            aggregates: fromJS({"_id": "sensorId-day-source-measurementType"}),
+        expect(homeWrp.find(ChartConsumption).props()).to.deep.equal({
             charts: [{
                 sensorId: "sensorId",
                 source: "source",
                 day: "day",
                 measurementType: "measurementType"
             }],
-            height: 20
+            consumptionAggregates: fromJS({"_id": "sensorId-year-source-measurementType"}),
+            dailyAggregates: fromJS({"_id": "sensorId-day-source-measurementType"}),
+            onToggleSwitch: toggleForecast
         });
     });
 
-    it("renders a `Highcharts` component with correct props [CASE: `readings-daily-aggregates` is not defined]", () => {
-        expect(homeView.find(Highcharts).props()).to.deep.equal({
-            aggregates: Map(),
+    it("renders a `ChartConsumption` component with correct props [CASE: collections are not defined]", () => {
+        expect(homeView.find(ChartConsumption).props()).to.deep.equal({
             charts: [{
                 sensorId: "sensorId",
                 source: "source",
                 day: "day",
                 measurementType: "measurementType"
             }],
-            height: 20
+            consumptionAggregates: Map(),
+            dailyAggregates: Map(),
+            onToggleSwitch: toggleForecast
         });
-    });
-
-    it("renders a `Switch` component", () => {
-        expect(homeView.find(Switch)).to.have.length(1);
-    });
-
-    it("renders a `Swiper` with `Switch` component in the second children", () => {
-        const swiper = homeView.find(Swiper);
-        const secondSwiperChildren = swiper.children().at(1);
-        expect(secondSwiperChildren.find(Switch)).to.have.length(1);
-    });
-
-    it("renders a `Switch` component with the correct props [CASE: `this.props.home.charts.length !== 2`]", () => {
-        expect(homeView.find(Switch).prop("onValueChange")).to.equal(toggleForecast);
-        expect(homeView.find(Switch).prop("value")).to.equal(false);
-    });
-
-    it("renders a `Switch` component with the correct props [CASE: `this.props.home.charts.length === 2`]", () => {
-        const homeWithMultipleCharts = {
-            charts: [{
-                sensorId: "sensorId",
-                source: "source"
-            }, {
-                sensorId: "sensorId",
-                source: "forecast"
-            }]
-        };
-        const homeWrp = shallow(
-            <HomeView
-                asteroid={asteroid}
-                collections={collections}
-                home={homeWithMultipleCharts}
-                toggleForecast={toggleForecast}
-            />
-        );
-        expect(homeWrp.find(Switch).prop("onValueChange")).to.equal(toggleForecast);
-        expect(homeWrp.find(Switch).prop("value")).to.equal(true);
-    });
-
-    it("calls `toggleForecast` function `onValueChange` in `Switch` component", () => {
-        homeView.find("Switch").simulate("valueChange");
-        expect(toggleForecast).to.have.callCount(1);
     });
 
     describe("`componentDidMount` method", () => {
@@ -328,6 +294,74 @@ describe("`Home` view", () => {
                 "reading",
                 "maxPower"
             );
+        });
+
+    });
+
+    describe("`getConsumptionAggregate` function", () => {
+
+        const getConsumptionAggregate = HomeView.prototype.getConsumptionAggregate;
+        const aggregates = fromJS({
+            "readings-daily-aggregates": {
+                "_id": "sensorId-day-source-measurementType"
+            },
+            "consumptions-yearly-aggregates": {
+                "_id": "sensorId-year-source-measurementType"
+            }
+        });
+
+        it("returns the correct aggregate [CASE: aggregate present in collections]", () => {
+            const instance = {
+                props: {
+                    collections: aggregates
+                }
+            };
+            const ret = getConsumptionAggregate.call(instance);
+            expect(ret).to.deep.equal(fromJS({"_id": "sensorId-year-source-measurementType"}));
+        });
+
+        it("returns the correct aggregate [CASE: aggregate not present in collections]", () => {
+            const instance = {
+                props: {
+                    collections
+                }
+            };
+            const ret = getConsumptionAggregate.call(instance);
+            expect(ret).to.deep.equal(Map());
+        });
+
+    });
+
+    describe("`getDailyAggregate` function", () => {
+
+        const getDailyAggregate = HomeView.prototype.getDailyAggregate;
+        const aggregates = fromJS({
+            "readings-daily-aggregates": {
+                "_id": "sensorId-day-source-measurementType"
+            },
+            "consumptions-yearly-aggregates": {
+                "_id": "sensorId-year-source-measurementType"
+            }
+        });
+
+        it("returns the correct aggregate [CASE: aggregate present in collections]", () => {
+            const instance = {
+                props: {
+                    collections: aggregates
+                }
+            };
+            const ret = getDailyAggregate.call(instance);
+            expect(ret).to.deep.equal(fromJS({"_id": "sensorId-day-source-measurementType"}));
+        });
+
+        it("returns the correct aggregate [CASE: aggregate not present in collections]", () => {
+            const instance = {
+                props: {
+                    collections
+                }
+            };
+            const ret = getDailyAggregate.call(instance);
+            expect(ret).to.deep.equal(Map());
         });
 
     });
