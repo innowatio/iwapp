@@ -1,4 +1,3 @@
-import {Map} from "immutable";
 import moment from "moment";
 import {last} from "ramda";
 import React, {Component, PropTypes} from "react";
