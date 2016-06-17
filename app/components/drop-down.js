@@ -95,8 +95,7 @@ export default class DropDown extends Component {
                         translateY: this.state.slidingAnimationValue
                     }]
                 }
-            ]}
-            >
+            ]}>
                 <List>
                     {this.renderOptionItems()}
                 </List>
