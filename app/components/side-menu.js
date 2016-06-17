@@ -45,13 +45,11 @@ export default class SideMenu extends Component {
         this.props.asteroid.logout();
     }
 
-    onSelectionChanged (event) {
-        console.log(event);
+    onSelectionChanged () {
         this.triggerClose();
     }
 
     onToggleItems (showItems) {
-        console.log(showItems);
         this.setState({
             showMenuItems: showItems
         });

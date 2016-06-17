@@ -93,7 +93,7 @@ class Home extends Component {
 
     render () {
         const {height} = Dimensions.get("window");
-        const heightSwiper = height * 0.55;
+        const heightSwiper = height * 0.54;
         return (
             <View style={styles.container}>
                 <Content style={{backgroundColor: colors.background}}>

@@ -8,25 +8,21 @@ import Highcharts from "components/highcharts";
 describe("`ChartConsumption` component", () => {
 
     const onToggleSwitch = sinon.spy();
-    const Dimensions = {
-        get: sinon.stub().returns({height: 100})
-    };
     var chartConsumption;
     var clock;
 
     before(() => {
-        ChartConsumption.__Rewire__("Dimensions", Dimensions);
         clock = sinon.useFakeTimers();
     });
 
     beforeEach(() => {
-        Dimensions.get.reset();
         onToggleSwitch.reset();
         chartConsumption = shallow(
             <ChartConsumption
                 charts={charts}
                 consumptionAggregates={consumptionAggregates}
                 dailyAggregates={dailyAggregates}
+                heightSwiper={100}
                 onToggleSwitch={onToggleSwitch}
             />
         );
@@ -34,7 +30,6 @@ describe("`ChartConsumption` component", () => {
 
     after(() => {
         clock.restore();
-        ChartConsumption.__ResetDependency__("Dimensions");
     });
 
     const dailyAggregates = fromJS({"_id": "sensorId-day-source-measurementType"});
@@ -56,7 +51,7 @@ describe("`ChartConsumption` component", () => {
                 day: "day",
                 measurementType: "measurementType"
             }],
-            height: 20
+            height: 35
         });
     });
 
