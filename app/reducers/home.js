@@ -5,7 +5,7 @@ import {TOGGLE_FORECAST} from "../actions/home";
 
 const defaultChartState = [{
     day: moment.utc().format("YYYY-MM-DD"),
-    sensorId: "SitoDiTest1",
+    sensorId: "site00022",
     source: "reading",
     measurementType: "activeEnergy"
 }];
