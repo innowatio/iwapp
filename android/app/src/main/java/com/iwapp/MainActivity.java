@@ -2,6 +2,7 @@ package com.innowatio.iwapp;
 
 import android.content.Intent;
 import com.facebook.react.ReactActivity;
+import com.imagepicker.ImagePickerPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.microsoft.codepush.react.CodePush;
 import com.facebook.react.ReactPackage;
@@ -47,6 +48,7 @@ public class MainActivity extends ReactActivity {
         mReactNativePushNotificationPackage = new ReactNativePushNotificationPackage(this);
         return Arrays.<ReactPackage>asList(
             new MainReactPackage(),
+            new ImagePickerPackage(),
             new VectorIconsPackage(),
             mReactNativePushNotificationPackage,
             new CodePush(getString(R.string.reactNativeCodePush_androidDeploymentKey), this, BuildConfig.DEBUG)
