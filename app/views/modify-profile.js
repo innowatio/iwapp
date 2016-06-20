@@ -92,6 +92,22 @@ const styles = StyleSheet.create({
     inputModifyPassword: {
         color: colors.grey,
         height: 35
+    },
+
+    // ERRORS ON TOP //
+    errorPassword: {
+        position: "absolute",
+        top: 0,
+        left: 0,
+        backgroundColor: colors.backgroundErrorPassword
+    },
+    iconAlertWrp: {
+        backgroundColor: colors.backgroundIconErrorPassword,
+        borderRadius: 10,
+        width: 80,
+        height: 80,
+        justifyContent: "center",
+        alignItems: "center"
     }
 });
 
@@ -204,6 +220,23 @@ class ModifyProfile extends Component {
         );
     }
 
+    renderPasswordError () {
+        return (
+            <View style={styles.errorPassword}>
+                <View style={styles.iconAlertWrp}>
+                    <Icon
+                        color={colors.iconWhite}
+                        name="iw-alert"
+                        size={23}
+                    />
+                </View>
+                <Text>
+                    {"Attenzione, le password non coincidono"}
+                </Text>
+            </View>
+        );
+    }
+
     render () {
         const {height} = Dimensions.get("window");
         return (
@@ -214,6 +247,7 @@ class ModifyProfile extends Component {
                             <Text style={styles.title}>{"MODIFICA PROFILO"}</Text>
                         </View>
                     </View>
+                    {this.renderPasswordError()}
                     <View style={[styles.userAccessWrp, {height: height * 0.2}]}>
                         {this.renderUserAccess()}
                     </View>
@@ -230,8 +264,8 @@ class ModifyProfile extends Component {
                         </Button>
                         <Button>
                             <Icon
-                                color={colors.iconWhite}
-                                name="iw-reset"
+                                color={colors.primaryBlue}
+                                name="iw-alert"
                                 size={23}
                             />
                         </Button>

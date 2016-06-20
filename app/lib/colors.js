@@ -27,3 +27,6 @@ export const buildingsSection = "#3E50B4";
 export const heatingSection = "#ff4081";
 export const coolingSection = "#12b0c5";
 export const statisticsSection = "#cddc39";
+//
+export const backgroundErrorPassword = "#ff1744";
+export const backgroundIconErrorPassword = "#c41637";
