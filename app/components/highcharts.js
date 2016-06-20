@@ -1,3 +1,4 @@
+import moment from "moment";
 import React, {Component, PropTypes} from "react";
 import {Platform, StyleSheet, WebView} from "react-native";
 import IPropTypes from "react-immutable-proptypes";
@@ -56,6 +57,8 @@ export default class Highcharts extends Component {
     }
 
     getChartConfig () {
+        console.log(moment(this.props.charts[0].day).startOf("day").toDate());
+        console.log(moment(this.props.charts[0].day).endOf("day").toDate());
         return {
             chart: {
                 renderTo: "chart",
@@ -80,7 +83,9 @@ export default class Highcharts extends Component {
             series: this.getSeries(),
             title: null,
             xAxis: {
-                type: "datetime"
+                type: "datetime",
+                min: moment.utc(this.props.charts[0].day).startOf("day").valueOf(),
+                max: moment.utc(this.props.charts[0].day).endOf("day").valueOf()
             },
             yAxis: {
                 labels: {
@@ -107,6 +112,7 @@ export default class Highcharts extends Component {
                         <div id="chart"></div>
                         <script>
                             new Highcharts.Chart(${JSON.stringify(this.getChartConfig())})
+                            Highcharts.setOptions({global: {useUTC: false}});
                         </script>
                     </body>
                 </html>
