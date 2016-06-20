@@ -3,12 +3,11 @@ import React, {Component} from "react";
 import {Dimensions, StyleSheet, TouchableOpacity, View} from "react-native";
 import * as Progress from "react-native-progress";
 import {Actions} from "react-native-router-flux";
+import ImagePicker from "react-native-image-picker";
 
 import Icon from "../components/iwapp-icons";
 import * as colors from "../lib/colors";
 import Text from "../components/text-lato";
-
-// const CameraRollView = require('./CameraRollView');
 
 const styles = StyleSheet.create({
     container: {
@@ -146,6 +145,13 @@ const styles = StyleSheet.create({
 
 class Profile extends Component {
 
+    constructor (props) {
+        super(props);
+        this.state = {
+            avatarSource: {}
+        };
+    }
+
     getQuestionnaires () {
         return [
             {color: colors.demographicsSection, name: "Demographics", key: "demographics", icon: "iw-demographics", value: 1, percentage: "100"},
@@ -156,14 +162,54 @@ class Profile extends Component {
         ];
     }
 
+    showImagePicker () {
+        const options = {
+            title: null, // specify null or empty string to remove the title
+            cancelButtonTitle: "Cancel",
+            takePhotoButtonTitle: "Take Photo...", // specify null or empty string to remove this button
+            chooseFromLibraryButtonTitle: "Choose from Library...", // specify null or empty string to remove this button
+            cameraType: "front", // "front" or "back"
+            mediaType: "photo", // "photo" or "video"
+            maxWidth: 80, // photos only
+            maxHeight: 80, // photos only
+            aspectX: 2, // android only - aspectX:aspectY, the cropping image's ratio of width to height
+            aspectY: 1, // android only - aspectX:aspectY, the cropping image's ratio of width to height
+            quality: 0.2, // 0 to 1, photos only
+            angle: 0, // android only, photos only
+            allowsEditing: true, // Built in functionality to resize/reposition the image after selection
+            noData: false, // photos only - disables the base64 `data` field from being generated (greatly improves performance on large photos)
+            storageOptions: { // if this key is provided, the image will get saved in the documents directory on ios, and the pictures directory on android (rather than a temporary directory)
+                skipBackup: true, // ios only - image will NOT be backed up to icloud
+                path: "images" // ios only - will save image at /Documents/images rather than the root
+            }
+        };
+        ImagePicker.showImagePicker(options, (response) => {
+            if (response.didCancel) {
+                console.log("User cancelled image picker");
+            } else if (response.error) {
+                console.log("ImagePicker Error: ", response.error);
+            } else {
+                // uri (on android)
+                const source = {uri: response.uri, isStatic: true};
+
+                this.setState({
+                    avatarSource: source
+                });
+            }
+        });
+    }
+
     renderUserImage () {
-        // const {CameraRoll} = React;
         return (
             <View style={styles.userPhotoWrp}>
                 <View style={styles.photoWrp}>
                     <Text style={styles.textPhoto}>{"C"}</Text>
                 </View>
-                <TouchableOpacity style={styles.iconEditPhotoWrp} transparent={true}>
+                <TouchableOpacity
+                    onPress={() => this.showImagePicker()}
+                    style={styles.iconEditPhotoWrp}
+                    transparent={true}
+                >
                     <Icon
                         color={colors.iconWhite}
                         name="iw-edit"
