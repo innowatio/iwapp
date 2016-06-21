@@ -111,8 +111,8 @@ export default class Highcharts extends Component {
                     <body>
                         <div id="chart"></div>
                         <script>
-                            new Highcharts.Chart(${JSON.stringify(this.getChartConfig())})
                             Highcharts.setOptions({global: {useUTC: false}});
+                            new Highcharts.Chart(${JSON.stringify(this.getChartConfig())})
                         </script>
                     </body>
                 </html>
