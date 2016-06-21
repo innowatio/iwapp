@@ -34,6 +34,14 @@ const styles = StyleSheet.create({
 
 export default class SideMenu extends Component {
 
+    static propTypes = {
+        asteroid: PropTypes.object.isRequired,
+        onSelectSite: PropTypes.func.isRequired,
+        onTriggerClose: PropTypes.func,
+        optionItems: PropTypes.array.isRequired,
+        site: PropTypes.object
+    }
+
     constructor () {
         super();
         this.state = {
@@ -41,16 +49,12 @@ export default class SideMenu extends Component {
         };
     }
 
-    static propTypes = {
-        asteroid: PropTypes.object.isRequired,
-        onTriggerClose: PropTypes.func
-    }
-
     onLogout () {
         this.props.asteroid.logout();
     }
 
-    onSelectionChanged () {
+    onSelectionChanged (event) {
+        this.props.onSelectSite(event.selection);
         this.triggerClose();
     }
 
@@ -137,24 +141,16 @@ export default class SideMenu extends Component {
     }
 
     render () {
-        const items = [{
-            title: "Progetto XYZ"
-        }, {
-            title: "Progetto XYZ"
-        }, {
-            title: "Progetto XYZ"
-        }, {
-            title: "Progetto XYZ"
-        }];
+        const {site, optionItems} = this.props;
+        const titlePlaceholder = site ? site.title : "Progetti";
         return (
             <View>
                 <DropDown
                     onSelectionChanged={::this.onSelectionChanged}
                     onToggleItems={::this.onToggleItems}
-                    optionItems={items}
-                    titlePlaceholder={"Progetto XYZ"}
+                    optionItems={optionItems}
+                    titlePlaceholder={titlePlaceholder}
                 />
-
                 {this.renderMenu()}
             </View>
         );

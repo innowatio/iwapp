@@ -1,4 +1,5 @@
 import {shallow} from "enzyme";
+import {Map} from "immutable";
 
 import SideMenu from "components/side-menu";
 import DropDown from "components/drop-down";
@@ -7,7 +8,9 @@ import Icon from "components/iwapp-icons";
 
 describe("`SideMenu` component", () => {
 
-    const asteroid = {};
+    const asteroid = {
+        collections: new Map()
+    };
 
     it("renders SideMenu", () => {
         const dropDown = shallow(<SideMenu asteroid={asteroid} />);

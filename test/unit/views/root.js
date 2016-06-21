@@ -37,6 +37,7 @@ describe("`Root` view", () => {
     it("renders a `ScrollView` with correct props", () => {
         const rootView = shallow(
             <RootView
+                collections={{get: () => {}}}
                 navigationScene={["home"]}
                 navigationState={navigationState}
                 onLogin={sinon.spy()}
@@ -54,6 +55,7 @@ describe("`Root` view", () => {
     it("renders a `StatusBar` with correct props", () => {
         const rootView = shallow(
             <RootView
+                collections={{get: () => {}}}
                 navigationScene={["home"]}
                 navigationState={navigationState}
                 onLogin={sinon.spy()}
@@ -72,6 +74,7 @@ describe("`Root` view", () => {
     it("renders `Login` view if `userId` is not specified with the correct props", () => {
         const rootView = shallow(
             <RootView
+                collections={{get: () => {}}}
                 navigationScene={["home"]}
                 navigationState={navigationState}
                 onLogin={sinon.spy()}
@@ -89,6 +92,7 @@ describe("`Root` view", () => {
         RootView.prototype.getNavigationState = sinon.stub().returns(scene);
         const rootView = shallow(
             <RootView
+                collections={{get: () => {}}}
                 navigationScene={["home"]}
                 navigationState={navigationState}
                 onLogin={sinon.spy()}
@@ -144,7 +148,10 @@ describe("`Root` view", () => {
         const componentDidMount = RootView.prototype.componentDidMount;
 
         const asteroid = {
-            on: sinon.spy()
+            on: sinon.spy(),
+            ddp: {
+                on: sinon.spy()
+            }
         };
 
         before(() => {
