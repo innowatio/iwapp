@@ -67,6 +67,7 @@ describe("`Highcharts` component", () => {
                         <div id="chart"></div>
                         <script>
                             new Highcharts.Chart(${JSON.stringify(config)})
+                            Highcharts.setOptions({global: {useUTC: false}});
                         </script>
                     </body>
                 </html>

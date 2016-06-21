@@ -1,6 +1,6 @@
 {
   "name": "iwapp",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "main": "index",
   "description": "Innowatio mobile app",
   "scripts": {

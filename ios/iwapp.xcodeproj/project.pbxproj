@@ -34,6 +34,17 @@
 		6B8D2F9F1D017DD30089933D /* Lato-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6BE5B2031CFED3B800D94AB2 /* Lato-Bold.ttf */; };
 		6B8D2FA01D017DDA0089933D /* Lato-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6BE5B2041CFED3B800D94AB2 /* Lato-Light.ttf */; };
 		6B8D2FA11D017DE00089933D /* Lato-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6BE5B2051CFED3B800D94AB2 /* Lato-Regular.ttf */; };
+		6B9619E91D17F7BC00F23043 /* ios-120x120.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B9619DA1D17F7BC00F23043 /* ios-120x120.png */; };
+		6B9619EC1D17F7BC00F23043 /* ios-180x180.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B9619DD1D17F7BC00F23043 /* ios-180x180.png */; };
+		6B9619EE1D17F8AD00F23043 /* ios-87x87.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B9619ED1D17F8AD00F23043 /* ios-87x87.png */; };
+		6B9619F01D17F96300F23043 /* ios-80x80.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B9619EF1D17F96300F23043 /* ios-80x80.png */; };
+		6B9619F11D17FECC00F23043 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
+		6B9619FF1D18344B00F23043 /* bg_login.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B9619FE1D18344B00F23043 /* bg_login.png */; };
+		6B961A051D1836B700F23043 /* ios-420x480.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B961A001D1836B700F23043 /* ios-420x480.png */; };
+		6B961A061D1836B700F23043 /* ios-640x960.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B961A011D1836B700F23043 /* ios-640x960.png */; };
+		6B961A071D1836B700F23043 /* ios-640x1136.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B961A021D1836B700F23043 /* ios-640x1136.png */; };
+		6B961A081D1836B700F23043 /* ios-750x1334.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B961A031D1836B700F23043 /* ios-750x1334.png */; };
+		6B961A091D1836B700F23043 /* ios-1242x2208.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B961A041D1836B700F23043 /* ios-1242x2208.png */; };
 		796CCFEF89424BDA854BF5B4 /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1CCC0FCEFE50423B82521737 /* Ionicons.ttf */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		935BB89470184028AB530704 /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C52A87BA563A42C395B76A5F /* EvilIcons.ttf */; };
@@ -191,6 +202,16 @@
 		6B075E691D10108900D81F66 /* RCTPushNotification.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTPushNotification.xcodeproj; path = "../node_modules/react-native/Libraries/PushNotificationIOS/RCTPushNotification.xcodeproj"; sourceTree = "<group>"; };
 		6B075ED91D118F4700D81F66 /* ART.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ART.xcodeproj; path = "../node_modules/react-native/Libraries/ART/ART.xcodeproj"; sourceTree = "<group>"; };
 		6B77AB5C1CE5C9D2001C6650 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
+		6B9619DA1D17F7BC00F23043 /* ios-120x120.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ios-120x120.png"; sourceTree = "<group>"; };
+		6B9619DD1D17F7BC00F23043 /* ios-180x180.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ios-180x180.png"; sourceTree = "<group>"; };
+		6B9619ED1D17F8AD00F23043 /* ios-87x87.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ios-87x87.png"; sourceTree = "<group>"; };
+		6B9619EF1D17F96300F23043 /* ios-80x80.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ios-80x80.png"; sourceTree = "<group>"; };
+		6B9619FE1D18344B00F23043 /* bg_login.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bg_login.png; sourceTree = "<group>"; };
+		6B961A001D1836B700F23043 /* ios-420x480.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ios-420x480.png"; sourceTree = "<group>"; };
+		6B961A011D1836B700F23043 /* ios-640x960.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ios-640x960.png"; sourceTree = "<group>"; };
+		6B961A021D1836B700F23043 /* ios-640x1136.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ios-640x1136.png"; sourceTree = "<group>"; };
+		6B961A031D1836B700F23043 /* ios-750x1334.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ios-750x1334.png"; sourceTree = "<group>"; };
+		6B961A041D1836B700F23043 /* ios-1242x2208.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ios-1242x2208.png"; sourceTree = "<group>"; };
 		6BE5B2031CFED3B800D94AB2 /* Lato-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Bold.ttf"; sourceTree = "<group>"; };
 		6BE5B2041CFED3B800D94AB2 /* Lato-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Light.ttf"; sourceTree = "<group>"; };
 		6BE5B2051CFED3B800D94AB2 /* Lato-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Regular.ttf"; sourceTree = "<group>"; };
@@ -207,6 +228,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6B9619F11D17FECC00F23043 /* libReact.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -435,6 +457,16 @@
 		CB704790333D44E7A1D5FF9F /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				6B961A001D1836B700F23043 /* ios-420x480.png */,
+				6B961A011D1836B700F23043 /* ios-640x960.png */,
+				6B961A021D1836B700F23043 /* ios-640x1136.png */,
+				6B961A031D1836B700F23043 /* ios-750x1334.png */,
+				6B961A041D1836B700F23043 /* ios-1242x2208.png */,
+				6B9619FE1D18344B00F23043 /* bg_login.png */,
+				6B9619EF1D17F96300F23043 /* ios-80x80.png */,
+				6B9619ED1D17F8AD00F23043 /* ios-87x87.png */,
+				6B9619DA1D17F7BC00F23043 /* ios-120x120.png */,
+				6B9619DD1D17F7BC00F23043 /* ios-180x180.png */,
 				1DDF80A91D0EC37A009F67FD /* iwapp.ttf */,
 				6BE5B2031CFED3B800D94AB2 /* Lato-Bold.ttf */,
 				6BE5B2041CFED3B800D94AB2 /* Lato-Light.ttf */,
@@ -497,11 +529,19 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 730;
-				ORGANIZATIONNAME = Facebook;
+				ORGANIZATIONNAME = Innowatio;
 				TargetAttributes = {
 					00E356ED1AD99517003FC87E = {
 						CreatedOnToolsVersion = 6.2;
 						TestTargetID = 13B07F861A680F5B00A75B9A;
+					};
+					13B07F861A680F5B00A75B9A = {
+						DevelopmentTeam = V9JWVTC8N8;
+						SystemCapabilities = {
+							com.apple.Push = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -706,14 +746,24 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6B9619F01D17F96300F23043 /* ios-80x80.png in Resources */,
+				6B961A091D1836B700F23043 /* ios-1242x2208.png in Resources */,
+				6B9619EE1D17F8AD00F23043 /* ios-87x87.png in Resources */,
+				6B9619E91D17F7BC00F23043 /* ios-120x120.png in Resources */,
+				6B961A081D1836B700F23043 /* ios-750x1334.png in Resources */,
+				6B9619EC1D17F7BC00F23043 /* ios-180x180.png in Resources */,
 				1DDF80AA1D0EC37A009F67FD /* iwapp.ttf in Resources */,
 				6B8D2FA11D017DE00089933D /* Lato-Regular.ttf in Resources */,
 				6B8D2FA01D017DDA0089933D /* Lato-Light.ttf in Resources */,
 				6B8D2F9F1D017DD30089933D /* Lato-Bold.ttf in Resources */,
+				6B961A051D1836B700F23043 /* ios-420x480.png in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				6B961A071D1836B700F23043 /* ios-640x1136.png in Resources */,
+				6B961A061D1836B700F23043 /* ios-640x960.png in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
 				935BB89470184028AB530704 /* EvilIcons.ttf in Resources */,
 				01E539F37B704854A0562A2F /* Foundation.ttf in Resources */,
+				6B9619FF1D18344B00F23043 /* bg_login.png in Resources */,
 				796CCFEF89424BDA854BF5B4 /* Ionicons.ttf in Resources */,
 				040C0B1A6A694A4597E42032 /* MaterialIcons.ttf in Resources */,
 				486EBCEE26F141F28B2E1063 /* Octicons.ttf in Resources */,
@@ -846,6 +896,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEAD_CODE_STRIPPING = NO;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -857,12 +909,13 @@
 					"$(SRCROOT)/../node_modules/react-native-image-picker/ios/**",
 				);
 				INFOPLIST_FILE = iwapp/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.innowatio.iwapp;
 				PRODUCT_NAME = iwapp;
 			};
 			name = Debug;
@@ -871,6 +924,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
@@ -881,12 +936,13 @@
 					"$(SRCROOT)/../node_modules/react-native-image-picker/ios/**",
 				);
 				INFOPLIST_FILE = iwapp/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.innowatio.iwapp;
 				PRODUCT_NAME = iwapp;
 			};
 			name = Release;
