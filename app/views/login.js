@@ -16,8 +16,7 @@ const styles = StyleSheet.create({
         backgroundColor: colors.transparent,
         flexDirection: "column",
         paddingLeft: 20,
-        paddingRight: 20,
-        width:350
+        paddingRight: 20
     },
     backgroundImage: {
         flex: 1,
@@ -165,7 +164,7 @@ export default class Login extends Component {
         const {width} = Dimensions.get("window");
         return (
             <Image source={require("../assets/img/bg_login.png")} style={styles.backgroundImage}>
-                <View style={styles.container}>
+                <View style={[styles.container, {width: width}]}>
                     <Icon
                         color={colors.iconWhite}
                         name="iw-innowatio-logo"
