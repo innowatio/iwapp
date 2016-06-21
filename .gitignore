@@ -35,6 +35,9 @@ npm-debug.log
 .env
 env.js
 
+# Deploy
+iwapp-release.keystore
+
 # BUCK
 buck-out/
 \.buckd/

@@ -1,4 +1,4 @@
-package com.iwapp;
+package com.innowatio.iwapp;
 
 import android.content.Intent;
 import com.facebook.react.ReactActivity;
@@ -49,7 +49,7 @@ public class MainActivity extends ReactActivity {
             new MainReactPackage(),
             new VectorIconsPackage(),
             mReactNativePushNotificationPackage,
-            new CodePush("xTVrVoCtzZvbHdvVh3glBfPduf0wEJoFqD2lb", this, BuildConfig.DEBUG)
+            new CodePush(getString(R.string.reactNativeCodePush_androidDeploymentKey), this, BuildConfig.DEBUG)
         );
     }
 
