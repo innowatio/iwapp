@@ -27,7 +27,7 @@
     "asteroid": "github:mondora/asteroid#3.0.0-alpha",
     "asteroid-immutable-collections-mixin": "^3.0.0",
     "immutable": "^3.8.1",
-    "iwapp-icons": "^1.0.0",
+    "iwapp-icons": "^1.0.1",
     "lodash.debounce": "^4.0.6",
     "lodash.get": "^4.3.0",
     "moment": "^2.13.0",
