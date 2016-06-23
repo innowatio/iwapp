@@ -18,14 +18,23 @@ const styles = StyleSheet.create({
         color: colors.white,
         marginRight: 10
     },
-    projectItem: {
-        marginLeft: 15,
-        color: colors.white
-    },
     view: {
         borderTopWidth: 1,
         borderTopColor: colors.white,
         backgroundColor: colors.secondaryBlue
+    },
+    projectContainer: {
+        borderColor: colors.secondaryBlue,
+        padding: 0,
+        paddingLeft: 20
+    },
+    projectItem: {
+        alignItems: "center",
+        flexDirection: "row",
+        height: 50
+    },
+    projectText: {
+        color: colors.white
     }
 });
 
@@ -76,9 +85,9 @@ export default class DropDown extends Component {
     renderOptionItems () {
         const {optionItems} = this.props;
         return optionItems.map((item, index) => (
-            <ListItem key={index} style={{borderColor: colors.secondaryBlue}}>
-                <TouchableOpacity onPress={this.selectionChanged({index: index, selection: item})}>
-                    <Text style={styles.projectItem}>{item.title}</Text>
+            <ListItem key={index} style={styles.projectContainer}>
+                <TouchableOpacity onPress={this.selectionChanged({index: index, selection: item})} style={styles.projectItem}>
+                    <Text style={styles.projectText}>{item.title}</Text>
                 </TouchableOpacity>
             </ListItem>
         ));

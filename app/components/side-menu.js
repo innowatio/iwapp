@@ -16,7 +16,12 @@ const styles = StyleSheet.create({
         justifyContent: "flex-start",
         alignItems: "center",
         flexDirection: "row",
-        paddingRight: 10
+        height: 50
+    },
+    menuItem: {
+        borderColor: colors.primaryBlue,
+        padding: 0,
+        paddingLeft: 10
     },
     itemIcon: {
         color: colors.white,
@@ -96,7 +101,7 @@ export default class SideMenu extends Component {
             }
         ];
         return items.map(item => (
-            <ListItem key={item.icon} style={{borderColor: colors.primaryBlue}}>
+            <ListItem key={item.icon} style={styles.menuItem}>
                 <TouchableOpacity onPress={this.navigateTo(item)} style={styles.rightIcon}>
                     <Icon name={`iw-${item.icon}`} size={24} style={styles.itemIcon} />
                     <Text style={styles.itemText}>{item.title}</Text>
@@ -118,7 +123,7 @@ export default class SideMenu extends Component {
                 <View style={{height: (height * .22) - (74), backgroundColor: colors.primaryBlue}}>
                     <Content>
                         <List>
-                            <ListItem key={"logout"} style={{borderColor: colors.primaryBlue}}>
+                            <ListItem key={"logout"} style={styles.menuItem}>
                                 <TouchableOpacity onPress={this.onLogout.bind(this)} style={styles.rightIcon}>
                                     <Icon name={"iw-logout"} size={24} style={styles.itemIcon} />
                                     <Text style={styles.itemText}>{"Logout"}</Text>
