@@ -317,7 +317,7 @@ class ModifyProfile extends Component {
                         <TouchableOpacity style={[styles.buttonReset]}>
                             <Icon
                                 color={colors.primaryBlue}
-                                name="iw-alert"
+                                name="iw-reset"
                                 size={23}
                             />
                         </TouchableOpacity>
