@@ -107,7 +107,6 @@ class ModifyProfile extends Component {
                         autoCapitalize={"none"}
                         autoCorrect={false}
                         keyboardType={"default"}
-                        onChangeText={"username@email.com"}
                         placeholder={"username@email.com"}
                         placeholderTextColor={colors.grey}
                         style={[styles.textInput, {width: width * 0.65}]}
@@ -121,7 +120,6 @@ class ModifyProfile extends Component {
                         autoCapitalize={"none"}
                         autoCorrect={false}
                         keyboardType={"default"}
-                        onChangeText={"Username"}
                         placeholder={"Username"}
                         placeholderTextColor={colors.lightGrey}
                         style={[styles.textInput, {width: width * 0.65}]}
@@ -149,7 +147,6 @@ class ModifyProfile extends Component {
                         autoCapitalize={"none"}
                         autoCorrect={false}
                         keyboardType={"default"}
-                        onChangeText={"password"}
                         placeholder={"Password Attuale"}
                         placeholderTextColor={"white"}
                         secureTextEntry={true}
@@ -170,7 +167,6 @@ class ModifyProfile extends Component {
                         autoCapitalize={"none"}
                         autoCorrect={false}
                         keyboardType={"default"}
-                        onChangeText={"nuova-password"}
                         placeholder={"Nuova Password"}
                         placeholderTextColor={"white"}
                         secureTextEntry={true}
@@ -191,7 +187,6 @@ class ModifyProfile extends Component {
                         autoCapitalize={"none"}
                         autoCorrect={false}
                         keyboardType={"default"}
-                        onChangeText={"ripeti-password"}
                         placeholder={"Ripeti nuova Password"}
                         placeholderTextColor={"white"}
                         secureTextEntry={true}

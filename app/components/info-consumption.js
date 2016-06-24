@@ -11,6 +11,12 @@ const styles = StyleSheet.create({
         flexDirection: "column",
         paddingTop: 20
     },
+    textStandard: {
+        color: colors.textGrey,
+        fontSize: 13,
+        marginTop: 5,
+        fontWeight: "200"
+    },
     infoAndConsumptionContainer: {
         flexDirection: "row",
         justifyContent: "space-around",
@@ -22,9 +28,19 @@ const styles = StyleSheet.create({
     meanConsumptionContainer: {
         flexDirection: "column"
     },
+    borderIconGreen: {
+        width: 80,
+        height: 80,
+        borderWidth: 2,
+        borderColor: colors.white,
+        borderRadius: 100,
+        backgroundColor: colors.borderIconGreen,
+        justifyContent: "center",
+        alignItems: "center"
+    },
     textNumber: {
         paddingRight: 5,
-        fontSize: 30,
+        fontSize: 34,
         fontWeight: "bold",
         textAlign: "center",
         color: colors.secondaryBlue
@@ -45,15 +61,19 @@ const styles = StyleSheet.create({
         backgroundColor: colors.secondaryBlue,
         flexDirection: "row",
         alignSelf: "center",
-        borderRadius: 8,
-        height: 60,
+        borderRadius: 14,
+        paddingVertical: 6,
         marginTop: 20
     },
     textTips: {
-        color: colors.white
+        color: colors.white,
+        fontSize: 18,
+        lineHeight: 20
     },
     textTipsDescription: {
-        color: colors.white
+        color: colors.white,
+        fontSize: 13,
+        lineHeight: 15
     },
     textTipsContainer: {
         flexDirection: "column",
@@ -77,27 +97,29 @@ export default class InfoConsumption extends Component {
             <View style={[styles.container, {height: this.props.heightSwiper}]}>
                 <View style={[styles.infoAndConsumptionContainer]}>
                     <View style={styles.infoContainer}>
-                        <Text>{"Immagine"}</Text>
-                        <Text>{"Numero di persone"}</Text>
-                        <Text>{"Grandezza dell'ufficio"}</Text>
-                        <Text>{"Posizione"}</Text>
+                        <View style={styles.borderIconGreen}>
+                            <Icon color={colors.iconGreen} name={"iw-badge-green"} size={72} style={styles.iconGreen} />
+                        </View>
+                        <Text style={styles.textStandard}>{"Numero di persone"}</Text>
+                        <Text style={styles.textStandard}>{"Grandezza dell'ufficio"}</Text>
+                        <Text style={styles.textStandard}>{"Posizione"}</Text>
                     </View>
                     <View style={styles.meanConsumptionContainer}>
                         <View style={styles.numberMeanTextContainer}>
                             <Text style={styles.textNumber}>{"23.2"}</Text>
                             <Text style={styles.textUnitOfMeasurement}>{"kWh"}</Text>
                         </View>
-                        <Text>{"Media dei miei\nconsumi giornalieri"}</Text>
+                        <Text style={styles.textStandard}>{"Media dei miei\nconsumi giornalieri"}</Text>
                         <View style={[styles.numberOtherMeanTextContainer]}>
                             <Text style={styles.textNumber}>{"22.7"}</Text>
                             <Text style={styles.textUnitOfMeasurement}>{"kWh"}</Text>
                         </View>
-                        <Text>{"Media dei consumi\ngiornalieri di attività simili"}</Text>
+                        <Text style={styles.textStandard}>{"Media dei consumi\ngiornalieri di attività simili"}</Text>
                     </View>
                 </View>
                 <View style={[styles.tipsContainer, {width: width * 0.96}]}>
                     <View style={styles.iconContainer}>
-                        <Icon color={"green"} name={"iw-user"} size={40} />
+                        <Icon color={colors.iconGood} name={"iw-good"} size={46} />
                     </View>
                     <View style={styles.textTipsContainer}>
                         <Text style={styles.textTips}>{"GRANDE!"}</Text>

@@ -54,7 +54,13 @@ const glyphMap = {
     "iw-upgrade": 79,
     "iw-user": 80,
     "iw-welcome": 81,
-    "iw-check": 104
+    "iw-check": 104,
+    "iw-bad": 82,
+    "iw-badge-buildings": 83,
+    "iw-badge-green": 84,
+    "iw-middling": 85,
+    "iw-good": 86,
+    "iw-reset": 87
 };
 
 const IwappIcons = createIconSet(glyphMap, "iwapp", "iwapp.ttf");

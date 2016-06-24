@@ -250,7 +250,7 @@ class Profile extends Component {
         const {height} = Dimensions.get("window");
         return (
             <View style={styles.container}>
-                <Content style={{backgroundColor: colors.background}}>
+                <Content style={{backgroundColor: colors.background, height: height}}>
                     <View style={styles.titleBarWrp}>
                         <View style={styles.titleBar}>
                             <Text style={styles.title}>{"IL MIO PROFILO"}</Text>

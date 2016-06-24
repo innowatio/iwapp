@@ -2,7 +2,7 @@ import moment from "moment";
 import {last} from "ramda";
 import React, {Component, PropTypes} from "react";
 import IPropTypes from "react-immutable-proptypes";
-import {View, StyleSheet, Switch} from "react-native";
+import {Dimensions, View, StyleSheet, Switch} from "react-native";
 import shallowCompare from "react-addons-shallow-compare";
 
 import getDailySumConsumption from "../lib/get-daily-sum-consumption";
@@ -18,28 +18,41 @@ const styles = StyleSheet.create({
         marginBottom: 25
     },
     powerContainer: {
-        flexDirection: "column"
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center"
     },
     summaryConsumptionContainer: {
-        flexDirection: "column"
+        flexDirection: "column",
+        justifyContent: "flex-start",
+        alignItems: "stretch"
     },
     summaryConsumption: {
-        flexDirection: "row",
-        margin: 10
+        alignItems: "center",
+        flexDirection: "row"
     },
     consumptionNumber: {
         paddingRight: 5,
-        fontSize: 30,
+        fontSize: 46,
         fontWeight: "bold",
         textAlign: "center",
         color: colors.primaryBlue
     },
     consumptionUnitOfMeasurement: {
-        marginTop: 10,
         color: colors.primaryBlue
     },
+    powerWrp: {
+        borderWidth: 2,
+        borderColor: colors.grey,
+        marginVertical: 4,
+        width: 70,
+        height: 70,
+        borderRadius: 100,
+        justifyContent: "center",
+        alignItems: "center"
+    },
     powerNumber: {
-        fontSize: 30,
+        fontSize: 26,
         textAlign: "center",
         fontWeight: "bold",
         color: colors.powerNumber
@@ -61,10 +74,16 @@ const styles = StyleSheet.create({
         marginLeft: 10
     },
     switchTextHeader: {
-        fontWeight: "bold"
+        fontSize: 15,
+        color: colors.textGrey
     },
     switchText: {
-        fontSize: 12
+        fontSize: 12,
+        color: colors.textGrey
+    },
+    subTitle: {
+        fontSize: 12,
+        color: colors.textGrey
     }
 });
 
@@ -111,20 +130,23 @@ export default class ChartConsumption extends Component {
     }
 
     render () {
+        const {height} = Dimensions.get("window");
         return (
             <View>
-                <View style={styles.consumptionContainer}>
+                <View style={[styles.consumptionContainer, {height: height * 0.16}]}>
                     <View style={styles.summaryConsumptionContainer}>
-                        <Text>{"Consumo di oggi"}</Text>
+                        <Text style={styles.subTitle}>{"Consumo di oggi"}</Text>
                         <View style={styles.summaryConsumption}>
                             <Text style={styles.consumptionNumber}>{this.getSummaryConsumption().toFixed(1)}</Text>
                             <Text style={styles.consumptionUnitOfMeasurement}>{"kWh"}</Text>
                         </View>
                     </View>
                     <View style={styles.powerContainer}>
-                        <Text>{"Potenza attuale"}</Text>
-                        <Text style={styles.powerNumber}>{this.getRealTimePower().toFixed(1)}</Text>
-                        <Text style={styles.powerUnitOfMeasurement}>{"kW"}</Text>
+                        <Text style={styles.subTitle}>{"Potenza attuale"}</Text>
+                        <View style={styles.powerWrp}>
+                            <Text style={styles.powerNumber}>{this.getRealTimePower().toFixed(1)}</Text>
+                            <Text style={styles.powerUnitOfMeasurement}>{"kW"}</Text>
+                        </View>
                     </View>
                 </View>
                 <Highcharts
