@@ -14,6 +14,7 @@ import Weather from "../components/weather";
 import Text from "../components/text-lato";
 import {toggleForecast} from "../actions/home";
 import * as colors from "../lib/colors";
+import {mapWeatherIcon} from "../lib/weather-icon-map";
 
 const styles = StyleSheet.create({
     container: {
@@ -38,6 +39,7 @@ class Home extends Component {
                 day: PropTypes.string
             }))
         }).isRequired,
+        site: PropTypes.object,
         toggleForecast: PropTypes.func.isRequired
     }
 
@@ -91,14 +93,61 @@ class Home extends Component {
         return this.props.collections.get("readings-daily-aggregates") || Map();
     }
 
+    getWeatherRealtimeAggregate () {
+        if (this.props.site) {
+            this.props.asteroid.subscribe("readingsRealTimeAggregatesBySite", this.props.site._id);
+            const realtime = this.props.collections.get("readings-real-time-aggregates");
+            if (realtime) {
+                const weatherId = realtime.find(x => x.get("measurementType") === "weather-id");
+                const weatherCloudness = realtime.find(x => x.get("measurementType") === "weather-cloudness");
+                const weatherHumidity = realtime.find(x => x.get("measurementType") === "weather-humidity");
+                const weatherTemperature = realtime.find(x => x.get("measurementType") === "weather-temperature");
+                return {
+                    cloudness: weatherCloudness ? weatherCloudness.get("measurementValue") : 0,
+                    cloudnessUnit: weatherCloudness ? weatherCloudness.get("unitOfMeasurement") : "%",
+                    humidity: weatherHumidity ? weatherHumidity.get("measurementValue") : 0,
+                    humidityUnit: weatherHumidity ? weatherHumidity.get("unitOfMeasurement") : "%",
+                    temperature: weatherTemperature ? weatherTemperature.get("measurementValue") : 0,
+                    temperatureUnit: weatherTemperature ? weatherTemperature.get("unitOfMeasurement") : "°C",
+                    icon: weatherId ? mapWeatherIcon(weatherId.get("measurementValue")) : "menu"
+                };
+            }
+        }
+        return {
+            cloudness: 0,
+            cloudnessUnit: "%",
+            humidity: 0,
+            humidityUnit: "%",
+            temperature: 0,
+            temperatureUnit: "°C"
+        };
+    }
+
     render () {
         const {height} = Dimensions.get("window");
         const heightSwiper = height * 0.54;
+        const {
+            cloudness,
+            cloudnessUnit,
+            humidity,
+            humidityUnit,
+            icon,
+            temperature,
+            temperatureUnit
+        } = this.getWeatherRealtimeAggregate();
         return (
             <View style={styles.container}>
                 <Content style={{backgroundColor: colors.background}}>
                     <View style={{height: height * 0.34}}>
-                        <Weather />
+                        <Weather
+                            cloudness={cloudness}
+                            cloudnessUnit={cloudnessUnit}
+                            humidity={humidity}
+                            humidityUnit={humidityUnit}
+                            icon={icon}
+                            temperature={temperature}
+                            temperatureUnit={temperatureUnit}
+                        />
                     </View>
                     <Swiper height={heightSwiper} index={1} loop={false} showButtons={true}>
                         <View>
@@ -129,7 +178,8 @@ class Home extends Component {
 function mapStateToProps (state) {
     return {
         collections: state.collections,
-        home: state.home
+        home: state.home,
+        site: state.site
     };
 }
 function mapDispatchToProps (dispatch) {
