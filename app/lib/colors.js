@@ -42,3 +42,10 @@ export const welcomeNotification = "#cddc39";
 export const endPilotNotification = "#12b0c5";
 export const badgeNotification = "#ff8a80";
 export const upgradeNotification = "#ffd600";
+// Statistics
+export const progressBarError = "#eb2953";
+// Alarms
+export const alarmDailyEnergy = "#12b0c5";
+export const alarmMonthlyEnergy = "#cddc39";
+export const alarmSolvedInstantPower = "#79c447";
+export const alarmInstantPower = "#536dfe";

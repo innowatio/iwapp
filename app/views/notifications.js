@@ -30,10 +30,8 @@ const styles = StyleSheet.create({
     },
     notificationsContainer: {
         marginTop: 20,
-        flexDirection: "row",
         justifyContent: "space-around",
-        alignItems: "center",
-        flexWrap: "wrap"
+        alignItems: "center"
     },
     notificationWrp: {
         flexDirection: "row",
@@ -54,8 +52,7 @@ const styles = StyleSheet.create({
     notificationDate: {
         color: colors.lightGrey,
         fontSize: 13,
-        alignSelf: "flex-end",
-        justifyContent: "center"
+        alignSelf: "flex-end"
     }
 });
 
@@ -112,7 +109,7 @@ export default class Notifications extends Component {
         const {width} = Dimensions.get("window");
         return (
             <View key={notification.key} style={styles.notificationWrp}>
-                <View style={[styles.notificationIconWrp, {width: width * 0.18}]}>
+                <View style={{width: width * 0.16}}>
                     <View style={[styles.notificationIcon, {backgroundColor: notification.bgcolor}]}>
                         <Icon
                             color={colors.iconWhite}
@@ -121,12 +118,14 @@ export default class Notifications extends Component {
                         />
                     </View>
                 </View>
-                <Text style={[styles.notificationText, {width: width * 0.65}]}>
-                    {notification.text}
-                </Text>
-                <Text style={styles.notificationDate}>
-                    {notification.date}
-                </Text>
+                <View style={{width: width * 0.74}}>
+                    <Text style={styles.notificationText}>
+                        {notification.text}
+                    </Text>
+                    <Text style={styles.notificationDate}>
+                        {notification.date}
+                    </Text>
+                </View>
             </View>
         );
     }

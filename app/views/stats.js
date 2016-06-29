@@ -5,6 +5,7 @@ import Button from "react-native-button";
 import {connect} from "react-redux";
 import Swiper from "react-native-swiper";
 import {Content} from "native-base";
+import {Actions} from "react-native-router-flux";
 
 import Icon from "../components/iwapp-icons";
 import Text from "../components/text-lato";
@@ -24,12 +25,8 @@ const styles = StyleSheet.create({
         paddingVertical: 5,
         backgroundColor: colors.secondaryBlue
     },
-    titleBar: {
-        borderBottomWidth: 2,
-        borderStyle: "solid",
-        borderBottomColor: colors.buttonPrimary
-    },
     title: {
+        fontWeight: "bold",
         color: colors.white
     },
     tabsContainer: {
@@ -51,7 +48,7 @@ const styles = StyleSheet.create({
 
     // CONTENT
     contentStatsWrp: {
-        padding: 20,
+        paddingVertical: 10,
         alignItems: "center"
     },
     titleSwiper: {
@@ -59,8 +56,25 @@ const styles = StyleSheet.create({
         textAlign: "center"
     },
 
-    // CONSUMPTION CIRCLE
+    // CONSUMPTION Swiper 2
     consumptionWrp: {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "center",
+        marginTop: 5
+    },
+    consumptionValue: {
+        marginRight: 5,
+        color: colors.primaryBlue,
+        fontSize: 50,
+        fontWeight: "bold"
+    },
+    consumptionMeasure: {
+        color: colors.primaryBlue,
+        fontSize: 16
+    },
+    // CONSUMPTION CIRCLE Swiper 1
+    consumptionCircleWrp: {
         backgroundColor: colors.secondaryBlue,
         width: 110,
         height: 110,
@@ -69,21 +83,21 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         marginTop: 5
     },
-    consumptionValue: {
+    consumptionCircleValue: {
         color: colors.white,
-        fontSize: 60,
+        fontSize: 55,
         fontWeight: "bold",
-        lineHeight: 60
+        lineHeight: 55
     },
-    consumptionMeasure: {
+    consumptionCircleMeasure: {
         color: colors.white,
         fontSize: 20
     },
     // CONSUMPTION CIRCLE SMALL
     smallConsumptionWrp: {
         backgroundColor: colors.secondaryBlue,
-        width: 60,
-        height: 60,
+        width: 70,
+        height: 70,
         borderRadius: 100,
         alignItems: "center",
         justifyContent: "center"
@@ -96,7 +110,8 @@ const styles = StyleSheet.create({
     },
     smallConsumptionMeasure: {
         color: colors.white,
-        fontSize: 10
+        fontSize: 11,
+        fontWeight: "bold"
     },
 
     // PROGRESS BAR
@@ -138,8 +153,8 @@ const styles = StyleSheet.create({
     iconAlarmWrp: {
         backgroundColor: colors.primaryBlue,
         borderRadius: 100,
-        width: 40,
-        height: 40,
+        width: 36,
+        height: 36,
         marginRight: 5,
         alignItems: "center",
         justifyContent: "center"
@@ -150,21 +165,43 @@ const styles = StyleSheet.create({
     },
 
     // SUMMARY CONSNUMPTION
-    summaryConsumptionWrp: {
+    summaryConsumptionContainer: {
         flexDirection: "row",
         justifyContent: "center"
     },
-    summaryConsumption: {
+    summaryConsumptionWrp: {
         flexDirection: "column",
         justifyContent: "flex-end",
         alignItems: "center"
     },
-    summaryConsumptionTitle: {
+    consumptionTitle: {
         color: colors.textGrey,
         fontSize: 11,
         textAlign: "center",
-        marginVertical: 5,
-        marginHorizontal: 10
+        marginBottom: 5,
+        marginHorizontal: 15,
+        lineHeight: 13
+    },
+
+    actualPowerWrp: {
+        borderWidth: 2,
+        borderColor: colors.grey,
+        marginVertical: 4,
+        width: 70,
+        height: 70,
+        borderRadius: 100,
+        alignItems: "center",
+        justifyContent: "center"
+    },
+    actualPowerValue: {
+        fontSize: 26,
+        textAlign: "center",
+        fontWeight: "bold",
+        color: colors.powerNumber
+    },
+    actualPowerMeasure: {
+        color: colors.powerNumber,
+        textAlign: "center"
     }
 });
 
@@ -173,7 +210,7 @@ class Stats extends Component {
     constructor (props) {
         super(props);
         this.state = {
-            period: ""
+            period: "DAY"
         };
     }
 
@@ -189,7 +226,7 @@ class Stats extends Component {
         return [
             {color: colors.secondaryBlue, title: "IERI", key: "yesterday", value: 1, percentage: "100", consumption: 175},
             {color: colors.secondaryBlue, title: "MERCOLEDÍ SCORSO", key: "last wednesday", value: 0.3, percentage: "30", consumption: 80},
-            {color: colors.secondaryBlue, title: "MEDIA DEI MERCOLEDÍ", key: "average of wednesday ", value: 0.8, percentage: "80", consumption: 146}
+            {color: colors.progressBarError, title: "MEDIA DEI MERCOLEDÍ", key: "average of wednesday ", value: 0.8, percentage: "80", consumption: 146}
         ];
     }
 
@@ -200,23 +237,23 @@ class Stats extends Component {
         ];
     }
 
-    setTabState () {
-        this.setState({period: "DAY"});
+    setTabState (tab) {
+        this.setState({period: tab});
     }
 
     renderTabs () {
         return (
             <View style={styles.tabsContainer}>
-                <Button containerStyle={(this.state.period === "DAY" ? styles.tabWrpActive : {})} onPress={::this.setTabState}>
+                <Button containerStyle={(this.state.period === "DAY" ? styles.tabWrpActive : {})} onPress={() => this.setTabState("DAY")}>
                     <Text style={styles.tabTitle}>{"GIORNO"}</Text>
                 </Button>
-                <Button containerStyle={(this.state.period === "WEEK" ? styles.tabWrpActive : {})} onPress={::this.setTabState}>
+                <Button containerStyle={(this.state.period === "WEEK" ? styles.tabWrpActive : {})} onPress={() => this.setTabState("WEEK")}>
                     <Text style={styles.tabTitle}>{"SETTIMANA"}</Text>
                 </Button>
-                <Button containerStyle={(this.state.period === "MONTH" ? styles.tabWrpActive : {})} onPress={::this.setTabState}>
+                <Button containerStyle={(this.state.period === "MONTH" ? styles.tabWrpActive : {})} onPress={() => this.setTabState("MONTH")}>
                     <Text style={styles.tabTitle}>{"MESE"}</Text>
                 </Button>
-                <Button containerStyle={(this.state.period === "YEAR" ? styles.tabWrpActive : {})} onPress={::this.setTabState}>
+                <Button containerStyle={(this.state.period === "YEAR" ? styles.tabWrpActive : {})} onPress={() => this.setTabState("YEAR")}>
                     <Text style={styles.tabTitle}>{"ANNO"}</Text>
                 </Button>
             </View>
@@ -235,44 +272,65 @@ class Stats extends Component {
     }
 
     renderSwiper1 () {
-        if (this.state.period === "DAY") {
-            return (
-                <View style={styles.contentStatsWrp}>
-                    <Text style={styles.titleSwiper}>{"OGGI HAI UTILIZZATO"}</Text>
-                    <View style={styles.consumptionWrp}>
-                        <Text style={styles.consumptionValue}>{"48"}</Text>
-                        <Text style={styles.consumptionMeasure}>{"kWh"}</Text>
-                    </View>
-                    {this.getProgressBar().map(this.renderProgressBar)}
-                    {this.renderAlarmSettings()}
-                    <View style={styles.summaryConsumptionWrp}>
-                        {this.getSummaryConsumption().map(this.renderSummaryConsumption)}
-                    </View>
+        return (
+            <View style={styles.contentStatsWrp}>
+                <Text style={styles.titleSwiper}>{"OGGI HAI UTILIZZATO"}</Text>
+                <View style={styles.consumptionCircleWrp}>
+                    <Text style={styles.consumptionCircleValue}>{"48"}</Text>
+                    <Text style={styles.consumptionCircleMeasure}>{"kWh"}</Text>
                 </View>
-            );
-        }
+                {this.getProgressBar().map(this.renderProgressBar)}
+                {this.renderAlarmSettings()}
+                <View style={styles.summaryConsumptionContainer}>
+                    {this.getSummaryConsumption().map(this.renderSummaryConsumption)}
+                </View>
+            </View>
+        );
     }
 
     renderSwiper2 () {
-        if (this.state.period === "DAY") {
-            return (
-                <View style={styles.contentStatsWrp}>
-                    <Text style={styles.titleSwiper}>{"OGGI HAI UTILIZZATO"}</Text>
+        const {width} = Dimensions.get("window");
+        return (
+            <View style={styles.contentStatsWrp}>
+                <Text style={styles.titleSwiper}>{"OGGI HAI UTILIZZATO"}</Text>
+                <View style={styles.consumptionWrp}>
+                    <Text style={styles.consumptionValue}>{"11,2"}</Text>
+                    <Text style={styles.consumptionMeasure}>{"kWh"}</Text>
                 </View>
-            );
-        }
+                <View><Text>{"\n\n\n\n"}</Text></View>
+                <View style={styles.summaryConsumptionContainer}>
+                    <View key={"Daily Threshold"} style={[styles.summaryConsumptionWrp, {width: width * 0.5}]}>
+                        <Text style={styles.consumptionTitle}>{"Superamento soglia contrattuale giornaliera"}</Text>
+                        <View style={styles.smallConsumptionWrp}>
+                            <Text style={styles.smallConsumptionValue}>{"3"}</Text>
+                            <Text style={styles.smallConsumptionMeasure}>{"volte"}</Text>
+                        </View>
+                    </View>
+                    <View key={"Actual Power"} style={[styles.summaryConsumptionWrp, {width: width * 0.5}]}>
+                        <Text style={styles.consumptionTitle}>{"Potenza attuale"}</Text>
+                        <View style={styles.actualPowerWrp}>
+                            <Text style={styles.actualPowerValue}>{"17,3"}</Text>
+                            <Text style={styles.actualPowerMeasure}>{"kW"}</Text>
+                        </View>
+                    </View>
+                </View>
+            </View>
+        );
     }
 
     renderAlarmSettings () {
         const {width} = Dimensions.get("window");
         return (
             <View style={[styles.alarmsButtonWrp, {width: width}]}>
-                <TouchableOpacity style={[styles.alarmsButton, {width: width * 0.9}]} transparent={true}>
+                <TouchableOpacity
+                    onPress={() => Actions.alarmsSettings()}
+                    style={[styles.alarmsButton, {width: width * 0.9}]}
+                >
                     <View style={styles.iconAlarmWrp}>
                         <Icon
                             color={colors.iconWhite}
                             name={"iw-alert"}
-                            size={28}
+                            size={24}
                         />
                     </View>
                     <Text style={styles.alarmsButtonText}>{"Imposta allarmi"}</Text>
@@ -284,8 +342,8 @@ class Stats extends Component {
     renderSummaryConsumption (getSummaryConsumption) {
         const {width} = Dimensions.get("window");
         return (
-            <View key={getSummaryConsumption.key} style={[styles.summaryConsumption, {width: width * 0.5}]}>
-                <Text style={styles.summaryConsumptionTitle}>{getSummaryConsumption.title}</Text>
+            <View key={getSummaryConsumption.key} style={[styles.summaryConsumptionWrp, {width: width * 0.5}]}>
+                <Text style={styles.consumptionTitle}>{getSummaryConsumption.title}</Text>
                 <View style={styles.smallConsumptionWrp}>
                     <Text style={styles.smallConsumptionValue}>{getSummaryConsumption.value}</Text>
                     <Text style={styles.smallConsumptionMeasure}>{"kWh"}</Text>
@@ -330,9 +388,7 @@ class Stats extends Component {
                 <Content style={{backgroundColor: colors.background, height: height}}>
                     <View>
                         <View style={styles.titleBarWrp}>
-                            <View style={styles.titleBar}>
-                                <Text style={styles.title}>{"STATISTICHE"}</Text>
-                            </View>
+                            <Text style={styles.title}>{"STATISTICHE"}</Text>
                         </View>
                         {this.renderTabs()}
                     </View>
@@ -345,6 +401,7 @@ class Stats extends Component {
 
 function mapStateToProps (state) {
     return {
+        home: state.home,
         collections: state.collections
     };
 }
