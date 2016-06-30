@@ -88,11 +88,21 @@ const styles = StyleSheet.create({
 export default class InfoConsumption extends Component {
 
     static propTypes = {
+        consumptionsMean: PropTypes.string.isRequired,
+        consumptionsMeanUnit: PropTypes.string.isRequired,
+        consumptionsSimilar: PropTypes.string.isRequired,
+        consumptionsSimilarUnit: PropTypes.string.isRequired,
         heightSwiper: PropTypes.number.isRequired
     }
 
     render () {
         const {width} = Dimensions.get("window");
+        const {
+            consumptionsMean,
+            consumptionsMeanUnit,
+            consumptionsSimilar,
+            consumptionsSimilarUnit
+        } = this.props;
         return (
             <View style={[styles.container, {height: this.props.heightSwiper}]}>
                 <View style={[styles.infoAndConsumptionContainer]}>
@@ -106,13 +116,13 @@ export default class InfoConsumption extends Component {
                     </View>
                     <View style={styles.meanConsumptionContainer}>
                         <View style={styles.numberMeanTextContainer}>
-                            <Text style={styles.textNumber}>{"23.2"}</Text>
-                            <Text style={styles.textUnitOfMeasurement}>{"kWh"}</Text>
+                            <Text style={styles.textNumber}>{consumptionsMean}</Text>
+                            <Text style={styles.textUnitOfMeasurement}>{consumptionsMeanUnit}</Text>
                         </View>
                         <Text style={styles.textStandard}>{"Media dei miei\nconsumi giornalieri"}</Text>
                         <View style={[styles.numberOtherMeanTextContainer]}>
-                            <Text style={styles.textNumber}>{"22.7"}</Text>
-                            <Text style={styles.textUnitOfMeasurement}>{"kWh"}</Text>
+                            <Text style={styles.textNumber}>{consumptionsSimilar}</Text>
+                            <Text style={styles.textUnitOfMeasurement}>{consumptionsSimilarUnit}</Text>
                         </View>
                         <Text style={styles.textStandard}>{"Media dei consumi\ngiornalieri di attività simili"}</Text>
                     </View>

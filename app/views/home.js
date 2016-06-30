@@ -93,7 +93,31 @@ class Home extends Component {
         return this.props.collections.get("readings-daily-aggregates") || Map();
     }
 
-    getWeatherRealtimeAggregate () {
+    getInfoConsumptionsData () {
+        if (this.props.site) {
+            const yearConsumptions = this.getConsumptionAggregate().get(`${this.props.site._id}-${moment().year()}-reading-activeEnergy`);
+            if (yearConsumptions) {
+                const measurements = yearConsumptions.get("measurementValues").split(",") ;
+                const measurementsTotal = measurements.reduce((prev, current) => {
+                    return prev + parseFloat(current);
+                }, 0);
+                return {
+                    consumptionsMean: (measurementsTotal / measurements.length).toFixed(2),
+                    consumptionsMeanUnit: yearConsumptions.get("unitOfMeasurement"),
+                    consumptionsSimilar: (measurementsTotal / measurements.length - 2.8).toFixed(2),
+                    consumptionsSimilarUnit: yearConsumptions.get("unitOfMeasurement")
+                };
+            }
+        }
+        return {
+            consumptionsMean: "0",
+            consumptionsMeanUnit: "kWh",
+            consumptionsSimilar: "0",
+            consumptionsSimilarUnit: "kWh"
+        };
+    }
+
+    getWeatherData () {
         if (this.props.site) {
             this.props.asteroid.subscribe("readingsRealTimeAggregatesBySite", this.props.site._id);
             const realtime = this.props.collections.get("readings-real-time-aggregates");
@@ -126,35 +150,19 @@ class Home extends Component {
     render () {
         const {height} = Dimensions.get("window");
         const heightSwiper = height * 0.54;
-        const {
-            cloudness,
-            cloudnessUnit,
-            humidity,
-            humidityUnit,
-            icon,
-            temperature,
-            temperatureUnit
-        } = this.getWeatherRealtimeAggregate();
-        console.log(12345);
-        console.log(icon);
         return (
             <View style={styles.container}>
                 <Content style={{backgroundColor: colors.background}}>
                     <View style={{height: height * 0.34}}>
                         <Weather
-                            cloudness={cloudness}
-                            cloudnessUnit={cloudnessUnit}
-                            humidity={humidity}
-                            humidityUnit={humidityUnit}
-                            icon={icon}
-                            temperature={temperature}
-                            temperatureUnit={temperatureUnit}
+                            {...this.getWeatherData()}
                         />
                     </View>
                     <Swiper height={heightSwiper} index={1} loop={false} showButtons={true}>
                         <View>
                             <InfoConsumption
                                 heightSwiper={heightSwiper}
+                                {...this.getInfoConsumptionsData()}
                             />
                         </View>
                         <View>
