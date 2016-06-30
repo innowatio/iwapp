@@ -109,7 +109,7 @@ class Home extends Component {
                     humidityUnit: weatherHumidity ? weatherHumidity.get("unitOfMeasurement") : "%",
                     temperature: weatherTemperature ? weatherTemperature.get("measurementValue") : 0,
                     temperatureUnit: weatherTemperature ? weatherTemperature.get("unitOfMeasurement") : "°C",
-                    icon: weatherId ? mapWeatherIcon(weatherId.get("measurementValue")) : "menu"
+                    icon: weatherId ? mapWeatherIcon(weatherId.get("measurementValue")) : "iw-clouds"
                 };
             }
         }
@@ -135,6 +135,8 @@ class Home extends Component {
             temperature,
             temperatureUnit
         } = this.getWeatherRealtimeAggregate();
+        console.log(12345);
+        console.log(icon);
         return (
             <View style={styles.container}>
                 <Content style={{backgroundColor: colors.background}}>
