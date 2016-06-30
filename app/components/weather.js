@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
         color: colors.white,
         backgroundColor: colors.transparent,
         marginTop: 5,
-        marginBottom: 45,
+        marginBottom: 35,
         fontSize: 16,
         fontWeight: "bold",
         textAlign: "center",
@@ -30,13 +30,8 @@ const styles = StyleSheet.create({
         backgroundColor: colors.backgroundBlackOpacity
     },
     iconWrp: {
-        flexDirection: "row",
-        alignItems: "stretch",
-        justifyContent: "space-around",
-        height: 80
-    },
-    icon: {
-        height: 75
+        height: 85,
+        alignItems: "center"
     },
     climateVariablesWrp: {
         flexDirection: "row",
@@ -44,7 +39,7 @@ const styles = StyleSheet.create({
         justifyContent: "space-around"
     },
     climateVariables: {
-        paddingHorizontal: 10
+        paddingHorizontal: 12
     },
     labelPercentage: {
         color: colors.white,
@@ -58,20 +53,23 @@ const styles = StyleSheet.create({
         textAlign: "center"
     },
     textDegreesWrp: {
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center"
+        flexDirection: "row",
+        height: 85
+    },
+    textDegreesValue: {
+        color: colors.white,
+        fontSize: 66,
+        fontWeight: "bold"
     },
     textDegrees: {
         color: colors.white,
-        fontSize: 66,
-        height: 80,
-        textAlign: "center",
+        fontSize: 30,
+        alignSelf: "center",
         fontWeight: "bold"
     },
     textDescDegrees: {
         color: colors.white,
-        fontSize: 14,
+        fontSize: 13,
         marginRight: 15,
         textAlign: "center"
     }
@@ -114,8 +112,7 @@ export default class Weather extends Component {
                                 <Icon
                                     color={colors.iconWhite}
                                     name={`${icon}`}
-                                    size={95}
-                                    style={styles.icon}
+                                    size={90}
                                 />
                             ) : null}
                         </View>
@@ -134,8 +131,11 @@ export default class Weather extends Component {
                             </View>
                         </View>
                     </View>
-                    <View style={styles.textDegreesWrp}>
-                        <Text style={styles.textDegrees}>{`${temperature} ${temperatureUnit ? temperatureUnit : "°C"}`}</Text>
+                    <View>
+                        <View style={styles.textDegreesWrp}>
+                            <Text style={styles.textDegreesValue}>{`${temperature}`}</Text>
+                            <Text style={styles.textDegrees}>{`${temperatureUnit ? temperatureUnit : ""}`}</Text>
+                        </View>
                         <Text style={styles.textDescDegrees}>
                             {"TEMPERATURA \n ESTERNA"}
                         </Text>
