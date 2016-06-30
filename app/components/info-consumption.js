@@ -38,6 +38,9 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center"
     },
+    iconGreen: {
+        backgroundColor: colors.transparent
+    },
     textNumber: {
         paddingRight: 5,
         fontSize: 34,

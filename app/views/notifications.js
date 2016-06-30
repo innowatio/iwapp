@@ -115,6 +115,7 @@ export default class Notifications extends Component {
                             color={colors.iconWhite}
                             name={notification.icon}
                             size={40}
+                            style={{backgroundColor: colors.transparent}}
                         />
                     </View>
                 </View>

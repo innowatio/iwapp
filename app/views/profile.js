@@ -168,6 +168,7 @@ class Profile extends Component {
                         color={colors.iconWhite}
                         name="iw-edit"
                         size={16}
+                        style={{backgroundColor: colors.transparent}}
                     />
                 </TouchableOpacity>
                 <View style={styles.userInfoWrp}>
@@ -186,6 +187,7 @@ class Profile extends Component {
                         color={colors.iconWhite}
                         name="iw-edit"
                         size={23}
+                        style={{backgroundColor: colors.transparent}}
                     />
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.iconOptionsWrp} transparent={true}>
@@ -193,6 +195,7 @@ class Profile extends Component {
                         color={colors.iconWhite}
                         name="iw-gauge"
                         size={23}
+                        style={{backgroundColor: colors.transparent}}
                     />
                 </TouchableOpacity>
             </View>
