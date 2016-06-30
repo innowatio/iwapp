@@ -88,8 +88,8 @@ export default class Weather extends Component {
     }
 
     getGreeting () {
-        const hours = parseInt(moment.utc().format("HH"));
-        return hours > 17 ? "Buonasera" : "Buongiorno";
+        const hours = parseInt(moment().format("HH"));
+        return hours > 17 ? "Buonasera!" : "Buongiorno!";
     }
 
     render () {

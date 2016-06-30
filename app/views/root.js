@@ -160,8 +160,6 @@ class Root extends Component {
 }
 
 function mapStateToProps (state) {
-    console.log(1231312313122);
-    console.log(state);
     return {
         collections: state.collections,
         navigationScene: state.navigation,

@@ -2,6 +2,7 @@ import moment from "moment";
 import {combineReducers} from "redux";
 
 import {TOGGLE_FORECAST} from "../actions/home";
+import {SELECT_SITE} from "../actions/site";
 
 const defaultChartState = [{
     day: moment.utc().format("YYYY-MM-DD"),
@@ -18,6 +19,14 @@ function charts (state = defaultChartState, {type, payload}) {
                 ...state[0],
                 source
             }));
+        }
+        case SELECT_SITE: {
+            return state.map(old => {
+                return {
+                    ...old,
+                    sensorId: payload._id
+                };
+            });
         }
         default:
             return state;

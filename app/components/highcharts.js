@@ -57,8 +57,6 @@ export default class Highcharts extends Component {
     }
 
     getChartConfig () {
-        console.log(moment(this.props.charts[0].day).startOf("day").toDate());
-        console.log(moment(this.props.charts[0].day).endOf("day").toDate());
         return {
             chart: {
                 renderTo: "chart",
