@@ -93,7 +93,7 @@ export default class SideMenu extends Component {
             }, {
                 icon: "badge",
                 title: "Badgeboard",
-                navigateTo: "home"
+                navigateTo: "badgeboard"
             }, {
                 icon: "lightbulb",
                 title: "Risparmio energetico",

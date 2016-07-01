@@ -7,6 +7,7 @@ export const lineForecast = "#a8e1d4";
 export const lineReading = "#3E50B4";
 export const loginTextBackground = "rgba(0, 0, 0, 0.2)";
 export const titleLightBackground = "#eeeeee";
+export const backgroundModal = "rgba(255, 255, 255, 0.6)";
 // FIXME: https://github.com/facebook/react-native/issues/3652
 export const loginTextBorder = "#979fd1";
 // export const loginTextBorder = "rgba(255, 255, 255, 0.5)";
@@ -49,3 +50,5 @@ export const alarmDailyEnergy = "#12b0c5";
 export const alarmMonthlyEnergy = "#cddc39";
 export const alarmSolvedInstantPower = "#79c447";
 export const alarmInstantPower = "#536dfe";
+// Badgeboard
+export const backgroundBageboard = "#f5f5f5";

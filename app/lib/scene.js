@@ -4,6 +4,7 @@ import {Router, Scene, Reducer} from "react-native-router-flux";
 import asteroid from "./asteroid";
 import Home from "../views/home";
 import Stats from "../views/stats";
+import Badgeboard from "../views/badgeboard";
 import AlarmsSettings from "../views/alarms-settings";
 import Profile from "../views/profile";
 import Notifications from "../views/notifications";
@@ -40,7 +41,7 @@ const scene = (
             <Scene component={Home} key="home" />
             <Scene component={Stats} key="stats" />
             <Scene component={Stats} key="smart" />
-            <Scene component={Stats} key="badgeboard" />
+            <Scene component={Badgeboard} key="badgeboard" />
             <Scene component={Stats} key="energy" />
             <Scene component={Stats} key="report" />
             <Scene component={Profile} key="profile" />
