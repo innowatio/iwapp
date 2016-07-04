@@ -1,9 +1,11 @@
+import {Map} from "immutable";
 import {Content} from "native-base";
-import React, {Component} from "react";
+import React, {Component, PropTypes} from "react";
 import {Dimensions, StyleSheet, TouchableOpacity, View} from "react-native";
 import * as Progress from "react-native-progress";
 import {Actions} from "react-native-router-flux";
 import ImagePicker from "react-native-image-picker";
+import {connect} from "react-redux";
 
 import Icon from "../components/iwapp-icons";
 import * as colors from "../lib/colors";
@@ -145,11 +147,25 @@ const styles = StyleSheet.create({
 
 class Profile extends Component {
 
+    static propTypes = {
+        asteroid: PropTypes.object.isRequired,
+        collections: PropTypes.object.isRequired,
+        userId: PropTypes.string
+    }
+
     constructor (props) {
         super(props);
         this.state = {
             avatarSource: {}
         };
+    }
+
+    componentDidMount () {
+        this.props.asteroid.subscribe("users");
+    }
+
+    getUser () {
+        return this.props.collections.getIn(["users", this.props.userId]) || Map();
     }
 
     getQuestionnaires () {
@@ -200,10 +216,12 @@ class Profile extends Component {
     }
 
     renderUserImage () {
+        const username = this.getUser().getIn(["profile", "username"]) || "";
+        const email = this.getUser().getIn(["emails", "0", "address"]) || "";
         return (
             <View style={styles.userPhotoWrp}>
                 <View style={styles.photoWrp}>
-                    <Text style={styles.textPhoto}>{"C"}</Text>
+                    <Text style={styles.textPhoto}>{(username[0] || email[0]).toUpperCase()}</Text>
                 </View>
                 <TouchableOpacity
                     onPress={() => this.showImagePicker()}
@@ -218,8 +236,8 @@ class Profile extends Component {
                     />
                 </TouchableOpacity>
                 <View style={styles.userInfoWrp}>
-                    <Text style={styles.textUser}>{"Username"}</Text>
-                    <Text style={styles.textEmail}>{"username@email.com"}</Text>
+                    <Text style={styles.textUser}>{username}</Text>
+                    <Text style={styles.textEmail}>{email}</Text>
                 </View>
             </View>
         );
@@ -322,4 +340,10 @@ class Profile extends Component {
     }
 }
 
-export default Profile;
+function mapStateToProps (state) {
+    return {
+        collections: state.collections,
+        userId: state.userId
+    };
+}
+export default connect(mapStateToProps)(Profile);
