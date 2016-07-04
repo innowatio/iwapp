@@ -4,6 +4,7 @@ import {Router, Scene, Reducer} from "react-native-router-flux";
 import asteroid from "./asteroid";
 import Home from "../views/home";
 import Stats from "../views/stats";
+import AlarmsSettings from "../views/alarms-settings";
 import Profile from "../views/profile";
 import Notifications from "../views/notifications";
 import ModifyProfile from "../views/modify-profile";
@@ -45,6 +46,7 @@ const scene = (
             <Scene component={Profile} key="profile" />
             <Scene component={Notifications} key="notifications" />
             <Scene component={ModifyProfile} key="modifyProfile" />
+            <Scene component={AlarmsSettings} key="alarmsSettings" />
         </Scene>
     </Router>
 );

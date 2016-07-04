@@ -1,5 +1,6 @@
-import React, {Component} from "react";
+import React, {Component, PropTypes} from "react";
 import {Image, StyleSheet, View} from "react-native";
+import moment from "moment";
 
 import Icon from "./iwapp-icons";
 import Text from "./text-lato";
@@ -15,7 +16,7 @@ const styles = StyleSheet.create({
         color: colors.white,
         backgroundColor: colors.transparent,
         marginTop: 5,
-        marginBottom: 45,
+        marginBottom: 35,
         fontSize: 16,
         fontWeight: "bold",
         textAlign: "center",
@@ -29,13 +30,8 @@ const styles = StyleSheet.create({
         backgroundColor: colors.backgroundBlackOpacity
     },
     iconWrp: {
-        flexDirection: "row",
-        alignItems: "stretch",
-        justifyContent: "space-around",
-        height: 80
-    },
-    icon: {
-        height: 75
+        height: 85,
+        alignItems: "center"
     },
     climateVariablesWrp: {
         flexDirection: "row",
@@ -43,7 +39,7 @@ const styles = StyleSheet.create({
         justifyContent: "space-around"
     },
     climateVariables: {
-        paddingHorizontal: 10
+        paddingHorizontal: 12
     },
     labelPercentage: {
         color: colors.white,
@@ -57,20 +53,23 @@ const styles = StyleSheet.create({
         textAlign: "center"
     },
     textDegreesWrp: {
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center"
+        flexDirection: "row",
+        height: 85
+    },
+    textDegreesValue: {
+        color: colors.white,
+        fontSize: 66,
+        fontWeight: "bold"
     },
     textDegrees: {
         color: colors.white,
-        fontSize: 66,
-        height: 80,
-        textAlign: "center",
+        fontSize: 30,
+        alignSelf: "center",
         fontWeight: "bold"
     },
     textDescDegrees: {
         color: colors.white,
-        fontSize: 14,
+        fontSize: 13,
         marginRight: 15,
         textAlign: "center"
     }
@@ -78,37 +77,65 @@ const styles = StyleSheet.create({
 
 export default class Weather extends Component {
 
+    static propTypes = {
+        cloudness: PropTypes.number.isRequired,
+        cloudnessUnit: PropTypes.string,
+        humidity: PropTypes.number.isRequired,
+        humidityUnit: PropTypes.string,
+        icon: PropTypes.string,
+        temperature: PropTypes.number.isRequired,
+        temperatureUnit: PropTypes.string
+    }
+
+    getGreeting () {
+        const hours = parseInt(moment().format("HH"));
+        return hours > 17 ? "Buonasera!" : "Buongiorno!";
+    }
+
     render () {
+        const {
+            cloudness,
+            cloudnessUnit,
+            humidity,
+            humidityUnit,
+            icon,
+            temperature,
+            temperatureUnit
+        } = this.props;
         return (
             <Image source={require("../assets/img/bg_meteo.png")} style={styles.backgroundImage}>
-                <Text style={styles.textHello}>{"Buongiorno!"}</Text>
+                <Text style={styles.textHello}>{this.getGreeting()}</Text>
                 <View style={styles.weatherWrp}>
                     <View>
                         <View style={styles.iconWrp}>
-                            <Icon
-                                color={colors.iconWhite}
-                                name="iw-clouds"
-                                size={95}
-                                style={styles.icon}
-                            />
+                            {icon ? (
+                                <Icon
+                                    color={colors.iconWhite}
+                                    name={`${icon}`}
+                                    size={90}
+                                />
+                            ) : null}
                         </View>
                         <View style={styles.climateVariablesWrp}>
                             <View style={styles.climateVariables}>
                                 <Text style={styles.labelPercentage}>
                                     {"UMIDITA'"}
                                 </Text>
-                                <Text style={styles.textPercentage}>{"100%"}</Text>
+                                <Text style={styles.textPercentage}>{`${humidity} ${humidityUnit ? humidityUnit : "%"}`}</Text>
                             </View>
                             <View style={styles.climateVariables}>
                                 <Text style={styles.labelPercentage}>
                                     {"NUVOLOSITA'"}
                                 </Text>
-                                <Text style={styles.textPercentage}>{"100%"}</Text>
+                                <Text style={styles.textPercentage}>{`${cloudness} ${cloudnessUnit ? cloudnessUnit : "%"}`}</Text>
                             </View>
                         </View>
                     </View>
-                    <View style={styles.textDegreesWrp}>
-                        <Text style={styles.textDegrees}>{"20°"}</Text>
+                    <View>
+                        <View style={styles.textDegreesWrp}>
+                            <Text style={styles.textDegreesValue}>{`${temperature}`}</Text>
+                            <Text style={styles.textDegrees}>{`${temperatureUnit ? temperatureUnit : ""}`}</Text>
+                        </View>
                         <Text style={styles.textDescDegrees}>
                             {"TEMPERATURA \n ESTERNA"}
                         </Text>

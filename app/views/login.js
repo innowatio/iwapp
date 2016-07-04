@@ -171,7 +171,7 @@ export default class Login extends Component {
                         size={150}
                         style={styles.logoIcon}
                     />
-                    <Text style={styles.logoTitle}>{"e-coach"}</Text>
+                    <Text style={styles.logoTitle}>{"Lucy"}</Text>
                     <Text style={styles.logoDescription}>{"innowatio"}</Text>
                     {this.renderErrorLogin()}
                     <View style={styles.inputWrp}>

@@ -214,6 +214,7 @@ class Profile extends Component {
                         color={colors.iconWhite}
                         name="iw-edit"
                         size={16}
+                        style={{backgroundColor: colors.transparent}}
                     />
                 </TouchableOpacity>
                 <View style={styles.userInfoWrp}>
@@ -232,6 +233,7 @@ class Profile extends Component {
                         color={colors.iconWhite}
                         name="iw-edit"
                         size={23}
+                        style={{backgroundColor: colors.transparent}}
                     />
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.iconOptionsWrp} transparent={true}>
@@ -239,6 +241,7 @@ class Profile extends Component {
                         color={colors.iconWhite}
                         name="iw-gauge"
                         size={23}
+                        style={{backgroundColor: colors.transparent}}
                     />
                 </TouchableOpacity>
             </View>
@@ -296,7 +299,7 @@ class Profile extends Component {
         const {height} = Dimensions.get("window");
         return (
             <View style={styles.container}>
-                <Content style={{backgroundColor: colors.background}}>
+                <Content style={{backgroundColor: colors.background, height: height}}>
                     <View style={styles.titleBarWrp}>
                         <View style={styles.titleBar}>
                             <Text style={styles.title}>{"IL MIO PROFILO"}</Text>

@@ -52,9 +52,10 @@ class Root extends Component {
     componentDidMount () {
         asteroid.on("loggedIn", this.props.onLogin);
         asteroid.on("loggedOut", this.props.onLogout);
-        asteroid.ddp.on("added", ({collection, fields}) => {
+        asteroid.ddp.on("added", ({collection, fields, id}) => {
             if (collection == "sites" && !this.props.site) {
                 this.props.selectSite({
+                    _id: id,
                     title: fields.name,
                     ...fields
                 });
@@ -96,7 +97,7 @@ class Root extends Component {
         return sites.map(value => {
             return {
                 title: value.get("name"),
-                value: value.toJS()
+                ...value.toJS()
             };
         }).toArray();
     }
@@ -159,8 +160,6 @@ class Root extends Component {
 }
 
 function mapStateToProps (state) {
-    console.log(1231312313122);
-    console.log(state);
     return {
         collections: state.collections,
         navigationScene: state.navigation,
