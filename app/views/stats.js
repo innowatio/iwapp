@@ -1,15 +1,19 @@
-import React, {Component} from "react";
+import {Map} from "immutable";
+import moment from "moment";
+import {Content} from "native-base";
+import React, {Component, PropTypes} from "react";
+import IPropTypes from "react-immutable-proptypes";
 import {Dimensions, View, StyleSheet, TouchableOpacity} from "react-native";
 import * as Progress from "react-native-progress";
 import Button from "react-native-button";
 import {connect} from "react-redux";
 import Swiper from "react-native-swiper";
-import {Content} from "native-base";
 import {Actions} from "react-native-router-flux";
 
 import Icon from "../components/iwapp-icons";
 import Text from "../components/text-lato";
 import * as colors from "../lib/colors";
+import {getTitleAndSubtitle} from "../lib/consumptions-utils";
 
 const styles = StyleSheet.create({
     container: {
@@ -85,13 +89,12 @@ const styles = StyleSheet.create({
     },
     consumptionCircleValue: {
         color: colors.white,
-        fontSize: 55,
         fontWeight: "bold",
-        lineHeight: 55
+        lineHeight: 35
     },
     consumptionCircleMeasure: {
         color: colors.white,
-        fontSize: 20
+        fontSize: 15
     },
     // CONSUMPTION CIRCLE SMALL
     smallConsumptionWrp: {
@@ -182,7 +185,6 @@ const styles = StyleSheet.create({
         marginHorizontal: 15,
         lineHeight: 13
     },
-
     actualPowerWrp: {
         borderWidth: 2,
         borderColor: colors.grey,
@@ -207,11 +209,25 @@ const styles = StyleSheet.create({
 
 class Stats extends Component {
 
+    static propTypes = {
+        asteroid: PropTypes.object.isRequired,
+        collections: IPropTypes.map.isRequired,
+        site: PropTypes.object
+    }
+
     constructor (props) {
         super(props);
         this.state = {
-            period: "DAY"
+            period: "day"
         };
+    }
+
+    componentDidMount () {
+        this.subscribeToMeasurements(this.props);
+    }
+
+    componentWillReceiveProps (nextProps) {
+        this.subscribeToMeasurements(nextProps);
     }
 
     getButtonStyle (buttonType) {
@@ -222,70 +238,105 @@ class Stats extends Component {
         }
     }
 
-    getProgressBar () {
-        return [
-            {color: colors.secondaryBlue, title: "IERI", key: "yesterday", value: 1, percentage: "100", consumption: 175},
-            {color: colors.secondaryBlue, title: "MERCOLEDÍ SCORSO", key: "last wednesday", value: 0.3, percentage: "30", consumption: 80},
-            {color: colors.progressBarError, title: "MEDIA DEI MERCOLEDÍ", key: "average of wednesday ", value: 0.8, percentage: "80", consumption: 146}
-        ];
-    }
-
-    getSummaryConsumption () {
-        return [
-            {title: "Media consumi giornalieri di attività simili", key: "average", value: "38"},
-            {title: "Consumi in standby", key: "standby", value: "500"}
-        ];
+    getConsumptionAggregate () {
+        return this.props.collections.get("consumptions-yearly-aggregates") || Map();
     }
 
     setTabState (tab) {
         this.setState({period: tab});
     }
 
-    renderTabs () {
+    subscribeToMeasurements (props) {
+        props.asteroid.subscribe(
+            "yearlyConsumptions",
+            props.site._id,
+            moment.utc().year().toString(),
+            "reading",
+            "activeEnergy"
+        );
+        props.asteroid.subscribe(
+            "yearlyConsumptions",
+            props.site._id,
+            (moment.utc().year() - 1).toString(),
+            "reading",
+            "activeEnergy"
+        );
+    }
+
+    mapNumberFontSize (number) {
+        var fontSize = 40;
+        if (number > 999) {
+            fontSize = 32;
+        }
+        if (number > 9999) {
+            fontSize = 27;
+        }
+        return fontSize;
+    }
+
+    renderSummaryConsumption (consumptions, unit) {
+        const {width} = Dimensions.get("window");
+        return consumptions.map(consumption => {
+            return (
+                <View key={consumption.key} style={[styles.summaryConsumptionWrp, {width: width * 0.5}]}>
+                    <Text style={styles.consumptionTitle}>{consumption.title}</Text>
+                    <View style={styles.smallConsumptionWrp}>
+                        <Text style={styles.smallConsumptionValue}>{1}</Text>
+                        <Text style={styles.smallConsumptionMeasure}>{unit}</Text>
+                    </View>
+                </View>
+            );
+        });
+    }
+
+    renderAlarmSettings () {
+        const {width} = Dimensions.get("window");
         return (
-            <View style={styles.tabsContainer}>
-                <Button containerStyle={(this.state.period === "DAY" ? styles.tabWrpActive : {})} onPress={() => this.setTabState("DAY")}>
-                    <Text style={styles.tabTitle}>{"GIORNO"}</Text>
-                </Button>
-                <Button containerStyle={(this.state.period === "WEEK" ? styles.tabWrpActive : {})} onPress={() => this.setTabState("WEEK")}>
-                    <Text style={styles.tabTitle}>{"SETTIMANA"}</Text>
-                </Button>
-                <Button containerStyle={(this.state.period === "MONTH" ? styles.tabWrpActive : {})} onPress={() => this.setTabState("MONTH")}>
-                    <Text style={styles.tabTitle}>{"MESE"}</Text>
-                </Button>
-                <Button containerStyle={(this.state.period === "YEAR" ? styles.tabWrpActive : {})} onPress={() => this.setTabState("YEAR")}>
-                    <Text style={styles.tabTitle}>{"ANNO"}</Text>
-                </Button>
+            <View style={[styles.alarmsButtonWrp, {width: width}]}>
+                <TouchableOpacity
+                    onPress={() => Actions.alarmsSettings()}
+                    style={[styles.alarmsButton, {width: width * 0.9}]}
+                >
+                    <View style={styles.iconAlarmWrp}>
+                        <Icon
+                            color={colors.iconWhite}
+                            name={"iw-alert"}
+                            size={24}
+                        />
+                    </View>
+                    <Text style={styles.alarmsButtonText}>{"Imposta allarmi"}</Text>
+                </TouchableOpacity>
             </View>
         );
     }
 
-    renderContentTab () {
-        const {height} = Dimensions.get("window");
-        const heightSwiper = height * 0.8;
-        return (
-            <Swiper height={heightSwiper} index={0} loop={false} showButtons={true}>
-                {this.renderSwiper1()}
-                {this.renderSwiper2()}
-            </Swiper>
-        );
-    }
-
-    renderSwiper1 () {
-        return (
-            <View style={styles.contentStatsWrp}>
-                <Text style={styles.titleSwiper}>{"OGGI HAI UTILIZZATO"}</Text>
-                <View style={styles.consumptionCircleWrp}>
-                    <Text style={styles.consumptionCircleValue}>{"48"}</Text>
-                    <Text style={styles.consumptionCircleMeasure}>{"kWh"}</Text>
+    renderProgressBar (consumptions, unit) {
+        const {width} = Dimensions.get("window");
+        return consumptions.map(consumption => {
+            return (
+                <View key={consumption.key} style={styles.ProgressBarStyleWrp}>
+                    <Text style={styles.progressBarTitle}>{consumption.title}</Text>
+                    <Progress.Bar
+                        borderColor={colors.secondaryBlue}
+                        borderRadius={30}
+                        borderWidth={1}
+                        color={colors.primaryBlue}
+                        height={6}
+                        progress={consumption.now / consumption.max}
+                        width={width * 0.9}
+                    />
+                    <View style={styles.progressBarValuesWrp}>
+                        <Text style={styles.progressBarPercentageValue}>
+                            {(consumption.now / consumption.max * 100).toFixed(0)}
+                            {"%"}
+                        </Text>
+                        <Text style={styles.progressBarConsumptionValue}>
+                            {`${consumption.now} ${unit}`}
+                        </Text>
+                    </View>
                 </View>
-                {this.getProgressBar().map(this.renderProgressBar)}
-                {this.renderAlarmSettings()}
-                <View style={styles.summaryConsumptionContainer}>
-                    {this.getSummaryConsumption().map(this.renderSummaryConsumption)}
-                </View>
-            </View>
-        );
+            );
+        });
     }
 
     renderSwiper2 () {
@@ -318,66 +369,33 @@ class Stats extends Component {
         );
     }
 
-    renderAlarmSettings () {
-        const {width} = Dimensions.get("window");
+    renderSwiper1 () {
+        const tabAggregate = getTitleAndSubtitle(this.state.period, this.getConsumptionAggregate().filter(x => x.get("sensorId") == this.props.site._id));
+        var fontSize = this.mapNumberFontSize(tabAggregate.sum);
         return (
-            <View style={[styles.alarmsButtonWrp, {width: width}]}>
-                <TouchableOpacity
-                    onPress={() => Actions.alarmsSettings()}
-                    style={[styles.alarmsButton, {width: width * 0.9}]}
-                >
-                    <View style={styles.iconAlarmWrp}>
-                        <Icon
-                            color={colors.iconWhite}
-                            name={"iw-alert"}
-                            size={24}
-                        />
-                    </View>
-                    <Text style={styles.alarmsButtonText}>{"Imposta allarmi"}</Text>
-                </TouchableOpacity>
-            </View>
-        );
-    }
-
-    renderSummaryConsumption (getSummaryConsumption) {
-        const {width} = Dimensions.get("window");
-        return (
-            <View key={getSummaryConsumption.key} style={[styles.summaryConsumptionWrp, {width: width * 0.5}]}>
-                <Text style={styles.consumptionTitle}>{getSummaryConsumption.title}</Text>
-                <View style={styles.smallConsumptionWrp}>
-                    <Text style={styles.smallConsumptionValue}>{getSummaryConsumption.value}</Text>
-                    <Text style={styles.smallConsumptionMeasure}>{"kWh"}</Text>
+            <View style={styles.contentStatsWrp}>
+                <Text style={styles.titleSwiper}>{tabAggregate.periodTitle}</Text>
+                <View style={styles.consumptionCircleWrp}>
+                    <Text style={[styles.consumptionCircleValue, {fontSize, lineHeight: fontSize}]}>{tabAggregate.sum}</Text>
+                    <Text style={styles.consumptionCircleMeasure}>{tabAggregate.measureUnit}</Text>
+                </View>
+                {this.renderProgressBar(tabAggregate.comparisons, tabAggregate.measureUnit)}
+                {this.renderAlarmSettings()}
+                <View style={styles.summaryConsumptionContainer}>
+                    {this.renderSummaryConsumption(tabAggregate.comparisons, tabAggregate.measureUnit)}
                 </View>
             </View>
         );
     }
 
-    renderProgressBar (getProgressBar) {
-        const {width} = Dimensions.get("window");
+    renderContentTab () {
+        const {height} = Dimensions.get("window");
+        const heightSwiper = height * 0.8;
         return (
-            <View key={getProgressBar.key} style={styles.ProgressBarStyleWrp}>
-                <Text style={styles.progressBarTitle}>{getProgressBar.title}</Text>
-                <Progress.Bar
-                    borderColor={getProgressBar.color}
-                    borderRadius={30}
-                    borderWidth={1}
-                    color={getProgressBar.color}
-                    height={6}
-                    progress={getProgressBar.value}
-                    style={{width: width * 0.9}}
-                    unfilledColor={colors.white}
-                />
-                <View style={styles.progressBarValuesWrp}>
-                    <Text style={styles.progressBarPercentageValue}>
-                        {getProgressBar.percentage}
-                        {"%"}
-                    </Text>
-                    <Text style={styles.progressBarConsumptionValue}>
-                        {getProgressBar.consumption}
-                        {"KWh"}
-                    </Text>
-                </View>
-            </View>
+            <Swiper height={heightSwiper} index={0} loop={false} showButtons={true}>
+                {this.renderSwiper1()}
+                {this.renderSwiper2()}
+            </Swiper>
         );
     }
 
@@ -390,7 +408,20 @@ class Stats extends Component {
                         <View style={styles.titleBarWrp}>
                             <Text style={styles.title}>{"STATISTICHE"}</Text>
                         </View>
-                        {this.renderTabs()}
+                        <View style={styles.tabsContainer}>
+                            <Button containerStyle={(this.state.period === "day" ? styles.tabWrpActive : {})} onPress={() => this.setTabState("day")}>
+                                <Text style={styles.tabTitle}>{"GIORNO"}</Text>
+                            </Button>
+                            <Button containerStyle={(this.state.period === "week" ? styles.tabWrpActive : {})} onPress={() => this.setTabState("week")}>
+                                <Text style={styles.tabTitle}>{"SETTIMANA"}</Text>
+                            </Button>
+                            <Button containerStyle={(this.state.period === "month" ? styles.tabWrpActive : {})} onPress={() => this.setTabState("month")}>
+                                <Text style={styles.tabTitle}>{"MESE"}</Text>
+                            </Button>
+                            <Button containerStyle={(this.state.period === "year" ? styles.tabWrpActive : {})} onPress={() => this.setTabState("year")}>
+                                <Text style={styles.tabTitle}>{"ANNO"}</Text>
+                            </Button>
+                        </View>
                     </View>
                     {this.renderContentTab()}
                 </Content>
@@ -401,8 +432,9 @@ class Stats extends Component {
 
 function mapStateToProps (state) {
     return {
+        collections: state.collections,
         home: state.home,
-        collections: state.collections
+        site: state.site
     };
 }
 export default connect(mapStateToProps)(Stats);
