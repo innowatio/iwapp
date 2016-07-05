@@ -1,4 +1,3 @@
-import {Map} from "immutable";
 import {Content} from "native-base";
 import React, {Component, PropTypes} from "react";
 import {Dimensions, StyleSheet, TouchableOpacity, View} from "react-native";
@@ -9,6 +8,7 @@ import {connect} from "react-redux";
 
 import Icon from "../components/iwapp-icons";
 import * as colors from "../lib/colors";
+import {getEmail, getUsername} from "../lib/get-user-info";
 import Text from "../components/text-lato";
 
 const styles = StyleSheet.create({
@@ -164,10 +164,6 @@ class Profile extends Component {
         this.props.asteroid.subscribe("users");
     }
 
-    getUser () {
-        return this.props.collections.getIn(["users", this.props.userId]) || Map();
-    }
-
     getQuestionnaires () {
         return [
             {color: colors.demographicsSection, name: "Demographics", key: "demographics", icon: "iw-demographics", value: 1, percentage: "100"},
@@ -216,8 +212,8 @@ class Profile extends Component {
     }
 
     renderUserImage () {
-        const username = this.getUser().getIn(["profile", "username"]) || "";
-        const email = this.getUser().getIn(["emails", "0", "address"]) || "";
+        const username = getUsername(this.props.userId, this.props.collections);
+        const email = getEmail(this.props.userId, this.props.collections);
         return (
             <View style={styles.userPhotoWrp}>
                 <View style={styles.photoWrp}>

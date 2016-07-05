@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
     textInput: {
         borderBottomWidth: 0.5,
         borderBottomColor: colors.lightGreyBorder,
-        color: colors.textGrey,
+        color: colors.grey,
         height: 35
     },
 
@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
         backgroundColor: colors.secondaryBlue
     },
     inputModifyPassword: {
-        color: colors.textGrey,
+        color: colors.grey,
         height: 30,
         marginTop: 4,
         padding: 0
@@ -156,6 +156,17 @@ const styles = StyleSheet.create({
 
 class ModifyProfile extends Component {
 
+    constructor (props) {
+        super(props);
+        this.state = {
+            newEmail: "",
+            newUsername: "",
+            oldPassword: "",
+            newPassword: "",
+            newPasswordCheck: ""
+        };
+    }
+
     renderUserAccess () {
         const {width} = Dimensions.get("window");
         return (
@@ -165,13 +176,13 @@ class ModifyProfile extends Component {
                     <TextInput
                         autoCapitalize={"none"}
                         autoCorrect={false}
-                        keyboardType={"default"}
-                        onChangeText={(text) => this.setState({text})}
-                        placeholder={"username@email.com"}
-                        placeholderTextColor={colors.textGrey}
+                        keyboardType={"email-address"}
+                        onChangeText={newEmail => this.setState({newEmail})}
+                        placeholder={"Inserire la nuova email"}
+                        placeholderTextColor={colors.grey}
                         style={[styles.textInput, {width: width * 0.65}]}
                         underlineColorAndroid={colors.lightGreyBorder}
-                        value={"username@email.com"}
+                        value={this.state.newEmail}
                     />
                 </View>
                 <View style={styles.inputUserWrp}>
@@ -180,12 +191,12 @@ class ModifyProfile extends Component {
                         autoCapitalize={"none"}
                         autoCorrect={false}
                         keyboardType={"default"}
-                        onChangeText={(text) => this.setState({text})}
-                        placeholder={"Username"}
-                        placeholderTextColor={colors.textGrey}
+                        onChangeText={newUsername => this.setState({newUsername})}
+                        placeholder={"Inserire il nuovo username"}
+                        placeholderTextColor={colors.grey}
                         style={[styles.textInput, {width: width * 0.65}]}
                         underlineColorAndroid={colors.lightGreyBorder}
-                        value={"Username"}
+                        value={this.state.newUsername}
                     />
                 </View>
             </View>
@@ -210,12 +221,13 @@ class ModifyProfile extends Component {
                         autoCapitalize={"none"}
                         autoCorrect={false}
                         keyboardType={"default"}
-                        onChangeText={(password) => this.setState({password})}
+                        onChangeText={oldPassword => this.setState({oldPassword})}
                         placeholder={"Password Attuale"}
-                        placeholderTextColor={colors.textGrey}
+                        placeholderTextColor={colors.grey}
                         secureTextEntry={true}
                         style={[styles.inputModifyPassword, {width: width * 0.85}]}
                         underlineColorAndroid={"transparent"}
+                        value={this.state.oldPassword}
                     />
                 </View>
                 <View style={styles.passwordRow1Wrp}>
@@ -232,12 +244,13 @@ class ModifyProfile extends Component {
                         autoCapitalize={"none"}
                         autoCorrect={false}
                         keyboardType={"default"}
-                        onChangeText={(password) => this.setState({password})}
+                        onChangeText={newPassword => this.setState({newPassword})}
                         placeholder={"Nuova Password"}
-                        placeholderTextColor={colors.textGrey}
+                        placeholderTextColor={colors.grey}
                         secureTextEntry={true}
                         style={[styles.inputModifyPassword, {width: width * 0.85}]}
                         underlineColorAndroid={"transparent"}
+                        value={this.state.newPassword}
                     />
                 </View>
                 <View style={styles.passwordRowWrp}>
@@ -254,12 +267,13 @@ class ModifyProfile extends Component {
                         autoCapitalize={"none"}
                         autoCorrect={false}
                         keyboardType={"default"}
-                        onChangeText={(password) => this.setState({password})}
+                        onChangeText={newPasswordCheck => this.setState({newPasswordCheck})}
                         placeholder={"Ripeti nuova Password"}
-                        placeholderTextColor={colors.textGrey}
+                        placeholderTextColor={colors.grey}
                         secureTextEntry={true}
                         style={[styles.inputModifyPassword, {width: width * 0.85}]}
                         underlineColorAndroid={"transparent"}
+                        value={this.state.newPasswordCheck}
                     />
                 </View>
             </View>
