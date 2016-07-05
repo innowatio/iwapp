@@ -6,7 +6,7 @@ import {SELECT_SITE} from "../actions/site";
 
 const defaultChartState = [{
     day: moment.utc().format("YYYY-MM-DD"),
-    sensorId: "site00022",
+    sensorId: "",
     source: "reading",
     measurementType: "activeEnergy"
 }];
