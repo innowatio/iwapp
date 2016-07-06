@@ -120,11 +120,17 @@ const styles = StyleSheet.create({
     progressQuestionnaire: {
         flexDirection: "column",
         alignItems: "stretch",
-        marginTop: 20
+        marginTop: 20,
+        width: 90,
+        marginHorizontal: 5
+    },
+    circleProgress: {
+        width: 90,
+        alignItems: "center"
     },
     iconQuestionnaireWrp: {
         position: "absolute",
-        width: 80,
+        width: 90,
         height: 80,
         alignItems: "center",
         justifyContent: "center",
@@ -133,6 +139,7 @@ const styles = StyleSheet.create({
         left: 0
     },
     titQuestionnaire: {
+        width: 90,
         fontSize: 14,
         padding: 0,
         textAlign: "center",
@@ -288,6 +295,7 @@ class Profile extends Component {
                     color={questionnaire.color}
                     progress={questionnaire.value}
                     size={80}
+                    style={styles.circleProgress}
                 />
                 <TouchableOpacity style={styles.iconQuestionnaireWrp} transparent={true}>
                     <Icon
