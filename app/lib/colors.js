@@ -23,7 +23,7 @@ export const grey = "#999999";
 export const textGrey = "#546e7a";
 export const aquaGreen = "#12b0c5";
 export const acidGreen = "#cddc39";
-export const backgroundBlackOpacity = "rgba(0, 0, 0, 0.4)";
+export const backgroundBlackOpacity = "rgba(0, 0, 0, 0.3)";
 //
 export const demographicsSection = "#536DFE";
 export const buildingsSection = "#3E50B4";
@@ -56,3 +56,5 @@ export const stepperDot = "#949494";
 export const stepperDotActive = "#303BA6";
 export const stepperLine = "#AFB0AF";
 export const stepperLineActive = "#4150FE";
+// Modal
+export const backgroundModal = "rgba(255, 255, 255, 0.5)";
