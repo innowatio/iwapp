@@ -15,6 +15,7 @@ import Text from "../components/text-lato";
 import {toggleForecast} from "../actions/home";
 import * as colors from "../lib/colors";
 import {mapWeatherIcon} from "../lib/weather-icon-map";
+import Stepper from "../components/stepper";
 
 const styles = StyleSheet.create({
     container: {
