@@ -23,7 +23,7 @@ export const grey = "#999999";
 export const textGrey = "#546e7a";
 export const aquaGreen = "#12b0c5";
 export const acidGreen = "#cddc39";
-export const backgroundBlackOpacity = "rgba(0, 0, 0, 0.2)";
+export const backgroundBlackOpacity = "rgba(0, 0, 0, 0.4)";
 //
 export const demographicsSection = "#536DFE";
 export const buildingsSection = "#3E50B4";

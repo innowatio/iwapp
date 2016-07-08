@@ -78,6 +78,7 @@ const styles = StyleSheet.create({
 export default class Weather extends Component {
 
     static propTypes = {
+        background: PropTypes.number.isRequired,
         cloudness: PropTypes.number.isRequired,
         cloudnessUnit: PropTypes.string,
         humidity: PropTypes.number.isRequired,
@@ -94,6 +95,7 @@ export default class Weather extends Component {
 
     render () {
         const {
+            background,
             cloudness,
             cloudnessUnit,
             humidity,
@@ -103,7 +105,7 @@ export default class Weather extends Component {
             temperatureUnit
         } = this.props;
         return (
-            <Image source={require("../assets/img/bg_meteo.png")} style={styles.backgroundImage}>
+            <Image source={background} style={styles.backgroundImage}>
                 <Text style={styles.textHello}>{this.getGreeting()}</Text>
                 <View style={styles.weatherWrp}>
                     <View>

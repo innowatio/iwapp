@@ -351,7 +351,7 @@ class Stats extends Component {
                 <View><Text>{"\n\n\n\n"}</Text></View>
                 <View style={styles.summaryConsumptionContainer}>
                     <View key={"Daily Threshold"} style={[styles.summaryConsumptionWrp, {width: width * 0.5}]}>
-                        <Text style={styles.consumptionTitle}>{"Superamento soglia contrattuale giornaliera"}</Text>
+                        <Text style={styles.consumptionTitle}>{"Superamento soglia\ncontrattuale giornaliera"}</Text>
                         <View style={styles.smallConsumptionWrp}>
                             <Text style={styles.smallConsumptionValue}>{"3"}</Text>
                             <Text style={styles.smallConsumptionMeasure}>{"volte"}</Text>

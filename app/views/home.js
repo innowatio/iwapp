@@ -14,7 +14,7 @@ import Weather from "../components/weather";
 import Text from "../components/text-lato";
 import {toggleForecast} from "../actions/home";
 import * as colors from "../lib/colors";
-import {mapWeatherIcon} from "../lib/weather-icon-map";
+import {mapWeatherIcon, mapWeatherBackground} from "../lib/weather-mapper";
 
 const styles = StyleSheet.create({
     container: {
@@ -133,7 +133,8 @@ class Home extends Component {
                     humidityUnit: weatherHumidity ? weatherHumidity.get("unitOfMeasurement") : "%",
                     temperature: weatherTemperature ? weatherTemperature.get("measurementValue") : 0,
                     temperatureUnit: weatherTemperature ? weatherTemperature.get("unitOfMeasurement") : "°C",
-                    icon: weatherId ? mapWeatherIcon(weatherId.get("measurementValue")) : "iw-clouds"
+                    icon: weatherId ? mapWeatherIcon(weatherId.get("measurementValue")) : "iw-clouds",
+                    background: weatherId ? mapWeatherBackground(weatherId.get("measurementValue")) : require("../assets/img/day_scattered-clouds.gif"),
                 };
             }
         }
@@ -143,7 +144,8 @@ class Home extends Component {
             humidity: 0,
             humidityUnit: "%",
             temperature: 0,
-            temperatureUnit: "°C"
+            temperatureUnit: "°C",
+            background: require("../assets/img/day_scattered-clouds.gif")
         };
     }
 
