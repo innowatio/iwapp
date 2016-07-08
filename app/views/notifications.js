@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Dimensions, StyleSheet, View} from "react-native";
+import {Dimensions, StyleSheet, ScrollView, View} from "react-native";
 import {Content} from "native-base";
 
 import Icon from "../components/iwapp-icons";
@@ -28,8 +28,12 @@ const styles = StyleSheet.create({
     title: {
         color: colors.white
     },
+    containerView: {
+        flex: 1,
+        paddingBottom: 100
+    },
     notificationsContainer: {
-        marginTop: 20,
+        marginVertical: 20,
         justifyContent: "space-around",
         alignItems: "center"
     },
@@ -101,11 +105,49 @@ export default class Notifications extends Component {
                 key: "Notifica upgrade",
                 icon: "iw-upgrade",
                 text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+            },
+            {
+                bgcolor: colors.energeticTip,
+                date: "Oggi",
+                key: "Tips energetico2",
+                icon: "iw-energetic-tip",
+                text: "E’ disponibile il report dei tuoi consumi settimanali."
+            },
+            {
+                bgcolor: colors.alarmsTip,
+                date: "Oggi",
+                key: "Allarme2",
+                icon: "iw-alarms-tip",
+                text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+            },
+            {
+                bgcolor: colors.welcomeNotification,
+                date: "Ieri",
+                key: "Notifica benvenuto al pilot2",
+                icon: "iw-welcome",
+                text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
             }
         ];
     }
 
-    renderNotifications (notification) {
+    renderNotificationsList () {
+        return (
+            <View style={styles.containerView}>
+                <ScrollView
+                    automaticallyAdjustContentInsets={false}
+                    key={"scrollView1"}
+                    scrollEnabled={true}
+                    scrollEventThrottle={6}
+                    showsVerticalScrollIndicator={true}
+                    style={styles.scrollView}
+                >
+                    {this.getNotification().map(this.renderNotification)}
+                </ScrollView>
+            </View>
+        );
+    }
+
+    renderNotification (notification) {
         const {width} = Dimensions.get("window");
         return (
             <View key={notification.key} style={styles.notificationWrp}>
@@ -142,7 +184,7 @@ export default class Notifications extends Component {
                         </View>
                     </View>
                     <View style={styles.notificationsContainer}>
-                        {this.getNotification().map(this.renderNotifications)}
+                        {this.renderNotificationsList()}
                     </View>
                 </Content>
             </View>

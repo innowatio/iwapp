@@ -12,7 +12,7 @@ import ws from "ws";
 import hook from "node-hook";
 
 
-// Added test cross platform to handle the 
+// Added test cross platform to handle the
 const PLATFORM = process.env.PLATFORM || "android";
 
 function logLoadedFilename (source, filename) {
@@ -26,6 +26,7 @@ function noop () {
     return null;
 }
 require.extensions[".png"] = noop;
+require.extensions[".gif"] = noop;
 
 // Ignore all node_modules except these
 const modulesToCompile = [

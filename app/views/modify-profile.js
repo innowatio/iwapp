@@ -53,7 +53,8 @@ const styles = StyleSheet.create({
         borderBottomWidth: 0.5,
         borderBottomColor: colors.lightGreyBorder,
         color: colors.grey,
-        height: 35
+        height: 35,
+        fontSize: 14
     },
 
 
@@ -103,7 +104,8 @@ const styles = StyleSheet.create({
         color: colors.grey,
         height: 30,
         marginTop: 4,
-        padding: 0
+        padding: 0,
+        fontSize: 14
     },
 
     // ERRORS ON TOP //
@@ -142,7 +144,8 @@ const styles = StyleSheet.create({
         marginHorizontal: 10,
         backgroundColor: colors.buttonPrimary,
         borderRadius: 100,
-        justifyContent: "center"
+        justifyContent: "center",
+        alignItems: "center"
     },
     buttonReset: {
 
@@ -150,7 +153,8 @@ const styles = StyleSheet.create({
     textButtonSave: {
         color: colors.white,
         fontSize: 14,
-        fontWeight: "normal"
+        fontWeight: "normal",
+        backgroundColor: colors.transparent
     }
 });
 
@@ -226,7 +230,7 @@ class ModifyProfile extends Component {
                         placeholderTextColor={colors.grey}
                         secureTextEntry={true}
                         style={[styles.inputModifyPassword, {width: width * 0.85}]}
-                        underlineColorAndroid={"transparent"}
+                        underlineColorAndroid={colors.transparent}
                         value={this.state.oldPassword}
                     />
                 </View>
@@ -249,7 +253,7 @@ class ModifyProfile extends Component {
                         placeholderTextColor={colors.grey}
                         secureTextEntry={true}
                         style={[styles.inputModifyPassword, {width: width * 0.85}]}
-                        underlineColorAndroid={"transparent"}
+                        underlineColorAndroid={colors.transparent}
                         value={this.state.newPassword}
                     />
                 </View>
@@ -272,7 +276,7 @@ class ModifyProfile extends Component {
                         placeholderTextColor={colors.grey}
                         secureTextEntry={true}
                         style={[styles.inputModifyPassword, {width: width * 0.85}]}
-                        underlineColorAndroid={"transparent"}
+                        underlineColorAndroid={colors.transparent}
                         value={this.state.newPasswordCheck}
                     />
                 </View>
