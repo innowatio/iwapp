@@ -115,7 +115,8 @@ const styles = StyleSheet.create({
     progressQuestionnairesWrp: {
         flexDirection: "row",
         flexWrap: "wrap",
-        justifyContent: "space-around"
+        justifyContent: "space-around",
+        alignItems: "center"
     },
     progressQuestionnaire: {
         flexDirection: "column",
@@ -331,7 +332,7 @@ class Profile extends Component {
                         {this.renderUserImage()}
                         {this.renderUserOption()}
                     </View>
-                    <View style={[styles.contentAnswerWrp, {height: height * 0.8}]}>
+                    <View style={[styles.contentAnswerWrp, {height: height * 0.7}]}>
                         <Text style={styles.titleComplete}>{"Completa il profilo"}</Text>
                         {this.renderProfilePercentage()}
                         <View style={styles.progressQuestionnairesWrp}>

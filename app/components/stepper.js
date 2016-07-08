@@ -6,7 +6,6 @@ import * as colors from "../lib/colors";
 
 const styles = StyleSheet.create({
     dot: {
-        // FIXME when RN0.29 add zIndex
         position: "absolute",
         top: 10,
         left: 17,
