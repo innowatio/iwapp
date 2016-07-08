@@ -55,7 +55,8 @@ const styles = StyleSheet.create({
         backgroundColor: colors.secondaryBlue,
         justifyContent: "center",
         alignItems: "center",
-        padding: 20
+        paddingHorizontal: 20,
+        paddingBottom: 30
     },
     descriptionModal: {
         color: colors.white,
@@ -233,7 +234,7 @@ class Home extends Component {
             >
                 <View style={styles.modalBackground}>
                     <View style={styles.modalTitleWrp}>
-                        <Text style={styles.titleModal}>{"SUPER USER"}</Text>
+                        <Text style={styles.titleModal}>{" "}</Text>
                     </View>
                     <View style={styles.modalContentWrp}>
 
@@ -242,7 +243,7 @@ class Home extends Component {
                         </View>
                         <Text style={styles.descriptionModal}>
                             <Text style={styles.textBold}>{"BENVENUTO SU LUCY!"}</Text>
-                            {"\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a posuere magna."}
+                            {"\n\nCon lo smart meter installato presso la tua attività e con questa app, puoi ottenere significativi risparmi sui consumi energetici. Sei pronto a iniziare? Compila il questionario!"}
                         </Text>
                         <Button
                             containerStyle={styles.modalButton}
