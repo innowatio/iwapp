@@ -13,6 +13,7 @@ import Notifications from "../views/notifications";
 import Profile from "../views/profile";
 import Root from "../views/root";
 import Stats from "../views/stats";
+import Survey from "../views/survey";
 
 function dispatchAction (action) {
     switch (action.type) {
@@ -54,6 +55,7 @@ const scene = (
             <Scene component={Questionnaire} key="questionnaire" />
             <Scene component={ModifyProfile} key="modifyProfile" />
         </Scene>
+        <Scene component={Survey} key="survey" />
     </Router>
 );
 

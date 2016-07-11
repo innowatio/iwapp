@@ -154,7 +154,7 @@ const styles = StyleSheet.create({
         fontSize: 13
     },
 
-    // SUMMARY CONSNUMPTION
+    // SUMMARY CONSUMPTION
     summaryConsumptionContainer: {
         flexDirection: "row",
         justifyContent: "center"
