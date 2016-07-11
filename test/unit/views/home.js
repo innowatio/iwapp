@@ -142,10 +142,11 @@ describe("`Home` view", () => {
             expect(subscribe).to.have.been.calledWithExactly("sites");
         });
 
-        it("calls `subscribeToMeasure` with `props` as arguments", () => {
+        it("calls `subscribeToMeasure` with `props` as arguments if site prop is not empty", () => {
             const subscribe = sinon.spy();
             const props = {
-                asteroid: {subscribe}
+                asteroid: {subscribe},
+                site: "site"
             };
             const subscribeToMeasure = sinon.spy();
             const instance = {
@@ -157,13 +158,42 @@ describe("`Home` view", () => {
             expect(subscribeToMeasure).to.have.been.calledWithExactly(props);
         });
 
+        it("doesn't call `subscribeToMeasure` with `props` as arguments if site prop is empty", () => {
+            const subscribe = sinon.spy();
+            const props = {
+                asteroid: {subscribe}
+            };
+            const subscribeToMeasure = sinon.spy();
+            const instance = {
+                props,
+                subscribeToMeasure
+            };
+            componentDidMount.call(instance);
+            expect(subscribeToMeasure).to.have.callCount(0);
+        });
+
     });
 
-    describe("`componentDidMount` method", () => {
+    describe("`componentWillReceiveProps` method", () => {
 
         const componentWillReceiveProps = HomeView.prototype.componentWillReceiveProps;
 
-        it("calls `subscribeToMeasure` with `props` as arguments", () => {
+        it("calls `subscribeToMeasure` with `props` as arguments if `site` in `nextProps` is not empty", () => {
+            const subscribe = sinon.spy();
+            const nextProps = {
+                asteroid: {subscribe},
+                site: "site"
+            };
+            const subscribeToMeasure = sinon.spy();
+            const instance = {
+                subscribeToMeasure
+            };
+            componentWillReceiveProps.call(instance, nextProps);
+            expect(subscribeToMeasure).to.have.callCount(1);
+            expect(subscribeToMeasure).to.have.been.calledWithExactly(nextProps);
+        });
+
+        it("doesn't call `subscribeToMeasure` with `props` as arguments if `site` in `nextProps` is empty", () => {
             const subscribe = sinon.spy();
             const nextProps = {
                 asteroid: {subscribe}
@@ -173,8 +203,7 @@ describe("`Home` view", () => {
                 subscribeToMeasure
             };
             componentWillReceiveProps.call(instance, nextProps);
-            expect(subscribeToMeasure).to.have.callCount(1);
-            expect(subscribeToMeasure).to.have.been.calledWithExactly(nextProps);
+            expect(subscribeToMeasure).to.have.callCount(0);
         });
 
     });

@@ -51,7 +51,7 @@ class Home extends Component {
     }
 
     componentWillReceiveProps (nextProps) {
-        if (this.props.site) {
+        if (nextProps.site) {
             this.subscribeToMeasure(nextProps);
         }
     }
