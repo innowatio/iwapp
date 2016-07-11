@@ -1,6 +1,5 @@
-import moment from "moment";
 import React, {Component, PropTypes} from "react";
-import {Dimensions, Platform, StyleSheet, View, WebView} from "react-native";
+import {Dimensions, Platform, StyleSheet, WebView} from "react-native";
 import IPropTypes from "react-immutable-proptypes";
 import shallowCompare from "react-addons-shallow-compare";
 

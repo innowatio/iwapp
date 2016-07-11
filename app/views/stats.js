@@ -64,23 +64,6 @@ const styles = StyleSheet.create({
         textAlign: "center"
     },
 
-    // CONSUMPTION Swiper 2
-    consumptionWrp: {
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "center",
-        marginTop: 5
-    },
-    consumptionValue: {
-        marginRight: 5,
-        color: colors.primaryBlue,
-        fontSize: 50,
-        fontWeight: "bold"
-    },
-    consumptionMeasure: {
-        color: colors.primaryBlue,
-        fontSize: 16
-    },
     // CONSUMPTION CIRCLE Swiper 1
     consumptionCircleWrp: {
         backgroundColor: colors.secondaryBlue,
