@@ -1,5 +1,5 @@
 import React from "react";
-import {Router, Scene, Reducer} from "react-native-router-flux";
+import {ActionConst, Router, Scene, Reducer} from "react-native-router-flux";
 
 import asteroid from "./asteroid";
 import Home from "../views/home";
@@ -13,12 +13,13 @@ import Root from "../views/root";
 import store from "./store";
 
 function dispatchAction (action) {
+    console.log(action);
     switch (action.type) {
-        case "push": {
+        case ActionConst.PUSH: {
             store.dispatch(pushNavigator(action.key));
             break;
         }
-        case "BackAction":
+        case ActionConst.BACK_ACTION:
             store.dispatch(popNavigator());
             break;
         default:

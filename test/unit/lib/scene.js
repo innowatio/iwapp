@@ -1,3 +1,5 @@
+import {ActionConst} from "react-native-router-flux";
+
 import scene, {__RewireAPI__ as sceneRewire} from "lib/scene";
 
 describe("`scene`", () => {
@@ -40,7 +42,7 @@ describe("`scene`", () => {
         describe("`action.type` [CASE: `push`]", () => {
 
             const action = {
-                type: "push",
+                type: ActionConst.PUSH,
                 key: "home"
             };
 
@@ -59,7 +61,7 @@ describe("`scene`", () => {
         describe("`action.type` [CASE: `BackAction`]", () => {
 
             const action = {
-                type: "BackAction"
+                type: ActionConst.BACK_ACTION
             };
 
             it("dispatch the `popNavigator` action", () => {
