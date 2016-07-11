@@ -89,7 +89,7 @@ export default class Weather extends Component {
     }
 
     getGreeting () {
-        const hours = parseInt(moment().format("HH"));
+        const hours = moment().hours();
         return hours > 17 ? "Buonasera!" : "Buongiorno!";
     }
 

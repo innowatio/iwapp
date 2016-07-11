@@ -9,7 +9,10 @@ import Button from "react-native-button";
 import {connect} from "react-redux";
 import Swiper from "react-native-swiper";
 import {Actions} from "react-native-router-flux";
+import {bindActionCreators} from "redux";
 
+import {selectPeriod} from "../actions/stats";
+import Highcharts from "../components/highcharts";
 import Icon from "../components/iwapp-icons";
 import Text from "../components/text-lato";
 import * as colors from "../lib/colors";
@@ -53,7 +56,8 @@ const styles = StyleSheet.create({
     // CONTENT
     contentStatsWrp: {
         paddingVertical: 10,
-        alignItems: "center"
+        alignItems: "center",
+        height: 500
     },
     titleSwiper: {
         color: colors.primaryBlue,
@@ -212,14 +216,17 @@ class Stats extends Component {
     static propTypes = {
         asteroid: PropTypes.object.isRequired,
         collections: IPropTypes.map.isRequired,
-        site: PropTypes.object
-    }
-
-    constructor (props) {
-        super(props);
-        this.state = {
-            period: "day"
-        };
+        selectPeriod: PropTypes.func.isRequired,
+        site: PropTypes.object,
+        stats: PropTypes.shape({
+            chart: PropTypes.shape({
+                sensorId: PropTypes.string,
+                source: PropTypes.string,
+                measurementType: PropTypes.string,
+                day: PropTypes.string,
+                period: PropTypes.string
+            })
+        }).isRequired
     }
 
     componentDidMount () {
@@ -231,7 +238,7 @@ class Stats extends Component {
     }
 
     getButtonStyle (buttonType) {
-        if (this.state.period === buttonType) {
+        if (this.props.stats.chart.period === buttonType) {
             return styles.tabWrpActive;
         } else {
             return {};
@@ -242,8 +249,19 @@ class Stats extends Component {
         return this.props.collections.get("consumptions-yearly-aggregates") || Map();
     }
 
-    setTabState (tab) {
-        this.setState({period: tab});
+    getDailyAggregate () {
+        return this.props.collections.get("readings-daily-aggregates") || Map();
+    }
+
+    getStatsAggregate () {
+        switch (this.props.stats.chart.period) {
+            case "day":
+                return this.getDailyAggregate();
+            case "week":
+            case "month":
+            case "year":
+                return this.getConsumptionAggregate();
+        }
     }
 
     subscribeToMeasurements (props) {
@@ -272,6 +290,20 @@ class Stats extends Component {
             fontSize = 27;
         }
         return fontSize;
+    }
+
+    mapPeriodLabel () {
+        const {period} = this.props.stats.chart;
+        switch (period) {
+            case "day":
+                return "IL CONSUMO DI OGGI";
+            case "week":
+                return "IL CONSUMO DELLA SETTIMANA";
+            case "month":
+                return "IL CONSUMO DEL MESE";
+            case "year":
+                return "IL CONSUMO DELL'ANNO";
+        }
     }
 
     renderSummaryConsumption (consumptions, unit) {
@@ -340,15 +372,17 @@ class Stats extends Component {
     }
 
     renderSwiper2 () {
-        const {width} = Dimensions.get("window");
+        const {height, width} = Dimensions.get("window");
         return (
             <View style={styles.contentStatsWrp}>
-                <Text style={styles.titleSwiper}>{"OGGI HAI UTILIZZATO"}</Text>
-                <View style={styles.consumptionWrp}>
-                    <Text style={styles.consumptionValue}>{"11,2"}</Text>
-                    <Text style={styles.consumptionMeasure}>{"kWh"}</Text>
+                <View>
+                    <Text style={styles.titleSwiper}>{this.mapPeriodLabel()}</Text>
+                    <Highcharts
+                        aggregates={this.getStatsAggregate()}
+                        charts={[this.props.stats.chart]}
+                        height={height * .3}
+                    />
                 </View>
-                <View><Text>{"\n\n\n\n"}</Text></View>
                 <View style={styles.summaryConsumptionContainer}>
                     <View key={"Daily Threshold"} style={[styles.summaryConsumptionWrp, {width: width * 0.5}]}>
                         <Text style={styles.consumptionTitle}>{"Superamento soglia\ncontrattuale giornaliera"}</Text>
@@ -370,7 +404,7 @@ class Stats extends Component {
     }
 
     renderSwiper1 () {
-        const tabAggregate = getTitleAndSubtitle(this.state.period, this.getConsumptionAggregate().filter(x => x.get("sensorId") == this.props.site._id));
+        const tabAggregate = getTitleAndSubtitle(this.props.stats.chart.period, this.getConsumptionAggregate().filter(x => x.get("sensorId") == this.props.site._id));
         var fontSize = this.mapNumberFontSize(tabAggregate.sum);
         return (
             <View style={styles.contentStatsWrp}>
@@ -401,6 +435,8 @@ class Stats extends Component {
 
     render () {
         const {height} = Dimensions.get("window");
+        const {period} = this.props.stats.chart;
+        const {selectPeriod} = this.props;
         return (
             <View style={styles.container}>
                 <Content style={{backgroundColor: colors.background, height: height}}>
@@ -409,16 +445,16 @@ class Stats extends Component {
                             <Text style={styles.title}>{"STATISTICHE"}</Text>
                         </View>
                         <View style={styles.tabsContainer}>
-                            <Button containerStyle={(this.state.period === "day" ? styles.tabWrpActive : {})} onPress={() => this.setTabState("day")}>
+                            <Button containerStyle={(period === "day" ? styles.tabWrpActive : {})} onPress={() => selectPeriod("day")}>
                                 <Text style={styles.tabTitle}>{"GIORNO"}</Text>
                             </Button>
-                            <Button containerStyle={(this.state.period === "week" ? styles.tabWrpActive : {})} onPress={() => this.setTabState("week")}>
+                            <Button containerStyle={(period === "week" ? styles.tabWrpActive : {})} onPress={() => selectPeriod("week")}>
                                 <Text style={styles.tabTitle}>{"SETTIMANA"}</Text>
                             </Button>
-                            <Button containerStyle={(this.state.period === "month" ? styles.tabWrpActive : {})} onPress={() => this.setTabState("month")}>
+                            <Button containerStyle={(period === "month" ? styles.tabWrpActive : {})} onPress={() => selectPeriod("month")}>
                                 <Text style={styles.tabTitle}>{"MESE"}</Text>
                             </Button>
-                            <Button containerStyle={(this.state.period === "year" ? styles.tabWrpActive : {})} onPress={() => this.setTabState("year")}>
+                            <Button containerStyle={(period === "year" ? styles.tabWrpActive : {})} onPress={() => selectPeriod("year")}>
                                 <Text style={styles.tabTitle}>{"ANNO"}</Text>
                             </Button>
                         </View>
@@ -430,11 +466,17 @@ class Stats extends Component {
     }
 }
 
+function mapDispatchToProps (dispatch) {
+    return {
+        selectPeriod: bindActionCreators(selectPeriod, dispatch)
+    };
+}
+
 function mapStateToProps (state) {
     return {
         collections: state.collections,
-        home: state.home,
-        site: state.site
+        site: state.site,
+        stats: state.stats
     };
 }
-export default connect(mapStateToProps)(Stats);
+export default connect(mapStateToProps, mapDispatchToProps)(Stats);

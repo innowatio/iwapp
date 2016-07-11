@@ -12,7 +12,8 @@ describe("`Highcharts` component", () => {
         sensorId: "sensorId",
         day: "1970-01-01",
         measurementType: "activeEnergy",
-        source: "reading"
+        source: "reading",
+        period: "day"
     }];
 
     it("renders a `WebView` component", () => {
@@ -54,24 +55,23 @@ describe("`Highcharts` component", () => {
             };
             const ret = getHTML.call(instance);
             expect(ret).to.equal(`
-                <html>
-                    <head>
-                        <script type="text/javascript" src="http://code.highcharts.com/highcharts.js"></script>
-                        <style>
-                            #chart {
-                                height: 1px;
-                            }
-                        </style>
-                    </head>
-                    <body>
-                        <div id="chart"></div>
-                        <script>
-                            Highcharts.setOptions({global: {useUTC: false}});
-                            new Highcharts.Chart(${JSON.stringify(config)})
-                        </script>
-                    </body>
-                </html>
-            `);
+            <html>
+                <head>
+                    <script type="text/javascript" src="http://code.highcharts.com/highcharts.js"></script>
+                    <style>
+                        #chart {
+                            height: -14px;
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div id="chart"></div>
+                    <script>
+                        Highcharts.setOptions({global: {useUTC: false}});
+                        new Highcharts.Chart(${JSON.stringify(config)})
+                    </script>
+                </body>
+            </html>`);
         });
 
     });

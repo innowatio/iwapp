@@ -49,7 +49,7 @@ function sumMeasurements (measurements, startDay, endDay, period) {
     var sum = 0;
     var max = 0;
     for (var index = startDay; index < endDay; index++) {
-        const number = parseFloat(measurements[index]);
+        const number = isNaN(parseFloat(measurements[index])) ? 0 : parseFloat(measurements[index]);
         sum += number;
         if (max < number) {
             max = number;
@@ -88,7 +88,7 @@ function getPeriodStats (period, aggregates) {
 
     var max = 0;
     const total = measurements.reduce((x, y) => {
-        const number = parseFloat(y);
+        const number = isNaN(parseFloat(y)) ? 0 : parseFloat(y);
         if (max < number) {
             max = number;
         }

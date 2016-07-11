@@ -1,6 +1,6 @@
 import moment from "moment";
 import React, {Component, PropTypes} from "react";
-import {Platform, StyleSheet, WebView} from "react-native";
+import {Dimensions, Platform, StyleSheet, View, WebView} from "react-native";
 import IPropTypes from "react-immutable-proptypes";
 import shallowCompare from "react-addons-shallow-compare";
 
@@ -9,7 +9,7 @@ import {lineReading, lineForecast} from "../lib/colors";
 
 const styles = StyleSheet.create({
     webView: {
-        marginBottom: 15
+        marginBottom: -10
     }
 });
 
@@ -60,7 +60,8 @@ export default class Highcharts extends Component {
         return {
             chart: {
                 renderTo: "chart",
-                animation: false
+                animation: true,
+                marginRight: 40
             },
             credits: {
                 enabled: false
@@ -76,16 +77,23 @@ export default class Highcharts extends Component {
                             lineWidth: 1
                         }
                     }
+                },
+                column: {
+                    pointPadding: 0,
+                    borderWidth: 0,
+                    groupPadding: 0.1
                 }
             },
             series: this.getSeries(),
             title: null,
             xAxis: {
-                type: "datetime",
-                min: moment.utc(this.props.charts[0].day).startOf("day").valueOf(),
-                max: moment.utc(this.props.charts[0].day).endOf("day").valueOf()
+                minorGridLineWidth: 0
+                // min: moment.utc(this.props.charts[0].day).startOf("day").valueOf(),
+                // max: moment.utc(this.props.charts[0].day).endOf("day").valueOf()
             },
             yAxis: {
+                endOnTick: false,
+                gridLineWidth: 0,
                 labels: {
                     format: "{value}"
                 },
@@ -95,38 +103,37 @@ export default class Highcharts extends Component {
     }
 
     getHTML () {
-        return (
-            `
-                <html>
-                    <head>
-                        <script type="text/javascript" src="http://code.highcharts.com/highcharts.js"></script>
-                        <style>
-                            #chart {
-                                height: ${this.props.height}px;
-                            }
-                        </style>
-                    </head>
-                    <body>
-                        <div id="chart"></div>
-                        <script>
-                            Highcharts.setOptions({global: {useUTC: false}});
-                            new Highcharts.Chart(${JSON.stringify(this.getChartConfig())})
-                        </script>
-                    </body>
-                </html>
-            `
+        return (`
+            <html>
+                <head>
+                    <script type="text/javascript" src="http://code.highcharts.com/highcharts.js"></script>
+                    <style>
+                        #chart {
+                            height: ${this.props.height - 15}px;
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div id="chart"></div>
+                    <script>
+                        Highcharts.setOptions({global: {useUTC: false}});
+                        new Highcharts.Chart(${JSON.stringify(this.getChartConfig())})
+                    </script>
+                </body>
+            </html>`
         );
     }
 
     render () {
         const html = this.getHTML();
+        const {width} = Dimensions.get("window");
         return (
             <WebView
                 javaScriptEnabled={true}
                 ref="highchartsWebview"
                 scrollEnabled={false}
                 source={{html}}
-                style={[styles.webView, {height: this.props.height}]}
+                style={[styles.webView, {height: this.props.height, width}]}
             />
         );
     }

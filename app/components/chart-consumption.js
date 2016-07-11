@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "space-around",
         paddingTop: 20,
-        marginBottom: 25
+        marginBottom: 5
     },
     powerContainer: {
         flexDirection: "column",
@@ -152,7 +152,7 @@ export default class ChartConsumption extends Component {
                 <Highcharts
                     aggregates={this.props.dailyAggregates}
                     charts={this.props.charts}
-                    height={this.props.heightSwiper * 0.35}
+                    height={this.props.heightSwiper * 0.42}
                 />
                 <View style={styles.switchContainer}>
                     <Switch

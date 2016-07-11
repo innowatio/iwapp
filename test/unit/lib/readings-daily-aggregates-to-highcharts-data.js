@@ -13,7 +13,7 @@ describe("`readingsDailyAggregatesToHighchartsData` function", () => {
 
     const times = {
         reading: [1465477616813, 1465478616813, 1465478900000, 1465479000000, 1465479520000, 1465479620000, 1465479840000, 1465479940000, 1465490120000, 1465497120000, 1465497720000],
-        forecast: [1465478616813, 1465478516813, 1465478700000, 1465478900000, 1465479000000, 1465479520000, 14654798660000, 1465479731000, 1465495120000, 1465499320000, 146550020000]
+        forecast: [1465477616813, 1465478516813, 1465478700000, 1465478900000, 1465479000000, 1465479520000, 14654798660000, 1465479731000, 1465495120000, 1465499320000, 146550020000]
     };
     const source = ["reading", "forecast"];
 
@@ -88,11 +88,12 @@ describe("`readingsDailyAggregatesToHighchartsData` function", () => {
                 readingsDailyAggregates,
                 chartState
             );
+            
             ret.forEach((res, idx) => {
                 res.data.forEach((data, dataIndex) => {
                     expect(data[0]).to.be.a("number");
                     expect(data[1]).to.be.a("number");
-                    expect(data[0]).to.deep.equal(times[source[idx]][dataIndex]);
+                    expect(data[0]).to.deep.equal(moment.utc(times[source[idx]][dataIndex]).hour());
                     expect(data[1]).to.deep.equal(values[source[idx]][dataIndex]);
                 });
             });
