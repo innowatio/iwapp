@@ -2,6 +2,7 @@ package com.innowatio.iwapp;
 
 import android.app.Application;
 import android.util.Log;
+import android.content.Intent;
 
 import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactInstanceManager;
@@ -19,7 +20,7 @@ import java.util.List;
 
 public class MainApplication extends Application implements ReactApplication {
 
-    private Application mApplication = this;
+    private ReactNativePushNotificationPackage mReactNativePushNotificationPackage;
 
     private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
 
@@ -35,15 +36,23 @@ public class MainApplication extends Application implements ReactApplication {
 
         @Override
         protected List<ReactPackage> getPackages() {
+            mReactNativePushNotificationPackage = new ReactNativePushNotificationPackage();
             return Arrays.<ReactPackage>asList(
             new MainReactPackage(),
             new ImagePickerPackage(),
             new VectorIconsPackage(),
-            new CodePush(getString(R.string.reactNativeCodePush_androidDeploymentKey), mApplication, BuildConfig.DEBUG),
-            new ReactNativePushNotificationPackage(mApplication)
+            new CodePush(getString(R.string.reactNativeCodePush_androidDeploymentKey), MainApplication.this, BuildConfig.DEBUG),
+            mReactNativePushNotificationPackage
             );
         }
     };
+
+    // Add onNewIntent
+    public void onNewIntent(Intent intent) {
+       if ( mReactNativePushNotificationPackage != null ) {
+           mReactNativePushNotificationPackage.newIntent(intent);
+       }
+    }
 
     @Override
     public ReactNativeHost getReactNativeHost() {

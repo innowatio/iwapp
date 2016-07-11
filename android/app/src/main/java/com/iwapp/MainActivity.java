@@ -1,5 +1,7 @@
 package com.innowatio.iwapp;
 
+import android.content.Intent;
+
 import com.facebook.react.ReactActivity;
 
 public class MainActivity extends ReactActivity {
@@ -12,4 +14,12 @@ public class MainActivity extends ReactActivity {
     protected String getMainComponentName() {
         return "iwapp";
     }
+
+    // Add onNewIntent
+    @Override
+    public void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        ((MainApplication) getApplication()).onNewIntent(intent);
+    }
+
 }
