@@ -13,7 +13,6 @@ import Root from "../views/root";
 import store from "./store";
 
 function dispatchAction (action) {
-    console.log(action);
     switch (action.type) {
         case ActionConst.PUSH: {
             store.dispatch(pushNavigator(action.key));
