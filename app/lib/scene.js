@@ -10,6 +10,7 @@ import Notifications from "../views/notifications";
 import ModifyProfile from "../views/modify-profile";
 import {pushNavigator, popNavigator} from "../actions/navigation";
 import Root from "../views/root";
+import Survey from "../views/survey";
 import store from "./store";
 
 function dispatchAction (action) {
@@ -48,6 +49,7 @@ const scene = (
             <Scene component={ModifyProfile} key="modifyProfile" />
             <Scene component={AlarmsSettings} key="alarmsSettings" />
         </Scene>
+        <Scene component={Survey} key="survey" />
     </Router>
 );
 

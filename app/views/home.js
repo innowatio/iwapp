@@ -3,6 +3,7 @@ import moment from "moment";
 import {Content} from "native-base";
 import Button from "react-native-button";
 import React, {Component, PropTypes} from "react";
+import {Actions} from "react-native-router-flux";
 import IPropTypes from "react-immutable-proptypes";
 import {Dimensions, Modal, StyleSheet, View} from "react-native";
 import {connect} from "react-redux";
@@ -98,8 +99,7 @@ class Home extends Component {
         super(props);
         this.state  = {
             animationType: "none",
-            modalVisible: false,
-            transparent: false,
+            modalVisible: false
         };
     }
 
@@ -225,6 +225,7 @@ class Home extends Component {
         return (
             <Modal
                 animationType={this.state.animationType}
+                onRequestClose={() => this.setModalVisible(false)}
                 transparent={true}
                 visible={this.state.modalVisible}
             >
@@ -243,7 +244,7 @@ class Home extends Component {
                         </Text>
                         <Button
                             containerStyle={styles.modalButton}
-                            onPress={this.setModalVisible.bind(this, false)}
+                            onPress={Actions.survey}
                             style={styles.modalButtonText}
                         >
                             {"VAI AL QUESTIONARIO"}
