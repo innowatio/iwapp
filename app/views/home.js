@@ -45,11 +45,15 @@ class Home extends Component {
 
     componentDidMount () {
         this.props.asteroid.subscribe("sites");
-        this.subscribeToMeasure(this.props);
+        if (this.props.site) {
+            this.subscribeToMeasure(this.props);
+        }
     }
 
     componentWillReceiveProps (nextProps) {
-        this.subscribeToMeasure(nextProps);
+        if (this.props.site) {
+            this.subscribeToMeasure(nextProps);
+        }
     }
 
     onLogout () {
