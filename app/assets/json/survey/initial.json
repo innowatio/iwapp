@@ -3,22 +3,27 @@
     "title": "Benvenuto su Lucy",
     "description": "Con lo smart meter installato presso la tua attività e con questa app, puoi ottenere significativi risparmi sui consumi energetici. Sei pronto a iniziare? Compila il questionario!",
     "questions": [{
+        "id": "first",
         "text": "Prima domanda?",
         "type": "singleChoice",
         "options": ["Prima risposta", "seconda risposta", "terza risposta"]
     }, {
+        "id": "second",
         "text": "Seconda domanda?",
         "type": "singleChoice",
         "options": ["Prima risposta", "seconda risposta", "terza risposta"]
     }, {
+        "id": "third",
         "text": "Terza domanda?",
         "type": "singleChoice",
         "options": ["Prima risposta", "seconda risposta", "terza risposta"]
     }, {
+        "id": "fourth",
         "text": "Quarta domanda?",
         "type": "singleChoice",
         "options": ["Prima risposta", "seconda risposta", "terza risposta"]
     }, {
+        "id": "fifth",
         "text": "Quinta domanda?",
         "type": "singleChoice",
         "options": ["Prima risposta", "seconda risposta", "terza risposta"]

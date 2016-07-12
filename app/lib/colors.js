@@ -56,3 +56,10 @@ export const stepperDot = "#949494";
 export const stepperDotActive = "#303BA6";
 export const stepperLine = "#AFB0AF";
 export const stepperLineActive = "#4150FE";
+// Questionnaire
+export const borderAccordion = "#D2DADE";
+export const iconArrow = "#85959D";
+export const greenStatus = "#C2D72D";
+export const redStatus = "#FB0035";
+export const questionnaireAnswerText = "#D2DADE";
+export const questionnaireAnswerStatusText = "#A0B0B9";

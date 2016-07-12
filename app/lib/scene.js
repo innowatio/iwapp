@@ -8,6 +8,7 @@ import AlarmsSettings from "../views/alarms-settings";
 import Profile from "../views/profile";
 import Notifications from "../views/notifications";
 import ModifyProfile from "../views/modify-profile";
+import Questionnaire from "../views/questionnaire";
 import {pushNavigator, popNavigator} from "../actions/navigation";
 import Root from "../views/root";
 import store from "./store";
@@ -43,10 +44,12 @@ const scene = (
             <Scene component={Stats} key="badgeboard" />
             <Scene component={Stats} key="energy" />
             <Scene component={Stats} key="report" />
-            <Scene component={Profile} key="profile" />
             <Scene component={Notifications} key="notifications" />
-            <Scene component={ModifyProfile} key="modifyProfile" />
             <Scene component={AlarmsSettings} key="alarmsSettings" />
+            // Profile Views
+            <Scene component={Profile} key="profile" />
+            <Scene component={Questionnaire} key="questionnaire" />
+            <Scene component={ModifyProfile} key="modifyProfile" />
         </Scene>
     </Router>
 );

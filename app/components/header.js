@@ -5,6 +5,7 @@ import {last} from "ramda";
 
 import Icon from "./iwapp-icons";
 import * as colors from "../lib/colors";
+import {headerHeight} from "../lib/const";
 
 const styles = StyleSheet.create({
     headerWrp: {
@@ -16,7 +17,7 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "space-between",
-        height: 40
+        height: headerHeight
     },
     leftHeader: {
         justifyContent: "flex-start",

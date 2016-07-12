@@ -86,7 +86,10 @@ export default class DropDown extends Component {
         const {optionItems} = this.props;
         return optionItems.map((item, index) => (
             <ListItem key={index} style={styles.projectContainer}>
-                <TouchableOpacity onPress={this.selectionChanged({index: index, selection: item})} style={styles.projectItem}>
+                <TouchableOpacity
+                    onPress={this.selectionChanged({index, selection: item})}
+                    style={styles.projectItem}
+                >
                     <Text style={styles.projectText}>{item.title}</Text>
                 </TouchableOpacity>
             </ListItem>
@@ -118,8 +121,16 @@ export default class DropDown extends Component {
             <View>
                 <TouchableOpacity onPress={this.toggleItems.bind(this)}>
                     <View style={styles.header}>
-                        <Text style={{color: colors.white}}>{titlePlaceholder ? titlePlaceholder : "Select an item"}</Text>
-                        <FaIcons name={this.state.showItems ? "angle-up" : "angle-down"} size={26} style={styles.itemIcon} />
+                        <Text
+                            style={{color: colors.white}}
+                        >
+                            {titlePlaceholder ? titlePlaceholder : "Select an item"}
+                        </Text>
+                        <FaIcons
+                            name={this.state.showItems ? "angle-up" : "angle-down"}
+                            size={26}
+                            style={styles.itemIcon}
+                        />
                     </View>
                 </TouchableOpacity>
                 {this.renderDropDown()}

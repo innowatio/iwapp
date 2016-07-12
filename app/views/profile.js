@@ -9,6 +9,7 @@ import {connect} from "react-redux";
 import Icon from "../components/iwapp-icons";
 import * as colors from "../lib/colors";
 import {getEmail, getUsername} from "../lib/get-user-info";
+import QuestionnaireProgress from "../components/questionnaire-progress";
 import Text from "../components/text-lato";
 
 const styles = StyleSheet.create({
@@ -117,39 +118,6 @@ const styles = StyleSheet.create({
         flexWrap: "wrap",
         justifyContent: "space-around",
         alignItems: "center"
-    },
-    progressQuestionnaire: {
-        flexDirection: "column",
-        alignItems: "stretch",
-        marginTop: 20,
-        width: 90,
-        marginHorizontal: 5
-    },
-    circleProgress: {
-        width: 90,
-        alignItems: "center"
-    },
-    iconQuestionnaireWrp: {
-        position: "absolute",
-        width: 90,
-        height: 80,
-        alignItems: "center",
-        justifyContent: "center",
-        backgroundColor: colors.transparent,
-        top: 0,
-        left: 0
-    },
-    titQuestionnaire: {
-        width: 90,
-        fontSize: 14,
-        padding: 0,
-        textAlign: "center",
-        marginTop: 3
-    },
-    percQuestionnaire: {
-        fontSize: 11,
-        padding: 0,
-        textAlign: "center"
     }
 });
 
@@ -198,7 +166,9 @@ class Profile extends Component {
             angle: 0, // android only, photos only
             allowsEditing: true, // Built in functionality to resize/reposition the image after selection
             noData: false, // photos only - disables the base64 `data` field from being generated (greatly improves performance on large photos)
-            storageOptions: { // if this key is provided, the image will get saved in the documents directory on ios, and the pictures directory on android (rather than a temporary directory)
+            // if this key is provided, the image will get saved in the documents directory on ios,
+            // and the pictures directory on android (rather than a temporary directory)
+            storageOptions: {
                 skipBackup: true, // ios only - image will NOT be backed up to icloud
                 path: "images" // ios only - will save image at /Documents/images rather than the root
             }
@@ -289,32 +259,7 @@ class Profile extends Component {
 
     renderQuestionnairesProgress (questionnaire) {
         return (
-            <View key={questionnaire.key} style={styles.progressQuestionnaire}>
-                <Progress.Circle
-                    animating={false}
-                    borderWidth={0}
-                    color={questionnaire.color}
-                    progress={questionnaire.value}
-                    size={80}
-                    style={styles.circleProgress}
-                />
-                <TouchableOpacity style={styles.iconQuestionnaireWrp} transparent={true}>
-                    <Icon
-                        color={questionnaire.color}
-                        name={questionnaire.icon}
-                        size={52}
-                    />
-                </TouchableOpacity>
-                <View>
-                    <Text style={styles.titQuestionnaire}>
-                        {questionnaire.name}
-                    </Text>
-                    <Text style={styles.percQuestionnaire}>
-                        {questionnaire.percentage}
-                        {"% completato"}
-                    </Text>
-                </View>
-            </View>
+            <QuestionnaireProgress key={questionnaire.key} questionnaire={questionnaire} />
         );
     }
 
@@ -336,7 +281,7 @@ class Profile extends Component {
                         <Text style={styles.titleComplete}>{"Completa il profilo"}</Text>
                         {this.renderProfilePercentage()}
                         <View style={styles.progressQuestionnairesWrp}>
-                            {this.getQuestionnaires().map(this.renderQuestionnairesProgress)}
+                            {this.getQuestionnaires().map(::this.renderQuestionnairesProgress)}
                         </View>
                     </View>
                 </Content>
