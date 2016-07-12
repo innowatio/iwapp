@@ -46,7 +46,7 @@ const scene = (
             <Scene component={Stats} key="report" />
             <Scene component={Notifications} key="notifications" />
             <Scene component={AlarmsSettings} key="alarmsSettings" />
-            // Profile Views
+            {/*Profile Views */}
             <Scene component={Profile} key="profile" />
             <Scene component={Questionnaire} key="questionnaire" />
             <Scene component={ModifyProfile} key="modifyProfile" />
