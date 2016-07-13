@@ -60,13 +60,12 @@ const styles = StyleSheet.create({
         paddingVertical: 20,
         paddingHorizontal: 10,
         alignItems: "center",
-        color: colors.textGrey
+        justifyContent: "center"
     },
     answer: {
-        textAlign: "center",
+        fontSize: 16,
         color: colors.textGrey,
-        paddingVertical: 20,
-        paddingHorizontal: 10
+        textAlign: "center"
     },
 
     // BUTTON SAVE
@@ -215,12 +214,10 @@ class Survey extends Component {
     renderAnswer (option, index) {
         const {width} = Dimensions.get("window");
         return (
-            <View key={index}>
-                <View style={styles.answerSurveyWrp}>
-                    <Button style={styles.answerSurvey}>
-                        <Text style={[styles.answer, {width}]}>{option}</Text>
-                    </Button>
-                </View>
+            <View key={index} style={styles.answerSurveyWrp}>
+                <TouchableOpacity style={[styles.answerSurvey, {width}]}>
+                    <Text style={styles.answer}>{option}</Text>
+                </TouchableOpacity>
             </View>
         );
     }
