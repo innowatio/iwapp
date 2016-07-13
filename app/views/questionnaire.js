@@ -91,7 +91,7 @@ export default class Questionnaire extends Component {
         ];
         return questionnaires.find(questionnaire =>
             questionnaire.category === this.props.selectedQuestionnaire.key
-        ) || {questions: []};
+        );
     }
 
     isLastSection (index) {
@@ -181,6 +181,7 @@ export default class Questionnaire extends Component {
     render () {
         const {height} = Dimensions.get("window");
         const {selectedQuestionnaire} = this.props;
+        const questionnaire = this.getQuestionnaire();
         return (
             <View style={[styles.container, {height: heightWithoutHeader(height)}]}>
                 <Content>
@@ -191,7 +192,7 @@ export default class Questionnaire extends Component {
                         <Accordion
                             renderContent={::this.renderContent}
                             renderHeader={::this.renderHeader}
-                            sections={this.getQuestionnaire().questions}
+                            sections={questionnaire ? questionnaire.questions : []}
                             underlayColor={colors.transparent}
                         />
                     </View>
