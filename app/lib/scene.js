@@ -1,25 +1,28 @@
 import React from "react";
 import {ActionConst, Router, Scene, Reducer} from "react-native-router-flux";
 
-import asteroid from "./asteroid";
-import Home from "../views/home";
-import Stats from "../views/stats";
-import AlarmsSettings from "../views/alarms-settings";
-import Profile from "../views/profile";
-import Notifications from "../views/notifications";
-import ModifyProfile from "../views/modify-profile";
+import {navigateBack, navigateView} from "../actions/analytics";
 import {pushNavigator, popNavigator} from "../actions/navigation";
-import Root from "../views/root";
+import asteroid from "./asteroid";
 import store from "./store";
+import AlarmsSettings from "../views/alarms-settings";
+import Home from "../views/home";
+import ModifyProfile from "../views/modify-profile";
+import Notifications from "../views/notifications";
+import Profile from "../views/profile";
+import Root from "../views/root";
+import Stats from "../views/stats";
 
 function dispatchAction (action) {
     switch (action.type) {
         case ActionConst.PUSH: {
             store.dispatch(pushNavigator(action.key));
+            store.dispatch(navigateView(action.key));
             break;
         }
         case ActionConst.BACK_ACTION:
             store.dispatch(popNavigator());
+            store.dispatch(navigateBack());
             break;
         default:
             break;
