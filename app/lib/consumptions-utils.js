@@ -86,20 +86,14 @@ function getPeriodStats (period, aggregates) {
         days: measurements.length - 1
     });
 
-    var max = 0;
     const total = measurements.reduce((x, y) => {
         const number = isNaN(parseFloat(y)) ? 0 : parseFloat(y);
-        if (max < number) {
-            max = number;
-        }
         return x + number;
     }, 0);
 
     const avg = total / getInYear(time, period);
-
     return {
-        avg: avg.toFixed(0),
-        max: (max * getDaysIn(period)).toFixed(0)
+        avg: avg.toFixed(0)
     };
 }
 
@@ -107,6 +101,7 @@ export function getTitleAndSubtitle (period, aggregates) {
     const periodDates = getTimeRangeByPeriod(period);
     const result = getPeriodStats(period, aggregates);
     const periodStats = (period, periodOffset, periodOffsetType) => getRangeStats(aggregates, period, periodOffset, periodOffsetType);
+    const defaultMeasurement = periodStats(period);
     switch (PERIODS.indexOf(period)) {
         case 0:
             return {
@@ -116,21 +111,21 @@ export function getTitleAndSubtitle (period, aggregates) {
                 periodTitle: "OGGI HAI UTILIZZATO",
                 periodSubtitle: `${moment(periodDates.start).locale("it").format("DD MMMM YYYY")}`.toUpperCase(),
                 title: "OGGI",
-                sum: periodStats(period),
+                sum: defaultMeasurement,
                 comparisons: [{
                     key: "today-1d",
                     title: "IERI",
-                    max: result.max,
+                    max: defaultMeasurement,
                     now: periodStats(period, 1)
                 }, {
                     key: "today-7d",
                     title: `${moment().locale("it").format("dddd")} scors${moment().day() === 6 ? "a" : "o"}`.toUpperCase(),
-                    max: result.max,
+                    max: defaultMeasurement,
                     now: periodStats(period, 2)
                 }, {
                     key: "avg-7d",
                     title: `media ${moment().locale("it").format("dddd")}`.toUpperCase(),
-                    max: result.max,
+                    max: defaultMeasurement,
                     now: result.avg
                 }]
             };
@@ -146,12 +141,12 @@ export function getTitleAndSubtitle (period, aggregates) {
                 comparisons: [{
                     key: "week-1w",
                     title: "SETTIMANA SCORSA",
-                    max: result.max,
+                    max: defaultMeasurement,
                     now: periodStats(period, 1)
                 }, {
                     key: "avg-week",
                     title: "MEDIA SETTIMANALE",
-                    max: result.max,
+                    max: defaultMeasurement,
                     now: result.avg
                 }]
             };
@@ -163,21 +158,21 @@ export function getTitleAndSubtitle (period, aggregates) {
                 periodTitle: `NEL MESE DI ${moment(periodDates.start).locale("it").format("MMMM")} HAI UTILIZZATO`.toUpperCase(),
                 periodSubtitle: `${moment(periodDates.start).format("YYYY")}`,
                 title: "MESE CORRENTE",
-                sum: periodStats(period),
+                sum: defaultMeasurement,
                 comparisons: [{
                     key: "month-1m",
                     title: `${moment(getPreviousPeriod(period, period).start).locale("it").format("MMMM YYYY")}`.toUpperCase(),
-                    max: result.max,
+                    max: defaultMeasurement,
                     now: periodStats(period, 1)
                 }, {
                     key: "month-1y",
                     title: `${moment(getPreviousPeriod("year", "month").start).locale("it").format("MMMM YYYY")}`.toUpperCase(),
-                    max: result.max,
+                    max: defaultMeasurement,
                     now: periodStats(period, 2)
                 }, {
                     key: "avg-month",
                     title: "MEDIA DEI MESI",
-                    max: result.max,
+                    max: defaultMeasurement,
                     now: result.avg
                 }]
             };
@@ -193,7 +188,7 @@ export function getTitleAndSubtitle (period, aggregates) {
                 comparisons: [{
                     key: "year-1y",
                     title: `${moment(getPreviousPeriod(period, period).start).locale("it").format("YYYY")}`.toUpperCase(),
-                    max: result.max,
+                    max: defaultMeasurement,
                     now: periodStats(period, 1)
                 }]
             };
