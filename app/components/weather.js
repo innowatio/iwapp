@@ -4,7 +4,7 @@ import {Image, StyleSheet, View} from "react-native";
 import Icon from "./iwapp-icons";
 import Text from "./text-lato";
 import * as colors from "../lib/colors";
-import {isEvening} from "../lib/weather-mapper";
+import {isDaytime} from "../lib/weather-mapper";
 
 const styles = StyleSheet.create({
     backgroundImage: {
@@ -89,7 +89,7 @@ export default class Weather extends Component {
     }
 
     getGreeting () {
-        return isEvening() ? "Buongiorno!" : "Buonasera!";
+        return isDaytime() ? "Buongiorno!" : "Buonasera!";
     }
 
     render () {

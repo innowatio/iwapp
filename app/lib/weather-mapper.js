@@ -100,7 +100,7 @@ export function mapWeatherBackground (iconId) {
         case 230:
         case 231:
         case 232:
-            return isEvening() ? require("../assets/img/day_thunderstorm.gif") : require("../assets/img/night_thunderstorm.gif");
+            return isDaytime() ? require("../assets/img/day_thunderstorm.gif") : require("../assets/img/night_thunderstorm.gif");
         case 300:
         case 301:
         case 302:
@@ -113,7 +113,7 @@ export function mapWeatherBackground (iconId) {
         case 802:
         case 804:
         case 905:
-            return isEvening() ? require("../assets/img/day_scattered-clouds.gif") : require("../assets/img/night_scattered-clouds.gif");
+            return isDaytime() ? require("../assets/img/day_scattered-clouds.gif") : require("../assets/img/night_scattered-clouds.gif");
         case 500:
         case 501:
         case 502:
@@ -124,7 +124,7 @@ export function mapWeatherBackground (iconId) {
         case 521:
         case 522:
         case 531:
-            return isEvening() ? require("../assets/img/day_rain.gif") : require("../assets/img/night_rain.gif");
+            return isDaytime() ? require("../assets/img/day_rain.gif") : require("../assets/img/night_rain.gif");
         case 600:
         case 601:
         case 602:
@@ -137,7 +137,7 @@ export function mapWeatherBackground (iconId) {
         case 622:
         case 903:
         case 906:
-            return isEvening() ? require("../assets/img/day_snow.gif") : require("../assets/img/night_snow.gif");
+            return isDaytime() ? require("../assets/img/day_snow.gif") : require("../assets/img/night_snow.gif");
         case 701:
         case 711:
         case 721:
@@ -149,18 +149,18 @@ export function mapWeatherBackground (iconId) {
         case 771:
         case 781:
         case 957:
-            return isEvening() ? require("../assets/img/day_mist.gif") : require("../assets/img/night_mist.gif");
+            return isDaytime() ? require("../assets/img/day_mist.gif") : require("../assets/img/night_mist.gif");
         case 800:
         case 904:
         case 951:
         case 952:
-            return isEvening() ? require("../assets/img/day_clear-sky.gif") : require("../assets/img/night_clear-sky.gif");
+            return isDaytime() ? require("../assets/img/day_clear-sky.gif") : require("../assets/img/night_clear-sky.gif");
         case 801:
         case 953:
         case 954:
         case 955:
         case 956:
-            return isEvening() ? require("../assets/img/day_few-clouds.gif") : require("../assets/img/night_few-clouds.gif");
+            return isDaytime() ? require("../assets/img/day_few-clouds.gif") : require("../assets/img/night_few-clouds.gif");
         case 803:
         case 900:
         case 901:
@@ -168,12 +168,12 @@ export function mapWeatherBackground (iconId) {
         case 960:
         case 961:
         case 962:
-            return isEvening() ? require("../assets/img/day_broken-clouds.gif") : require("../assets/img/night_broken-clouds.gif");
+            return isDaytime() ? require("../assets/img/day_broken-clouds.gif") : require("../assets/img/night_broken-clouds.gif");
         default:
-            return isEvening() ? require("../assets/img/day_clear-sky.gif") : require("../assets/img/night_clear-sky.gif");
+            return isDaytime() ? require("../assets/img/day_clear-sky.gif") : require("../assets/img/night_clear-sky.gif");
     }
 }
 
-export function isEvening (hours = moment().hours(), threshold = 18) {
-    return hours < threshold;
+export function isDaytime (hours = moment().hours(), thresholdMin = 5, thresholdMax = 18) {
+    return hours < thresholdMax && hours > thresholdMin;
 }
