@@ -7,7 +7,7 @@ import {connect} from "react-redux";
 import FaIcons from "react-native-vector-icons/FontAwesome";
 import initialSurvey from "../assets/json/survey/initial";
 
-// import Icon from "../components/iwapp-icons";
+import Icon from "../components/iwapp-icons";
 import Text from "../components/text-lato";
 import * as colors from "../lib/colors";
 import Stepper from "../components/stepper";
@@ -41,23 +41,32 @@ const styles = StyleSheet.create({
         alignItems: "center"
     },
     questionSurveyWrp: {
-        padding: 25,
+        paddingVertical: 30,
+        paddingHorizontal: 25,
         alignItems: "center",
         borderBottomWidth: 1,
         borderBottomColor: colors.lightGrey
     },
     questionSurvey: {
-        textAlign: "center"
+        textAlign: "center",
+        fontSize: 18,
+        color: colors.textGrey
+    },
+    answerSurveyWrp: {
+        borderBottomWidth: 1,
+        borderBottomColor: colors.lightGrey
     },
     answerSurvey: {
         paddingVertical: 20,
         paddingHorizontal: 10,
         alignItems: "center",
-        borderBottomWidth: 1,
-        borderBottomColor: colors.lightGrey
+        color: colors.textGrey
     },
     answer: {
-        textAlign: "center"
+        textAlign: "center",
+        color: colors.textGrey,
+        paddingVertical: 20,
+        paddingHorizontal: 10
     },
 
     // BUTTON SAVE
@@ -86,7 +95,50 @@ const styles = StyleSheet.create({
     },
 
     iconArrow: {
-        marginLeft: 10
+        marginLeft: 6
+    },
+
+    modalBackground: {
+        backgroundColor: colors.secondaryBlue,
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+        padding: 30
+    },
+    titleModal: {
+        color: colors.white,
+        padding: 30,
+        fontSize: 20,
+        textAlign: "center"
+    },
+    modalIconWrp: {
+        backgroundColor: colors.primaryBlue,
+        borderRadius: 100,
+        width: 140,
+        height: 140,
+        alignSelf: "center",
+        justifyContent: "center",
+        marginBottom: 40
+    },
+    modalIcon: {
+        textAlign: "center",
+        backgroundColor: colors.transparent
+    },
+    modalButtonWrp: {
+        marginTop: 20,
+        justifyContent: "center"
+    },
+    modalButton: {
+        backgroundColor: colors.buttonPrimary,
+        borderRadius: 100,
+        width: 150,
+        paddingVertical: 5
+    },
+    modalButtonText: {
+        marginHorizontal: 10,
+        fontSize: 15,
+        color: colors.white,
+        fontWeight: "normal"
     }
 });
 
@@ -96,7 +148,8 @@ class Survey extends Component {
         super(props);
         this.state = {
             activeStep: 0,
-            modalVisible: false
+            modalVisible: false,
+            option: "first"
         };
     }
 
@@ -121,12 +174,11 @@ class Survey extends Component {
     }
 
     isLastStep () {
-        console.log(this.getSurvey().questions.length - 1);
-        console.log(this.state.activeStep);
         return this.state.activeStep === this.getSurvey().questions.length - 1;
     }
 
     renderConfirmModal () {
+        const {height} = Dimensions.get("window");
         return (
             <Modal
                 animationType={this.state.animationType}
@@ -134,11 +186,19 @@ class Survey extends Component {
                 transparent={false}
                 visible={this.state.modalVisible}
             >
-                <View style={styles.modalBackground}>
+                <View style={[styles.modalBackground, {height}]}>
                     <View style={styles.modalTitleWrp}>
-                        <Text style={styles.titleModal}>{" "}</Text>
+                        <View style={styles.modalIconWrp}>
+                            <Icon
+                                color={colors.iconWhite}
+                                name={"iw-check"}
+                                size={100}
+                                style={styles.modalIcon}
+                            />
+                        </View>
+                        <Text style={styles.titleModal}>{"Grazie per aver compilato il questionario!"}</Text>
                     </View>
-                    <View>
+                    <View style={styles.modalButtonWrp}>
                         <Button
                             containerStyle={styles.modalButton}
                             onPress={Actions.home}
@@ -156,25 +216,25 @@ class Survey extends Component {
         const {width} = Dimensions.get("window");
         return (
             <View key={index}>
-                <View style={[styles.answerSurvey, {width}]}>
-                    <TouchableOpacity>
-                        <Text style={styles.answer}>{option}</Text>
-                    </TouchableOpacity>
+                <View style={styles.answerSurveyWrp}>
+                    <Button style={styles.answerSurvey}>
+                        <Text style={[styles.answer, {width}]}>{option}</Text>
+                    </Button>
                 </View>
             </View>
         );
     }
 
     renderQuestion (question) {
+        const {width} = Dimensions.get("window");
         return (
-            <Text style={styles.questionSurvey}>
+            <Text style={[styles.questionSurvey, {width}]}>
                 {question}
             </Text>
         );
     }
 
     renderContentSurvey () {
-        console.log(this.isLastStep());
         const {height} = Dimensions.get("window");
         const activeStepQuestion = this.getSurvey().questions[this.state.activeStep];
         return (
@@ -187,7 +247,9 @@ class Survey extends Component {
                 <View style={styles.questionSurveyWrp}>
                     {this.renderQuestion(activeStepQuestion.text)}
                 </View>
-                {activeStepQuestion.options.map(this.renderAnswer)}
+                <View style={styles.answerSurveyWrp}>
+                    {activeStepQuestion.options.map(this.renderAnswer)}
+                </View>
                 <View style={[styles.buttonSaveWrp, {height: height * 0.3}]}>
                     <TouchableOpacity
                         disabled={this.state.activeStep === 0}

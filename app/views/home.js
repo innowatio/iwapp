@@ -9,6 +9,7 @@ import {Dimensions, Modal, StyleSheet, View} from "react-native";
 import {connect} from "react-redux";
 import Swiper from "react-native-swiper";
 import {bindActionCreators} from "redux";
+import initialSurvey from "../assets/json/survey/initial";
 
 import ChartConsumption from "../components/chart-consumption";
 import InfoConsumption from "../components/info-consumption";
@@ -68,12 +69,13 @@ const styles = StyleSheet.create({
         marginTop: 20,
         backgroundColor: colors.buttonPrimary,
         width: 200,
-        paddingVertical: 5,
+        paddingVertical: 8,
         borderRadius: 50
     },
     modalButtonText: {
         color: colors.white,
         fontSize: 14,
+        backgroundColor: colors.transparent,
         fontWeight: "300"
     }
 });
@@ -98,7 +100,6 @@ class Home extends Component {
     constructor (props) {
         super(props);
         this.state  = {
-            animationType: "none",
             modalVisible: false
         };
     }
@@ -114,6 +115,10 @@ class Home extends Component {
         if (nextProps.site) {
             this.subscribeToMeasure(nextProps);
         }
+    }
+
+    getSurvey () {
+        return initialSurvey;
     }
 
     setModalVisible (visible) {
@@ -243,8 +248,9 @@ class Home extends Component {
                             <Icon color={colors.iconWhite} name={"iw-innowatio-logo"} size={100} style={styles.logoInnowatio} />
                         </View>
                         <Text style={styles.descriptionModal}>
-                            <Text style={styles.textBold}>{"BENVENUTO SU LUCY!"}</Text>
-                            {"\n\nCon lo smart meter installato presso la tua attività e con questa app, puoi ottenere significativi risparmi sui consumi energetici. Sei pronto a iniziare? Compila il questionario!"}
+                            <Text style={styles.textBold}>{this.getSurvey().title.toUpperCase()}</Text>
+                            {"\n\n"}
+                            {this.getSurvey().description}
                         </Text>
                         <Button
                             containerStyle={styles.modalButton}
