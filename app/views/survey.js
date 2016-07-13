@@ -275,7 +275,7 @@ class Survey extends Component {
         const {height} = Dimensions.get("window");
         return (
             <View style={styles.container}>
-                <Content style={{backgroundColor: colors.background, height, paddingTop: 54}}>
+                <Content style={{backgroundColor: colors.background, height}}>
                     <View style={styles.titleBarWrp}>
                         <View style={styles.titleBar}>
                             <Text style={styles.title}>{"QUESTIONARIO"}</Text>
