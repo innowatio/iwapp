@@ -48,7 +48,7 @@ describe("`scene`", () => {
 
             it("dispatch the `pushNavigator` action with `action.key` as parameter", () => {
                 dispatchAction(action);
-                expect(store.dispatch).to.have.callCount(1);
+                expect(store.dispatch).to.have.callCount(2);
                 expect(store.dispatch).to.have.been.calledWith({
                     type: "PUSH"
                 });
@@ -66,7 +66,7 @@ describe("`scene`", () => {
 
             it("dispatch the `popNavigator` action", () => {
                 dispatchAction(action);
-                expect(store.dispatch).to.have.callCount(1);
+                expect(store.dispatch).to.have.callCount(2);
                 expect(store.dispatch).to.have.been.calledWith({
                     type: "POP"
                 });

@@ -14,7 +14,8 @@ var getIp = function () {
 
 function getEnvirnomentVariables () {
     return {
-        READ_BACKEND_ENDPOINT: process.env.READ_BACKEND_ENDPOINT || `ws://${getIp()}:3000/websocket`
+        READ_BACKEND_ENDPOINT: process.env.READ_BACKEND_ENDPOINT || `ws://${getIp()}:3000/websocket`,
+        WRITE_API_ENDPOINT: process.env.WRITE_API_ENDPOINT || "http://iwwa-write-api-development.eu-west-1.elasticbeanstalk.com"
     };
 }
 

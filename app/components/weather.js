@@ -1,10 +1,10 @@
 import React, {Component, PropTypes} from "react";
 import {Image, StyleSheet, View} from "react-native";
-import moment from "moment";
 
 import Icon from "./iwapp-icons";
 import Text from "./text-lato";
 import * as colors from "../lib/colors";
+import {isEvening} from "../lib/weather-mapper";
 
 const styles = StyleSheet.create({
     backgroundImage: {
@@ -89,8 +89,7 @@ export default class Weather extends Component {
     }
 
     getGreeting () {
-        const hours = moment().hours();
-        return hours > 17 ? "Buonasera!" : "Buongiorno!";
+        return isEvening() ? "Buongiorno!" : "Buonasera!";
     }
 
     render () {

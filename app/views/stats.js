@@ -289,21 +289,6 @@ class Stats extends Component {
         }
     }
 
-    renderSummaryConsumption (consumptions, unit) {
-        const {width} = Dimensions.get("window");
-        return consumptions.map(consumption => {
-            return (
-                <View key={consumption.key} style={[styles.summaryConsumptionWrp, {width: width * 0.5}]}>
-                    <Text style={styles.consumptionTitle}>{consumption.title}</Text>
-                    <View style={styles.smallConsumptionWrp}>
-                        <Text style={styles.smallConsumptionValue}>{1}</Text>
-                        <Text style={styles.smallConsumptionMeasure}>{unit}</Text>
-                    </View>
-                </View>
-            );
-        });
-    }
-
     renderAlarmSettings () {
         const {width} = Dimensions.get("window");
         return (
@@ -332,17 +317,17 @@ class Stats extends Component {
                 <View key={consumption.key} style={styles.ProgressBarStyleWrp}>
                     <Text style={styles.progressBarTitle}>{consumption.title}</Text>
                     <Progress.Bar
-                        borderColor={colors.secondaryBlue}
+                        borderColor={(consumption.max / consumption.now < .8) ? colors.secondaryBlue : colors.alarmsTip}
                         borderRadius={30}
                         borderWidth={1}
-                        color={colors.primaryBlue}
+                        color={(consumption.max / consumption.now < .8) ? colors.primaryBlue : colors.alarmsTip}
                         height={6}
-                        progress={consumption.now / consumption.max}
+                        progress={consumption.max / consumption.now}
                         width={width * 0.9}
                     />
                     <View style={styles.progressBarValuesWrp}>
                         <Text style={styles.progressBarPercentageValue}>
-                            {(consumption.now / consumption.max * 100).toFixed(0)}
+                            {(consumption.max / consumption.now * 100).toFixed(0)}
                             {"%"}
                         </Text>
                         <Text style={styles.progressBarConsumptionValue}>
@@ -387,6 +372,7 @@ class Stats extends Component {
     }
 
     renderSwiper1 () {
+        const {width} = Dimensions.get("window");
         const tabAggregate = getTitleAndSubtitle(this.props.stats.chart.period, this.getConsumptionAggregate().filter(x => x.get("sensorId") == this.props.site._id));
         var fontSize = this.mapNumberFontSize(tabAggregate.sum);
         return (
@@ -399,7 +385,20 @@ class Stats extends Component {
                 {this.renderProgressBar(tabAggregate.comparisons, tabAggregate.measureUnit)}
                 {this.renderAlarmSettings()}
                 <View style={styles.summaryConsumptionContainer}>
-                    {this.renderSummaryConsumption(tabAggregate.comparisons, tabAggregate.measureUnit)}
+                    <View key={"avg-similar"} style={[styles.summaryConsumptionWrp, {width: width * 0.45}]}>
+                        <Text style={styles.consumptionTitle}>{"Media dei consumi giornalieri di attività simili"}</Text>
+                        <View style={styles.smallConsumptionWrp}>
+                            <Text style={styles.smallConsumptionValue}>{48}</Text>
+                            <Text style={styles.smallConsumptionMeasure}>{"kWh"}</Text>
+                        </View>
+                    </View>
+                    <View key={"standby-similar"} style={[styles.summaryConsumptionWrp, {width: width * 0.45}]}>
+                        <Text style={styles.consumptionTitle}>{"Consumi in stanby"}</Text>
+                        <View style={styles.smallConsumptionWrp}>
+                            <Text style={styles.smallConsumptionValue}>{18}</Text>
+                            <Text style={styles.smallConsumptionMeasure}>{"kWh"}</Text>
+                        </View>
+                    </View>
                 </View>
             </View>
         );
