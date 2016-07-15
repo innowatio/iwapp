@@ -104,7 +104,7 @@ describe("`login` view", () => {
         const onLogin = Login.prototype.onLogin;
 
         it("call `asteroid.loginWithPassword` function with correct credentials", () => {
-            const loginWithPassword = sinon.stub().returns(Promise.resolve());
+            const login = sinon.stub().returns(Promise.resolve());
             const setLoginError = sinon.spy();
             const instance = {
                 state: {
@@ -113,21 +113,23 @@ describe("`login` view", () => {
                 },
                 props: {
                     asteroid: {
-                        loginWithPassword
+                        login
                     }
                 },
                 setLoginError
             };
             onLogin.call(instance);
-            expect(loginWithPassword).to.have.callCount(1);
-            expect(loginWithPassword).to.have.been.calledWithExactly({
-                email: "myEmail",
-                password: "password"
+            expect(login).to.have.callCount(1);
+            expect(login).to.have.been.calledWithExactly({
+                sso: {
+                    email: "myEmail",
+                    password: "password"
+                }
             });
         });
 
         it("call `setLoginError` function with `null`", () => {
-            const loginWithPassword = sinon.stub().returns(Promise.resolve());
+            const login = sinon.stub().returns(Promise.resolve());
             const setLoginError = sinon.spy();
             const instance = {
                 state: {
@@ -136,7 +138,7 @@ describe("`login` view", () => {
                 },
                 props: {
                     asteroid: {
-                        loginWithPassword
+                        login
                     }
                 },
                 setLoginError
@@ -147,7 +149,7 @@ describe("`login` view", () => {
         });
 
         it("call `setLoginError` function with an `error` if promise is rejected", () => {
-            const loginWithPassword = sinon.stub().returns(Promise.reject(new Error("Login Error")));
+            const login = sinon.stub().returns(Promise.reject(new Error("Login Error")));
             const setLoginError = sinon.spy();
             const instance = {
                 state: {
@@ -156,13 +158,13 @@ describe("`login` view", () => {
                 },
                 props: {
                     asteroid: {
-                        loginWithPassword
+                        login
                     }
                 },
                 setLoginError
             };
             onLogin.call(instance);
-            return loginWithPassword()
+            return login()
                 .catch(() => {
                     expect(setLoginError).to.have.callCount(2);
                     expect(setLoginError.secondCall).to.have.calledOn(instance);

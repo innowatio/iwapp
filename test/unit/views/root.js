@@ -1,4 +1,4 @@
-import {shallow} from "enzyme";
+import {mount, shallow} from "enzyme";
 import {ScrollView, StatusBar} from "react-native";
 import {DefaultRenderer} from "react-native-router-flux";
 
@@ -164,14 +164,13 @@ describe("`Root` view", () => {
 
         it("call `asteroid.on` with correct parameter", () => {
             const instance = {
+                postLogin: sinon.spy(),
                 props: {
-                    onLogin: sinon.spy(),
                     onLogout: sinon.spy()
                 }
             };
             componentDidMount.call(instance);
             expect(asteroid.on).to.have.callCount(2);
-            expect(asteroid.on.firstCall).to.have.been.calledWith("loggedIn", instance.props.onLogin);
             expect(asteroid.on.secondCall).to.have.been.calledWith("loggedOut", instance.props.onLogout);
         });
 
@@ -195,14 +194,13 @@ describe("`Root` view", () => {
 
         it("call `asteroid.off` with correct parameter", () => {
             const instance = {
+                postLogin: sinon.spy(),
                 props: {
-                    onLogin: sinon.spy(),
                     onLogout: sinon.spy()
                 }
             };
             componentWillUnmount.call(instance);
             expect(asteroid.off).to.have.callCount(2);
-            expect(asteroid.off.firstCall).to.have.been.calledWith("loggedIn", instance.props.onLogin);
             expect(asteroid.off.secondCall).to.have.been.calledWith("loggedOut", instance.props.onLogout);
         });
 
