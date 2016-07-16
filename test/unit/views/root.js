@@ -1,4 +1,4 @@
-import {mount, shallow} from "enzyme";
+import {shallow} from "enzyme";
 import {ScrollView, StatusBar} from "react-native";
 import {DefaultRenderer} from "react-native-router-flux";
 
