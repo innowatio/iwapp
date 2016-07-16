@@ -52,6 +52,7 @@ export const alarmMonthlyEnergy = "#cddc39";
 export const alarmSolvedInstantPower = "#79c447";
 export const alarmInstantPower = "#536dfe";
 // Survey
+export const selectedAnswer = "#EEEEEE";
 export const stepperDot = "#949494";
 export const stepperDotActive = "#303BA6";
 export const stepperLine = "#AFB0AF";

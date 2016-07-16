@@ -1,3 +1,4 @@
+import "babel-polyfill";
 import fs from "fs";
 import path from "path";
 import register from "babel-core/register";
@@ -10,7 +11,6 @@ import sinonChai from "sinon-chai";
 import chaiAsPromise from "chai-as-promised";
 import ws from "ws";
 import hook from "node-hook";
-
 
 // Added test cross platform to handle the
 const PLATFORM = process.env.PLATFORM || "android";
@@ -54,6 +54,7 @@ register(config);
 global.__DEV__ = true;
 global.expect = chai.expect;
 global.sinon = sinon;
+
 chai.use(sinonChai);
 chai.use(chaiAsPromise);
 chai.use(chaiEnzyme());

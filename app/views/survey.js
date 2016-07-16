@@ -1,16 +1,18 @@
-import {Content} from "native-base";
-import React, {Component} from "react";
-import {Dimensions, Modal, View, StyleSheet, TouchableOpacity} from "react-native";
+import moment from "moment";
+import React, {Component, PropTypes} from "react";
+import {Dimensions, View, StyleSheet, TouchableOpacity} from "react-native";
 import Button from "react-native-button";
-import {Actions} from "react-native-router-flux";
 import {connect} from "react-redux";
 import FaIcons from "react-native-vector-icons/FontAwesome";
 import initialSurvey from "../assets/json/survey/initial";
+import {Actions} from "react-native-router-flux";
+import {bindActionCreators} from "redux";
 
-import Icon from "../components/iwapp-icons";
 import Text from "../components/text-lato";
 import * as colors from "../lib/colors";
 import Stepper from "../components/stepper";
+import ConfirmModal from "../components/confirm-modal";
+import {saveSurveyAnswers} from "../actions/survey";
 
 const styles = StyleSheet.create({
     container: {
@@ -62,9 +64,15 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center"
     },
+    activeAnswerSurvey: {
+        backgroundColor: colors.selectedAnswer,
+    },
+    activeAnswer: {
+        color: colors.textGrey
+    },
     answer: {
         fontSize: 16,
-        color: colors.textGrey,
+        color: colors.grey,
         textAlign: "center"
     },
 
@@ -95,60 +103,23 @@ const styles = StyleSheet.create({
 
     iconArrow: {
         marginLeft: 6
-    },
-
-    modalBackground: {
-        backgroundColor: colors.secondaryBlue,
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-        padding: 30
-    },
-    titleModal: {
-        color: colors.white,
-        padding: 30,
-        fontSize: 20,
-        textAlign: "center"
-    },
-    modalIconWrp: {
-        backgroundColor: colors.primaryBlue,
-        borderRadius: 100,
-        width: 140,
-        height: 140,
-        alignSelf: "center",
-        justifyContent: "center",
-        marginBottom: 40
-    },
-    modalIcon: {
-        textAlign: "center",
-        backgroundColor: colors.transparent
-    },
-    modalButtonWrp: {
-        marginTop: 20,
-        justifyContent: "center"
-    },
-    modalButton: {
-        backgroundColor: colors.buttonPrimary,
-        borderRadius: 100,
-        width: 150,
-        paddingVertical: 5
-    },
-    modalButtonText: {
-        marginHorizontal: 10,
-        fontSize: 15,
-        color: colors.white,
-        fontWeight: "normal"
     }
 });
 
 class Survey extends Component {
+
+    static propTypes = {
+        saveSurveyAnswers: PropTypes.func.isRequired,
+        userId: PropTypes.string
+    }
 
     constructor (props) {
         super(props);
         this.state = {
             activeStep: 0,
             modalVisible: false,
-            option: "first"
+            answers: [],
+            questions: []
         };
     }
 
@@ -164,8 +135,37 @@ class Survey extends Component {
         this.setState({activeStep: this.state.activeStep - 1});
     }
 
+    onSaveAnswers () {
+        const survey = this.getSurvey();
+        const surveyInfo = {
+            type: survey.type,
+            category: survey.category
+        };
+        const questions = this.getSurvey().questions.map(question => ({
+            id: question.id,
+            text: question.text
+        }));
+        this.props.saveSurveyAnswers(surveyInfo, this.state.answers, questions, this.props.userId);
+        // TODO add open modal when post succeeded
+        this.toggleConfirmModal();
+    }
+
     setActiveStep (activeStep) {
         this.setState({activeStep});
+    }
+
+    setAnswer (answer, id) {
+        // Clone the state
+        var answers = this.state.answers.slice(0);
+        answers[this.state.activeStep] = {
+            answer,
+            id,
+            timestamp: moment().toISOString()
+        };
+        if (!this.isLastStep()) {
+            this.onForwardStep();
+        }
+        return this.setState({answers});
     }
 
     toggleConfirmModal () {
@@ -176,47 +176,30 @@ class Survey extends Component {
         return this.state.activeStep === this.getSurvey().questions.length - 1;
     }
 
-    renderConfirmModal () {
-        const {height} = Dimensions.get("window");
+    isSelectedAnswer (option) {
         return (
-            <Modal
-                animationType={this.state.animationType}
-                onRequestClose={() => this.toggleConfirmModal()}
-                transparent={false}
-                visible={this.state.modalVisible}
-            >
-                <View style={[styles.modalBackground, {height}]}>
-                    <View style={styles.modalTitleWrp}>
-                        <View style={styles.modalIconWrp}>
-                            <Icon
-                                color={colors.iconWhite}
-                                name={"iw-check"}
-                                size={100}
-                                style={styles.modalIcon}
-                            />
-                        </View>
-                        <Text style={styles.titleModal}>{"Grazie per aver compilato il questionario!"}</Text>
-                    </View>
-                    <View style={styles.modalButtonWrp}>
-                        <Button
-                            containerStyle={styles.modalButton}
-                            onPress={Actions.home}
-                            style={styles.modalButtonText}
-                        >
-                            {"VAI ALL'APP"}
-                        </Button>
-                    </View>
-                </View>
-            </Modal>
+            this.state.answers[this.state.activeStep] ?
+            option === this.state.answers[this.state.activeStep].answer :
+            false
         );
     }
 
-    renderAnswer (option, index) {
+    renderAnswer (option, index, activeStepQuestion) {
         const {width} = Dimensions.get("window");
         return (
             <View key={index} style={styles.answerSurveyWrp}>
-                <TouchableOpacity style={[styles.answerSurvey, {width}]}>
-                    <Text style={styles.answer}>{option}</Text>
+                <TouchableOpacity
+                    onPress={() => this.setAnswer(option, activeStepQuestion.id)}
+                    style={[
+                        styles.answerSurvey,
+                        {width},
+                        this.isSelectedAnswer(option) ? styles.activeAnswerSurvey : {}
+                    ]}
+                >
+                    <Text style={[
+                        styles.answer,
+                        this.isSelectedAnswer(option) ? styles.activeAnswer : null
+                    ]}>{option}</Text>
                 </TouchableOpacity>
             </View>
         );
@@ -228,6 +211,20 @@ class Survey extends Component {
             <Text style={[styles.questionSurvey, {width}]}>
                 {question}
             </Text>
+        );
+    }
+
+    renderConfirmButton () {
+        return (
+            <Button
+                containerStyle={[styles.buttonSave]}
+                disabled={this.state.answers.length - 1 < this.state.activeStep}
+                onPress={this.isLastStep() ? ::this.onSaveAnswers : ::this.onForwardStep}
+                style={styles.textButtonSave}
+            >
+                {this.isLastStep() ?  "SALVA" : "AVANTI"}
+                <FaIcons color={colors.iconWhite} name={"angle-right"} size={18} style={styles.iconArrow} />
+            </Button>
         );
     }
 
@@ -245,7 +242,11 @@ class Survey extends Component {
                     {this.renderQuestion(activeStepQuestion.text)}
                 </View>
                 <View style={styles.answerSurveyWrp}>
-                    {activeStepQuestion.options.map(this.renderAnswer)}
+                    {
+                        activeStepQuestion.options.map((option, index) =>
+                            this.renderAnswer(option, index, activeStepQuestion)
+                        )
+                    }
                 </View>
                 <View style={[styles.buttonSaveWrp, {height: height * 0.3}]}>
                     <TouchableOpacity
@@ -255,32 +256,30 @@ class Survey extends Component {
                     >
                         <FaIcons color={colors.primaryBlue} name={"angle-left"} size={26} />
                     </TouchableOpacity>
-                    <Button
-                        containerStyle={[styles.buttonSave]}
-                        onPress={this.isLastStep() ? ::this.toggleConfirmModal : ::this.onForwardStep}
-                        style={styles.textButtonSave}
-                    >
-                        {this.isLastStep() ?  "SALVA" : "AVANTI"}
-                        <FaIcons color={colors.iconWhite} name={"angle-right"} size={18} style={styles.iconArrow} />
-                    </Button>
+                    {this.renderConfirmButton()}
                 </View>
             </View>
         );
     }
 
     render () {
-        const {height} = Dimensions.get("window");
         return (
             <View style={styles.container}>
-                <Content style={{backgroundColor: colors.background, height}}>
+                <View style={{flex: 1}}>
                     <View style={styles.titleBarWrp}>
                         <View style={styles.titleBar}>
                             <Text style={styles.title}>{"QUESTIONARIO"}</Text>
                         </View>
                     </View>
                     {this.renderContentSurvey()}
-                </Content>
-                {this.renderConfirmModal()}
+                </View>
+                <ConfirmModal
+                    onPressButton={Actions.home}
+                    onRequestClose={::this.toggleConfirmModal}
+                    textButton={"VAI ALL'APP"}
+                    titleModal={"Grazie per aver compilato il questionario!"}
+                    visible={this.state.modalVisible}
+                />
             </View>
         );
     }
@@ -288,9 +287,12 @@ class Survey extends Component {
 
 function mapStateToProps (state) {
     return {
-        collections: state.collections,
-        home: state.home,
-        site: state.site
+        userId: state.userId
     };
 }
-export default connect(mapStateToProps)(Survey);
+function mapDispatchToProps (dispatch) {
+    return {
+        saveSurveyAnswers: bindActionCreators(saveSurveyAnswers, dispatch)
+    };
+}
+export default connect(mapStateToProps, mapDispatchToProps)(Survey);
