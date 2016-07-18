@@ -254,125 +254,125 @@ describe("`Survey` view", () => {
             expect(setState).to.have.been.calledWithExactly({answers: expectedAnswers});
         });
 
-        describe("`isLastStep` method", () => {
+    });
 
-            const isLastStep = SurveyView.prototype.isLastStep;
-            const getSurvey = sinon.stub().returns({
-                questions: [1, 2, 3, 4]
-            });
+    describe("`isLastStep` method", () => {
 
-            it("return true if current step is the last", () => {
-                const instance = {
-                    getSurvey,
-                    state: {
-                        activeStep: 3
-                    }
-                };
-                const ret = isLastStep.call(instance);
-                expect(ret).to.equal(true);
-            });
-
-            it("return true if current step is the last", () => {
-                const instance = {
-                    getSurvey,
-                    state: {
-                        activeStep: 2
-                    }
-                };
-                const ret = isLastStep.call(instance);
-                expect(ret).to.equal(false);
-            });
-
+        const isLastStep = SurveyView.prototype.isLastStep;
+        const getSurvey = sinon.stub().returns({
+            questions: [1, 2, 3, 4]
         });
 
-        describe("`toggleConfirmModal` method", () => {
+        it("return true if current step is the last", () => {
+            const instance = {
+                getSurvey,
+                state: {
+                    activeStep: 3
+                }
+            };
+            const ret = isLastStep.call(instance);
+            expect(ret).to.equal(true);
+        });
 
-            const toggleConfirmModal = SurveyView.prototype.toggleConfirmModal;
+        it("return true if current step is the last", () => {
+            const instance = {
+                getSurvey,
+                state: {
+                    activeStep: 2
+                }
+            };
+            const ret = isLastStep.call(instance);
+            expect(ret).to.equal(false);
+        });
 
-            it("toggle the confirmation modal [CASE: {modalVisible: true}]", () => {
-                const setState = sinon.spy();
-                const instance = {
-                    setState,
-                    state: {
-                        modalVisible: true
-                    }
-                };
-                toggleConfirmModal.call(instance);
-                expect(setState).to.have.callCount(1);
-                expect(setState).to.have.been.calledWithExactly({
-                    modalVisible: false
-                });
-            });
+    });
 
-            it("toggle the confirmation modal [CASE: {modalVisible: false}]", () => {
-                const setState = sinon.spy();
-                const instance = {
-                    setState,
-                    state: {
-                        modalVisible: false
-                    }
-                };
-                toggleConfirmModal.call(instance);
-                expect(setState).to.have.callCount(1);
-                expect(setState).to.have.been.calledWithExactly({
+    describe("`toggleConfirmModal` method", () => {
+
+        const toggleConfirmModal = SurveyView.prototype.toggleConfirmModal;
+
+        it("toggle the confirmation modal [CASE: {modalVisible: true}]", () => {
+            const setState = sinon.spy();
+            const instance = {
+                setState,
+                state: {
                     modalVisible: true
-                });
+                }
+            };
+            toggleConfirmModal.call(instance);
+            expect(setState).to.have.callCount(1);
+            expect(setState).to.have.been.calledWithExactly({
+                modalVisible: false
             });
-
         });
 
-        describe("`isSelectedAnswer` method", () => {
-
-            const isSelectedAnswer = SurveyView.prototype.isSelectedAnswer;
-
-            it("return false if the answers in activeStep is undefined", () => {
-                const instance = {
-                    state: {
-                        activeStep: 2,
-                        answers: [{
-                            id: 1
-                        }, {
-                            id: 2,
-                            answer: "second answer"
-                        }]
-                    }
-                };
-                const ret = isSelectedAnswer.call(instance);
-                expect(ret).to.equal(false);
+        it("toggle the confirmation modal [CASE: {modalVisible: false}]", () => {
+            const setState = sinon.spy();
+            const instance = {
+                setState,
+                state: {
+                    modalVisible: false
+                }
+            };
+            toggleConfirmModal.call(instance);
+            expect(setState).to.have.callCount(1);
+            expect(setState).to.have.been.calledWithExactly({
+                modalVisible: true
             });
+        });
 
-            it("return false if the answer is different from passed option", () => {
-                const instance = {
-                    state: {
-                        activeStep: 1,
-                        answers: [{
-                            id: 1
-                        }, {
-                            id: 2,
-                            answer: "second answer"
-                        }]
-                    }
-                };
-                const ret = isSelectedAnswer.call(instance, "not answer");
-                expect(ret).to.equal(false);
-            });
+    });
 
-            it("return true if the answer is equal to passed option", () => {
-                const instance = {
-                    state: {
-                        activeStep: 1,
-                        answers: [{
-                            id: 1
-                        }, {
-                            id: 2,
-                            answer: "second answer"
-                        }]
-                    }
-                };
-                const ret = isSelectedAnswer.call(instance, "second answer");
-                expect(ret).to.equal(true);
-            });
+    describe("`isSelectedAnswer` method", () => {
 
+        const isSelectedAnswer = SurveyView.prototype.isSelectedAnswer;
+
+        it("return false if the answers in activeStep is undefined", () => {
+            const instance = {
+                state: {
+                    activeStep: 2,
+                    answers: [{
+                        id: 1
+                    }, {
+                        id: 2,
+                        answer: "second answer"
+                    }]
+                }
+            };
+            const ret = isSelectedAnswer.call(instance);
+            expect(ret).to.equal(false);
+        });
+
+        it("return false if the answer is different from passed option", () => {
+            const instance = {
+                state: {
+                    activeStep: 1,
+                    answers: [{
+                        id: 1
+                    }, {
+                        id: 2,
+                        answer: "second answer"
+                    }]
+                }
+            };
+            const ret = isSelectedAnswer.call(instance, "not answer");
+            expect(ret).to.equal(false);
+        });
+
+        it("return true if the answer is equal to passed option", () => {
+            const instance = {
+                state: {
+                    activeStep: 1,
+                    answers: [{
+                        id: 1
+                    }, {
+                        id: 2,
+                        answer: "second answer"
+                    }]
+                }
+            };
+            const ret = isSelectedAnswer.call(instance, "second answer");
+            expect(ret).to.equal(true);
         });
 
     });
