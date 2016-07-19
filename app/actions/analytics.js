@@ -32,7 +32,7 @@ export function postAnalytics (userId, store) {
                 timestamp: moment.utc().format(),
                 body: viewed
             };
-        }) 
+        })
     });
     return {
         type: POST_ANALYTICS
