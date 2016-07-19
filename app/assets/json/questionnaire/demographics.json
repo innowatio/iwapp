@@ -1,5 +1,5 @@
 {
-    "type": "questionnaires",
+    "type": "questionnaire",
     "category": "demographics",
     "questions": [{
         "id": "61",
