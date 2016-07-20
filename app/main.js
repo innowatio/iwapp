@@ -22,7 +22,7 @@ export default class Main extends Component {
     }
 
     handleAppStateChange () {
-        store.dispatch(postAnalytics(asteroid.userId, store.getState()));
+        store.dispatch(postAnalytics(asteroid.userId));
     }
 
     render () {

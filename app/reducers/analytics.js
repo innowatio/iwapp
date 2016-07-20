@@ -1,10 +1,9 @@
 import moment from "moment";
-import DeviceInfo from "react-native-device-info";
 
 import {
     NAVIGATE_BACK,
     NAVIGATE_VIEW,
-    POST_ANALYTICS
+    ANALYTICS_POST_SUCCESS
 } from "../actions/analytics";
 
 const defaultState = {
@@ -23,8 +22,7 @@ export default function analytics (state = defaultState, {type, payload}) {
                     ...state.navigationHistory,
                     {
                         view: payload.view,
-                        timestamp: moment.utc().format(),
-                        device: DeviceInfo.getDeviceId()
+                        timestamp: moment.utc().format()
                     }
                 ]
             };
@@ -36,13 +34,12 @@ export default function analytics (state = defaultState, {type, payload}) {
                     ...state.navigationHistory,
                     {
                         view: state.navigationHistory[state.navigationHistory.length - 2].view,
-                        timestamp: moment.utc().format(),
-                        device: DeviceInfo.getDeviceId()
+                        timestamp: moment.utc().format()
                     }
                 ]
             };
         }
-        case POST_ANALYTICS:
+        case ANALYTICS_POST_SUCCESS:
             return defaultState;
         default: {
             return state;
