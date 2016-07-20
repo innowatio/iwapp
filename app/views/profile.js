@@ -228,14 +228,16 @@ class Profile extends Component {
                         style={{backgroundColor: colors.transparent}}
                     />
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.iconOptionsWrp} transparent={true}>
-                    <Icon
-                        color={colors.iconWhite}
-                        name="iw-gauge"
-                        size={23}
-                        style={{backgroundColor: colors.transparent}}
-                    />
-                </TouchableOpacity>
+                {
+                    /*<TouchableOpacity style={styles.iconOptionsWrp} transparent={true}>
+                        <Icon
+                            color={colors.iconWhite}
+                            name="iw-gauge"
+                            size={23}
+                            style={{backgroundColor: colors.transparent}}
+                        />
+                    </TouchableOpacity>*/
+                }
             </View>
         );
     }
