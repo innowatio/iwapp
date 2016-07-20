@@ -24,7 +24,7 @@ export function navigateBack () {
 
 export function postAnalytics (userId, store) {
     const {analytics} = store;
-    post(WRITE_API_ENDPOINT, {
+    post(WRITE_API_ENDPOINT + "/user-interactions", {
         userId,
         interactions: analytics.navigationHistory.map(viewed => {
             return {
@@ -33,6 +33,12 @@ export function postAnalytics (userId, store) {
                 body: viewed
             };
         })
+    })
+    .then(function (response) {
+        console.log(response);
+    })
+    .catch(function (error) {
+        console.log(error);
     });
     return {
         type: POST_ANALYTICS

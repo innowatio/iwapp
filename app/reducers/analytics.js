@@ -10,7 +10,7 @@ import {
 const defaultState = {
     navigationHistory: [{
         view: "home",
-        timestamp: moment().valueOf()
+        timestamp: moment.utc().format()
     }]
 };
 
@@ -23,7 +23,7 @@ export default function analytics (state = defaultState, {type, payload}) {
                     ...state.navigationHistory,
                     {
                         view: payload.view,
-                        timestamp: moment().valueOf(),
+                        timestamp: moment.utc().format(),
                         device: DeviceInfo.getDeviceId()
                     }
                 ]
@@ -36,7 +36,7 @@ export default function analytics (state = defaultState, {type, payload}) {
                     ...state.navigationHistory,
                     {
                         view: state.navigationHistory[state.navigationHistory.length - 2].view,
-                        timestamp: moment().valueOf(),
+                        timestamp: moment.utc().format(),
                         device: DeviceInfo.getDeviceId()
                     }
                 ]
