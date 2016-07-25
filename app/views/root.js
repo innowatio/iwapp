@@ -80,6 +80,13 @@ class Root extends Component {
         return this.props.navigationState.children[sceneIndex];
     }
 
+    getHeaderViews () {
+        return [
+            {view: "survey", header: "back-arrow"},
+            {view: "modifyProfile", header: "back-arrow"}
+        ];
+    }
+
     toggleHamburger () {
         this.setState({
             open: !this.state.open
@@ -103,6 +110,16 @@ class Root extends Component {
         }).toArray();
     }
 
+    renderHeader () {
+        return (
+            <Header
+                headerViews={this.getHeaderViews()}
+                onToggleHamburger={::this.toggleHamburger}
+                selectedView={this.props.navigationScene}
+            />
+        );
+    }
+
     renderView () {
         const {site, selectSite} = this.props;
         return this.props.userId ? (
@@ -124,10 +141,7 @@ class Root extends Component {
                 type="displace"
             >
                 <View>
-                    <Header
-                        onToggleHamburger={::this.toggleHamburger}
-                        selectedView={this.props.navigationScene}
-                    />
+                    {this.renderHeader()}
                     <DefaultRenderer
                         navigationState={this.getNavigationState()}
                         onNavigate={this.props.onNavigate}

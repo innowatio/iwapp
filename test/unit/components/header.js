@@ -1,5 +1,6 @@
 import {shallow} from "enzyme";
 import {TouchableOpacity} from "react-native";
+import FaIcons from "react-native-vector-icons/FontAwesome";
 
 import Header from "components/header";
 import Icon from "components/iwapp-icons";
@@ -29,6 +30,7 @@ describe("`Header` component", () => {
     it("renders 4 buttons", () => {
         const header = shallow(
             <Header
+                headerViews={[]}
                 onToggleHamburger={onToggleHamburger}
                 selectedView={selectedView}
             />
@@ -39,6 +41,7 @@ describe("`Header` component", () => {
     it("renders the buttons with correct props [CASE: first button]", () => {
         const header = shallow(
             <Header
+                headerViews={[]}
                 onToggleHamburger={onToggleHamburger}
                 selectedView={selectedView}
             />
@@ -51,6 +54,7 @@ describe("`Header` component", () => {
     it("renders the buttons with correct props [CASE: second button]", () => {
         const header = shallow(
             <Header
+                headerViews={[]}
                 onToggleHamburger={onToggleHamburger}
                 selectedView={selectedView}
             />
@@ -63,6 +67,7 @@ describe("`Header` component", () => {
     it("renders the buttons with correct props [CASE: third button]", () => {
         const header = shallow(
             <Header
+                headerViews={[]}
                 onToggleHamburger={onToggleHamburger}
                 selectedView={selectedView}
             />
@@ -75,6 +80,7 @@ describe("`Header` component", () => {
     it("renders the buttons with correct props [CASE: fourth button]", () => {
         const header = shallow(
             <Header
+                headerViews={[]}
                 onToggleHamburger={onToggleHamburger}
                 selectedView={selectedView}
             />
@@ -87,6 +93,7 @@ describe("`Header` component", () => {
     it("renders 4 icons", () => {
         const header = shallow(
             <Header
+                headerViews={[]}
                 onToggleHamburger={onToggleHamburger}
                 selectedView={selectedView}
             />
@@ -97,6 +104,7 @@ describe("`Header` component", () => {
     it("renders the correct icons", () => {
         const header = shallow(
             <Header
+                headerViews={[]}
                 onToggleHamburger={onToggleHamburger}
                 selectedView={selectedView}
             />
@@ -105,6 +113,17 @@ describe("`Header` component", () => {
         expect(header.find(Icon).at(1).prop("name")).to.equal("iw-innowatio-logo");
         expect(header.find(Icon).at(2).prop("name")).to.equal("iw-alarm");
         expect(header.find(Icon).at(3).prop("name")).to.equal("iw-user");
+    });
+
+    it("renders 1 icon back", () => {
+        const header = shallow(
+            <Header
+                headerViews={[{view: "view", header: "back-arrow"}]}
+                onToggleHamburger={onToggleHamburger}
+                selectedView={selectedView}
+            />
+        );
+        expect(header.find(FaIcons)).to.have.length(1);
     });
 
 });

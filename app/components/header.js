@@ -2,6 +2,7 @@ import React, {Component, PropTypes} from "react";
 import {StyleSheet, View, TouchableOpacity} from "react-native";
 import {Actions} from "react-native-router-flux";
 import {last} from "ramda";
+import FaIcons from "react-native-vector-icons/FontAwesome";
 
 import Icon from "./iwapp-icons";
 import * as colors from "../lib/colors";
@@ -29,7 +30,8 @@ const styles = StyleSheet.create({
         flexDirection: "row"
     },
     iconRightButton: {
-        padding: 0
+        padding: 0,
+        marginHorizontal: 3
     },
     iconAlarmButton: {
         alignSelf: "center",
@@ -43,14 +45,38 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: colors.iconWhite,
         padding: 5
+    },
+    buttonBack: {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "center",
+        height: 40,
+        width: 40
     }
 });
 
 export default class Header extends Component {
 
     static propTypes = {
+        headerViews: PropTypes.arrayOf(PropTypes.shape({
+            view: PropTypes.string.isRequired,
+            header: PropTypes.string.isRequired
+        })).isRequired,
         onToggleHamburger: PropTypes.func.isRequired,
         selectedView: PropTypes.arrayOf(PropTypes.string).isRequired
+    }
+
+    renderBackArrow () {
+        return (
+            <View style={styles.header}>
+                <TouchableOpacity
+                    onPress={Actions.pop}
+                    style={styles.buttonBack}
+                >
+                    <FaIcons color={colors.iconWhite} name={"angle-left"} size={35} style={{lineHeight: 40}} />
+                </TouchableOpacity>
+            </View>
+        );
     }
 
     renderLeftButton () {
@@ -101,13 +127,35 @@ export default class Header extends Component {
         );
     }
 
+    renderClassicHeader () {
+        return (
+            <View style={styles.header}>
+                {this.renderLeftButton()}
+                {this.renderRightButton()}
+            </View>
+        );
+    }
+
+    renderHeader (headerKey) {
+        switch (headerKey) {
+            case "back-arrow":
+                return this.renderBackArrow();
+            default:
+                return this.renderClassicHeader();
+        }
+    }
+
     render () {
+        // const headerViews = this.props.headerViews;
+        // const selectedView = this.props.selectedView;
+        const {headerViews, selectedView} = this.props;
+        const headerType = headerViews.find(headerView =>
+            headerView.view === last(selectedView)
+        );
+        const header = headerType ? headerType.header : "default";
         return (
             <View style={styles.headerWrp}>
-                <View style={styles.header}>
-                    {this.renderLeftButton()}
-                    {this.renderRightButton()}
-                </View>
+                {this.renderHeader(header)}
             </View>
         );
     }

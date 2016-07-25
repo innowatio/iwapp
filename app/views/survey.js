@@ -252,7 +252,7 @@ class Survey extends Component {
                     <TouchableOpacity
                         disabled={this.state.activeStep === 0}
                         onPress={::this.onBackwardStep}
-                        style={[styles.buttonBack]}
+                        style={styles.buttonBack}
                     >
                         <FaIcons color={colors.primaryBlue} name={"angle-left"} size={26} />
                     </TouchableOpacity>
