@@ -1,6 +1,6 @@
 import {ActionConst} from "react-native-router-flux";
 
-import scene, {__RewireAPI__ as sceneRewire} from "lib/scene";
+import scene, {onSelectView, __RewireAPI__ as sceneRewire} from "lib/scene";
 
 describe("`scene`", () => {
 
@@ -19,17 +19,22 @@ describe("`scene`", () => {
         const popNavigator = sinon.stub().returns({
             type: "POP"
         });
+        const popToHome = sinon.stub().returns({
+            type: "POP_TO_HOME"
+        });
         const dispatchAction = sceneRewire.__get__("dispatchAction");
 
         before(() => {
             sceneRewire.__Rewire__("store", store);
             sceneRewire.__Rewire__("pushNavigator", pushNavigator);
             sceneRewire.__Rewire__("popNavigator", popNavigator);
+            sceneRewire.__Rewire__("popToHome", popToHome);
         });
 
         afterEach(() => {
             pushNavigator.reset();
             popNavigator.reset();
+            popToHome.reset();
             store.dispatch.reset();
         });
 
@@ -37,9 +42,10 @@ describe("`scene`", () => {
             sceneRewire.__ResetDependency__("store");
             sceneRewire.__ResetDependency__("pushNavigator");
             sceneRewire.__ResetDependency__("popNavigator");
+            sceneRewire.__ResetDependency__("popToHome");
         });
 
-        describe("`action.type` [CASE: `push`]", () => {
+        describe("`action.type` [CASE: `PUSH`]", () => {
 
             const action = {
                 type: ActionConst.PUSH,
@@ -58,7 +64,7 @@ describe("`scene`", () => {
 
         });
 
-        describe("`action.type` [CASE: `BackAction`]", () => {
+        describe("`action.type` [CASE: `BACK_ACTION`]", () => {
 
             const action = {
                 type: ActionConst.BACK_ACTION
@@ -73,6 +79,75 @@ describe("`scene`", () => {
                 expect(popNavigator).to.have.callCount(1);
             });
 
+        });
+
+        describe("`action.type` [CASE: `RESET`]", () => {
+
+            const action = {
+                type: ActionConst.RESET
+            };
+
+            it("dispatch the `popToHome` action", () => {
+                dispatchAction(action);
+                expect(store.dispatch).to.have.callCount(1);
+                expect(store.dispatch).to.have.been.calledWith({
+                    type: "POP_TO_HOME"
+                });
+                expect(popToHome).to.have.callCount(1);
+            });
+
+        });
+
+        describe("`action.type` [CASE: `POP_TO`]", () => {
+
+            const action = {
+                type: ActionConst.POP_TO
+            };
+
+            it("dispatch the `popToHome` action", () => {
+                dispatchAction(action);
+                expect(store.dispatch).to.have.callCount(1);
+                expect(store.dispatch).to.have.been.calledWith({
+                    type: "POP_TO_HOME"
+                });
+                expect(popToHome).to.have.callCount(1);
+            });
+
+        });
+
+    });
+
+    describe("`onSelectView` function", () => {
+
+        const Actions = {
+            popTo: sinon.spy(),
+            nextView: sinon.spy(),
+            view: sinon.spy()
+        };
+
+        before(() => {
+            sceneRewire.__Rewire__("Actions", Actions);
+        });
+
+        beforeEach(() => {
+            Actions.popTo.reset();
+        });
+
+        after(() => {
+            sceneRewire.__ResetDependency__("Actions");
+        });
+
+        it("call `onPop` and push on next view if arguments are different", () => {
+            onSelectView("view", "nextView");
+            expect(Actions.popTo).to.have.callCount(1);
+            expect(Actions.popTo).to.have.been.calledWithExactly("home");
+            expect(Actions.nextView).to.have.callCount(1);
+        });
+
+        it("skip if arguments are equals", () => {
+            onSelectView("view", "view");
+            expect(Actions.popTo).to.have.callCount(0);
+            expect(Actions.view).to.have.callCount(0);
         });
 
     });

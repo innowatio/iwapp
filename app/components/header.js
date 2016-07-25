@@ -6,6 +6,7 @@ import {last} from "ramda";
 import Icon from "./iwapp-icons";
 import * as colors from "../lib/colors";
 import {headerHeight} from "../lib/const";
+import {onSelectView} from "../lib/scene";
 
 const styles = StyleSheet.create({
     headerWrp: {
@@ -65,7 +66,7 @@ export default class Header extends Component {
                     <Icon color={colors.iconWhite} name={"iw-menu"} size={40} />
                 </TouchableOpacity>
                 <TouchableOpacity
-                    onPress={() => Actions.home()}
+                    onPress={Actions.home}
                     style={styles.iconRightButton}
                     transparent={true}
                 >
@@ -84,14 +85,14 @@ export default class Header extends Component {
         return (
             <View style={styles.rightHeader}>
                 <TouchableOpacity
-                    onPress={() => Actions.notifications()}
+                    onPress={() => onSelectView(last(this.props.selectedView), "notifications")}
                     style={[styles.iconAlarmButton, {backgroundColor: alarmColor}]}
                     transparent={true}
                 >
                     <Icon color={colors.iconWhite} name={"iw-alarm"} size={25} />
                 </TouchableOpacity>
                 <TouchableOpacity
-                    onPress={() => Actions.profile()}
+                    onPress={() => onSelectView(last(this.props.selectedView), "profile")}
                     style={styles.iconUserButton}
                     transparent={true}
                 >

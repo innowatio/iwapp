@@ -41,6 +41,18 @@ describe("`navigation` reducer", () => {
 
     });
 
+    describe("`POP_TO_HOME` type", () => {
+
+        it("returns the new array of navigation history", () => {
+            const valuePassedFromAction = {
+                type: "POP_TO_HOME"
+            };
+            const ret = navigation(stateCollections, valuePassedFromAction);
+            expect(ret).to.deep.equal(["home"]);
+        });
+
+    });
+
     it("returns the previous state if any correct `type` is checked", () => {
         const valuePassedFromAction = {
             type: "NOT_A_CORRECT_TYPE_CASE"
