@@ -1,5 +1,7 @@
 import {Map} from "immutable";
+import get from "lodash.get";
 import {Content} from "native-base";
+import {isEmpty} from "ramda";
 import React, {Component, PropTypes} from "react";
 import IPropTypes from "react-immutable-proptypes";
 import {Dimensions, StyleSheet, TouchableOpacity, View} from "react-native";
@@ -8,7 +10,7 @@ import shallowCompare from "react-addons-shallow-compare";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 
-import {saveQuestionnaireAnswers} from "../actions/questionnaire";
+import {initializeAnswers, saveQuestionnaireAnswers, setAnswers} from "../actions/questionnaire";
 import Icon from "../components/iwapp-icons";
 import QuestionnaireProgress from "../components/questionnaire-progress";
 import Text from "../components/text-lato";
@@ -84,20 +86,27 @@ export default class Questionnaire extends Component {
     static propTypes = {
         asteroid: PropTypes.object.isRequired,
         collections: IPropTypes.map,
+        initializeAnswers: PropTypes.func.isRequired,
+        questionnaire: PropTypes.object,
         saveQuestionnaireAnswers: PropTypes.func.isRequired,
         selectedQuestionnaire: PropTypes.shape({
             key: PropTypes.string.isRequired
         }).isRequired,
+        setAnswers: PropTypes.func.isRequired,
         site: PropTypes.object.isRequired,
         userId: PropTypes.string.isRequired
     }
 
     componentDidMount () {
+        const questionnaire = this.getQuestionnaire();
+        this.props.initializeAnswers(questionnaire);
         this.subscribeToAnswers(this.props);
     }
 
     componentWillReceiveProps (nextProps) {
-        this.subscribeToAnswers(nextProps);
+        if (!shallowCompare(this.props, nextProps)) {
+            this.props.setAnswers(this.getAnswers(nextProps.collections).toJS(), this.getQuestionnaire());
+        }
     }
 
     shouldComponentUpdate (nextProps) {
@@ -128,45 +137,53 @@ export default class Questionnaire extends Component {
         return `${type}-${category}-${this.props.site._id}`;
     }
 
-    getAnswers () {
-        return this.props.collections.getIn(["answers", this.getQuestionnaireId()]) || Map();
+    getAnswers (collections) {
+        return collections.getIn(["answers", this.getQuestionnaireId()]) || Map();
     }
 
     getAnswer (questionNumber) {
-        return  this.getAnswers().getIn(["answers", questionNumber]) || Map();
+        return  get(this.props.questionnaire, `answers[${questionNumber}]`) || {};
     }
 
-    isLastSection (index) {
-        return index === this.getQuestionnaire().questions.length - 1;
+    isLastSection (questionIndex) {
+        return questionIndex === this.getQuestionnaire().questions.length - 1;
     }
 
-    isAlreadyAnswered (id, index) {
-        const answer = this.getAnswer(index);
-        return !answer.isEmpty() && answer.get("id") === id;
+    isAlreadyAnswered (questionId, questionIndex) {
+        const answer = this.getAnswer(questionIndex);
+        return !isEmpty(answer) && answer.id === questionId;
     }
 
-    isActiveAnswer (index, option, id) {
-        const answer = this.getAnswer(index);
+    isActiveAnswer (option, optionIndex, questionId, questionIndex) {
+        const answer = this.getAnswer(questionIndex);
         return (
-            !answer.isEmpty() &&
-            answer.get("id") === id &&
-            answer.get("answer") === option
+            !isEmpty(answer) &&
+            answer.id === questionId &&
+            answer.answer === option
         );
     }
 
-    onSaveQuestionnaireAnswers () {
+    onSaveQuestionnaireAnswers ({option, questionIndex}) {
+        console.log(...arguments);
+        this.props.setAnswers(
+            this.getAnswers(this.props.collections).toJS(),
+            this.getQuestionnaire(),
+            option,
+            questionIndex
+        );
         // this.props.saveQuestionnaireAnswers(
+        //     this.getAnswersBodyPost(option, sectionIndex),
         //     this.props.userId,
-        //     this.props.site
+        //     this.props.site._id
         // );
     }
 
-    renderQuestionStatus (section, index) {
+    renderQuestionStatus (question, questionIndex) {
         return (
             <View
                 style={[styles.questionStatus, {
                     backgroundColor: (
-                        this.isAlreadyAnswered(section.id, index) ?
+                        this.isAlreadyAnswered(question.id, questionIndex) ?
                         colors.greenStatus :
                         colors.redStatus
                     )
@@ -175,13 +192,16 @@ export default class Questionnaire extends Component {
         );
     }
 
-    renderHeader (section, index, isActive) {
+    renderHeader (question, questionIndex, isActive) {
         const {width} = Dimensions.get("window");
         return (
-            <View key={index} style={[styles.header, this.isLastSection(index) ? styles.lastHeader : {}]}>
+            <View
+                key={questionIndex}
+                style={[styles.header, this.isLastSection(questionIndex) ? styles.lastHeader : {}]}
+            >
                 <View style={{flexDirection: "row"}}>
-                    {this.renderQuestionStatus(section, index)}
-                    <Text style={{width: width * 0.75}}>{section.text}</Text>
+                    {this.renderQuestionStatus(question, questionIndex)}
+                    <Text style={{width: width * 0.75}}>{question.text}</Text>
                 </View>
                 <FaIcons
                     color={colors.iconArrow}
@@ -193,8 +213,8 @@ export default class Questionnaire extends Component {
         );
     }
 
-    renderAnswerStatus (index, option, sectionId) {
-        return this.isActiveAnswer(index, option, sectionId) ? (
+    renderAnswerStatus (option, optionIndex, questionId, questionIndex) {
+        return this.isActiveAnswer(option, optionIndex, questionId, questionIndex) ? (
             <View style={[styles.answerStatus, {borderColor: colors.greenStatus}]}>
                 <Icon
                     color={colors.greenStatus}
@@ -205,20 +225,21 @@ export default class Questionnaire extends Component {
             </View>
         ) : (
             <View style={styles.answerStatus}>
-                <Text style={styles.answerStatusText}>{index + 1}</Text>
+                <Text style={styles.answerStatusText}>{optionIndex + 1}</Text>
             </View>
         );
     }
 
-    renderAnswer (option, optionIndex, sectionIndex, optionsLength, section) {
+    renderAnswer ({option, optionIndex, questionIndex, question}) {
         const {width} = Dimensions.get("window");
+        const optionsLength = question.options.length;
         return (
             <View key={optionIndex} style={[
-                optionIndex === optionsLength - 1 && this.isLastSection(sectionIndex) ? styles.lastAnswer : {}
+                (optionIndex === optionsLength - 1 && this.isLastSection(questionIndex)) ? styles.lastAnswer : {}
             ]}>
-                <TouchableOpacity onPress={() => this.onSaveQuestionnaireAnswers(option, sectionIndex)}>
+                <TouchableOpacity onPress={() => this.onSaveQuestionnaireAnswers(...arguments)}>
                     <View style={styles.answer}>
-                        {this.renderAnswerStatus(optionIndex, option, section.id)}
+                        {this.renderAnswerStatus(option, optionIndex, question.id, questionIndex)}
                         <Text style={[styles.textAnswer, {width: width * 0.85}]}>{option}</Text>
                     </View>
                 </TouchableOpacity>
@@ -226,15 +247,13 @@ export default class Questionnaire extends Component {
         );
     }
 
-    renderContent (section, sectionIndex) {
-        const optionsLength = section.options.length;
-        return section.options.map(
-            (option, optionIndex) => ::this.renderAnswer(option, optionIndex, sectionIndex, optionsLength, section)
+    renderContent (question, questionIndex) {
+        return question.options.map((option, optionIndex) =>
+            ::this.renderAnswer({option, optionIndex, questionIndex, question})
         );
     }
 
     render () {
-        console.log(this.props.collections);
         const {height} = Dimensions.get("window");
         const {selectedQuestionnaire} = this.props;
         const questionnaire = this.getQuestionnaire();
@@ -262,13 +281,16 @@ export default class Questionnaire extends Component {
 function mapStateToProps (state) {
     return {
         collections: state.collections,
+        questionnaire: state.questionnaire,
         site: state.site,
         userId: state.userId
     };
 }
 function mapDispatchToProps (dispatch) {
     return {
-        saveQuestionnaireAnswers: bindActionCreators(saveQuestionnaireAnswers, dispatch)
+        initializeAnswers: bindActionCreators(initializeAnswers, dispatch),
+        saveQuestionnaireAnswers: bindActionCreators(saveQuestionnaireAnswers, dispatch),
+        setAnswers: bindActionCreators(setAnswers, dispatch)
     };
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Questionnaire);
