@@ -1,6 +1,6 @@
 import {dropLast} from "ramda";
 
-import {PUSH_SCENE, POP_SCENE, POP_TO_HOME} from "../actions/navigation";
+import {PUSH_SCENE, POP_SCENE, POP_TO_SCENE, REPLACE_SCENE, RESET_SCENE} from "../actions/navigation";
 
 const defaultState = ["home"];
 
@@ -12,8 +12,15 @@ export default function navigation (state = defaultState, {type, payload}) {
         case POP_SCENE: {
             return state.length > 1 ? dropLast(1, state) : state;
         }
-        case POP_TO_HOME: {
+        case REPLACE_SCENE: {
+            return dropLast(1, state).concat([payload]);
+        }
+        case RESET_SCENE: {
             return defaultState;
+        }
+        case POP_TO_SCENE: {
+            const index = state.findIndex(view => payload === view);
+            return state.slice(0, index).concat(payload);
         }
         default: {
             return state;

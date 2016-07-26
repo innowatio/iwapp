@@ -8,7 +8,7 @@ describe("`Header` component", () => {
 
     const onToggleHamburger = sinon.spy();
     const selectedView = ["view"];
-    const onSelectView = sinon.spy();
+    const getNavigationType = sinon.stub().returns({type: "RESET"});
     const Actions = {
         home: sinon.spy(),
         notifications: sinon.spy(),
@@ -18,17 +18,22 @@ describe("`Header` component", () => {
 
     before(() => {
         Header.__Rewire__("Actions", Actions);
-        Header.__Rewire__("onSelectView", onSelectView);
+        Header.__Rewire__("getNavigationType", getNavigationType);
     });
 
     after(() => {
         Header.__ResetDependency__("Actions");
-        Header.__ResetDependency__("onSelectView");
+        Header.__ResetDependency__("getNavigationType");
     });
 
     beforeEach(() => {
-        onSelectView.reset();
+        getNavigationType.reset();
         onToggleHamburger.reset();
+        getNavigationType.reset();
+        Actions.home.reset();
+        Actions.notifications.reset();
+        Actions.profile.reset();
+        Actions.popTo.reset();
     });
 
     it("renders 4 buttons", () => {
@@ -74,7 +79,10 @@ describe("`Header` component", () => {
         );
         expect(header.find(TouchableOpacity).at(2).prop("onPress")).to.be.a("function");
         header.find(TouchableOpacity).at(2).simulate("press");
-        expect(onSelectView).to.have.callCount(1);
+        expect(Actions.notifications).to.have.callCount(1);
+        expect(getNavigationType).to.have.callCount(1);
+        expect(getNavigationType).to.have.been.calledWithExactly(selectedView);
+        expect(Actions.notifications).to.have.been.calledWithExactly({type: "RESET"});
     });
 
     it("renders the buttons with correct props [CASE: fourth button]", () => {
@@ -86,7 +94,10 @@ describe("`Header` component", () => {
         );
         expect(header.find(TouchableOpacity).at(3).prop("onPress")).to.be.a("function");
         header.find(TouchableOpacity).at(3).simulate("press");
-        expect(onSelectView).to.have.callCount(1);
+        expect(Actions.profile).to.have.callCount(1);
+        expect(getNavigationType).to.have.callCount(1);
+        expect(getNavigationType).to.have.been.calledWithExactly(selectedView);
+        expect(Actions.profile).to.have.been.calledWithExactly({type: "RESET"});
     });
 
     it("renders 4 icons", () => {

@@ -1,9 +1,14 @@
 import React from "react";
 import {Actions, ActionConst, Router, Scene, Reducer} from "react-native-router-flux";
-import {equals} from "ramda";
 
 import {navigateBack, navigateView} from "../actions/analytics";
-import {pushNavigator, popNavigator, popToHome} from "../actions/navigation";
+import {
+    pushNavigator,
+    popNavigator,
+    resetNavigator,
+    replaceNavigator,
+    popToNavigator
+} from "../actions/navigation";
 import asteroid from "./asteroid";
 import store from "./store";
 import AlarmsSettings from "../views/alarms-settings";
@@ -14,6 +19,17 @@ import Notifications from "../views/notifications";
 import Profile from "../views/profile";
 import Root from "../views/root";
 import Stats from "../views/stats";
+
+export function getNavigationType (selectedView) {
+    if (selectedView.length > 2) {
+        Actions.popTo(selectedView[1]);
+    }
+    return {
+        type: selectedView.length > 1 ?
+        ActionConst.REPLACE :
+        ActionConst.PUSH
+    };
+}
 
 function dispatchAction (action) {
     switch (action.type) {
@@ -27,9 +43,17 @@ function dispatchAction (action) {
             store.dispatch(navigateBack());
             break;
         }
-        case ActionConst.RESET:
+        case ActionConst.RESET: {
+            store.dispatch(resetNavigator());
+            break;
+        }
+        case ActionConst.REPLACE: {
+            store.dispatch(replaceNavigator(action.key));
+            break;
+        }
         case ActionConst.POP_TO: {
-            store.dispatch(popToHome());
+            store.dispatch(popToNavigator(action.data));
+            break;
         }
     }
 }
@@ -40,13 +64,6 @@ function reducerCreate (params) {
         dispatchAction(action);
         return defaultReducer(state, action);
     };
-}
-
-export function onSelectView (selectedView, nextView) {
-    if (!equals(selectedView, nextView)) {
-        Actions.popTo("home");
-        Actions[nextView]();
-    }
 }
 
 const scene = (
