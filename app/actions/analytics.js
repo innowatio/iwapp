@@ -27,8 +27,8 @@ export const ANALYTICS_POST_START = "ANALYTICS_POST_START";
 export const ANALYTICS_POST_SUCCESS = "ANALYTICS_POST_SUCCESS";
 export const ANALYTICS_POST_ERROR = "ANALYTICS_POST_ERROR";
 
-const typeofOnLogin = actionTypeValidator(String);
-export function postAnalytics (userId) {
+const typeofOnLogin = actionTypeValidator(String, String);
+export function postAnalytics (userId, visitId) {
     typeofOnLogin(...arguments);
     return (dispatch, getState) => {
         const {analytics} = getState();
@@ -42,6 +42,7 @@ export function postAnalytics (userId) {
         try {
             dispatch({type: ANALYTICS_POST_START});
             return axios.post("/user-interactions", {
+                visitId,
                 userId,
                 details,
                 interactions: analytics.navigationHistory.map(viewed => {

@@ -165,13 +165,13 @@ describe("`Root` view", () => {
         it("call `asteroid.on` with correct parameter", () => {
             const instance = {
                 props: {
-                    onLogin: sinon.spy(),
                     onLogout: sinon.spy()
-                }
+                },
+                onLoginActions: sinon.spy()
             };
             componentDidMount.call(instance);
             expect(asteroid.on).to.have.callCount(2);
-            expect(asteroid.on.firstCall).to.have.been.calledWith("loggedIn", instance.props.onLogin);
+            expect(asteroid.on.firstCall).to.have.been.calledWith("loggedIn", instance.props.onLoginActions);
             expect(asteroid.on.secondCall).to.have.been.calledWith("loggedOut", instance.props.onLogout);
         });
 
@@ -196,16 +196,34 @@ describe("`Root` view", () => {
         it("call `asteroid.off` with correct parameter", () => {
             const instance = {
                 props: {
-                    onLogin: sinon.spy(),
                     onLogout: sinon.spy()
-                }
+                },
+                onLoginActions: sinon.spy()
             };
             componentWillUnmount.call(instance);
             expect(asteroid.off).to.have.callCount(2);
-            expect(asteroid.off.firstCall).to.have.been.calledWith("loggedIn", instance.props.onLogin);
+            expect(asteroid.off.firstCall).to.have.been.calledWith("loggedIn", instance.onLoginActions);
             expect(asteroid.off.secondCall).to.have.been.calledWith("loggedOut", instance.props.onLogout);
         });
 
     });
 
+    describe("`onLoginActions` function", () => {
+
+        const instance = {
+            props: {
+                onLogin: sinon.spy(),
+                generateSessionId: sinon.spy()
+            }
+        };
+        const onLoginActions = RootView.prototype.onLoginActions.call(instance);
+
+        it("call `onLogin` with correct parameter", () => {
+
+            onLoginActions("userId");
+            expect(instance.props.onLogin).to.have.been.calledWith("userId");
+            expect(instance.props.generateSessionId).to.have.been.calledWith("userId");
+        });
+
+    });
 });

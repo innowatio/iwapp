@@ -7,6 +7,7 @@ import navigation from "./navigation";
 import site from "./site";
 import userId from "./user-id";
 import stats from "./stats";
+import sessionId from "./session-id";
 
 const rootReducer = combineReducers({
     analytics,
@@ -15,7 +16,8 @@ const rootReducer = combineReducers({
     navigation,
     site,
     stats,
-    userId
+    userId,
+    sessionId
 });
 
 export default rootReducer;
