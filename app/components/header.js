@@ -7,6 +7,7 @@ import FaIcons from "react-native-vector-icons/FontAwesome";
 import Icon from "./iwapp-icons";
 import * as colors from "../lib/colors";
 import {headerHeight} from "../lib/const";
+import {getNavigationType} from "../lib/scene";
 
 const styles = StyleSheet.create({
     headerWrp: {
@@ -73,7 +74,12 @@ export default class Header extends Component {
                     onPress={Actions.pop}
                     style={styles.buttonBack}
                 >
-                    <FaIcons color={colors.iconWhite} name={"angle-left"} size={35} style={{lineHeight: 40}} />
+                    <FaIcons
+                        color={colors.iconWhite}
+                        name={"angle-left"}
+                        size={35}
+                        style={{lineHeight: 40}}
+                    />
                 </TouchableOpacity>
             </View>
         );
@@ -91,7 +97,7 @@ export default class Header extends Component {
                     <Icon color={colors.iconWhite} name={"iw-menu"} size={40} />
                 </TouchableOpacity>
                 <TouchableOpacity
-                    onPress={() => Actions.home()}
+                    onPress={Actions.home}
                     style={styles.iconRightButton}
                     transparent={true}
                 >
@@ -110,14 +116,14 @@ export default class Header extends Component {
         return (
             <View style={styles.rightHeader}>
                 <TouchableOpacity
-                    onPress={() => Actions.notifications()}
+                    onPress={() => Actions.notifications(getNavigationType(this.props.selectedView))}
                     style={[styles.iconAlarmButton, {backgroundColor: alarmColor}]}
                     transparent={true}
                 >
                     <Icon color={colors.iconWhite} name={"iw-alarm"} size={25} />
                 </TouchableOpacity>
                 <TouchableOpacity
-                    onPress={() => Actions.profile()}
+                    onPress={() => Actions.profile(getNavigationType(this.props.selectedView))}
                     style={styles.iconUserButton}
                     transparent={true}
                 >
@@ -146,8 +152,6 @@ export default class Header extends Component {
     }
 
     render () {
-        // const headerViews = this.props.headerViews;
-        // const selectedView = this.props.selectedView;
         const {headerViews, selectedView} = this.props;
         const headerType = headerViews.find(headerView =>
             headerView.view === last(selectedView)

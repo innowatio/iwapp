@@ -86,7 +86,8 @@ export default class Highcharts extends Component {
             series: this.getSeries(),
             title: null,
             xAxis: {
-                minorGridLineWidth: 0
+                minorGridLineWidth: 0,
+                categories: []
                 // min: moment.utc(this.props.charts[0].day).startOf("day").valueOf(),
                 // max: moment.utc(this.props.charts[0].day).endOf("day").valueOf()
             },

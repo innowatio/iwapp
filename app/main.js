@@ -21,8 +21,11 @@ export default class Main extends Component {
         AppState.removeEventListener("change", this.handleAppStateChange);
     }
 
-    handleAppStateChange () {
-        store.dispatch(postAnalytics(asteroid.userId, store.getState()));
+    handleAppStateChange (currentState) {
+        if (currentState === "background") {
+            const {userId, sessionId} = store.getState();
+            store.dispatch(postAnalytics(userId, sessionId));
+        }
     }
 
     render () {
