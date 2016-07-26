@@ -279,7 +279,7 @@ class Home extends Component {
                     </View>
                     <Button
                         onPress={this.setModalVisible.bind(this, true)}
-                        style={{backgroundColor: colors.buttonPrimary, color: colors.white}}
+                        style={{backgroundColor: colors.buttonPrimary, fontSize: 13, color: colors.white}}
                     >
                         {"APRI MODALE"}
                     </Button>
