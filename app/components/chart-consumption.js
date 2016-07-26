@@ -2,7 +2,7 @@ import moment from "moment";
 import {last} from "ramda";
 import React, {Component, PropTypes} from "react";
 import IPropTypes from "react-immutable-proptypes";
-import {Dimensions, View, StyleSheet, Switch} from "react-native";
+import {Dimensions, Image, View, StyleSheet, Switch} from "react-native";
 import shallowCompare from "react-addons-shallow-compare";
 
 import getDailySumConsumption from "../lib/get-daily-sum-consumption";
@@ -41,25 +41,26 @@ const styles = StyleSheet.create({
     consumptionUnitOfMeasurement: {
         color: colors.primaryBlue
     },
-    powerWrp: {
-        borderWidth: 2,
-        borderColor: colors.grey,
-        marginVertical: 4,
-        width: 70,
-        height: 70,
-        borderRadius: 100,
+    // powerWrp: {
+    //     marginVertical: 4
+    // },
+    backgroundPower: {
+        width: 88,
+        height: 88,
+        flexWrap: "wrap",
         justifyContent: "center",
         alignItems: "center"
     },
     powerNumber: {
-        fontSize: 26,
+        fontSize: 20,
         textAlign: "center",
         fontWeight: "bold",
         color: colors.powerNumber
     },
     powerUnitOfMeasurement: {
         color: colors.powerNumber,
-        textAlign: "center"
+        textAlign: "center",
+        fontSize: 12,
     },
     switch: {
         alignSelf: "flex-start",
@@ -131,9 +132,10 @@ export default class ChartConsumption extends Component {
 
     render () {
         const {height} = Dimensions.get("window");
+        var sum = this.getRealTimePower();
         return (
             <View>
-                <View style={[styles.consumptionContainer, {height: height * 0.16}]}>
+                <View style={[styles.consumptionContainer, {height: height * 0.17}]}>
                     <View style={styles.summaryConsumptionContainer}>
                         <Text style={styles.subTitle}>{"Consumo di oggi"}</Text>
                         <View style={styles.summaryConsumption}>
@@ -143,10 +145,12 @@ export default class ChartConsumption extends Component {
                     </View>
                     <View style={styles.powerContainer}>
                         <Text style={styles.subTitle}>{"Potenza attuale"}</Text>
-                        <View style={styles.powerWrp}>
-                            <Text style={styles.powerNumber}>{this.getRealTimePower().toFixed(1)}</Text>
+                        <Image source={require("../assets/img/spinner.gif")} style={styles.backgroundPower}>
+                            <Text style={styles.powerNumber}>
+                                {sum >= 99 ? sum.toFixed() : sum.toFixed(1)}
+                            </Text>
                             <Text style={styles.powerUnitOfMeasurement}>{"kW"}</Text>
-                        </View>
+                        </Image>
                     </View>
                 </View>
                 <Highcharts
