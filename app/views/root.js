@@ -82,9 +82,15 @@ class Root extends Component {
 
     getHeaderViews () {
         return [
-            {view: "survey", header: "back-arrow"},
-            {view: "modifyProfile", header: "back-arrow"}
+            {view: "survey", header: "back-arrow", disableDrawer: true},
+            {view: "questionnaire", header: "back-arrow"}
         ];
+    }
+
+    isDrawerDisabled () {
+        const views = this.getHeaderViews();
+        const selectedView = views.find(({view}) => view === last(this.props.navigationScene));
+        return selectedView ? selectedView.disableDrawer : false;
     }
 
     toggleHamburger () {
@@ -133,6 +139,7 @@ class Root extends Component {
                         optionItems={this.getSites()}
                         site={site}
                     />}
+                disabled={this.isDrawerDisabled()}
                 onClose={::this.closeHamburger}
                 open={this.state.open}
                 openDrawerOffset={0.35}
