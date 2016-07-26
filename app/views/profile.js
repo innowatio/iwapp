@@ -195,7 +195,7 @@ class Profile extends Component {
         return (
             <View style={styles.userPhotoWrp}>
                 <View style={styles.photoWrp}>
-                    <Text style={styles.textPhoto}>{(username[0] || email[0]).toUpperCase()}</Text>
+                    <Text style={styles.textPhoto}>{(username[0] || email[0] || "").toUpperCase()}</Text>
                 </View>
                 <TouchableOpacity
                     onPress={() => this.showImagePicker()}
