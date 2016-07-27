@@ -268,7 +268,7 @@ class Survey extends Component {
                 <View style={{flex: 1}}>
                     <View style={styles.titleBarWrp}>
                         <View style={styles.titleBar}>
-                            <Text style={styles.title}>{"QUESTIONARIO"}</Text>
+                            <Text style={styles.title}>{"SURVEY"}</Text>
                         </View>
                     </View>
                     {this.renderContentSurvey()}
