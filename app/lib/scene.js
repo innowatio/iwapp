@@ -1,8 +1,14 @@
 import React from "react";
-import {ActionConst, Router, Scene, Reducer} from "react-native-router-flux";
+import {Actions, ActionConst, Router, Scene, Reducer} from "react-native-router-flux";
 
 import {navigateBack, navigateView} from "../actions/analytics";
-import {pushNavigator, popNavigator} from "../actions/navigation";
+import {
+    pushNavigator,
+    popNavigator,
+    resetNavigator,
+    replaceNavigator,
+    popToNavigator
+} from "../actions/navigation";
 import asteroid from "./asteroid";
 import store from "./store";
 import AlarmsSettings from "../views/alarms-settings";
@@ -14,6 +20,17 @@ import Profile from "../views/profile";
 import Root from "../views/root";
 import Stats from "../views/stats";
 
+export function getNavigationType (selectedView) {
+    if (selectedView.length > 2) {
+        Actions.popTo(selectedView[1]);
+    }
+    return {
+        type: selectedView.length > 1 ?
+        ActionConst.REPLACE :
+        ActionConst.PUSH
+    };
+}
+
 function dispatchAction (action) {
     switch (action.type) {
         case ActionConst.PUSH: {
@@ -21,12 +38,23 @@ function dispatchAction (action) {
             store.dispatch(navigateView(action.key));
             break;
         }
-        case ActionConst.BACK_ACTION:
+        case ActionConst.BACK_ACTION: {
             store.dispatch(popNavigator());
             store.dispatch(navigateBack());
             break;
-        default:
+        }
+        case ActionConst.RESET: {
+            store.dispatch(resetNavigator());
             break;
+        }
+        case ActionConst.REPLACE: {
+            store.dispatch(replaceNavigator(action.key));
+            break;
+        }
+        case ActionConst.POP_TO: {
+            store.dispatch(popToNavigator(action.data));
+            break;
+        }
     }
 }
 
@@ -41,7 +69,7 @@ function reducerCreate (params) {
 const scene = (
     <Router asteroid={asteroid} createReducer={reducerCreate}>
         <Scene component={Root} key="root">
-            <Scene component={Home} key="home" />
+            <Scene component={Home} key="home" type={ActionConst.RESET} />
             <Scene component={Stats} key="stats" />
             <Scene component={Stats} key="smart" />
             <Scene component={Stats} key="badgeboard" />

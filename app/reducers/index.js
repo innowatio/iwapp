@@ -8,6 +8,7 @@ import questionnaire from "./questionnaire";
 import site from "./site";
 import userId from "./user-id";
 import stats from "./stats";
+import sessionId from "./session-id";
 
 const rootReducer = combineReducers({
     analytics,
@@ -17,7 +18,8 @@ const rootReducer = combineReducers({
     questionnaire,
     site,
     stats,
-    userId
+    userId,
+    sessionId
 });
 
 export default rootReducer;

@@ -14,6 +14,7 @@ import com.microsoft.codepush.react.CodePush;
 import com.imagepicker.ImagePickerPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.dieam.reactnativepushnotification.ReactNativePushNotificationPackage;
+import com.learnium.RNDeviceInfo.RNDeviceInfo;
 
 import java.util.Arrays;
 import java.util.List;
@@ -41,6 +42,7 @@ public class MainApplication extends Application implements ReactApplication {
             new MainReactPackage(),
             new ImagePickerPackage(),
             new VectorIconsPackage(),
+            new RNDeviceInfo(),
             new CodePush(getString(R.string.reactNativeCodePush_androidDeploymentKey), MainApplication.this, BuildConfig.DEBUG),
             mReactNativePushNotificationPackage
             );

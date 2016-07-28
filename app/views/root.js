@@ -10,6 +10,7 @@ import {Map} from "immutable";
 import asteroid from "../lib/asteroid";
 import Login from "./login";
 import {selectSite} from "../actions/site";
+import {generateSessionId} from "../actions/session-id";
 import {onLogin, onLogout} from "../actions/user-id";
 import KeyboardSpacer from "../components/keyboard-spacer";
 import Header from "../components/header";
@@ -27,10 +28,12 @@ const styles = StyleSheet.create({
     }
 });
 
+
 class Root extends Component {
 
     static propTypes = {
         collections: PropTypes.object.isRequired,
+        generateSessionId: PropTypes.func.isRequired,
         navigationScene: PropTypes.arrayOf(PropTypes.string).isRequired,
         navigationState: PropTypes.shape({
             children: PropTypes.arrayOf(PropTypes.object).isRequired
@@ -51,7 +54,7 @@ class Root extends Component {
     }
 
     componentDidMount () {
-        asteroid.on("loggedIn", this.props.onLogin);
+        asteroid.on("loggedIn", this.onLoginActions());
         asteroid.on("loggedOut", this.props.onLogout);
         asteroid.ddp.on("added", ({collection, fields, id}) => {
             if (collection == "sites" && !this.props.site) {
@@ -65,7 +68,7 @@ class Root extends Component {
     }
 
     componentWillUnmount () {
-        asteroid.off("loggedIn", this.props.onLogin);
+        asteroid.off("loggedIn", this.onLoginActions);
         asteroid.off("loggedOut", this.props.onLogout);
     }
 
@@ -78,6 +81,13 @@ class Root extends Component {
     getNavigationState () {
         const sceneIndex = this.getNavigationChildrenIndex();
         return this.props.navigationState.children[sceneIndex];
+    }
+
+    onLoginActions () {
+        return async (userId) => {
+            this.props.onLogin(userId);
+            this.props.generateSessionId(userId);
+        };
     }
 
     toggleHamburger () {
@@ -172,6 +182,7 @@ function mapStateToProps (state) {
 }
 function mapDispatchToProps (dispatch) {
     return {
+        generateSessionId: bindActionCreators(generateSessionId, dispatch),
         onLogin: bindActionCreators(onLogin, dispatch),
         onLogout: bindActionCreators(onLogout, dispatch),
         selectSite: bindActionCreators(selectSite, dispatch)
