@@ -37,7 +37,9 @@ export function postAnalytics (userId, visitId) {
             model: DeviceInfo.getModel(),
             platform: DeviceInfo.getSystemName(),
             version: DeviceInfo.getSystemVersion(),
-            appVersion: DeviceInfo.getVersion()
+            appVersion: DeviceInfo.getVersion(),
+            bundle: DeviceInfo.getBundleId(),
+            userAgent: DeviceInfo.getUserAgent()
         };
         try {
             dispatch({type: ANALYTICS_POST_START});
