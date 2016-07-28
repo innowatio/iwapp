@@ -1,5 +1,5 @@
 import {shallow} from "enzyme";
-import {TouchableOpacity} from "react-native";
+import {TouchableOpacity, View} from "react-native";
 import FaIcons from "react-native-vector-icons/FontAwesome";
 
 import Header from "components/header";
@@ -109,7 +109,7 @@ describe("`Header` component", () => {
             expect(Actions.profile).to.have.been.calledWithExactly({type: "RESET"});
         });
 
-        it("renders 4 icons", () => {
+        it("renders 3 icons", () => {
             const header = shallow(
                 <Header
                     headerViews={[]}
@@ -117,7 +117,7 @@ describe("`Header` component", () => {
                     selectedView={selectedView}
                 />
             );
-            expect(header.find(Icon)).to.have.length(4);
+            expect(header.find(Icon)).to.have.length(3);
         });
 
         it("renders the correct icons", () => {
@@ -131,7 +131,6 @@ describe("`Header` component", () => {
             expect(header.find(Icon).at(0).prop("name")).to.equal("iw-menu");
             expect(header.find(Icon).at(1).prop("name")).to.equal("iw-innowatio-logo");
             expect(header.find(Icon).at(2).prop("name")).to.equal("iw-alarm");
-            expect(header.find(Icon).at(3).prop("name")).to.equal("iw-user");
         });
 
     });
@@ -161,6 +160,22 @@ describe("`Header` component", () => {
             expect(header.find(TouchableOpacity).at(0).prop("onPress")).to.be.a("function");
             header.find(TouchableOpacity).at(0).simulate("press");
             expect(Actions.pop).to.have.callCount(1);
+        });
+
+    });
+
+    describe("empty header", () => {
+
+        it("render no icons", () => {
+            const header = shallow(
+                <Header
+                    headerViews={[{view: "view", header: "empty"}]}
+                    onToggleHamburger={onToggleHamburger}
+                    selectedView={selectedView}
+                />
+            );
+            expect(header.find(View)).to.have.length(2);
+            expect(header.find(Icon)).to.have.length(0);
         });
 
     });

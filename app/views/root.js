@@ -7,16 +7,17 @@ import {bindActionCreators} from "redux";
 import {equals, last} from "ramda";
 import {Map} from "immutable";
 
-import asteroid from "../lib/asteroid";
-import Login from "./login";
 import {selectSite} from "../actions/site";
 import {generateSessionId} from "../actions/session-id";
 import {onLogin, onLogout} from "../actions/user-id";
-import KeyboardSpacer from "../components/keyboard-spacer";
 import Header from "../components/header";
+import KeyboardSpacer from "../components/keyboard-spacer";
 import SideMenu from "../components/side-menu";
-import {primaryBlue, secondaryBlue, background} from "../lib/colors";
+import asteroid from "../lib/asteroid";
 import {statusBarHeight} from "../lib/const";
+import {primaryBlue, secondaryBlue, background} from "../lib/colors";
+import {getEmail, getUsername} from "../lib/get-user-info";
+import Login from "./login";
 
 const styles = StyleSheet.create({
     container: {
@@ -85,8 +86,10 @@ class Root extends Component {
 
     getHeaderViews () {
         return [
-            {view: "survey", header: "back-arrow", disableDrawer: true},
-            {view: "questionnaire", header: "back-arrow"}
+            {view: "survey", header: "empty", disableDrawer: true},
+            {view: "questionnaire", header: "back-arrow"},
+            {view: "alarmsSettings", header: "back-arrow"},
+            {view: "modifyProfile", header: "back-arrow"}
         ];
     }
 
@@ -128,11 +131,14 @@ class Root extends Component {
     }
 
     renderHeader () {
+        const username = getUsername(this.props.userId, this.props.collections);
+        const email = getEmail(this.props.userId, this.props.collections);
         return (
             <Header
                 headerViews={this.getHeaderViews()}
                 onToggleHamburger={::this.toggleHamburger}
                 selectedView={this.props.navigationScene}
+                userName={(username[0] || email[0] || "").toUpperCase()}
             />
         );
     }

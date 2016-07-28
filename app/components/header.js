@@ -8,6 +8,7 @@ import Icon from "./iwapp-icons";
 import * as colors from "../lib/colors";
 import {headerHeight} from "../lib/const";
 import {getNavigationType} from "../lib/scene";
+import Text from "../components/text-lato";
 
 const styles = StyleSheet.create({
     headerWrp: {
@@ -35,17 +36,29 @@ const styles = StyleSheet.create({
         marginHorizontal: 3
     },
     iconAlarmButton: {
-        alignSelf: "center",
+        justifyContent: "center",
+        alignItems: "center",
         borderRadius: 100,
-        padding: 5,
-        marginRight: 5
+        width: 35,
+        height: 35,
+        marginRight: 5,
+        borderWidth: .5,
+        borderColor: colors.white
     },
     iconUserButton: {
-        alignSelf: "center",
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: colors.buttonPrimary,
         borderRadius: 100,
-        borderWidth: 1,
-        borderColor: colors.iconWhite,
-        padding: 5
+        borderWidth: .5,
+        borderColor: colors.white,
+        width: 35,
+        height: 35
+    },
+    textUser: {
+        color: colors.white,
+        fontSize: 20,
+        fontWeight: "bold"
     },
     buttonBack: {
         flexDirection: "row",
@@ -64,10 +77,17 @@ export default class Header extends Component {
             header: PropTypes.string.isRequired
         })).isRequired,
         onToggleHamburger: PropTypes.func.isRequired,
-        selectedView: PropTypes.arrayOf(PropTypes.string).isRequired
+        selectedView: PropTypes.arrayOf(PropTypes.string).isRequired,
+        userName: PropTypes.string
     }
 
-    renderBackArrow () {
+    renderEmptyHeader () {
+        return (
+            <View style={styles.headerEmpty} />
+        );
+    }
+
+    renderBackArrowHeader () {
         return (
             <View style={styles.header}>
                 <TouchableOpacity
@@ -125,9 +145,8 @@ export default class Header extends Component {
                 <TouchableOpacity
                     onPress={() => Actions.profile(getNavigationType(this.props.selectedView))}
                     style={styles.iconUserButton}
-                    transparent={true}
                 >
-                    <Icon color={colors.iconWhite} name={"iw-user"} size={23} />
+                    <Text style={styles.textUser}>{this.props.userName}</Text>
                 </TouchableOpacity>
             </View>
         );
@@ -145,7 +164,9 @@ export default class Header extends Component {
     renderHeader (headerKey) {
         switch (headerKey) {
             case "back-arrow":
-                return this.renderBackArrow();
+                return this.renderBackArrowHeader();
+            case "empty":
+                return this.renderEmptyHeader();
             default:
                 return this.renderClassicHeader();
         }
@@ -158,7 +179,7 @@ export default class Header extends Component {
         );
         const header = headerType ? headerType.header : "default";
         return (
-            <View style={styles.headerWrp}>
+            <View key="mainView" style={styles.headerWrp}>
                 {this.renderHeader(header)}
             </View>
         );

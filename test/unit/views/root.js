@@ -2,6 +2,7 @@ import {shallow} from "enzyme";
 import {ScrollView, StatusBar} from "react-native";
 import Drawer from "react-native-drawer";
 import {DefaultRenderer} from "react-native-router-flux";
+import {Map} from "immutable";
 
 import Login from "views/login";
 import Root from "views/root";
@@ -38,7 +39,7 @@ describe("`Root` view", () => {
     it("renders a `ScrollView` with correct props", () => {
         const rootView = shallow(
             <RootView
-                collections={{get: () => {}}}
+                collections={Map()}
                 navigationScene={["home"]}
                 navigationState={navigationState}
                 onLogin={sinon.spy()}
@@ -56,7 +57,7 @@ describe("`Root` view", () => {
     it("renders a `StatusBar` with correct props", () => {
         const rootView = shallow(
             <RootView
-                collections={{get: () => {}}}
+                collections={Map()}
                 navigationScene={["home"]}
                 navigationState={navigationState}
                 onLogin={sinon.spy()}
@@ -75,7 +76,7 @@ describe("`Root` view", () => {
     it("renders `Login` view if `userId` is not specified with the correct props", () => {
         const rootView = shallow(
             <RootView
-                collections={{get: () => {}}}
+                collections={Map()}
                 navigationScene={["home"]}
                 navigationState={navigationState}
                 onLogin={sinon.spy()}
@@ -93,7 +94,7 @@ describe("`Root` view", () => {
         RootView.prototype.getNavigationState = sinon.stub().returns(scene);
         const rootView = shallow(
             <RootView
-                collections={{get: () => {}}}
+                collections={Map()}
                 navigationScene={["home"]}
                 navigationState={navigationState}
                 onLogin={sinon.spy()}
@@ -112,7 +113,7 @@ describe("`Root` view", () => {
         RootView.prototype.isDrawerDisabled = sinon.stub().returns(true);
         const rootView = shallow(
             <RootView
-                collections={{get: () => {}}}
+                collections={Map()}
                 navigationScene={["home"]}
                 navigationState={navigationState}
                 onLogin={sinon.spy()}
@@ -128,7 +129,7 @@ describe("`Root` view", () => {
         RootView.prototype.isDrawerDisabled = sinon.stub().returns();
         const rootView = shallow(
             <RootView
-                collections={{get: () => {}}}
+                collections={Map()}
                 navigationScene={["home"]}
                 navigationState={navigationState}
                 onLogin={sinon.spy()}
@@ -144,7 +145,7 @@ describe("`Root` view", () => {
         RootView.prototype.isDrawerDisabled = sinon.stub().returns(false);
         const rootView = shallow(
             <RootView
-                collections={{get: () => {}}}
+                collections={Map()}
                 navigationScene={["home"]}
                 navigationState={navigationState}
                 onLogin={sinon.spy()}
