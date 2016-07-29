@@ -1,17 +1,21 @@
 import {Map} from "immutable";
 import moment from "moment";
 import {Content} from "native-base";
+import Button from "react-native-button";
 import React, {Component, PropTypes} from "react";
+import {Actions} from "react-native-router-flux";
 import IPropTypes from "react-immutable-proptypes";
-import {Dimensions, StyleSheet, View} from "react-native";
+import {Dimensions, Modal, StyleSheet, View} from "react-native";
 import {connect} from "react-redux";
 import Swiper from "react-native-swiper";
 import {bindActionCreators} from "redux";
+import initialSurvey from "../assets/json/survey/initial";
 
 import ChartConsumption from "../components/chart-consumption";
 import InfoConsumption from "../components/info-consumption";
 import Weather from "../components/weather";
 import Text from "../components/text-lato";
+import Icon from "../components/iwapp-icons";
 import {toggleForecast} from "../actions/home";
 import * as colors from "../lib/colors";
 import {mapWeatherIcon, mapWeatherBackground} from "../lib/weather-mapper";
@@ -23,6 +27,56 @@ const styles = StyleSheet.create({
         alignItems: "center",
         backgroundColor: colors.transparent,
         flexDirection: "row"
+    },
+
+    modalBackground: {
+        flex: 1,
+        justifyContent: "center",
+        padding: 20,
+        backgroundColor: colors.backgroundModal
+    },
+    modalTitleWrp: {
+        backgroundColor: colors.buttonPrimary,
+        paddingVertical: 5
+    },
+    logoInnowatio: {
+        padding: 0,
+        margin: 0,
+        height: 80
+    },
+    titleModal: {
+        color: colors.white,
+        textAlign: "center"
+    },
+    textBold: {
+        fontWeight: "bold",
+        fontSize: 16
+    },
+
+    modalContentWrp: {
+        backgroundColor: colors.secondaryBlue,
+        justifyContent: "center",
+        alignItems: "center",
+        paddingHorizontal: 20,
+        paddingBottom: 30
+    },
+    descriptionModal: {
+        color: colors.white,
+        textAlign: "center",
+        marginTop: 10
+    },
+    modalButton: {
+        marginTop: 20,
+        backgroundColor: colors.buttonPrimary,
+        width: 200,
+        paddingVertical: 8,
+        borderRadius: 50
+    },
+    modalButtonText: {
+        color: colors.white,
+        fontSize: 14,
+        backgroundColor: colors.transparent,
+        fontWeight: "300"
     }
 });
 
@@ -43,6 +97,13 @@ class Home extends Component {
         toggleForecast: PropTypes.func.isRequired
     }
 
+    constructor (props) {
+        super(props);
+        this.state  = {
+            modalVisible: false
+        };
+    }
+
     componentDidMount () {
         this.props.asteroid.subscribe("sites");
         if (this.props.site) {
@@ -54,6 +115,14 @@ class Home extends Component {
         if (nextProps.site) {
             this.subscribeToMeasure(nextProps);
         }
+    }
+
+    getSurvey () {
+        return initialSurvey;
+    }
+
+    setModalVisible (visible) {
+        this.setState({modalVisible: visible});
     }
 
     onLogout () {
@@ -153,6 +222,41 @@ class Home extends Component {
         };
     }
 
+    renderSurveyModal () {
+        return (
+            <Modal
+                onRequestClose={() => this.setModalVisible(false)}
+                transparent={true}
+                visible={this.state.modalVisible}
+            >
+                <View style={styles.modalBackground}>
+                    <View style={styles.modalTitleWrp}>
+                        <Text style={styles.titleModal}>{" "}</Text>
+                    </View>
+                    <View style={styles.modalContentWrp}>
+
+                        <View style={styles.badgeIconActive}>
+                            <Icon color={colors.iconWhite} name={"iw-innowatio-logo"} size={100} style={styles.logoInnowatio} />
+                        </View>
+                        <Text style={styles.descriptionModal}>
+                            <Text style={styles.textBold}>{this.getSurvey().title.toUpperCase()}</Text>
+                            {"\n\n"}
+                            {this.getSurvey().description}
+                        </Text>
+                        <Button
+                            containerStyle={styles.modalButton}
+                            onPress={Actions.survey}
+                            style={styles.modalButtonText}
+                        >
+                            {"VAI AL QUESTIONARIO"}
+                        </Button>
+                    </View>
+                </View>
+            </Modal>
+        );
+    }
+
+
     render () {
         const {height} = Dimensions.get("window");
         const heightSwiper = height * 0.54;
@@ -164,6 +268,12 @@ class Home extends Component {
                             {...this.getWeatherData()}
                         />
                     </View>
+                    <Button
+                        onPress={this.setModalVisible.bind(this, true)}
+                        style={{backgroundColor: colors.buttonPrimary, color: colors.white}}
+                    >
+                        {"APRI MODALE"}
+                    </Button>
                     <Swiper height={heightSwiper} index={1} loop={false} showButtons={true}>
                         <View>
                             <InfoConsumption
@@ -184,6 +294,7 @@ class Home extends Component {
                             <Text>{"Grafico a torta"}</Text>
                         </View>
                     </Swiper>
+                    {this.renderSurveyModal()}
                 </Content>
             </View>
         );

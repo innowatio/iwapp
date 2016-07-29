@@ -23,7 +23,8 @@ const styles = StyleSheet.create({
         alignItems: "center",
         flex: 1,
         flexDirection: "row",
-        height: 20
+        height: 20,
+        marginRight: 17
     },
     step: {
         width: 30,
@@ -34,11 +35,11 @@ const styles = StyleSheet.create({
 export default class Stepper extends Component {
 
     static propTypes = {
+        activeStep: PropTypes.number,
         backgroundDotColor: PropTypes.string,
         backgroundDotColorActive: PropTypes.string,
         backgroundLineColor: PropTypes.string,
         backgroundLineColorActive: PropTypes.string,
-        lastActiveStepIndex: PropTypes.number,
         onPressDot: PropTypes.func,
         steps: PropTypes.number.isRequired
     }
@@ -48,11 +49,11 @@ export default class Stepper extends Component {
         backgroundLineColor: colors.stepperLine,
         backgroundDotColorActive: colors.stepperDotActive,
         backgroundLineColorActive: colors.stepperLineActive,
-        lastActiveStepIndex: 0
+        activeStep: 0
     }
 
     isActive (stepNumber) {
-        return stepNumber <= this.props.lastActiveStepIndex;
+        return stepNumber <= this.props.activeStep;
     }
 
     renderLine (stepNumber) {

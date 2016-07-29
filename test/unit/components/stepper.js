@@ -16,16 +16,16 @@ describe("`Stepper` component", () => {
 
     it("renders the inactive button disabled", () => {
         const isActive = Stepper.prototype.isActive;
-        const lastActiveStepIndex = 2;
+        const activeStep = 2;
         const instance = {
             props: {
-                lastActiveStepIndex
+                activeStep
             }
         };
         const steps = 5;
         const stepper = shallow(
             <Stepper
-                lastActiveStepIndex={lastActiveStepIndex}
+                activeStep={activeStep}
                 onPressDot={() => null}
                 steps={steps}
             />
@@ -36,11 +36,11 @@ describe("`Stepper` component", () => {
     });
 
     it("renders the button disabled if `onPressDot` is not specified", () => {
-        const lastActiveStepIndex = 2;
+        const activeStep = 2;
         const steps = 5;
         const stepper = shallow(
             <Stepper
-                lastActiveStepIndex={lastActiveStepIndex}
+                activeStep={activeStep}
                 steps={steps}
             />
         );
@@ -51,11 +51,11 @@ describe("`Stepper` component", () => {
 
     it("calls the `onPressDot` function on press on dot with correct parameter", () => {
         const onPressDot = sinon.spy();
-        const lastActiveStepIndex = 2;
+        const activeStep = 2;
         const steps = 5;
         const stepper = shallow(
             <Stepper
-                lastActiveStepIndex={lastActiveStepIndex}
+                activeStep={activeStep}
                 onPressDot={onPressDot}
                 steps={steps}
             />
@@ -70,10 +70,10 @@ describe("`Stepper` component", () => {
         const isActive = Stepper.prototype.isActive;
 
         it("returns `true` if step is active", () => {
-            const lastActiveStepIndex = 3;
+            const activeStep = 3;
             const instance = {
                 props: {
-                    lastActiveStepIndex
+                    activeStep
                 }
             };
             const active = isActive.call(instance, 2);
@@ -81,10 +81,10 @@ describe("`Stepper` component", () => {
         });
 
         it("returns `false` if step is not active", () => {
-            const lastActiveStepIndex = 3;
+            const activeStep = 3;
             const instance = {
                 props: {
-                    lastActiveStepIndex
+                    activeStep
                 }
             };
             const active = isActive.call(instance, 4);

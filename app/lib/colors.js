@@ -23,7 +23,7 @@ export const grey = "#999999";
 export const textGrey = "#546e7a";
 export const aquaGreen = "#12b0c5";
 export const acidGreen = "#cddc39";
-export const backgroundBlackOpacity = "rgba(0, 0, 0, 0.4)";
+export const backgroundBlackOpacity = "rgba(0, 0, 0, 0.3)";
 //
 export const demographicsSection = "#536DFE";
 export const buildingsSection = "#3E50B4";
@@ -52,6 +52,7 @@ export const alarmMonthlyEnergy = "#cddc39";
 export const alarmSolvedInstantPower = "#79c447";
 export const alarmInstantPower = "#536dfe";
 // Survey
+export const selectedAnswer = "#EEEEEE";
 export const stepperDot = "#949494";
 export const stepperDotActive = "#303BA6";
 export const stepperLine = "#AFB0AF";
@@ -63,3 +64,5 @@ export const greenStatus = "#C2D72D";
 export const redStatus = "#FB0035";
 export const questionnaireAnswerText = "#D2DADE";
 export const questionnaireAnswerStatusText = "#A0B0B9";
+// Modal
+export const backgroundModal = "rgba(255, 255, 255, 0.5)";

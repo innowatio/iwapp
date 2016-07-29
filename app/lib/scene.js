@@ -19,6 +19,7 @@ import Notifications from "../views/notifications";
 import Profile from "../views/profile";
 import Root from "../views/root";
 import Stats from "../views/stats";
+import Survey from "../views/survey";
 
 export function getNavigationType (selectedView) {
     if (selectedView.length > 2) {
@@ -77,10 +78,11 @@ const scene = (
             <Scene component={Stats} key="report" />
             <Scene component={Notifications} key="notifications" />
             <Scene component={AlarmsSettings} key="alarmsSettings" />
-            {/*Profile Views */}
+            {/*Profile View */}
             <Scene component={Profile} key="profile" />
             <Scene component={Questionnaire} key="questionnaire" />
             <Scene component={ModifyProfile} key="modifyProfile" />
+            <Scene component={Survey} key="survey" />
         </Scene>
     </Router>
 );
