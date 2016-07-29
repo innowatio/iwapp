@@ -46,16 +46,16 @@ const styles = StyleSheet.create({
         paddingVertical: 30,
         paddingHorizontal: 25,
         alignItems: "center",
-        borderBottomWidth: 1,
+        borderBottomWidth: .5,
         borderBottomColor: colors.lightGrey
     },
     questionSurvey: {
         textAlign: "center",
         fontSize: 18,
-        color: colors.textGrey
+        color: colors.primaryBlue
     },
     answerSurveyWrp: {
-        borderBottomWidth: 1,
+        borderBottomWidth: .5,
         borderBottomColor: colors.lightGrey
     },
     answerSurvey: {

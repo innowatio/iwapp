@@ -14,12 +14,12 @@ const styles = StyleSheet.create({
     consumptionContainer: {
         flexDirection: "row",
         justifyContent: "space-around",
-        paddingTop: 20,
+        paddingTop: 10,
         marginBottom: 5
     },
     powerContainer: {
         flexDirection: "column",
-        justifyContent: "center",
+        justifyContent: "flex-start",
         alignItems: "center"
     },
     summaryConsumptionContainer: {
@@ -160,6 +160,7 @@ export default class ChartConsumption extends Component {
                 />
                 <View style={styles.switchContainer}>
                     <Switch
+                        onTintColor={colors.HomeSwitchActive}
                         onValueChange={this.props.onToggleSwitch}
                         style={styles.switch}
                         value={this.props.charts.length === 2}

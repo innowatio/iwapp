@@ -283,7 +283,7 @@ class Home extends Component {
                     >
                         {"APRI MODALE"}
                     </Button>
-                    <Swiper height={heightSwiper} index={1} loop={false} showButtons={true}>
+                    <Swiper height={heightSwiper} index={0} loop={false} showButtons={true}>
                         <View>
                             <InfoConsumption
                                 heightSwiper={heightSwiper}
@@ -300,7 +300,7 @@ class Home extends Component {
                             />
                         </View>
                         <View>
-                            <Text>{"Grafico a torta"}</Text>
+                            <Text style={{color: colors.textGrey}}>{"Grafico a torta"}</Text>
                         </View>
                     </Swiper>
                     {this.renderSurveyModal()}

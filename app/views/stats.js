@@ -317,10 +317,10 @@ class Stats extends Component {
                 <View key={consumption.key} style={styles.ProgressBarStyleWrp}>
                     <Text style={styles.progressBarTitle}>{consumption.title}</Text>
                     <Progress.Bar
-                        borderColor={(consumption.max / consumption.now < .8) ? colors.secondaryBlue : colors.alarmsTip}
+                        borderColor={(consumption.max / consumption.now < .8) ? colors.secondaryBlue : colors.progressBarError}
                         borderRadius={30}
-                        borderWidth={1}
-                        color={(consumption.max / consumption.now < .8) ? colors.primaryBlue : colors.alarmsTip}
+                        borderWidth={.8}
+                        color={(consumption.max / consumption.now < .8) ? colors.primaryBlue : colors.progressBarError}
                         height={6}
                         progress={consumption.max / consumption.now}
                         width={width * 0.9}
@@ -343,7 +343,7 @@ class Stats extends Component {
         const {height, width} = Dimensions.get("window");
         return (
             <View style={styles.contentStatsWrp}>
-                <View>
+                <View style={{marginBottom: 40}}>
                     <Text style={styles.titleSwiper}>{this.mapPeriodLabel()}</Text>
                     <Highcharts
                         aggregates={this.getStatsAggregate()}
@@ -360,7 +360,7 @@ class Stats extends Component {
                         </View>
                     </View>
                     <View key={"Actual Power"} style={[styles.summaryConsumptionWrp, {width: width * 0.5}]}>
-                        <Text style={styles.consumptionTitle}>{"Potenza attuale"}</Text>
+                        <Text style={styles.consumptionTitle}>{"Potenza\nattuale"}</Text>
                         <View style={styles.actualPowerWrp}>
                             <Text style={styles.actualPowerValue}>{"17,3"}</Text>
                             <Text style={styles.actualPowerMeasure}>{"kW"}</Text>
@@ -393,7 +393,7 @@ class Stats extends Component {
                         </View>
                     </View>
                     <View key={"standby-similar"} style={[styles.summaryConsumptionWrp, {width: width * 0.45}]}>
-                        <Text style={styles.consumptionTitle}>{"Consumi in stanby"}</Text>
+                        <Text style={styles.consumptionTitle}>{"Consumi\nin standby"}</Text>
                         <View style={styles.smallConsumptionWrp}>
                             <Text style={styles.smallConsumptionValue}>{18}</Text>
                             <Text style={styles.smallConsumptionMeasure}>{"kWh"}</Text>

@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
         backgroundColor: colors.primaryBlue,
-        marginTop: 6
+        marginBottom: 40
     },
     userPhotoWrp: {
         flexDirection: "row",
@@ -70,17 +70,6 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center"
     },
-    iconEditPhotoWrp: {
-        position: "absolute",
-        bottom: 0,
-        left: 55,
-        borderRadius: 20,
-        width: 22,
-        height: 22,
-        alignItems: "center",
-        justifyContent: "center",
-        backgroundColor: colors.secondaryBlue
-    },
     textPhoto: {
         color: colors.white,
         fontSize: 40,
@@ -91,11 +80,13 @@ const styles = StyleSheet.create({
     },
     textUser: {
         fontSize: 16,
-        padding: 0
+        padding: 0,
+        color: colors.textGrey
     },
     textEmail: {
         fontSize: 12,
-        padding: 0
+        padding: 0,
+        color: colors.textGrey
     },
 
     // STYLE FOR PROFILE PERCENTAGE COMPLETED
@@ -103,7 +94,8 @@ const styles = StyleSheet.create({
         padding: 20
     },
     titleComplete: {
-        marginBottom: 5
+        marginBottom: 5,
+        color: colors.textGrey
     },
     progressBarStyleWrp: {
         marginBottom: 20
@@ -194,20 +186,12 @@ class Profile extends Component {
         const email = getEmail(this.props.userId, this.props.collections);
         return (
             <View style={styles.userPhotoWrp}>
-                <View style={styles.photoWrp}>
-                    <Text style={styles.textPhoto}>{(username[0] || email[0] || "").toUpperCase()}</Text>
-                </View>
                 <TouchableOpacity
                     onPress={() => this.showImagePicker()}
-                    style={styles.iconEditPhotoWrp}
+                    style={styles.photoWrp}
                     transparent={true}
                 >
-                    <Icon
-                        color={colors.iconWhite}
-                        name="iw-edit"
-                        size={16}
-                        style={{backgroundColor: colors.transparent}}
-                    />
+                    <Text style={styles.textPhoto}>{(username[0] || email[0] || "").toUpperCase()}</Text>
                 </TouchableOpacity>
                 <View style={styles.userInfoWrp}>
                     <Text style={styles.textUser}>{username}</Text>

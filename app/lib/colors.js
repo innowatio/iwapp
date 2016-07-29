@@ -4,6 +4,7 @@ export const borderErrorLogin = "#ff0600";
 export const buttonPrimary = "#ff4081";
 export const iconWhite = "#ffffff";
 export const lineForecast = "#a8e1d4";
+export const HomeSwitchActive = "#7FCAC3";
 export const lineReading = "#3E50B4";
 export const loginTextBackground = "rgba(0, 0, 0, 0.2)";
 export const titleLightBackground = "#f5f5f5";
@@ -52,7 +53,7 @@ export const alarmMonthlyEnergy = "#cddc39";
 export const alarmSolvedInstantPower = "#79c447";
 export const alarmInstantPower = "#536dfe";
 // Survey
-export const selectedAnswer = "#EEEEEE";
+export const selectedAnswer = "#f5f6f7";
 export const stepperDot = "#949494";
 export const stepperDotActive = "#303BA6";
 export const stepperLine = "#AFB0AF";

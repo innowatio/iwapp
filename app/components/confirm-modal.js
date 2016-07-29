@@ -8,7 +8,7 @@ import * as colors from "../lib/colors";
 
 const styles = StyleSheet.create({
     modalBackground: {
-        backgroundColor: colors.secondaryBlue,
+        backgroundColor: colors.primaryBlue,
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
         textAlign: "center"
     },
     modalIconWrp: {
-        backgroundColor: colors.primaryBlue,
+        backgroundColor: colors.secondaryBlue,
         borderRadius: 100,
         width: 140,
         height: 140,

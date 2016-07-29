@@ -22,6 +22,9 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
         height: headerHeight
     },
+    headerEmpty: {
+        height: headerHeight
+    },
     leftHeader: {
         justifyContent: "flex-start",
         flexDirection: "row",
@@ -39,21 +42,18 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         borderRadius: 100,
-        width: 35,
-        height: 35,
-        marginRight: 5,
-        borderWidth: .5,
-        borderColor: colors.white
+        width: 34,
+        height: 34,
+        marginRight: 12,
     },
     iconUserButton: {
         justifyContent: "center",
         alignItems: "center",
         backgroundColor: colors.buttonPrimary,
         borderRadius: 100,
-        borderWidth: .5,
-        borderColor: colors.white,
-        width: 35,
-        height: 35
+        width: 34,
+        height: 34,
+        marginRight: 8
     },
     textUser: {
         color: colors.white,
@@ -114,14 +114,14 @@ export default class Header extends Component {
                     style={styles.iconRightButton}
                     transparent={true}
                 >
-                    <Icon color={colors.iconWhite} name={"iw-menu"} size={40} />
+                    <Icon color={colors.iconWhite} name={"iw-menu"} size={42} />
                 </TouchableOpacity>
                 <TouchableOpacity
                     onPress={Actions.home}
                     style={styles.iconRightButton}
                     transparent={true}
                 >
-                    <Icon color={colors.iconWhite} name={"iw-innowatio-logo"} size={35} />
+                    <Icon color={colors.iconWhite} name={"iw-innowatio-logo"} size={32} style={{marginTop: 4}} />
                 </TouchableOpacity>
             </View>
         );
@@ -140,7 +140,7 @@ export default class Header extends Component {
                     style={[styles.iconAlarmButton, {backgroundColor: alarmColor}]}
                     transparent={true}
                 >
-                    <Icon color={colors.iconWhite} name={"iw-alarm"} size={25} />
+                    <Icon color={colors.iconWhite} name={"iw-alarm"} size={20} style={{backgroundColor: colors.transparent}} />
                 </TouchableOpacity>
                 <TouchableOpacity
                     onPress={() => Actions.profile(getNavigationType(this.props.selectedView))}
