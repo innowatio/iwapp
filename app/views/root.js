@@ -96,7 +96,6 @@ class Root extends Component {
     isDrawerDisabled () {
         const views = this.getHeaderViews();
         const selectedView = views.find(({view}) => view === last(this.props.navigationScene));
-        console.log(views);
         return selectedView ? selectedView.disableDrawer : false;
     }
 

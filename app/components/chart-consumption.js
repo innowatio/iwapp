@@ -1,12 +1,13 @@
 import moment from "moment";
-import {last} from "ramda";
 import React, {Component, PropTypes} from "react";
 import IPropTypes from "react-immutable-proptypes";
-import {Dimensions, Image, View, StyleSheet, Switch} from "react-native";
+import {Dimensions, View, StyleSheet, Switch} from "react-native";
 import shallowCompare from "react-addons-shallow-compare";
 
 import getDailySumConsumption from "../lib/get-daily-sum-consumption";
+import getRealTimeValue from "../lib/get-realtime";
 import Highcharts from "./highcharts";
+import RealTimeSpinner from "./realtime";
 import Text from "./text-lato";
 import * as colors from "../lib/colors";
 
@@ -40,27 +41,6 @@ const styles = StyleSheet.create({
     },
     consumptionUnitOfMeasurement: {
         color: colors.primaryBlue
-    },
-    // powerWrp: {
-    //     marginVertical: 4
-    // },
-    backgroundPower: {
-        width: 88,
-        height: 88,
-        flexWrap: "wrap",
-        justifyContent: "center",
-        alignItems: "center"
-    },
-    powerNumber: {
-        fontSize: 20,
-        textAlign: "center",
-        fontWeight: "bold",
-        color: colors.powerNumber
-    },
-    powerUnitOfMeasurement: {
-        color: colors.powerNumber,
-        textAlign: "center",
-        fontSize: 12,
     },
     switch: {
         alignSelf: "flex-start",
@@ -103,6 +83,16 @@ export default class ChartConsumption extends Component {
         onToggleSwitch: PropTypes.func.isRequired
     }
 
+    constructor (props) {
+        super(props);
+        this.state = {
+            activeStep: 0,
+            modalVisible: false,
+            answers: [],
+            questions: []
+        };
+    }
+
     shouldComponentUpdate (nextProps) {
         return shallowCompare(this, nextProps);
     }
@@ -120,19 +110,9 @@ export default class ChartConsumption extends Component {
         );
     }
 
-    getRealTimePower () {
-        const sensorId = this.props.charts[0].sensorId;
-        const day = moment.utc().format("YYYY-MM-DD");
-        const powerValues = this.props.dailyAggregates.getIn(
-            [`${sensorId}-${day}-reading-maxPower`, "measurementValues"]
-        ) || "";
-        const power = last(powerValues.split(","));
-        return parseFloat(power) || 0;
-    }
-
     render () {
         const {height} = Dimensions.get("window");
-        var sum = this.getRealTimePower();
+        const sensorId = this.props.charts[0].sensorId;
         return (
             <View>
                 <View style={[styles.consumptionContainer, {height: height * 0.17}]}>
@@ -145,18 +125,16 @@ export default class ChartConsumption extends Component {
                     </View>
                     <View style={styles.powerContainer}>
                         <Text style={styles.subTitle}>{"Potenza attuale"}</Text>
-                        <Image source={require("../assets/img/spinner.gif")} style={styles.backgroundPower}>
-                            <Text style={styles.powerNumber}>
-                                {sum >= 99 ? sum.toFixed() : sum.toFixed(1)}
-                            </Text>
-                            <Text style={styles.powerUnitOfMeasurement}>{"kW"}</Text>
-                        </Image>
+                        <RealTimeSpinner
+                            charts={this.props.charts}
+                            powerValue={getRealTimeValue(sensorId, this.props.dailyAggregates)}
+                        />
                     </View>
                 </View>
                 <Highcharts
                     aggregates={this.props.dailyAggregates}
                     charts={this.props.charts}
-                    height={this.props.heightSwiper * 0.42}
+                    height={this.props.heightSwiper * 0.45}
                 />
                 <View style={styles.switchContainer}>
                     <Switch

@@ -272,7 +272,7 @@ class Home extends Component {
         return (
             <View style={styles.container}>
                 <Content style={{backgroundColor: colors.background}}>
-                    <View style={{height: height * 0.34}}>
+                    <View style={{height: height * 0.32}}>
                         <Weather
                             {...this.getWeatherData()}
                         />
