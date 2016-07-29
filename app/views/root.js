@@ -51,7 +51,7 @@ class Root extends Component {
     }
 
     componentDidMount () {
-        asteroid.on("loggedIn", ::this.postLogin);
+        asteroid.on("loggedIn", this.props.onLogin);
         asteroid.on("loggedOut", this.props.onLogout);
         asteroid.ddp.on("added", ({collection, fields, id}) => {
             if (collection == "sites" && !this.props.site) {
@@ -65,18 +65,8 @@ class Root extends Component {
     }
 
     componentWillUnmount () {
-        asteroid.off("loggedIn", ::this.postLogin);
+        asteroid.off("loggedIn", this.props.onLogin);
         asteroid.off("loggedOut", this.props.onLogout);
-    }
-
-    postLogin () {
-        asteroid.call("checkToken").then((result) => {
-            if (result.userId) {
-                this.props.onLogin(result.userId);
-            }
-        }).catch(() => {
-            this.props.onLogout();
-        });
     }
 
     getNavigationChildrenIndex () {

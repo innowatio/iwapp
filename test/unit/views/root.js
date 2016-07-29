@@ -171,6 +171,7 @@ describe("`Root` view", () => {
             };
             componentDidMount.call(instance);
             expect(asteroid.on).to.have.callCount(2);
+            expect(asteroid.on.firstCall).to.have.been.calledWith("loggedIn", instance.props.onLogin);
             expect(asteroid.on.secondCall).to.have.been.calledWith("loggedOut", instance.props.onLogout);
         });
 
@@ -201,6 +202,7 @@ describe("`Root` view", () => {
             };
             componentWillUnmount.call(instance);
             expect(asteroid.off).to.have.callCount(2);
+            expect(asteroid.off.firstCall).to.have.been.calledWith("loggedIn", instance.props.onLogin);
             expect(asteroid.off.secondCall).to.have.been.calledWith("loggedOut", instance.props.onLogout);
         });
 

@@ -65,9 +65,9 @@ describe("`login` view", () => {
 
         it("renders the correct `value`", () => {
             const login = shallow(<Login asteroid={asteroid} />);
-            login.setState({email: "myEmail"});
+            login.setState({email: "email"});
             const emailTextInput = login.find(TextInputLato).first();
-            expect(emailTextInput.prop("value")).to.equal("myEmail");
+            expect(emailTextInput.prop("value")).to.equal("email");
         });
 
     });
@@ -103,12 +103,12 @@ describe("`login` view", () => {
 
         const onLogin = Login.prototype.onLogin;
 
-        it("call `asteroid.loginWithPassword` function with correct credentials", () => {
+        it("call `asteroid.login` function with correct credentials", () => {
             const login = sinon.stub().returns(Promise.resolve());
             const setLoginError = sinon.spy();
             const instance = {
                 state: {
-                    email: "myEmail",
+                    email: "email",
                     password: "password"
                 },
                 props: {
@@ -122,7 +122,7 @@ describe("`login` view", () => {
             expect(login).to.have.callCount(1);
             expect(login).to.have.been.calledWithExactly({
                 sso: {
-                    email: "myEmail",
+                    username: "email",
                     password: "password"
                 }
             });
@@ -133,7 +133,7 @@ describe("`login` view", () => {
             const setLoginError = sinon.spy();
             const instance = {
                 state: {
-                    email: "myEmail",
+                    email: "email",
                     password: "password"
                 },
                 props: {
@@ -153,7 +153,7 @@ describe("`login` view", () => {
             const setLoginError = sinon.spy();
             const instance = {
                 state: {
-                    email: "myEmail",
+                    email: "email",
                     password: "password"
                 },
                 props: {
@@ -209,9 +209,9 @@ describe("`login` view", () => {
             const instance = {
                 setState
             };
-            onChangeText.call(instance, "email", "myEmail");
+            onChangeText.call(instance, "email", "email");
             expect(setState).to.have.callCount(1);
-            expect(setState).to.have.calledWithExactly({email: "myEmail"});
+            expect(setState).to.have.calledWithExactly({email: "email"});
         });
 
     });

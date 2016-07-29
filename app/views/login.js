@@ -135,7 +135,7 @@ export default class Login extends Component {
         this.setLoginError(null);
         this.props.asteroid.login({
             sso: {
-                email: this.state.email,
+                username: this.state.email,
                 password: this.state.password
             }
         }).catch(::this.setLoginError);
