@@ -162,12 +162,11 @@ describe("`login` view", () => {
                 setLoginError
             };
             onLogin.call(instance);
-            return loginWithPassword()
-                .catch(() => {
-                    expect(setLoginError).to.have.callCount(2);
-                    expect(setLoginError.secondCall).to.have.calledOn(instance);
-                    expect(setLoginError.secondCall).to.have.been.calledWithExactly(new Error("Login Error"));
-                });
+            return loginWithPassword().catch(() => {
+                expect(setLoginError).to.have.callCount(2);
+                expect(setLoginError.secondCall).to.have.calledOn(instance);
+                expect(setLoginError.secondCall).to.have.been.calledWithExactly(new Error("Login Error"));
+            });
         });
 
     });
