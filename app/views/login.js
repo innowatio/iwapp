@@ -80,11 +80,6 @@ const styles = StyleSheet.create({
         width: 26,
         height: 26
     },
-    linkSignupWrp: {
-        flexDirection: "row",
-        alignItems: "flex-end",
-        marginBottom: 10
-    },
     linkText: {
         color: colors.white,
         marginTop: 8
@@ -226,11 +221,6 @@ export default class Login extends Component {
                     >
                         <Text style={styles.buttonLoginText}>{"ACCEDI"}</Text>
                     </Button>
-                    <View style={styles.linkSignupWrp}>
-                        <Text style={styles.linkText}>
-                            {"Non hai un account? Registrati!"}
-                        </Text>
-                    </View>
                 </View>
             </Image>
         );
