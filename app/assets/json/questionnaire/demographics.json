@@ -1,95 +1,94 @@
 {
-    "type": "questionnaire",
-    "category": "demographics",
-    "questions": [{
-        "id": "61",
-        "text": "Quanti dipendenti ha la tua società?",
-        "type": "singleChoice",
-        "options": ["1-10", "11-49", "50 o più"]
-    }, {
-        "id": "62",
-        "text": "In quale categoria opera la tua società?",
-        "type": "singleChoice",
-        "options": [
-            "Vendita all’ingrosso o al dettaglio (negozi, ecc)",
-            "Settore alimentazione (ristoranti, bar, panetterie, fast food, ecc)",
-            "Industria (costruzioni, manifatturiera, agricoltura)",
-            "Uffici (uffici societari, servizi finanziari, pubblica amministrazione, agenzie immobiliari, ecc)",
-            "Altro"
-        ]
-    }, {
-        "id": "63",
-        "text": "Qual é il mercato di riferimento?",
-        "type": "singleChoice",
-        "options": [
-            "Finanza",
-            "Consulenza",
-            "Commercio al dettaglio",
-            "Tecnologia",
-            "Costruzioni",
-            "Logistica",
-            "Altro"
-        ]
-    }, {
-        "id": "64",
-        "text": "La tua società é operativa durante il fine settimana?",
-        "type": "singleChoice",
-        "options": ["No", "Solo il Sabato", "Sabato e Domenica", "Solo Domenica"]
-    }, {
-        "id": "65",
-        "text": "Qual è l’orario di apertura?",
-        "type": "singleChoice",
-        "options": [
-            "8:30 - 13:30 e 14:30 - 16:00",
-            "10:00 - 20:00",
-            "10:00 - 22:00",
-            "9:00 - 13:00 e 14:00 - 18:00"
-        ]
-    }, {
-        "id": "66",
-        "text": "Qual é solitamente il periodo di chiusura estiva?",
-        "type": "singleChoice",
-        "options": [
-            "Giugno",
-            "Luglio",
-            "Agosto",
-            "Settembre",
-            "Non chiude"
-        ]
-    }, {
-        "id": "67",
-        "text": "Qual é solitamente il periodo di chiusura invernale?",
-        "type": "singleChoice",
-        "options": [
-            "Natale",
-            "Pasqua",
-            "Altro",
-            "Non chiude durante il periodo invernale"
-        ]
-    }, {
-        "id": "68",
-        "text": "Da quanto tempo la tua società é nell’attuale sede?",
-        "type": "singleChoice",
-        "options": [
-            "Meno di 5 anni",
-            "Da 5 a 10 anni",
-            "Più di 10 anni"
-        ]
-    }, {
-        "id": "69",
-        "text": "Se esiste un certificato energetico per la sede della società, seleziona per favore la classe generale",
-        "type": "singleChoice",
-        "options": ["A", "B", "C", "D", "E", "F", "No, non esiste il certificato energetico"]
-    }, {
-        "id": "70",
-        "text": "Se ci sono delle fonti di energia rinnovabile, seleziona il tipo",
-        "type": "singleChoice",
-        "options": [
-            "Parco fotovoltaico",
-            "Turbine a vento",
-            "Entrambe",
-            "Altro",
-            "No, non ci sono"
-        ]
-    }]
+  "type": "questionnaires",
+  "category": "demographics",
+  "categoryNumber": 1,
+  "questions": [
+    {
+      "id": 1,
+      "text": "Quanti dipendenti ha la tua società?",
+      "type": "singleChoice",
+      "options": [
+        "1-10",
+        "11-49",
+        "50 o più"
+      ]
+    },
+    {
+      "id": 2,
+      "text": "In quale categoria opera la tua società?",
+      "type": "singleChoice",
+      "options": [
+        "Vendita all’ingrosso o al dettaglio (negozi, ecc)",
+        "Settore alimentazione (ristoranti, bar, panetterie, fast food, ecc)",
+        "Industria (costruzioni, manifatturiera, agricoltura)",
+        "Uffici (uffici societari, servizi finanziari, pubblica amministrazione, agenzie immobiliari, ecc)",
+        "Altro"
+      ]
+    },
+    {
+      "id": 3,
+      "text": "Qual é il mercato di riferimento?",
+      "type": "singleChoice",
+      "options": [
+        "Finanza", "Consulenza", "Commercio al dettaglio", "Tecnologia", "Costruzioni", "Logistica", "Altro"
+      ]
+    },
+    {
+      "id": 4,
+      "text": "La tua società é operativa durante il fine settimana?",
+      "type": "singleChoice",
+      "options": [
+        "No", "Solo il Sabato", "Sabato e Domenica", "Solo Domenica"
+      ]
+    },
+    {
+      "id": 5,
+      "text": "Qual è l’orario di apertura?",
+      "type": "singleChoice",
+      "options": [
+        "8:30-13:30 e 14:30-16:00", "10:00-20:00", "10:00-22:00", "9:00-13:00 e 14:00-18:00"
+      ]
+    },
+    {
+      "id": 6,
+      "text": "Qual é solitamente il periodo di chiusura estiva?",
+      "type": "singleChoice",
+      "options": [
+        "Giugno", "Luglio", "Agosto", "Settembre", "Non chiude"
+      ]
+    },
+    {
+      "id": 7,
+      "text": "Qual é solitamente il periodo di chiusura invernale?",
+      "type": "multipleChoice",
+      "options": [
+        "Natale", "Pasqua", "Altro", "Non chiude durante il periodo invernale"
+      ]
+    },
+    {
+      "id": 8,
+      "text": "Da quanto tempo la tua società é nell’attuale sede?",
+      "type": "singleChoice",
+      "options": [
+        "Meno di 5 anni", "Da 5 a 10 anni", "Più di 10 anni"
+
+      ]
+    },
+    {
+      "id": 9,
+      "text": "Se esiste un certificato energetico per la sede della società, seleziona per favore la classe generale",
+      "type": "singleChoice",
+      "options": [
+        "A", "B", "C", "D", "E", "F", "G", "No, non esiste il certificato energetico"
+      ]
+    },
+    {
+      "id": 10,
+      "text": "Se ci sono delle fonti di energia rinnovabile, seleziona il tipo",
+      "type": "singleChoice",
+      "options": [
+        "Parco fotovoltaico", "Turbine a vento", "Entrambe", "Altro", "No, non ci sono"
+      ]
+    }
+  ]
 }

@@ -1,3 +1,5 @@
+import get from "lodash.get";
+
 import axios, {AxiosError} from "../lib/axios";
 
 export const SAVE_SURVEY_START = "SAVE_ANSWERS_START";
@@ -15,7 +17,13 @@ export function saveSurveyAnswers (surveyInfo, answers, questions, userId) {
                 answers
             })
             .then(res => {
-                dispatch({type: SAVE_SURVEY_SUCCESS, payload: res.data});
+                dispatch({
+                    type: SAVE_SURVEY_SUCCESS,
+                    payload: {
+                        result: get(res, "data.result"),
+                        surveyId: surveyInfo.id
+                    }
+                });
             })
             .catch(err => {
                 /*

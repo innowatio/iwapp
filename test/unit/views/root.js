@@ -149,6 +149,7 @@ describe("`Root` view", () => {
 
         const asteroid = {
             on: sinon.spy(),
+            subscribe: sinon.spy(),
             ddp: {
                 on: sinon.spy()
             }
@@ -156,6 +157,12 @@ describe("`Root` view", () => {
 
         before(() => {
             Root.__Rewire__("asteroid", asteroid);
+        });
+
+        beforeEach(() => {
+            asteroid.subscribe.reset();
+            asteroid.on.reset();
+            asteroid.ddp.on.reset();
         });
 
         after(() => {
@@ -173,6 +180,18 @@ describe("`Root` view", () => {
             expect(asteroid.on).to.have.callCount(2);
             expect(asteroid.on.firstCall).to.have.been.calledWith("loggedIn", instance.props.onLoginActions);
             expect(asteroid.on.secondCall).to.have.been.calledWith("loggedOut", instance.props.onLogout);
+        });
+
+        it("call `asteroid.subscribe` with correct parameter", () => {
+            const instance = {
+                props: {
+                    onLogout: sinon.spy()
+                },
+                onLoginActions: sinon.spy()
+            };
+            componentDidMount.call(instance);
+            expect(asteroid.subscribe).to.have.callCount(1);
+            expect(asteroid.subscribe).to.have.been.calledWith("questions", {type: "survey"});
         });
 
     });

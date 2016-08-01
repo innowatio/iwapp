@@ -1,11 +1,11 @@
+import {Map, List} from "immutable";
 import Drawer from "react-native-drawer";
 import React, {Component, PropTypes} from "react";
 import {Dimensions, Platform, StatusBar, StyleSheet, ScrollView, View} from "react-native";
 import {DefaultRenderer} from "react-native-router-flux";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
-import {equals, last} from "ramda";
-import {Map} from "immutable";
+import {contains, equals, last} from "ramda";
 
 import asteroid from "../lib/asteroid";
 import Login from "./login";
@@ -15,6 +15,7 @@ import {onLogin, onLogout} from "../actions/user-id";
 import KeyboardSpacer from "../components/keyboard-spacer";
 import Header from "../components/header";
 import SideMenu from "../components/side-menu";
+import SurveyModal from "../components/survey-modal";
 import {primaryBlue, secondaryBlue, background} from "../lib/colors";
 import {statusBarHeight} from "../lib/const";
 
@@ -43,13 +44,15 @@ class Root extends Component {
         onNavigate: PropTypes.func.isRequired,
         selectSite: PropTypes.func.isRequired,
         site: PropTypes.object,
+        survey: PropTypes.arrayOf(PropTypes.string),
         userId: PropTypes.string
     }
 
     constructor () {
         super();
         this.state = {
-            open: false
+            open: false,
+            surveyModalVisible: false
         };
     }
 
@@ -65,6 +68,20 @@ class Root extends Component {
                 });
             }
         });
+        asteroid.subscribe("questions", {type: "survey"});
+    }
+
+    componentWillReceiveProps (nextProps) {
+        if (nextProps. collections) {
+            const survey = this.getSurvey(nextProps.collections);
+            return this.setState({
+                surveyModalVisible: (
+                    !survey.isEmpty() &&
+                    !contains(survey.get("_id"), nextProps.survey) &&
+                    last(nextProps.navigationScene) !== "survey"
+                )
+            });
+        }
     }
 
     componentWillUnmount () {
@@ -90,6 +107,10 @@ class Root extends Component {
         };
     }
 
+    onCloseModal () {
+        this.setState({surveyModalVisible: false});
+    }
+
     toggleHamburger () {
         this.setState({
             open: !this.state.open
@@ -111,6 +132,11 @@ class Root extends Component {
                 ...value.toJS()
             };
         }).toArray();
+    }
+
+    getSurvey (collections) {
+        const questions = collections.get("questions") || Map();
+        return questions.find(question => question.get("type") === "survey") || Map();
     }
 
     renderView () {
@@ -137,6 +163,11 @@ class Root extends Component {
                     <Header
                         onToggleHamburger={::this.toggleHamburger}
                         selectedView={this.props.navigationScene}
+                    />
+                    <SurveyModal
+                        onCloseModal={::this.onCloseModal}
+                        survey={this.getSurvey(this.props.collections)}
+                        visible={this.state.surveyModalVisible}
                     />
                     <DefaultRenderer
                         navigationState={this.getNavigationState()}
@@ -177,6 +208,7 @@ function mapStateToProps (state) {
         collections: state.collections,
         navigationScene: state.navigation,
         site: state.site,
+        survey: state.survey,
         userId: state.userId
     };
 }

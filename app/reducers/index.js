@@ -5,10 +5,11 @@ import collections from "./collections";
 import home from "./home";
 import navigation from "./navigation";
 import questionnaire from "./questionnaire";
-import site from "./site";
-import userId from "./user-id";
-import stats from "./stats";
 import sessionId from "./session-id";
+import site from "./site";
+import stats from "./stats";
+import survey from "./survey";
+import userId from "./user-id";
 
 const rootReducer = combineReducers({
     analytics,
@@ -16,10 +17,11 @@ const rootReducer = combineReducers({
     home,
     navigation,
     questionnaire,
+    sessionId,
     site,
     stats,
-    userId,
-    sessionId
+    survey,
+    userId
 });
 
 export default rootReducer;

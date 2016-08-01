@@ -1,10 +1,10 @@
 import moment from "moment";
 import React, {Component, PropTypes} from "react";
+import IPropTypes from "react-immutable-proptypes";
 import {Dimensions, View, StyleSheet, TouchableOpacity} from "react-native";
 import Button from "react-native-button";
 import {connect} from "react-redux";
 import FaIcons from "react-native-vector-icons/FontAwesome";
-import initialSurvey from "../assets/json/survey/initial";
 import {Actions} from "react-native-router-flux";
 import {bindActionCreators} from "redux";
 
@@ -110,6 +110,7 @@ class Survey extends Component {
 
     static propTypes = {
         saveSurveyAnswers: PropTypes.func.isRequired,
+        survey: IPropTypes.map.isRequired,
         userId: PropTypes.string
     }
 
@@ -123,10 +124,6 @@ class Survey extends Component {
         };
     }
 
-    getSurvey () {
-        return initialSurvey;
-    }
-
     onForwardStep () {
         this.setState({activeStep: this.state.activeStep + 1});
     }
@@ -136,15 +133,16 @@ class Survey extends Component {
     }
 
     onSaveAnswers () {
-        const survey = this.getSurvey();
+        const {survey} = this.props;
         const surveyInfo = {
-            type: survey.type,
-            category: survey.category
+            id: survey.get("_id"),
+            type: survey.get("type"),
+            category: survey.get("category")
         };
-        const questions = this.getSurvey().questions.map(question => ({
-            id: question.id,
-            text: question.text
-        }));
+        const questions = survey.get("questions").map(question => ({
+            id: question.get("id"),
+            text: question.get("text")
+        })).toJS();
         this.props.saveSurveyAnswers(surveyInfo, this.state.answers, questions, this.props.userId);
         // TODO add open modal when post succeeded
         this.toggleConfirmModal();
@@ -173,7 +171,7 @@ class Survey extends Component {
     }
 
     isLastStep () {
-        return this.state.activeStep === this.getSurvey().questions.length - 1;
+        return this.state.activeStep === this.props.survey.get("questions").size - 1;
     }
 
     isSelectedAnswer (option) {
@@ -189,7 +187,7 @@ class Survey extends Component {
         return (
             <View key={index} style={styles.answerSurveyWrp}>
                 <TouchableOpacity
-                    onPress={() => this.setAnswer(option, activeStepQuestion.id)}
+                    onPress={() => this.setAnswer(option, activeStepQuestion.get("id"))}
                     style={[
                         styles.answerSurvey,
                         {width},
@@ -230,20 +228,20 @@ class Survey extends Component {
 
     renderContentSurvey () {
         const {height} = Dimensions.get("window");
-        const activeStepQuestion = this.getSurvey().questions[this.state.activeStep];
+        const activeStepQuestion = this.props.survey.getIn(["questions", this.state.activeStep]);
         return (
             <View style={styles.contentSurveyWrp}>
                 <Stepper
                     activeStep={this.state.activeStep}
                     onPressDot={::this.setActiveStep}
-                    steps={this.getSurvey().questions.length || 0}
+                    steps={this.props.survey.get("questions").size || 0}
                 />
                 <View style={styles.questionSurveyWrp}>
-                    {this.renderQuestion(activeStepQuestion.text)}
+                    {this.renderQuestion(activeStepQuestion.get("text"))}
                 </View>
                 <View style={styles.answerSurveyWrp}>
                     {
-                        activeStepQuestion.options.map((option, index) =>
+                        activeStepQuestion.get("options").map((option, index) =>
                             this.renderAnswer(option, index, activeStepQuestion)
                         )
                     }

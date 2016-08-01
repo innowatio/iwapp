@@ -34,6 +34,7 @@ describe("`survey` actions", () => {
         });
 
         const surveyInfo = {
+            id: "surveyId",
             type: "type",
             argument: "argument"
         };
@@ -91,7 +92,8 @@ describe("`survey` actions", () => {
             expect(dispatch).to.have.been.calledWithExactly({
                 type: SAVE_SURVEY_SUCCESS,
                 payload: {
-                    result: "OK"
+                    result: "OK",
+                    surveyId: "surveyId"
                 }
             });
         });

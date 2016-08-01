@@ -1,4 +1,5 @@
 import {shallow} from "enzyme";
+import {fromJS} from "immutable";
 import {TouchableOpacity} from "react-native";
 import Button from "react-native-button";
 
@@ -14,6 +15,37 @@ describe("`Survey` view", () => {
     const Actions = {
         home: sinon.spy()
     };
+    const questionsSurvey = fromJS({
+        _id: "surveyId",
+        type: "type",
+        category: "category",
+        questions: [{
+            id: 1,
+            text: "Question 1",
+            type: "singleChoice",
+            options: ["answer1", "answer2", "answer3", "answer4"]
+        }, {
+            id: 2,
+            text: "Question 2",
+            type: "singleChoice",
+            options: ["answer1", "answer2", "answer3", "answer4"]
+        }, {
+            id: 3,
+            text: "Question 3",
+            type: "singleChoice",
+            options: ["answer1", "answer2", "answer3", "answer4"]
+        }, {
+            id: 4,
+            text: "Question 4",
+            type: "singleChoice",
+            options: ["answer1", "answer2", "answer3", "answer4"]
+        }, {
+            id: 5,
+            text: "Question 5",
+            type: "singleChoice",
+            options: ["answer1", "answer2", "answer3", "answer4"]
+        }]
+    });
 
     before(() => {
         Survey.__Rewire__("Actions", Actions);
@@ -31,6 +63,7 @@ describe("`Survey` view", () => {
         const survey = shallow(
             <SurveyView
                 saveSurveyAnswers={saveSurveyAnswers}
+                survey={questionsSurvey}
             />
         );
         expect(survey.find(ConfirmModal)).to.have.length(1);
@@ -45,6 +78,7 @@ describe("`Survey` view", () => {
         const survey = shallow(
             <SurveyView
                 saveSurveyAnswers={saveSurveyAnswers}
+                survey={questionsSurvey}
             />
         );
         expect(survey.find(Stepper)).to.have.length(1);
@@ -56,6 +90,7 @@ describe("`Survey` view", () => {
         const survey = shallow(
             <SurveyView
                 saveSurveyAnswers={saveSurveyAnswers}
+                survey={questionsSurvey}
             />
         );
         expect(survey.find(Button)).to.have.length(1);
@@ -69,9 +104,10 @@ describe("`Survey` view", () => {
         const survey = shallow(
             <SurveyView
                 saveSurveyAnswers={saveSurveyAnswers}
+                survey={questionsSurvey}
             />
         );
-        expect(survey.find(TouchableOpacity)).to.have.length(4);
+        expect(survey.find(TouchableOpacity)).to.have.length(5);
     });
 
     describe("`onForwardStep` method", () => {
@@ -128,58 +164,44 @@ describe("`Survey` view", () => {
 
     describe("`onSaveAnswers` method", () => {
 
-        const getSurvey = sinon.stub().returns({
-            type: "type",
-            category: "category",
-            questions: [{
-                id: 1,
-                text: "first question"
-            }, {
-                id: 2,
-                text: "second question"
-            }, {
-                id: 3,
-                text: "third question"
-            }, {
-                id: 4,
-                text: "fourth question"
-            }]
-        });
-
         const onSaveAnswers = SurveyView.prototype.onSaveAnswers;
 
         it("call the action for the post", () => {
             const toggleConfirmModal = sinon.spy();
             const saveSurveyAnswers = sinon.spy();
             const instance = {
-                getSurvey,
                 toggleConfirmModal,
                 props: {
                     saveSurveyAnswers,
+                    survey: questionsSurvey,
                     userId: "userId"
                 },
                 state: {
-                    answers: ["1", "2", "3", "4"]
+                    answers: ["1", "2", "3", "4", "5"]
                 }
             };
             onSaveAnswers.call(instance);
             expect(saveSurveyAnswers).to.have.callCount(1);
             expect(toggleConfirmModal).to.have.callCount(1);
             expect(saveSurveyAnswers).to.have.been.calledWithExactly({
+                id: "surveyId",
                 type: "type",
                 category: "category"
-            }, ["1", "2", "3", "4"], [{
+            }, ["1", "2", "3", "4", "5"], [{
                 id: 1,
-                text: "first question"
+                text: "Question 1"
             }, {
                 id: 2,
-                text: "second question"
+                text: "Question 2"
             }, {
                 id: 3,
-                text: "third question"
+                text: "Question 3"
             }, {
                 id: 4,
-                text: "fourth question"
+                text: "Question 4"
+            }, {
+                id: 5,
+                text: "Question 5"
             }], "userId");
         });
 
@@ -259,15 +281,14 @@ describe("`Survey` view", () => {
     describe("`isLastStep` method", () => {
 
         const isLastStep = SurveyView.prototype.isLastStep;
-        const getSurvey = sinon.stub().returns({
-            questions: [1, 2, 3, 4]
-        });
 
         it("return true if current step is the last", () => {
             const instance = {
-                getSurvey,
+                props: {
+                    survey: questionsSurvey
+                },
                 state: {
-                    activeStep: 3
+                    activeStep: 4
                 }
             };
             const ret = isLastStep.call(instance);
@@ -276,7 +297,9 @@ describe("`Survey` view", () => {
 
         it("return true if current step is the last", () => {
             const instance = {
-                getSurvey,
+                props: {
+                    survey: questionsSurvey
+                },
                 state: {
                     activeStep: 2
                 }
