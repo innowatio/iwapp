@@ -1,4 +1,4 @@
-import {Map, List} from "immutable";
+import {Map} from "immutable";
 import Drawer from "react-native-drawer";
 import React, {Component, PropTypes} from "react";
 import {Dimensions, Platform, StatusBar, StyleSheet, ScrollView, View} from "react-native";
