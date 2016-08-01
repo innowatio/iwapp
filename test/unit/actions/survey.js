@@ -77,16 +77,16 @@ describe("`survey` actions", () => {
 
         it("makes post request to save the answers of the survey", async () => {
             const scope = nock(WRITE_API_ENDPOINT)
-                .post("/answers", expectedBody)
-                .reply(201, {result: "OK"});
+            .post("/answers", expectedBody)
+            .reply(201, {result: "OK"});
             await saveSurveyAnswers(surveyInfo, answers, questions, userId)(dispatch);
             scope.done();
         });
 
         it("dispatches a SHORTEN_URL_SUCCESS action on save request success", async () => {
             const scope = nock(WRITE_API_ENDPOINT)
-                .post("/answers", expectedBody)
-                .reply(201, {result: "OK"});
+            .post("/answers", expectedBody)
+            .reply(201, {result: "OK"});
             await saveSurveyAnswers(surveyInfo, answers, questions, userId)(dispatch);
             scope.done();
             expect(dispatch).to.have.been.calledWithExactly({
@@ -100,8 +100,8 @@ describe("`survey` actions", () => {
 
         it("dispatches a SAVE_SURVEY_ERROR action on save request error [CASE: http request error]", async () => {
             const scope = nock(WRITE_API_ENDPOINT)
-                .post("/answers", expectedBody)
-                .replyWithError("Request error");
+            .post("/answers", expectedBody)
+            .replyWithError("Request error");
             await saveSurveyAnswers(surveyInfo, answers, questions, userId)(dispatch);
             scope.done();
             expect(dispatch).to.have.been.calledWithExactly({
@@ -113,8 +113,8 @@ describe("`survey` actions", () => {
 
         it("dispatches a SAVE_SURVEY_ERROR action on shorten request error [CASE: http response error]", async () => {
             const scope = nock(WRITE_API_ENDPOINT)
-                .post("/answers", expectedBody)
-                .reply(400, "Bad request");
+            .post("/answers", expectedBody)
+            .reply(400, "Bad request");
             await saveSurveyAnswers(surveyInfo, answers, questions, userId)(dispatch);
             scope.done();
             expect(dispatch).to.have.been.calledWithExactly({
