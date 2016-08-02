@@ -1,4 +1,4 @@
-import {addIndex, map, memoize, reduceBy} from "ramda";
+import {addIndex, map, memoize} from "ramda";
 import moment from "moment";
 
 const mapIndexed = addIndex(map);
