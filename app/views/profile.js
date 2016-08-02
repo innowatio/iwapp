@@ -1,6 +1,6 @@
 import {Content} from "native-base";
 import React, {Component, PropTypes} from "react";
-import {Dimensions, StyleSheet, TouchableOpacity, View} from "react-native";
+import {Dimensions, Linking, StyleSheet, TouchableOpacity, View} from "react-native";
 import * as Progress from "react-native-progress";
 import {Actions} from "react-native-router-flux";
 import ImagePicker from "react-native-image-picker";
@@ -8,7 +8,6 @@ import {connect} from "react-redux";
 
 import Icon from "../components/iwapp-icons";
 import * as colors from "../lib/colors";
-import {getEmail, getUsername} from "../lib/get-user-info";
 import QuestionnaireProgress from "../components/questionnaire-progress";
 import Text from "../components/text-lato";
 
@@ -132,8 +131,21 @@ class Profile extends Component {
     constructor (props) {
         super(props);
         this.state = {
-            avatarSource: {}
+            avatarSource: {},
+            username: "",
+            email: "",
+            name: ""
         };
+    }
+
+    componentWillMount () {
+        this.props.asteroid.call("getUserInfo").then(userInfo => {
+            this.setState({
+                username: userInfo.username,
+                email: userInfo.mail[0],
+                name: userInfo.givenName[0]
+            });
+        });
     }
 
     componentDidMount () {
@@ -190,12 +202,11 @@ class Profile extends Component {
     }
 
     renderUserImage () {
-        const username = getUsername(this.props.userId, this.props.collections);
-        const email = getEmail(this.props.userId, this.props.collections);
+        const {username, email, name} = this.state;
         return (
             <View style={styles.userPhotoWrp}>
                 <View style={styles.photoWrp}>
-                    <Text style={styles.textPhoto}>{(username[0] || email[0]).toUpperCase()}</Text>
+                    <Text style={styles.textPhoto}>{name ? name[0].toUpperCase() : ":)"}</Text>
                 </View>
                 <TouchableOpacity
                     onPress={() => this.showImagePicker()}
@@ -220,7 +231,7 @@ class Profile extends Component {
     renderUserOption () {
         return (
             <View style={styles.iconsUserOptionsWrp}>
-                <TouchableOpacity onPress={Actions.modifyProfile} style={styles.iconOptionsWrp} transparent={true}>
+                <TouchableOpacity onPress={() => Linking.openURL("http://sso.innowatio.it")} style={styles.iconOptionsWrp} transparent={true}>
                     <Icon
                         color={colors.iconWhite}
                         name="iw-edit"
