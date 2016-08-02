@@ -2,7 +2,6 @@ import {Content} from "native-base";
 import React, {Component, PropTypes} from "react";
 import {Dimensions, Linking, StyleSheet, TouchableOpacity, View} from "react-native";
 import * as Progress from "react-native-progress";
-import {Actions} from "react-native-router-flux";
 import ImagePicker from "react-native-image-picker";
 import {connect} from "react-redux";
 
