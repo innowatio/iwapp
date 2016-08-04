@@ -97,10 +97,10 @@ export default memoize((aggregates, chartsState) => {
 function getFormat (period, dayTime) {
     switch (period) {
         case "week":
-            return dayTime.format("dddd");
+            return dayTime.format("ddd");
         case "month":
             return dayTime.format("D");
         case "year":
-            return dayTime.format("MMMM");
+            return dayTime.format("M");
     }
 }
