@@ -72,7 +72,7 @@ class Root extends Component {
     }
 
     componentWillReceiveProps (nextProps) {
-        if (nextProps. collections) {
+        if (nextProps.collections) {
             const survey = this.getSurvey(nextProps.collections);
             return this.setState({
                 surveyModalVisible: (
@@ -141,6 +141,7 @@ class Root extends Component {
 
     renderView () {
         const {site, selectSite} = this.props;
+        const {height} = Dimensions.get("window");
         return this.props.userId ? (
             <Drawer
                 captureGestures={true}
@@ -159,7 +160,7 @@ class Root extends Component {
                 tapToClose={true}
                 type="displace"
             >
-                <View>
+                <View style={{height, backgroundColor: background}}>
                     <Header
                         onToggleHamburger={::this.toggleHamburger}
                         selectedView={this.props.navigationScene}
@@ -181,14 +182,12 @@ class Root extends Component {
     }
 
     render () {
-        const {height} = Dimensions.get("window");
         return (
             <ScrollView
                 alwaysBounceVertical={false}
                 automaticallyAdjustContentInsets={true}
                 contentContainerStyle={styles.container}
                 keyboardShouldPersistTaps={true}
-                style={{height, backgroundColor: background}}
             >
                 <View style={Platform.OS === "ios" ? styles.statusBarHeightIOS : null}/>
                 <StatusBar

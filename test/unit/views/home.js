@@ -103,7 +103,7 @@ describe("`Home` view", () => {
             }],
             consumptionAggregates: fromJS({"_id": "sensorId-year-source-measurementType"}),
             dailyAggregates: fromJS({"_id": "sensorId-day-source-measurementType"}),
-            heightSwiper: 54,
+            heightSwiper: 57.99999999999999,
             onToggleSwitch: toggleForecast
         });
     });
@@ -118,7 +118,7 @@ describe("`Home` view", () => {
             }],
             consumptionAggregates: Map(),
             dailyAggregates: Map(),
-            heightSwiper: 54,
+            heightSwiper: 57.99999999999999,
             onToggleSwitch: toggleForecast
         });
     });

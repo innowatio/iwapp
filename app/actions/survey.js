@@ -1,27 +1,52 @@
 import get from "lodash.get";
+import actionTypeValidator from "redux-action-type-validator";
+import {maybe, list, struct, Any, Number, String} from "tcomb";
 
 import axios, {AxiosError} from "../lib/axios";
 
-export const SAVE_SURVEY_START = "SAVE_ANSWERS_START";
-export const SAVE_SURVEY_SUCCESS = "SAVE_ANSWERS_SUCCESS";
-export const SAVE_SURVEY_ERROR = "SAVE_ANSWERS_ERROR";
+export const SAVE_SURVEY_START = "SAVE_SURVEY_START";
+export const SAVE_SURVEY_SUCCESS = "SAVE_SURVEY_SUCCESS";
+export const SAVE_SURVEY_ERROR = "SAVE_SURVEY_ERROR";
 
-export function saveSurveyAnswers (surveyInfo, answers, questions, userId) {
+const typeofSaveSurveyAnswers = actionTypeValidator(
+    struct({
+        questionId: String,
+        type: String,
+        category: String
+    }),
+    list(
+        struct({
+            answer: Any,
+            id: Number,
+            timestamp: String,
+            question: struct({
+                text: String,
+                category: maybe(String)
+            })
+        })
+    ),
+    String,
+    String
+);
+export function saveSurveyAnswers (surveyInfo, answers, userId, sessionId) {
+    typeofSaveSurveyAnswers(...arguments);
     return async dispatch => {
         try {
-            dispatch({type: SAVE_SURVEY_START});
+            dispatch({
+                type: SAVE_SURVEY_START,
+                payload: surveyInfo.questionId
+            });
             return axios.post("/answers", {
                 ...surveyInfo,
                 userId,
-                questions,
-                answers
+                answers,
+                visitId: sessionId
             })
             .then(res => {
                 dispatch({
                     type: SAVE_SURVEY_SUCCESS,
                     payload: {
-                        result: get(res, "data.result"),
-                        surveyId: surveyInfo.id
+                        result: get(res, "data.result")
                     }
                 });
             })

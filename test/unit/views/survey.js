@@ -21,26 +21,31 @@ describe("`Survey` view", () => {
         category: "category",
         questions: [{
             id: 1,
+            category: "category",
             text: "Question 1",
             type: "singleChoice",
             options: ["answer1", "answer2", "answer3", "answer4"]
         }, {
             id: 2,
+            category: "category",
             text: "Question 2",
             type: "singleChoice",
             options: ["answer1", "answer2", "answer3", "answer4"]
         }, {
             id: 3,
+            category: "category",
             text: "Question 3",
             type: "singleChoice",
             options: ["answer1", "answer2", "answer3", "answer4"]
         }, {
             id: 4,
+            category: "category",
             text: "Question 4",
             type: "singleChoice",
             options: ["answer1", "answer2", "answer3", "answer4"]
         }, {
             id: 5,
+            category: "category",
             text: "Question 5",
             type: "singleChoice",
             options: ["answer1", "answer2", "answer3", "answer4"]
@@ -174,7 +179,8 @@ describe("`Survey` view", () => {
                 props: {
                     saveSurveyAnswers,
                     survey: questionsSurvey,
-                    userId: "userId"
+                    userId: "userId",
+                    sessionId: "sessionId"
                 },
                 state: {
                     answers: ["1", "2", "3", "4", "5"]
@@ -184,25 +190,10 @@ describe("`Survey` view", () => {
             expect(saveSurveyAnswers).to.have.callCount(1);
             expect(toggleConfirmModal).to.have.callCount(1);
             expect(saveSurveyAnswers).to.have.been.calledWithExactly({
-                id: "surveyId",
+                questionId: "surveyId",
                 type: "type",
                 category: "category"
-            }, ["1", "2", "3", "4", "5"], [{
-                id: 1,
-                text: "Question 1"
-            }, {
-                id: 2,
-                text: "Question 2"
-            }, {
-                id: 3,
-                text: "Question 3"
-            }, {
-                id: 4,
-                text: "Question 4"
-            }, {
-                id: 5,
-                text: "Question 5"
-            }], "userId");
+            }, ["1", "2", "3", "4", "5"], "userId", "sessionId");
         });
 
     });
@@ -230,7 +221,11 @@ describe("`Survey` view", () => {
         }, {
             answer: "3",
             id: 3,
-            timestamp: "1970-01-01T00:00:00.000Z"
+            timestamp: "1970-01-01T00:00:00.000Z",
+            question: {
+                text: "Question 3",
+                category: "category"
+            }
         }];
 
         it("set the answer correctly in the state [CASE: last step]", () => {
@@ -239,6 +234,9 @@ describe("`Survey` view", () => {
             const instance = {
                 setState,
                 isLastStep,
+                props: {
+                    survey: questionsSurvey
+                },
                 state: {
                     answers: [{
                         answer: "1"
@@ -260,6 +258,9 @@ describe("`Survey` view", () => {
             const instance = {
                 setState,
                 isLastStep,
+                props: {
+                    survey: questionsSurvey
+                },
                 onForwardStep,
                 state: {
                     answers: [{

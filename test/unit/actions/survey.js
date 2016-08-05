@@ -34,44 +34,46 @@ describe("`survey` actions", () => {
         });
 
         const surveyInfo = {
-            id: "surveyId",
+            questionId: "surveyId",
             type: "type",
-            argument: "argument"
+            category: "category"
         };
 
         const answers = [{
             id: 1,
             answer: "first answer",
-            timestamp: "2016-07-15T08:45:34.066Z"
+            timestamp: "2016-07-15T08:45:34.066Z",
+            question: {
+                text: "first question",
+                category: "category 1"
+            }
         }, {
             id: 2,
             answer: "second answer",
-            timestamp: "2016-07-15T08:46:34.066Z"
-        }];
-
-        const questions = [{
-            id: 1,
-            text: "first question"
-        }, {
-            id: 2,
-            text: "second question"
+            timestamp: "2016-07-15T08:46:34.066Z",
+            question: {
+                text: "second question",
+                category: "category 2"
+            }
         }];
 
         const userId = "userId";
+        const visitId = "visitId";
 
         const expectedBody = {
             userId,
             ...surveyInfo,
             answers,
-            questions
+            visitId
         };
 
 
         it("dispatches a SAVE_SURVEY_START action right away", async () => {
-            await saveSurveyAnswers(surveyInfo, answers, questions, userId)(dispatch);
+            await saveSurveyAnswers(surveyInfo, answers, userId, visitId)(dispatch);
             const dispatchFirstCall = dispatch.getCall(0);
             expect(dispatchFirstCall.args[0]).to.deep.equal({
-                type: SAVE_SURVEY_START
+                type: SAVE_SURVEY_START,
+                payload: "surveyId"
             });
         });
 
@@ -79,21 +81,20 @@ describe("`survey` actions", () => {
             const scope = nock(WRITE_API_ENDPOINT)
             .post("/answers", expectedBody)
             .reply(201, {result: "OK"});
-            await saveSurveyAnswers(surveyInfo, answers, questions, userId)(dispatch);
+            await saveSurveyAnswers(surveyInfo, answers, userId, visitId)(dispatch);
             scope.done();
         });
 
-        it("dispatches a SHORTEN_URL_SUCCESS action on save request success", async () => {
+        it("dispatches a SAVE_SURVEY_SUCCESS action on save request success", async () => {
             const scope = nock(WRITE_API_ENDPOINT)
             .post("/answers", expectedBody)
             .reply(201, {result: "OK"});
-            await saveSurveyAnswers(surveyInfo, answers, questions, userId)(dispatch);
+            await saveSurveyAnswers(surveyInfo, answers, userId, visitId)(dispatch);
             scope.done();
             expect(dispatch).to.have.been.calledWithExactly({
                 type: SAVE_SURVEY_SUCCESS,
                 payload: {
-                    result: "OK",
-                    surveyId: "surveyId"
+                    result: "OK"
                 }
             });
         });
@@ -102,7 +103,7 @@ describe("`survey` actions", () => {
             const scope = nock(WRITE_API_ENDPOINT)
             .post("/answers", expectedBody)
             .replyWithError("Request error");
-            await saveSurveyAnswers(surveyInfo, answers, questions, userId)(dispatch);
+            await saveSurveyAnswers(surveyInfo, answers, userId, visitId)(dispatch);
             scope.done();
             expect(dispatch).to.have.been.calledWithExactly({
                 type: SAVE_SURVEY_ERROR,
@@ -115,7 +116,7 @@ describe("`survey` actions", () => {
             const scope = nock(WRITE_API_ENDPOINT)
             .post("/answers", expectedBody)
             .reply(400, "Bad request");
-            await saveSurveyAnswers(surveyInfo, answers, questions, userId)(dispatch);
+            await saveSurveyAnswers(surveyInfo, answers, userId, visitId)(dispatch);
             scope.done();
             expect(dispatch).to.have.been.calledWithExactly({
                 type: SAVE_SURVEY_ERROR,
@@ -128,10 +129,11 @@ describe("`survey` actions", () => {
             const dispatch = sinon.stub().throws(
                 new Error("Error message")
             );
-            await saveSurveyAnswers(surveyInfo, answers, questions, userId)(dispatch);
+            await saveSurveyAnswers(surveyInfo, answers, userId, visitId)(dispatch);
             expect(dispatch).to.have.callCount(1);
             expect(dispatch).to.have.been.calledWith({
-                type: SAVE_SURVEY_START
+                type: SAVE_SURVEY_START,
+                payload: "surveyId"
             });
         });
 
@@ -139,7 +141,7 @@ describe("`survey` actions", () => {
             const dispatch = sinon.stub().throws(
                 new Error("Error message")
             );
-            await saveSurveyAnswers(surveyInfo, answers, questions, userId)(dispatch);
+            await saveSurveyAnswers(surveyInfo, answers, userId, visitId)(dispatch);
             expect(console.error).to.have.callCount(1);
             const error = console.error.getCall(0).args[0];
             expect(error.message).to.equal("Error message");

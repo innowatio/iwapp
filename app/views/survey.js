@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
         borderBottomColor: colors.lightGrey
     },
     answerSurvey: {
-        paddingVertical: 20,
+        height: 20,
         paddingHorizontal: 10,
         alignItems: "center",
         justifyContent: "center"
@@ -110,6 +110,7 @@ class Survey extends Component {
 
     static propTypes = {
         saveSurveyAnswers: PropTypes.func.isRequired,
+        sessionId: PropTypes.string,
         survey: IPropTypes.map.isRequired,
         userId: PropTypes.string
     }
@@ -135,16 +136,16 @@ class Survey extends Component {
     onSaveAnswers () {
         const {survey} = this.props;
         const surveyInfo = {
-            id: survey.get("_id"),
+            questionId: survey.get("_id"),
             type: survey.get("type"),
             category: survey.get("category")
         };
-        const questions = survey.get("questions").map(question => ({
-            id: question.get("id"),
-            text: question.get("text")
-        })).toJS();
-        this.props.saveSurveyAnswers(surveyInfo, this.state.answers, questions, this.props.userId);
-        // TODO add open modal when post succeeded
+        this.props.saveSurveyAnswers(
+            surveyInfo,
+            this.state.answers,
+            this.props.userId,
+            this.props.sessionId
+        );
         this.toggleConfirmModal();
     }
 
@@ -155,10 +156,15 @@ class Survey extends Component {
     setAnswer (answer, id) {
         // Clone the state
         var answers = this.state.answers.slice(0);
+        const question = this.props.survey.get("questions").find(question => question.get("id") === id);
         answers[this.state.activeStep] = {
             answer,
             id,
-            timestamp: moment().toISOString()
+            timestamp: moment().toISOString(),
+            question: {
+                text: question.get("text"),
+                category: question.get("category")
+            }
         };
         if (!this.isLastStep()) {
             this.onForwardStep();
@@ -215,7 +221,7 @@ class Survey extends Component {
     renderConfirmButton () {
         return (
             <Button
-                containerStyle={[styles.buttonSave]}
+                containerStyle={styles.buttonSave}
                 disabled={this.state.answers.length - 1 < this.state.activeStep}
                 onPress={this.isLastStep() ? ::this.onSaveAnswers : ::this.onForwardStep}
                 style={styles.textButtonSave}
@@ -285,7 +291,8 @@ class Survey extends Component {
 
 function mapStateToProps (state) {
     return {
-        userId: state.userId
+        userId: state.userId,
+        sessionId: state.sessionId
     };
 }
 function mapDispatchToProps (dispatch) {
