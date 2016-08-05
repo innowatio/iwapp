@@ -97,6 +97,10 @@ export default class Questionnaire extends Component {
         userId: PropTypes.string.isRequired
     }
 
+    static defaultProps: {
+        site: {}
+    }
+
     componentDidMount () {
         const questionnaire = this.getQuestionnaire();
         this.props.initializeAnswers(questionnaire);

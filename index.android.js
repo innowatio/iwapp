@@ -10,7 +10,7 @@ BackAndroid.addEventListener("hardwareBackPress", () => {
     if (get(store.getState(), "navigation.length") === 1) {
         return;
     }
-    if (!last(store.getState().navigation)) {
+    if (last(store.getState().navigation) !== "survey") {
         Actions.pop();
     }
     return true;

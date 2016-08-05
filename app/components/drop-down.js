@@ -1,4 +1,5 @@
 import {List, ListItem} from "native-base";
+import {isEmpty} from "ramda";
 import React, {Component, PropTypes} from "react";
 import {Animated, Dimensions, StyleSheet, View, TouchableOpacity} from "react-native";
 import FaIcons from "react-native-vector-icons/FontAwesome";
@@ -96,6 +97,15 @@ export default class DropDown extends Component {
         ));
     }
 
+    renderList () {
+        return isEmpty(this.props.optionItems) ?
+            null :(
+            <List>
+                {this.renderOptionItems()}
+            </List>
+        );
+    }
+
     renderDropDown () {
         const {height} = Dimensions.get("window");
         return this.state.showItems ? (
@@ -108,9 +118,7 @@ export default class DropDown extends Component {
                     }]
                 }
             ]}>
-                <List>
-                    {this.renderOptionItems()}
-                </List>
+                {this.renderList()}
             </Animated.View>
         ) : null;
     }

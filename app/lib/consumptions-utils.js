@@ -70,7 +70,10 @@ function getRangeStats (aggregates, period, periodOffset = 0, periodOffsetType =
         endDay: (startTime.dayOfYear() - 1) + delta.asDays()
     };
 
-    const aggregate = aggregates.find(x => x.get("measurementType") === "activeEnergy" && parseInt(x.get("year")) === startTime.year());
+    const aggregate = aggregates.find(x =>
+        x.get("measurementType") === "activeEnergy" &&
+        parseInt(x.get("year")) === startTime.year()
+    );
     const measurements = aggregate ? aggregate.get("measurementValues").split(",") : [];
 
     return sumMeasurements(measurements, range.startDay, range.endDay, period);
@@ -78,7 +81,10 @@ function getRangeStats (aggregates, period, periodOffset = 0, periodOffsetType =
 
 function getPeriodStats (period, aggregates) {
 
-    const aggregate = aggregates.find(x => x.get("measurementType") === "activeEnergy" && x.get("year") === "2016");
+    const aggregate = aggregates.find(x =>
+        x.get("measurementType") === "activeEnergy" &&
+        x.get("year") === moment().format("YYYY")
+    );
     const measurements = aggregate.get("measurementValues").split(",");
 
     const time = moment().startOf("year");
