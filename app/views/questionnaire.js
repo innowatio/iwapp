@@ -30,13 +30,6 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         borderBottomColor: colors.borderAccordion
     },
-    container: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "stretch",
-        backgroundColor: colors.background,
-        flexDirection: "row"
-    },
     header: {
         alignItems: "center",
         borderTopWidth: 1,
@@ -262,7 +255,7 @@ export default class Questionnaire extends Component {
         const {selectedQuestionnaire} = this.props;
         const questionnaire = this.getQuestionnaire();
         return (
-            <View style={[styles.container, {height: heightWithoutHeader(height)}]}>
+            <View style={{height: heightWithoutHeader(height)}}>
                 <Content>
                     <View style={styles.questionnaireProgressContainer}>
                         <QuestionnaireProgress questionnaire={selectedQuestionnaire} />
