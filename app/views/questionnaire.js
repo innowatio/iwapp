@@ -1,25 +1,21 @@
 import {Map} from "immutable";
 import get from "lodash.get";
 import {Content} from "native-base";
-import {isEmpty} from "ramda";
+import {isEmpty, isNil} from "ramda";
 import React, {Component, PropTypes} from "react";
 import IPropTypes from "react-immutable-proptypes";
 import {Dimensions, StyleSheet, TouchableOpacity, View} from "react-native";
 import Accordion from "react-native-collapsible/Accordion";
-import shallowCompare from "react-addons-shallow-compare";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 
-import {initializeAnswers, saveQuestionnaireAnswers, setAnswers} from "../actions/questionnaire";
+import {saveQuestionnaireAnswers} from "../actions/questionnaire";
 import Icon from "../components/iwapp-icons";
 import QuestionnaireProgress from "../components/questionnaire-progress";
 import Text from "../components/text-lato";
 import * as colors from "../lib/colors";
 import FaIcons from "react-native-vector-icons/FontAwesome";
 import {heightWithoutHeader} from "../lib/const";
-
-import demographics from "../assets/json/questionnaire/demographics";
-import building from "../assets/json/questionnaire/building";
 
 const styles = StyleSheet.create({
     answer: {
@@ -74,18 +70,17 @@ const styles = StyleSheet.create({
     }
 });
 
+// TODO: Add tests
 export default class Questionnaire extends Component {
 
     static propTypes = {
         asteroid: PropTypes.object.isRequired,
         collections: IPropTypes.map,
-        initializeAnswers: PropTypes.func.isRequired,
-        questionnaire: PropTypes.object,
         saveQuestionnaireAnswers: PropTypes.func.isRequired,
         selectedQuestionnaire: PropTypes.shape({
             key: PropTypes.string.isRequired
         }).isRequired,
-        setAnswers: PropTypes.func.isRequired,
+        sessionId: PropTypes.string.isRequired,
         site: PropTypes.object.isRequired,
         userId: PropTypes.string.isRequired
     }
@@ -94,93 +89,143 @@ export default class Questionnaire extends Component {
         site: {}
     }
 
+    constructor (props) {
+        super(props);
+        this.state = {
+            answers: []
+        };
+    }
+
+    componentWillMount () {
+        this.setAnswersState(this.props);
+    }
+
     componentDidMount () {
-        const questionnaire = this.getQuestionnaire();
-        this.props.initializeAnswers(questionnaire);
-        this.subscribeToAnswers(this.props);
+        this.subscribeToAnswers();
+        this.subscribeToQuestions();
     }
 
     componentWillReceiveProps (nextProps) {
-        if (!shallowCompare(this.props, nextProps)) {
-            this.props.setAnswers(this.getAnswers(nextProps.collections).toJS(), this.getQuestionnaire());
-        }
+        this.setAnswersState(nextProps);
     }
 
-    shouldComponentUpdate (nextProps) {
-        return shallowCompare(this, nextProps);
+    setAnswersState (props) {
+        const questionnaire = this.getQuestionnaire(props.collections);
+        const answersCollection = this.getAnswersFromCollection(props.collections).toJS();
+        const answers = this.setAnswers(answersCollection.answers, questionnaire);
+        this.setState({answers});
+    }
+
+    subscribeToQuestions () {
+        const category = this.getQuestionnaireCategory();
+        this.props.asteroid.subscribe("questions", {type: "questionnaire", category});
     }
 
     subscribeToAnswers () {
-        const questionnaire = this.getQuestionnaire();
+        const category = this.getQuestionnaireCategory();
         this.props.asteroid.subscribe("answers", {
             siteId: this.props.site._id,
-            category: questionnaire.category,
-            type: questionnaire.type
+            category,
+            type: "questionnaire"
         });
     }
 
-    getQuestionnaire () {
-        const questionnaires = [
-            demographics,
-            building
-        ];
-        return questionnaires.find(questionnaire =>
-            questionnaire.category === this.props.selectedQuestionnaire.key
-        );
+    getQuestionnaire (collections) {
+        if (collections.get("questions")) {
+            const questionnaire = collections.get("questions").find(questions =>
+                questions.get("type") === "questionnaire" &&
+                questions.get("category") === this.getQuestionnaireCategory()
+            ) || Map();
+            return questionnaire.toJS();
+        }
+        return {};
     }
 
-    getQuestionnaireId () {
-        const {type, category} = this.getQuestionnaire();
+    getQuestionnaireCategory () {
+        return get(this.props, "selectedQuestionnaire.key");
+    }
+
+    getAnswersId (collections) {
+        const {type, category} = this.getQuestionnaire(collections);
         return `${type}-${category}-${this.props.site._id}`;
     }
 
-    getAnswers (collections) {
-        return collections.getIn(["answers", this.getQuestionnaireId()]) || Map();
+    getAnswersFromCollection (collections) {
+        return collections.getIn(["answers", this.getAnswersId(collections)]) || Map();
     }
 
-    getAnswer (questionNumber) {
-        return  get(this.props.questionnaire, `answers[${questionNumber}]`) || {};
+    getAnswerFromState (questionId) {
+        return this.state.answers.find(answer => questionId === answer.id);
+    }
+
+    setAnswers (answers = [], questionnaire, selectedAnswer, questionIndex) {
+        if (!questionnaire.questions) {
+            return [];
+        }
+        return questionnaire.questions.map((question, index) => {
+            const selectedAnswerInCollection = answers.find(answer => question.id === answer.id) || {};
+            if (isEmpty(selectedAnswerInCollection) && isNil(selectedAnswer)) {
+                return {};
+            }
+            if (index !== questionIndex) {
+                return (
+                    this.getAnswerFromState(question.id) ||
+                    selectedAnswerInCollection
+                );
+            }
+            return {
+                id: question.id,
+                timestamp: new Date().toISOString(),
+                answer: selectedAnswer,
+                question: {
+                    text: question.text
+                }
+            };
+        });
     }
 
     isLastSection (questionIndex) {
-        return questionIndex === this.getQuestionnaire().questions.length - 1;
+        return questionIndex === get(this.getQuestionnaire(this.props.collections), "questions.length") - 1;
     }
 
-    isAlreadyAnswered (questionId, questionIndex) {
-        const answer = this.getAnswer(questionIndex);
-        return !isEmpty(answer) && answer.id === questionId;
+    isAlreadyAnswered (questionId) {
+        const answer = this.getAnswerFromState(questionId);
+        return answer && answer.id === questionId;
     }
 
-    isActiveAnswer (option, optionIndex, questionId, questionIndex) {
-        const answer = this.getAnswer(questionIndex);
+    isActiveAnswer (option, optionIndex, questionId) {
+        const answer = this.getAnswerFromState(questionId);
         return (
-            !isEmpty(answer) &&
+            answer &&
             answer.id === questionId &&
             answer.answer === option
         );
     }
 
     onSaveQuestionnaireAnswers ({option, questionIndex}) {
-        console.log(...arguments);
-        this.props.setAnswers(
-            this.getAnswers(this.props.collections).toJS(),
-            this.getQuestionnaire(),
+        const questionnaire = this.getQuestionnaire(this.props.collections);
+        const answers = this.setAnswers(
+            this.getAnswersFromCollection(this.props.collections).get("answers").toJS(),
+            questionnaire,
             option,
             questionIndex
         );
-        // this.props.saveQuestionnaireAnswers(
-        //     this.getAnswersBodyPost(option, sectionIndex),
-        //     this.props.userId,
-        //     this.props.site._id
-        // );
+        this.setState({answers});
+        this.props.saveQuestionnaireAnswers(
+            [answers[questionIndex]],
+            this.props.userId,
+            this.props.site._id,
+            questionnaire,
+            this.props.sessionId
+        );
     }
 
-    renderQuestionStatus (question, questionIndex) {
+    renderQuestionStatus (question) {
         return (
             <View
                 style={[styles.questionStatus, {
                     backgroundColor: (
-                        this.isAlreadyAnswered(question.id, questionIndex) ?
+                        this.isAlreadyAnswered(question.id) ?
                         colors.greenStatus :
                         colors.redStatus
                     )
@@ -210,8 +255,8 @@ export default class Questionnaire extends Component {
         );
     }
 
-    renderAnswerStatus (option, optionIndex, questionId, questionIndex) {
-        return this.isActiveAnswer(option, optionIndex, questionId, questionIndex) ? (
+    renderAnswerStatus (option, optionIndex, questionId) {
+        return this.isActiveAnswer(option, optionIndex, questionId) ? (
             <View style={[styles.answerStatus, {borderColor: colors.greenStatus}]}>
                 <Icon
                     color={colors.greenStatus}
@@ -236,7 +281,7 @@ export default class Questionnaire extends Component {
             ]}>
                 <TouchableOpacity onPress={() => this.onSaveQuestionnaireAnswers(...arguments)}>
                     <View style={styles.answer}>
-                        {this.renderAnswerStatus(option, optionIndex, question.id, questionIndex)}
+                        {this.renderAnswerStatus(option, optionIndex, question.id)}
                         <Text style={[styles.textAnswer, {width: width * 0.85}]}>{option}</Text>
                     </View>
                 </TouchableOpacity>
@@ -246,14 +291,25 @@ export default class Questionnaire extends Component {
 
     renderContent (question, questionIndex) {
         return question.options.map((option, optionIndex) =>
-            ::this.renderAnswer({option, optionIndex, questionIndex, question})
+            ::this.renderAnswer({option, optionIndex, question, questionIndex})
         );
+    }
+
+    renderAccordion (questionnaire) {
+        return !isEmpty(questionnaire) ? (
+            <Accordion
+                renderContent={::this.renderContent}
+                renderHeader={::this.renderHeader}
+                sections={questionnaire.questions}
+                underlayColor={colors.transparent}
+            />
+        ) : null;
     }
 
     render () {
         const {height} = Dimensions.get("window");
         const {selectedQuestionnaire} = this.props;
-        const questionnaire = this.getQuestionnaire();
+        const questionnaire = this.getQuestionnaire(this.props.collections);
         return (
             <View style={{height: heightWithoutHeader(height)}}>
                 <Content>
@@ -261,12 +317,7 @@ export default class Questionnaire extends Component {
                         <QuestionnaireProgress questionnaire={selectedQuestionnaire} />
                     </View>
                     <View>
-                        <Accordion
-                            renderContent={::this.renderContent}
-                            renderHeader={::this.renderHeader}
-                            sections={questionnaire ? questionnaire.questions : []}
-                            underlayColor={colors.transparent}
-                        />
+                        {this.renderAccordion(questionnaire)}
                     </View>
                 </Content>
             </View>
@@ -278,16 +329,14 @@ export default class Questionnaire extends Component {
 function mapStateToProps (state) {
     return {
         collections: state.collections,
-        questionnaire: state.questionnaire,
+        sessionId: state.sessionId,
         site: state.site,
         userId: state.userId
     };
 }
 function mapDispatchToProps (dispatch) {
     return {
-        initializeAnswers: bindActionCreators(initializeAnswers, dispatch),
-        saveQuestionnaireAnswers: bindActionCreators(saveQuestionnaireAnswers, dispatch),
-        setAnswers: bindActionCreators(setAnswers, dispatch)
+        saveQuestionnaireAnswers: bindActionCreators(saveQuestionnaireAnswers, dispatch)
     };
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Questionnaire);
