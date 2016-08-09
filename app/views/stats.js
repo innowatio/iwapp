@@ -1,5 +1,4 @@
 import {Map} from "immutable";
-import get from "lodash.get";
 import moment from "moment";
 import {Content} from "native-base";
 import React, {Component, PropTypes} from "react";
@@ -231,16 +230,6 @@ class Stats extends Component {
         }
     }
 
-    getTabAggregate () {
-        const aggregates = this.getConsumptionAggregate().filter(x =>
-            x.get("sensorId") == get(this.props, "site._id")
-        );
-        return !aggregates.isEmpty() ? getTitleAndSubtitle(
-            this.props.stats.chart.period,
-            aggregates
-        ) : null;
-    }
-
     subscribeToMeasurements (props) {
         if (props.site) {
             props.asteroid.subscribe(
@@ -344,7 +333,7 @@ class Stats extends Component {
                     <Text style={styles.titleSwiper}>{this.mapPeriodLabel()}</Text>
                     <Highcharts
                         aggregates={this.getStatsAggregate()}
-                        charts={[this.props.stats]}
+                        charts={[this.props.stats.chart]}
                         height={height * .3}
                     />
                 </View>
@@ -370,7 +359,7 @@ class Stats extends Component {
 
     renderSwiper1 () {
         const {width} = Dimensions.get("window");
-        const tabAggregate = this.getTabAggregate();
+        const tabAggregate = getTitleAndSubtitle(this.props.stats.chart.period, this.getConsumptionAggregate().filter(x => x.get("sensorId") == this.props.site._id));
         var fontSize = this.mapNumberFontSize(tabAggregate.sum);
         return (
             <View style={styles.contentStatsWrp}>
@@ -438,7 +427,7 @@ class Stats extends Component {
                             </Button>
                         </View>
                     </View>
-                    {this.getTabAggregate() ? this.renderContentTab() : null}
+                    {this.renderContentTab()}
                 </Content>
             </View>
         );
