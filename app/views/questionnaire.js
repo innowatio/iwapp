@@ -211,8 +211,9 @@ export default class Questionnaire extends Component {
 
     onSaveQuestionnaireAnswers ({option, questionIndex}) {
         const questionnaire = this.getQuestionnaire(this.props.collections);
+        const collectionsAnswer = this.getAnswersFromCollection(this.props.collections).get("answers");
         const answers = this.setAnswers(
-            this.getAnswersFromCollection(this.props.collections).get("answers").toJS(),
+            collectionsAnswer ? collectionsAnswer.toJS() : [],
             questionnaire,
             option,
             questionIndex

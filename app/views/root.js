@@ -75,10 +75,6 @@ class Root extends Component {
     componentWillReceiveProps (nextProps) {
         if (nextProps.collections) {
             const survey = this.getSurvey(nextProps.collections);
-            console.log("surveysurveysurveysurveysurveysurveysurvey");
-            console.log(!survey.isEmpty());
-            console.log(!contains(survey.get("_id"), nextProps.survey));
-            console.log(last(nextProps.navigationScene) !== "survey");
             return this.setState({
                 surveyModalVisible: (
                     !survey.isEmpty() &&
