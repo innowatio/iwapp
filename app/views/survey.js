@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
         borderBottomColor: colors.lightGrey
     },
     answerSurvey: {
-        height: 20,
+        paddingVertical: 20,
         paddingHorizontal: 10,
         alignItems: "center",
         justifyContent: "center"

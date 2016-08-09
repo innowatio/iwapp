@@ -1,7 +1,7 @@
 import {Map} from "immutable";
 import Drawer from "react-native-drawer";
 import React, {Component, PropTypes} from "react";
-import {Dimensions, Platform, StatusBar, StyleSheet, ScrollView, View} from "react-native";
+import {Platform, StatusBar, StyleSheet, ScrollView, View} from "react-native";
 import {DefaultRenderer} from "react-native-router-flux";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
@@ -13,6 +13,7 @@ import {onLogin, onLogout} from "../actions/user-id";
 import Header from "../components/header";
 import KeyboardSpacer from "../components/keyboard-spacer";
 import SideMenu from "../components/side-menu";
+import SurveyModal from "../components/survey-modal";
 import asteroid from "../lib/asteroid";
 import {statusBarHeight} from "../lib/const";
 import {primaryBlue, secondaryBlue} from "../lib/colors";
@@ -74,6 +75,10 @@ class Root extends Component {
     componentWillReceiveProps (nextProps) {
         if (nextProps.collections) {
             const survey = this.getSurvey(nextProps.collections);
+            console.log("surveysurveysurveysurveysurveysurveysurvey");
+            console.log(!survey.isEmpty());
+            console.log(!contains(survey.get("_id"), nextProps.survey));
+            console.log(last(nextProps.navigationScene) !== "survey");
             return this.setState({
                 surveyModalVisible: (
                     !survey.isEmpty() &&
@@ -169,7 +174,6 @@ class Root extends Component {
 
     renderView () {
         const {site, selectSite} = this.props;
-        const {height} = Dimensions.get("window");
         return this.props.userId ? (
             <Drawer
                 captureGestures={true}
@@ -191,6 +195,11 @@ class Root extends Component {
             >
                 <View>
                     {this.renderHeader()}
+                    <SurveyModal
+                        onCloseModal={::this.onCloseModal}
+                        survey={this.getSurvey(this.props.collections)}
+                        visible={this.state.surveyModalVisible}
+                    />
                     <DefaultRenderer
                         navigationState={this.getNavigationState()}
                         onNavigate={this.props.onNavigate}
