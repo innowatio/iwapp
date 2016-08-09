@@ -24,7 +24,9 @@ export default class Main extends Component {
     handleAppStateChange (currentState) {
         if (currentState === "background") {
             const {userId, sessionId} = store.getState();
-            store.dispatch(postAnalytics(userId, sessionId));
+            if (userId && sessionId) {
+                store.dispatch(postAnalytics(userId, sessionId));
+            }
         }
     }
 

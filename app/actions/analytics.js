@@ -5,24 +5,6 @@ import DeviceInfo from "react-native-device-info";
 
 import axios, {AxiosError} from "../lib/axios";
 
-export const NAVIGATE_BACK = "NAVIGATE_BACK";
-export const NAVIGATE_VIEW = "NAVIGATE_VIEW";
-
-export function navigateView (view) {
-    return {
-        type: NAVIGATE_VIEW,
-        payload: {
-            view
-        }
-    };
-}
-
-export function navigateBack () {
-    return {
-        type: NAVIGATE_BACK
-    };
-}
-
 export const ANALYTICS_POST_START = "ANALYTICS_POST_START";
 export const ANALYTICS_POST_SUCCESS = "ANALYTICS_POST_SUCCESS";
 export const ANALYTICS_POST_ERROR = "ANALYTICS_POST_ERROR";
@@ -37,7 +19,9 @@ export function postAnalytics (userId, visitId) {
             model: DeviceInfo.getModel(),
             platform: DeviceInfo.getSystemName(),
             version: DeviceInfo.getSystemVersion(),
-            appVersion: DeviceInfo.getVersion()
+            appVersion: DeviceInfo.getVersion(),
+            bundle: DeviceInfo.getBundleId(),
+            userAgent: DeviceInfo.getUserAgent()
         };
         try {
             dispatch({type: ANALYTICS_POST_START});
@@ -52,11 +36,9 @@ export function postAnalytics (userId, visitId) {
                         body: viewed
                     };
                 })
-            })
-            .then(res => {
+            }).then(res => {
                 dispatch({type: ANALYTICS_POST_SUCCESS, payload: res.data});
-            })
-            .catch(err => {
+            }).catch(err => {
                 /*
                 *   We want to dispatch a POST_SURVEY_ERROR action only when
                 *   `axios.post` fails (the error is an AxiosError). In all
