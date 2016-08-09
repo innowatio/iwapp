@@ -1,5 +1,5 @@
 import React, {Component, PropTypes} from "react";
-import {Dimensions, Image, StyleSheet, View} from "react-native";
+import {Dimensions, Image, StyleSheet, View, TouchableOpacity} from "react-native";
 import Button from "react-native-button";
 import {partial} from "ramda";
 
@@ -26,8 +26,7 @@ const styles = StyleSheet.create({
         alignItems: "center"
     },
     logoIcon: {
-        height: 130,
-        marginTop: 50,
+        height: 110,
         marginLeft: 20
     },
     logoTitle: {
@@ -37,7 +36,7 @@ const styles = StyleSheet.create({
     },
     logoDescription: {
         color: colors.white,
-        marginBottom: 20,
+        marginBottom: 40,
         fontSize: 14
     },
     errorLoginContainer: {
@@ -50,12 +49,13 @@ const styles = StyleSheet.create({
         borderBottomRightRadius: 10,
         alignSelf: "stretch",
         marginBottom: 20,
-        padding: 0,
+        padding: -5,
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center"
     },
     errorLogin: {
+        fontSize: 13,
         fontWeight: "bold",
         alignSelf: "center",
         margin: 20,
@@ -89,6 +89,10 @@ const styles = StyleSheet.create({
         color: colors.white,
         marginTop: 8
     },
+    linkSignup: {
+        fontWeight: "bold",
+        color: colors.white
+    },
     textInputWrp: {
         top: 15
     },
@@ -100,9 +104,9 @@ const styles = StyleSheet.create({
         top: -28
     },
     buttonLogin: {
-        padding: 10,
+        padding: 8,
         width: 200,
-        height: 40,
+        height: 34,
         overflow: "hidden",
         borderRadius: 15,
         backgroundColor: colors.buttonPrimary,
@@ -168,7 +172,7 @@ export default class Login extends Component {
                     <Icon
                         color={colors.iconWhite}
                         name="iw-innowatio-logo"
-                        size={150}
+                        size={130}
                         style={styles.logoIcon}
                     />
                     <Text style={styles.logoTitle}>{"Lucy"}</Text>
@@ -227,8 +231,11 @@ export default class Login extends Component {
                     </Button>
                     <View style={styles.linkSignupWrp}>
                         <Text style={styles.linkText}>
-                            {"Non hai un account? Registrati!"}
+                            {"Non hai un account? "}
                         </Text>
+                        <TouchableOpacity>
+                            <Text style={styles.linkSignup}>{"Registrati!"}</Text>
+                        </TouchableOpacity>
                     </View>
                 </View>
             </Image>

@@ -7,17 +7,17 @@ import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {contains, equals, last} from "ramda";
 
-import asteroid from "../lib/asteroid";
-import Login from "./login";
 import {selectSite} from "../actions/site";
 import {generateSessionId} from "../actions/session-id";
 import {onLogin, onLogout} from "../actions/user-id";
-import KeyboardSpacer from "../components/keyboard-spacer";
 import Header from "../components/header";
+import KeyboardSpacer from "../components/keyboard-spacer";
 import SideMenu from "../components/side-menu";
-import SurveyModal from "../components/survey-modal";
-import {primaryBlue, secondaryBlue, background} from "../lib/colors";
+import asteroid from "../lib/asteroid";
 import {statusBarHeight} from "../lib/const";
+import {primaryBlue, secondaryBlue} from "../lib/colors";
+import {getEmail, getUsername} from "../lib/get-user-info";
+import Login from "./login";
 
 const styles = StyleSheet.create({
     container: {
@@ -100,6 +100,21 @@ class Root extends Component {
         return this.props.navigationState.children[sceneIndex];
     }
 
+    getHeaderViews () {
+        return [
+            {view: "survey", header: "empty", disableDrawer: true},
+            {view: "questionnaire", header: "back-arrow"},
+            {view: "alarmsSettings", header: "back-arrow"},
+            {view: "modifyProfile", header: "back-arrow"}
+        ];
+    }
+
+    isDrawerDisabled () {
+        const views = this.getHeaderViews();
+        const selectedView = views.find(({view}) => view === last(this.props.navigationScene));
+        return selectedView ? selectedView.disableDrawer : false;
+    }
+
     onLoginActions () {
         return async (userId) => {
             this.props.onLogin(userId);
@@ -139,6 +154,19 @@ class Root extends Component {
         return questions.find(question => question.get("type") === "survey") || Map();
     }
 
+    renderHeader () {
+        const username = getUsername(this.props.userId, this.props.collections);
+        const email = getEmail(this.props.userId, this.props.collections);
+        return (
+            <Header
+                headerViews={this.getHeaderViews()}
+                onToggleHamburger={::this.toggleHamburger}
+                selectedView={this.props.navigationScene}
+                userName={(username[0] || email[0] || "").toUpperCase()}
+            />
+        );
+    }
+
     renderView () {
         const {site, selectSite} = this.props;
         const {height} = Dimensions.get("window");
@@ -153,6 +181,7 @@ class Root extends Component {
                         optionItems={this.getSites()}
                         site={site}
                     />}
+                disabled={this.isDrawerDisabled()}
                 onClose={::this.closeHamburger}
                 open={this.state.open}
                 openDrawerOffset={0.35}
@@ -160,16 +189,8 @@ class Root extends Component {
                 tapToClose={true}
                 type="displace"
             >
-                <View style={{height, backgroundColor: background}}>
-                    <Header
-                        onToggleHamburger={::this.toggleHamburger}
-                        selectedView={this.props.navigationScene}
-                    />
-                    <SurveyModal
-                        onCloseModal={::this.onCloseModal}
-                        survey={this.getSurvey(this.props.collections)}
-                        visible={this.state.surveyModalVisible}
-                    />
+                <View>
+                    {this.renderHeader()}
                     <DefaultRenderer
                         navigationState={this.getNavigationState()}
                         onNavigate={this.props.onNavigate}

@@ -1,7 +1,6 @@
 import React from "react";
 import {Actions, ActionConst, Router, Scene, Reducer} from "react-native-router-flux";
 
-import {navigateBack, navigateView} from "../actions/analytics";
 import {
     pushNavigator,
     popNavigator,
@@ -36,12 +35,10 @@ function dispatchAction (action) {
     switch (action.type) {
         case ActionConst.PUSH: {
             store.dispatch(pushNavigator(action.key));
-            store.dispatch(navigateView(action.key));
             break;
         }
         case ActionConst.BACK_ACTION: {
             store.dispatch(popNavigator());
-            store.dispatch(navigateBack());
             break;
         }
         case ActionConst.RESET: {

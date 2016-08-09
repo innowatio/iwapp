@@ -1,6 +1,8 @@
 import {shallow} from "enzyme";
 import {ScrollView, StatusBar} from "react-native";
+import Drawer from "react-native-drawer";
 import {DefaultRenderer} from "react-native-router-flux";
+import {Map} from "immutable";
 
 import Login from "views/login";
 import Root from "views/root";
@@ -37,7 +39,7 @@ describe("`Root` view", () => {
     it("renders a `ScrollView` with correct props", () => {
         const rootView = shallow(
             <RootView
-                collections={{get: () => {}}}
+                collections={Map()}
                 navigationScene={["home"]}
                 navigationState={navigationState}
                 onLogin={sinon.spy()}
@@ -55,7 +57,7 @@ describe("`Root` view", () => {
     it("renders a `StatusBar` with correct props", () => {
         const rootView = shallow(
             <RootView
-                collections={{get: () => {}}}
+                collections={Map()}
                 navigationScene={["home"]}
                 navigationState={navigationState}
                 onLogin={sinon.spy()}
@@ -74,7 +76,7 @@ describe("`Root` view", () => {
     it("renders `Login` view if `userId` is not specified with the correct props", () => {
         const rootView = shallow(
             <RootView
-                collections={{get: () => {}}}
+                collections={Map()}
                 navigationScene={["home"]}
                 navigationState={navigationState}
                 onLogin={sinon.spy()}
@@ -92,7 +94,7 @@ describe("`Root` view", () => {
         RootView.prototype.getNavigationState = sinon.stub().returns(scene);
         const rootView = shallow(
             <RootView
-                collections={{get: () => {}}}
+                collections={Map()}
                 navigationScene={["home"]}
                 navigationState={navigationState}
                 onLogin={sinon.spy()}
@@ -105,6 +107,54 @@ describe("`Root` view", () => {
         expect(rootView.find(Header)).to.have.length(1);
         expect(rootView.find(DefaultRenderer).prop("navigationState")).to.equal(scene);
         expect(rootView.find(DefaultRenderer).prop("onNavigate")).to.equal(onNavigate);
+    });
+
+    it("renders `Drawer` disabled [CASE: `isDrawerDisabled` returns true]", () => {
+        RootView.prototype.isDrawerDisabled = sinon.stub().returns(true);
+        const rootView = shallow(
+            <RootView
+                collections={Map()}
+                navigationScene={["home"]}
+                navigationState={navigationState}
+                onLogin={sinon.spy()}
+                onLogout={sinon.spy()}
+                onNavigate={onNavigate}
+                userId={"userId"}
+            />
+        );
+        expect(rootView.find(Drawer).prop("disabled")).to.equal(true);
+    });
+
+    it("renders `Drawer` not disabled [CASE: `isDrawerDisabled` returns undefined]", () => {
+        RootView.prototype.isDrawerDisabled = sinon.stub().returns();
+        const rootView = shallow(
+            <RootView
+                collections={Map()}
+                navigationScene={["home"]}
+                navigationState={navigationState}
+                onLogin={sinon.spy()}
+                onLogout={sinon.spy()}
+                onNavigate={onNavigate}
+                userId={"userId"}
+            />
+        );
+        expect(rootView.find(Drawer).prop("disabled")).to.equal(false);
+    });
+
+    it("renders `Drawer` not disabled [CASE: `isDrawerDisabled` returns false]", () => {
+        RootView.prototype.isDrawerDisabled = sinon.stub().returns(false);
+        const rootView = shallow(
+            <RootView
+                collections={Map()}
+                navigationScene={["home"]}
+                navigationState={navigationState}
+                onLogin={sinon.spy()}
+                onLogout={sinon.spy()}
+                onNavigate={onNavigate}
+                userId={"userId"}
+            />
+        );
+        expect(rootView.find(Drawer).prop("disabled")).to.equal(false);
     });
 
     describe("`getNavigationState` function", () => {
@@ -238,11 +288,11 @@ describe("`Root` view", () => {
         const onLoginActions = RootView.prototype.onLoginActions.call(instance);
 
         it("call `onLogin` with correct parameter", () => {
-
             onLoginActions("userId");
             expect(instance.props.onLogin).to.have.been.calledWith("userId");
             expect(instance.props.generateSessionId).to.have.been.calledWith("userId");
         });
 
     });
+
 });

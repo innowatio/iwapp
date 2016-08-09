@@ -159,12 +159,12 @@ class Home extends Component {
         return (
             <View style={styles.container}>
                 <Content style={{backgroundColor: colors.background}}>
-                    <View style={{height: height * 0.34}}>
+                    <View style={{height: height * 0.32}}>
                         <Weather
                             {...this.getWeatherData()}
                         />
                     </View>
-                    <Swiper height={heightSwiper} index={1} loop={false} showButtons={true}>
+                    <Swiper height={heightSwiper} index={0} loop={false} showButtons={true}>
                         <View>
                             <InfoConsumption
                                 heightSwiper={heightSwiper}
@@ -181,7 +181,7 @@ class Home extends Component {
                             />
                         </View>
                         <View>
-                            <Text>{"Grafico a torta"}</Text>
+                            <Text style={{color: colors.textGrey}}>{"Grafico a torta"}</Text>
                         </View>
                     </Swiper>
                 </Content>

@@ -23,20 +23,21 @@ const styles = StyleSheet.create({
         flexDirection: "row"
     },
     lastAnswer: {
-        borderBottomWidth: 1,
-        borderBottomColor: colors.borderAccordion
+        borderBottomWidth: .5,
+        borderBottomColor: colors.borderAccordion,
+        paddingBottom: 20
     },
     header: {
-        alignItems: "center",
-        borderTopWidth: 1,
+        borderTopWidth: .5,
         borderTopColor: colors.borderAccordion,
         flexDirection: "row",
         height: 60,
+        alignItems: "center",
         justifyContent: "space-between",
         paddingHorizontal: 15
     },
     lastHeader: {
-        borderBottomWidth: 1,
+        borderBottomWidth: .5,
         borderBottomColor: colors.borderAccordion
     },
     questionnaireProgressContainer: {
@@ -50,14 +51,16 @@ const styles = StyleSheet.create({
         marginRight: 10,
         alignSelf: "center"
     },
+    questionText: {
+        color: colors.textGrey
+    },
     answerStatus: {
         borderRadius: 100,
         height: 22,
         width: 22,
-        borderWidth: 1,
+        borderWidth: .5,
         borderColor: colors.borderAccordion,
-        marginRight: 5,
-        marginLeft: 5,
+        marginHorizontal: 5,
         alignItems: "center"
     },
     answerStatusText: {
@@ -65,8 +68,12 @@ const styles = StyleSheet.create({
         top: 2,
         fontWeight: "bold"
     },
+    answerWrp: {
+        marginBottom: 5
+    },
     textAnswer: {
-        alignSelf: "center"
+        alignSelf: "center",
+        color: colors.questionnaireAnswerStatusText,
     }
 });
 
@@ -243,7 +250,7 @@ export default class Questionnaire extends Component {
             >
                 <View style={{flexDirection: "row"}}>
                     {this.renderQuestionStatus(question, questionIndex)}
-                    <Text style={{width: width * 0.75}}>{question.text}</Text>
+                    <Text style={[styles.questionText, {width: width * 0.75}]}>{question.text}</Text>
                 </View>
                 <FaIcons
                     color={colors.iconArrow}
@@ -279,7 +286,7 @@ export default class Questionnaire extends Component {
             <View key={optionIndex} style={[
                 (optionIndex === optionsLength - 1 && this.isLastSection(questionIndex)) ? styles.lastAnswer : {}
             ]}>
-                <TouchableOpacity onPress={() => this.onSaveQuestionnaireAnswers(...arguments)}>
+                <TouchableOpacity onPress={() => this.onSaveQuestionnaireAnswers(...arguments)} style={styles.answerWrp}>
                     <View style={styles.answer}>
                         {this.renderAnswerStatus(option, optionIndex, question.id)}
                         <Text style={[styles.textAnswer, {width: width * 0.85}]}>{option}</Text>

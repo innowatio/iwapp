@@ -9,13 +9,20 @@ const styles = StyleSheet.create({
     container: {
         backgroundColor: colors.transparent,
         flexDirection: "column",
+        justifyContent: "flex-start",
         paddingTop: 20
+    },
+    textStandardSmall: {
+        color: colors.textGrey,
+        fontSize: 11,
+        lineHeight: 13,
+        marginTop: 5,
+        fontWeight: "400"
     },
     textStandard: {
         color: colors.textGrey,
         fontSize: 13,
-        marginTop: 5,
-        fontWeight: "200"
+        marginTop: 0
     },
     infoAndConsumptionContainer: {
         flexDirection: "row",
@@ -35,8 +42,7 @@ const styles = StyleSheet.create({
         borderColor: colors.white,
         borderRadius: 100,
         backgroundColor: colors.borderIconGreen,
-        justifyContent: "center",
-        alignItems: "center"
+        padding: 2
     },
     iconGreen: {
         backgroundColor: colors.transparent
@@ -60,13 +66,15 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         marginTop: 25
     },
+    tipsContainerWrp: {
+        marginTop: 20
+    },
     tipsContainer: {
         backgroundColor: colors.secondaryBlue,
         flexDirection: "row",
         alignSelf: "center",
         borderRadius: 14,
         paddingVertical: 6,
-        marginTop: 20
     },
     textTips: {
         color: colors.white,
@@ -76,7 +84,8 @@ const styles = StyleSheet.create({
     textTipsDescription: {
         color: colors.white,
         fontSize: 13,
-        lineHeight: 15
+        lineHeight: 15,
+        paddingRight: 5
     },
     textTipsContainer: {
         flexDirection: "column",
@@ -111,11 +120,9 @@ export default class InfoConsumption extends Component {
                 <View style={[styles.infoAndConsumptionContainer]}>
                     <View style={styles.infoContainer}>
                         <View style={styles.borderIconGreen}>
-                            <Icon color={colors.iconGreen} name={"iw-badge-green"} size={72} style={styles.iconGreen} />
+                            <Icon color={colors.iconGreen} name={"iw-badge-buildings"} size={72} style={styles.iconGreen} />
                         </View>
-                        <Text style={styles.textStandard}>{"Numero di persone"}</Text>
-                        <Text style={styles.textStandard}>{"Grandezza dell'ufficio"}</Text>
-                        <Text style={styles.textStandard}>{"Posizione"}</Text>
+                        <Text style={styles.textStandardSmall}>{"Numero di persone \nGrandezza dell'ufficio \nPosizione"}</Text>
                     </View>
                     <View style={styles.meanConsumptionContainer}>
                         <View style={styles.numberMeanTextContainer}>
@@ -130,15 +137,17 @@ export default class InfoConsumption extends Component {
                         <Text style={styles.textStandard}>{"Media dei consumi\ngiornalieri di attività simili"}</Text>
                     </View>
                 </View>
-                <View style={[styles.tipsContainer, {width: width * 0.96}]}>
-                    <View style={styles.iconContainer}>
-                        <Icon color={colors.iconGood} name={"iw-good"} size={46} />
-                    </View>
-                    <View style={styles.textTipsContainer}>
-                        <Text style={styles.textTips}>{"GRANDE!"}</Text>
-                        <Text allowFontScaling={true} style={[styles.textTipsDescription, {width: width * 0.79}]}>
-                            {"Stai andando molto bene. Hai usato il 10% di energia in meno dei tuoi vicini"}
-                        </Text>
+                <View style={styles.tipsContainerWrp}>
+                    <View style={[styles.tipsContainer, {width: width * 0.96}]}>
+                        <View style={styles.iconContainer}>
+                            <Icon color={colors.iconGood} name={"iw-good"} size={46} />
+                        </View>
+                        <View style={styles.textTipsContainer}>
+                            <Text style={styles.textTips}>{"GRANDE!"}</Text>
+                            <Text allowFontScaling={true} style={[styles.textTipsDescription, {width: width * 0.79}]}>
+                                {"Stai andando molto bene. Hai usato il 10% di energia in meno dei tuoi vicini"}
+                            </Text>
+                        </View>
                     </View>
                 </View>
             </View>

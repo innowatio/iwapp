@@ -91,9 +91,9 @@ describe("`readingsDailyAggregatesToHighchartsData` function", () => {
             
             ret.forEach((res, idx) => {
                 res.data.forEach((data, dataIndex) => {
-                    expect(data[0]).to.be.a("number");
+                    expect(data[0]).to.be.a("string");
                     expect(data[1]).to.be.a("number");
-                    expect(data[0]).to.deep.equal(moment.utc(times[source[idx]][dataIndex]).hour());
+                    expect(data[0]).to.deep.equal(moment.utc(times[source[idx]][dataIndex]).format("HH"));
                     expect(data[1]).to.deep.equal(values[source[idx]][dataIndex]);
                 });
             });

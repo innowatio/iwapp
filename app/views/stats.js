@@ -15,9 +15,11 @@ import {bindActionCreators} from "redux";
 import {selectPeriod} from "../actions/stats";
 import Highcharts from "../components/highcharts";
 import Icon from "../components/iwapp-icons";
+import RealTimeSpinner from "../components/realtime";
 import Text from "../components/text-lato";
 import * as colors from "../lib/colors";
 import {getTitleAndSubtitle} from "../lib/consumptions-utils";
+import getRealTimeValue from "../lib/get-realtime";
 
 const styles = StyleSheet.create({
     container: {
@@ -87,8 +89,9 @@ const styles = StyleSheet.create({
     // CONSUMPTION CIRCLE SMALL
     smallConsumptionWrp: {
         backgroundColor: colors.secondaryBlue,
-        width: 70,
-        height: 70,
+        width: 75,
+        height: 75,
+        marginVertical: 8,
         borderRadius: 100,
         alignItems: "center",
         justifyContent: "center"
@@ -106,7 +109,7 @@ const styles = StyleSheet.create({
     },
 
     // PROGRESS BAR
-    ProgressBarStyleWrp: {
+    progressBarStyleWrp: {
         marginBottom: 10
     },
     progressBarValuesWrp: {
@@ -162,7 +165,7 @@ const styles = StyleSheet.create({
     },
     summaryConsumptionWrp: {
         flexDirection: "column",
-        justifyContent: "flex-end",
+        justifyContent: "flex-start",
         alignItems: "center"
     },
     consumptionTitle: {
@@ -172,26 +175,6 @@ const styles = StyleSheet.create({
         marginBottom: 5,
         marginHorizontal: 15,
         lineHeight: 13
-    },
-    actualPowerWrp: {
-        borderWidth: 2,
-        borderColor: colors.grey,
-        marginVertical: 4,
-        width: 70,
-        height: 70,
-        borderRadius: 100,
-        alignItems: "center",
-        justifyContent: "center"
-    },
-    actualPowerValue: {
-        fontSize: 26,
-        textAlign: "center",
-        fontWeight: "bold",
-        color: colors.powerNumber
-    },
-    actualPowerMeasure: {
-        color: colors.powerNumber,
-        textAlign: "center"
     }
 });
 
@@ -327,13 +310,13 @@ class Stats extends Component {
         const {width} = Dimensions.get("window");
         return consumptions.map(consumption => {
             return (
-                <View key={consumption.key} style={styles.ProgressBarStyleWrp}>
+                <View key={consumption.key} style={styles.progressBarStyleWrp}>
                     <Text style={styles.progressBarTitle}>{consumption.title}</Text>
                     <Progress.Bar
-                        borderColor={(consumption.max / consumption.now < .8) ? colors.secondaryBlue : colors.alarmsTip}
+                        borderColor={(consumption.max / consumption.now < .8) ? colors.secondaryBlue : colors.progressBarError}
                         borderRadius={30}
                         borderWidth={1}
-                        color={(consumption.max / consumption.now < .8) ? colors.primaryBlue : colors.alarmsTip}
+                        color={(consumption.max / consumption.now < .8) ? colors.primaryBlue : colors.progressBarError}
                         height={6}
                         progress={consumption.max / consumption.now}
                         width={width * 0.9}
@@ -354,13 +337,14 @@ class Stats extends Component {
 
     renderSwiper2 () {
         const {height, width} = Dimensions.get("window");
+        const sensorId = this.props.stats.chart.sensorId;
         return (
             <View style={styles.contentStatsWrp}>
-                <View>
+                <View style={{marginBottom: 40}}>
                     <Text style={styles.titleSwiper}>{this.mapPeriodLabel()}</Text>
                     <Highcharts
                         aggregates={this.getStatsAggregate()}
-                        charts={[this.props.stats.chart]}
+                        charts={[this.props.stats]}
                         height={height * .3}
                     />
                 </View>
@@ -373,11 +357,11 @@ class Stats extends Component {
                         </View>
                     </View>
                     <View key={"Actual Power"} style={[styles.summaryConsumptionWrp, {width: width * 0.5}]}>
-                        <Text style={styles.consumptionTitle}>{"Potenza attuale"}</Text>
-                        <View style={styles.actualPowerWrp}>
-                            <Text style={styles.actualPowerValue}>{"17,3"}</Text>
-                            <Text style={styles.actualPowerMeasure}>{"kW"}</Text>
-                        </View>
+                        <Text style={styles.consumptionTitle}>{"Potenza\nattuale"}</Text>
+                        <RealTimeSpinner
+                            charts={this.props.stats}
+                            powerValue={getRealTimeValue(sensorId, this.getDailyAggregate())}
+                        />
                     </View>
                 </View>
             </View>
@@ -406,7 +390,7 @@ class Stats extends Component {
                         </View>
                     </View>
                     <View key={"standby-similar"} style={[styles.summaryConsumptionWrp, {width: width * 0.45}]}>
-                        <Text style={styles.consumptionTitle}>{"Consumi in stanby"}</Text>
+                        <Text style={styles.consumptionTitle}>{"Consumi\nin standby"}</Text>
                         <View style={styles.smallConsumptionWrp}>
                             <Text style={styles.smallConsumptionValue}>{18}</Text>
                             <Text style={styles.smallConsumptionMeasure}>{"kWh"}</Text>

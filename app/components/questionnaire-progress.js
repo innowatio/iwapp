@@ -34,12 +34,14 @@ const styles = StyleSheet.create({
         fontSize: 14,
         padding: 0,
         textAlign: "center",
-        marginTop: 3
+        marginTop: 3,
+        color: colors.textGrey
     },
     percQuestionnaire: {
         fontSize: 11,
         padding: 0,
-        textAlign: "center"
+        textAlign: "center",
+        color: colors.textGrey
     }
 });
 

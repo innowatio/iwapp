@@ -46,16 +46,16 @@ const styles = StyleSheet.create({
         paddingVertical: 30,
         paddingHorizontal: 25,
         alignItems: "center",
-        borderBottomWidth: 1,
+        borderBottomWidth: .5,
         borderBottomColor: colors.lightGrey
     },
     questionSurvey: {
         textAlign: "center",
         fontSize: 18,
-        color: colors.textGrey
+        color: colors.primaryBlue
     },
     answerSurveyWrp: {
-        borderBottomWidth: 1,
+        borderBottomWidth: .5,
         borderBottomColor: colors.lightGrey
     },
     answerSurvey: {
@@ -256,7 +256,7 @@ class Survey extends Component {
                     <TouchableOpacity
                         disabled={this.state.activeStep === 0}
                         onPress={::this.onBackwardStep}
-                        style={[styles.buttonBack]}
+                        style={styles.buttonBack}
                     >
                         <FaIcons color={colors.primaryBlue} name={"angle-left"} size={26} />
                     </TouchableOpacity>
@@ -272,7 +272,7 @@ class Survey extends Component {
                 <View style={{flex: 1}}>
                     <View style={styles.titleBarWrp}>
                         <View style={styles.titleBar}>
-                            <Text style={styles.title}>{"QUESTIONARIO"}</Text>
+                            <Text style={styles.title}>{"SURVEY"}</Text>
                         </View>
                     </View>
                     {this.renderContentSurvey()}
