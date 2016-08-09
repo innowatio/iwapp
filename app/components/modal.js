@@ -37,10 +37,10 @@ const styles = StyleSheet.create({
     },
     modalButton: {
         backgroundColor: colors.buttonPrimary,
-        width: 200,
+        width: 180,
         height: 30,
         borderRadius: 50,
-        marginLeft: 20,
+        marginRight: 10,
         justifyContent: "center",
         alignItems: "center",
     },
@@ -69,6 +69,13 @@ export default class DefaultModal extends Component {
     renderButton () {
         return (
             <View style={styles.modalButtonsWrp}>
+                <Button
+                    containerStyle={styles.modalButton}
+                    onPress={this.props.onRequestClose}
+                    style={styles.modalButtonText}
+                >
+                   {"SALVA"}
+                </Button>
                 <TouchableOpacity
                     onPress={this.props.onRequestClose}
                     style={styles.modalResetButton}
@@ -80,13 +87,6 @@ export default class DefaultModal extends Component {
                         style={{backgroundColor: colors.transparent}}
                     />
                 </TouchableOpacity>
-                <Button
-                    containerStyle={styles.modalButton}
-                    onPress={this.props.onRequestClose}
-                    style={styles.modalButtonText}
-                >
-                   {"SALVA"}
-                </Button>
             </View>
         );
     }

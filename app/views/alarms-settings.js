@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
     },
     buttonWeekdayText: {
         color: colors.white,
-        fontSize: 13,
+        fontSize: 16,
         fontWeight: "normal"
     },
     modalLabelSection: {
@@ -132,17 +132,31 @@ const styles = StyleSheet.create({
         marginBottom: 10
     },
 
-    thresholdWrp: {
-        marginBottom: 20,
-        paddingBottom: 15,
-        paddingHorizontal: 20,
-        borderBottomWidth: .5,
-        borderColor: colors.lightGrey
-    },
     pickerWrp: {
         flexDirection: "row",
         justifyContent: "space-around",
         alignItems: "center"
+    },
+    thresholdWrp: {
+        marginBottom: 20,
+        paddingBottom: 10,
+        paddingHorizontal: 20,
+        borderBottomWidth: .5,
+        borderColor: colors.lightGrey
+    },
+    threshold: {
+        marginVertical: 10
+    },
+    thresholdTextWrp: {
+        flexDirection: "row",
+        alignItems: "center",
+        height: 20,
+        overflow: "hidden",
+        justifyContent: "space-between"
+    },
+    thresholdText: {
+        color: colors.textGrey,
+        fontSize: 11
     }
 });
 
@@ -167,14 +181,6 @@ export default class AlarmsSettings extends Component {
     onDateChangeEnd (date) {
         this.setState({dateEnd: date});
     }
-
-    // onTimezoneChange (event) {
-    //     var offset = parseInt(event.nativeEvent.text, 10);
-    //     if (isNaN(offset)) {
-    //         return;
-    //     }
-    //     this.setState({timeZoneOffsetInHours: offset});
-    // }
 
     getButtonStyle (buttonType) {
         if (this.state.option === buttonType) {
@@ -262,32 +268,32 @@ export default class AlarmsSettings extends Component {
     getWeekDays () {
         return [
             {
-                label: "lu",
-                key: "LU"
+                label: "L",
+                key: "lunedì"
             },
             {
-                label: "ma",
-                key: "MA"
+                label: "M",
+                key: "martedì"
             },
             {
-                label: "me",
-                key: "ME"
+                label: "M",
+                key: "mercoledì"
             },
             {
-                label: "gi",
-                key: "GI"
+                label: "G",
+                key: "giovedì"
             },
             {
-                label: "ve",
-                key: "VE"
+                label: "V",
+                key: "venerdì"
             },
             {
-                label: "sa",
-                key: "SA"
+                label: "S",
+                key: "sabato"
             },
             {
-                label: "do",
-                key: "DO"
+                label: "D",
+                key: "domenica"
             }
         ];
     }
@@ -364,7 +370,7 @@ export default class AlarmsSettings extends Component {
     renderRepetition (weekday) {
         return (
             <Button
-                containerStyle={contains(weekday.key, ["MA", "ME"]) ? styles.buttonWeekdayActive : styles.buttonWeekday}
+                containerStyle={contains(weekday.key, ["martedì", "giovedì"]) ? styles.buttonWeekdayActive : styles.buttonWeekday}
                 key={weekday.key}
                 style={styles.buttonWeekdayText}
             >
@@ -375,7 +381,13 @@ export default class AlarmsSettings extends Component {
 
     renderThreshold () {
         return (
-            <RangeSlider />
+            <View>
+                <RangeSlider />
+                <View style={styles.thresholdTextWrp}>
+                    <Text style={styles.thresholdText}>{"0 kW"}</Text>
+                    <Text style={styles.thresholdText}>{"100 kW"}</Text>
+                </View>
+            </View>
         );
     }
 
