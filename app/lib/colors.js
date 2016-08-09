@@ -51,6 +51,9 @@ export const alarmDailyEnergy = "#12b0c5";
 export const alarmMonthlyEnergy = "#cddc39";
 export const alarmSolvedInstantPower = "#79c447";
 export const alarmInstantPower = "#536dfe";
+export const alarmExceeded = "#FB0035";
+export const backgroundModal = "rgba(255, 255, 255, 0.5)";
+export const borderModal = "rgba(236, 72, 130, 0.5)";
 // Survey
 export const stepperDot = "#949494";
 export const stepperDotActive = "#303BA6";

@@ -1,9 +1,13 @@
+import {contains} from "ramda";
 import React, {Component} from "react";
-import {Dimensions, StyleSheet, View} from "react-native";
+import {Dimensions, StyleSheet, TouchableOpacity, View} from "react-native";
 import {Content} from "native-base";
 import Button from "react-native-button";
 
 import Icon from "../components/iwapp-icons";
+import DefaultModal from "../components/modal";
+import TimePicker from "../components/picker";
+import RangeSlider from "../components/slider";
 import Text from "../components/text-lato";
 import * as colors from "../lib/colors";
 
@@ -66,22 +70,79 @@ const styles = StyleSheet.create({
     },
     alarmTextWrp: {
         flexDirection: "row",
-        justifyContent: "space-between"
+        justifyContent: "space-between",
+        alignItems: "center"
     },
     alarmText: {
-        color: colors.textGrey,
-        fontSize: 15
+        fontSize: 14,
+        color: colors.textGrey
     },
     alarmValue: {
         color: colors.textGrey,
         fontSize: 14,
-        alignItems: "flex-end",
+        alignItems: "center",
         justifyContent: "flex-end"
     },
     alarmDay: {
         color: colors.textGrey,
         fontSize: 12,
         fontStyle: "italic"
+    },
+
+    weekdayWrp: {
+        marginVertical: 15,
+        paddingVertical: 15,
+        paddingHorizontal: 20,
+        borderTopWidth: .5,
+        borderBottomWidth: .5,
+        borderColor: colors.lightGrey
+    },
+    buttonWeekdayWrp: {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent:  "space-around"
+    },
+    buttonWeekday: {
+        borderRadius: 50,
+        height: 30,
+        width: 30,
+        overflow: "hidden",
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: colors.secondaryBlue
+    },
+    buttonWeekdayActive: {
+        borderRadius: 50,
+        height: 30,
+        width: 30,
+        overflow: "hidden",
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: colors.buttonPrimary
+    },
+    buttonWeekdayText: {
+        color: colors.white,
+        fontSize: 13,
+        fontWeight: "normal"
+    },
+    modalLabelSection: {
+        fontSize: 16,
+        color: colors.textGrey,
+        textAlign: "center",
+        marginBottom: 10
+    },
+
+    thresholdWrp: {
+        marginBottom: 20,
+        paddingBottom: 15,
+        paddingHorizontal: 20,
+        borderBottomWidth: .5,
+        borderColor: colors.lightGrey
+    },
+    pickerWrp: {
+        flexDirection: "row",
+        justifyContent: "space-around",
+        alignItems: "center"
     }
 });
 
@@ -90,9 +151,30 @@ export default class AlarmsSettings extends Component {
     constructor (props) {
         super(props);
         this.state = {
-            option: "SETTINGS"
+            dateEnd: new Date(),
+            dateStart: new Date(),
+            option: "SETTINGS",
+            modalVisible: false,
+            timeZoneOffsetInHours: (-1) * (new Date()).getTimezoneOffset() / 60
         };
     }
+
+    onDateChangeStart (date) {
+        console.log(date);
+        this.setState({dateStart: date});
+    }
+
+    onDateChangeEnd (date) {
+        this.setState({dateEnd: date});
+    }
+
+    // onTimezoneChange (event) {
+    //     var offset = parseInt(event.nativeEvent.text, 10);
+    //     if (isNaN(offset)) {
+    //         return;
+    //     }
+    //     this.setState({timeZoneOffsetInHours: offset});
+    // }
 
     getButtonStyle (buttonType) {
         if (this.state.option === buttonType) {
@@ -106,6 +188,14 @@ export default class AlarmsSettings extends Component {
         this.setState({option: tab});
     }
 
+    setModalVisible (visible) {
+        this.setState({modalVisible: visible});
+    }
+
+    setAlarmTime (hours) {
+        this.setState({alarmTime: hours});
+    }
+
     getAlarm () {
         return [
             {
@@ -113,7 +203,7 @@ export default class AlarmsSettings extends Component {
                 key: "Soglia giornaliera",
                 icon: "iw-daily",
                 text: "Soglia energia giornaliera",
-                value: "kWh 48",
+                value: "48",
                 unit: "kWh"
             },
             {
@@ -121,17 +211,18 @@ export default class AlarmsSettings extends Component {
                 key: "Soglia mensile",
                 icon: "iw-monthly",
                 text: "Soglia energia mensile",
-                value: "kWh 186",
+                value: "186",
                 unit: "kWh"
             },
             {
                 bgcolor: colors.alarmInstantPower,
                 key: "Potenza istantanea",
                 icon: "iw-power",
-                text: "Soglia potenza istantanea",
-                value: "kW",
-                unit: "kW"
+                text: "Potenza istantanea da impostare",
+                value: "",
+                unit: ""
             }
+
         ];
     }
 
@@ -168,11 +259,149 @@ export default class AlarmsSettings extends Component {
         ];
     }
 
+    getWeekDays () {
+        return [
+            {
+                label: "lu",
+                key: "LU"
+            },
+            {
+                label: "ma",
+                key: "MA"
+            },
+            {
+                label: "me",
+                key: "ME"
+            },
+            {
+                label: "gi",
+                key: "GI"
+            },
+            {
+                label: "ve",
+                key: "VE"
+            },
+            {
+                label: "sa",
+                key: "SA"
+            },
+            {
+                label: "do",
+                key: "DO"
+            }
+        ];
+    }
+
+    alarmInstantPowerText (alarm) {
+        return alarm.value ? colors.textGrey : colors.grey;
+    }
+
+    isExceeded (alarm) {
+        return alarm.value ? (
+            alarm.value
+        ) : (
+            <Text style={styles.alarmValue}>
+                <Icon
+                    color={colors.alarmExceeded}
+                    name={"iw-alert"}
+                    size={25}
+                    style={{backgroundColor: colors.transparent}}
+                />
+            </Text>
+        );
+    }
+
+    returnModalChildren () {
+        return (
+            <View>
+                {this.renderTimePickers()}
+                <View style={styles.weekdayWrp}>
+                    <Text style={styles.modalLabelSection}>{"Ripetizione"}</Text>
+                    <View style={styles.buttonWeekdayWrp}>
+                        {this.getWeekDays().map(::this.renderRepetition)}
+                    </View>
+                </View>
+                <View style={styles.thresholdWrp}>
+                    <Text style={styles.modalLabelSection}>{"Imposta la soglia massima"}</Text>
+                    <View style={styles.threshold}>
+                        {this.renderThreshold()}
+                    </View>
+                </View>
+            </View>
+        );
+    }
+
+    renderTimePickers () {
+        const {width} = Dimensions.get("window");
+        return (
+            <View style={styles.pickerWrp}>
+                <View key={"start"} style={[styles.picker, {width: width * .4}]}>
+                    <Text style={styles.modalLabelSection}>{"Inizio"}</Text>
+                    <TimePicker
+                        date={this.state.dateStart}
+                        minuteInterval={5}
+                        mode="time"
+                        onDateChange={::this.onDateChangeStart}
+                        selectedValue={this.state.alarmTimes}
+                        timeZoneOffsetInHours={this.state.timeZoneOffsetInHours * 60}
+                    />
+                </View>
+                <View key={"end"} style={[styles.picker, {width: width * .4}]}>
+                    <Text style={styles.modalLabelSection}>{"Fine"}</Text>
+                    <TimePicker
+                        date={this.state.dateEnd}
+                        minuteInterval={5}
+                        mode="time"
+                        onDateChange={::this.onDateChangeEnd}
+                        selectedValue={this.state.alarmTimes}
+                        timeZoneOffsetInHours={this.state.timeZoneOffsetInHours * 60}
+                    />
+                </View>
+            </View>
+        );
+    }
+
+    renderRepetition (weekday) {
+        return (
+            <Button
+                containerStyle={contains(weekday.key, ["MA", "ME"]) ? styles.buttonWeekdayActive : styles.buttonWeekday}
+                key={weekday.key}
+                style={styles.buttonWeekdayText}
+            >
+                {weekday.label}
+            </Button>
+        );
+    }
+
+    renderThreshold () {
+        return (
+            <RangeSlider />
+        );
+    }
+
+    renderModal () {
+        return (
+            <DefaultModal
+                modalButtons={true}
+                modalTitle={"Imposta allarme"}
+                onRequestClose={() => ::this.setModalVisible(false)}
+                transparent={true}
+                visible={this.state.modalVisible}
+            >
+                {this.returnModalChildren()}
+            </DefaultModal>
+        );
+    }
+
     renderAlarmsSettings (alarm) {
         const {width} = Dimensions.get("window");
         return (
-            <View key={alarm.key} style={[styles.alarmWrp, {width: width}]}>
-                <View style={{width: width * 0.16}}>
+            <TouchableOpacity
+                key={alarm.key}
+                onPress={() => ::this.setModalVisible(true)}
+                style={[styles.alarmWrp, {width: width}]}
+            >
+                <View key={alarm.key} style={{width: width * 0.16}}>
                     <View style={[styles.alarmIcon, {backgroundColor: alarm.bgcolor}]}>
                         <Icon
                             color={colors.iconWhite}
@@ -183,14 +412,15 @@ export default class AlarmsSettings extends Component {
                     </View>
                 </View>
                 <View style={[styles.alarmTextWrp, {width: width * 0.74}]}>
-                    <Text style={styles.alarmText}>
+                    <Text style={[styles.alarmText, {color: this.alarmInstantPowerText(alarm)}]}>
                         {alarm.text}
                     </Text>
                     <Text style={styles.alarmValue}>
-                        {alarm.value}
+                        {alarm.unit}{" "}
+                        {this.isExceeded(alarm)}
                     </Text>
                 </View>
-            </View>
+            </TouchableOpacity>
         );
     }
 
@@ -223,10 +453,16 @@ export default class AlarmsSettings extends Component {
     renderTabs () {
         return (
             <View style={styles.tabsContainer}>
-                <Button containerStyle={(this.state.option === "SETTINGS" ? styles.tabWrpActive : {})} onPress={() => this.setTabState("SETTINGS")}>
+                <Button
+                    containerStyle={(this.state.option === "SETTINGS" ? styles.tabWrpActive : {})}
+                    onPress={() => this.setTabState("SETTINGS")}
+                >
                     <Text style={styles.tabTitle}>{"IMPOSTAZIONE"}</Text>
                 </Button>
-                <Button containerStyle={(this.state.option === "NOTIFY" ? styles.tabWrpActive : {})} onPress={() => this.setTabState("NOTIFY")}>
+                <Button
+                    containerStyle={(this.state.option === "NOTIFY" ? styles.tabWrpActive : {})}
+                    onPress={() => this.setTabState("NOTIFY")}
+                >
                     <Text style={styles.tabTitle}>{"NOTIFICHE"}</Text>
                 </Button>
             </View>
@@ -237,6 +473,7 @@ export default class AlarmsSettings extends Component {
         const {height} = Dimensions.get("window");
         return (
             <View style={styles.container}>
+                {this.renderModal()}
                 <Content style={{backgroundColor: colors.background, height: height}}>
                     <View>
                         <View style={styles.titleBarWrp}>
@@ -246,7 +483,7 @@ export default class AlarmsSettings extends Component {
                     </View>
                     {this.state.option == "SETTINGS" ? (
                         <View style={styles.alarmsContainer}>
-                            {this.getAlarm().map(this.renderAlarmsSettings)}
+                            {this.getAlarm().map(::this.renderAlarmsSettings)}
                         </View>
                     ) : (
                         <View style={styles.alarmsContainer}>
