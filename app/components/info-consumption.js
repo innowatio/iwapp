@@ -159,7 +159,7 @@ export default class InfoConsumption extends Component {
         return consumptionsTotal ? (
             <View>
                 <View style={[styles.numberOtherMeanTextContainer]}>
-                    <Text style={styles.textNumber}>{(consumptionsTotal / consumptionsDays).toFixed(2) }</Text>
+                    <Text style={styles.textNumber}>{(consumptionsTotal / consumptionsDays).toFixed(2)}</Text>
                     <Text style={styles.textUnitOfMeasurement}>{consumptionsUnit}</Text>
                 </View>
                 <Text style={styles.textStandard}>{"Media dei consumi\ngiornalieri di attività simili"}</Text>
@@ -180,7 +180,7 @@ export default class InfoConsumption extends Component {
         return peersConsumptionsTotal ? (
             <View>
                 <View style={[styles.numberOtherMeanTextContainer]}>
-                    <Text style={styles.textNumber}>{(peersConsumptionsTotal / peersConsumptionsDays).toFixed(2) }</Text>
+                    <Text style={styles.textNumber}>{(peersConsumptionsTotal / peersConsumptionsDays).toFixed(2)}</Text>
                     <Text style={styles.textUnitOfMeasurement}>{peersConsumptionsUnit}</Text>
                 </View>
                 <Text style={styles.textStandard}>{"Media dei consumi\ngiornalieri di attività simili"}</Text>
