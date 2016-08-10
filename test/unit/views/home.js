@@ -254,7 +254,7 @@ describe("`Home` view", () => {
                 }
             };
             subscribeToMeasure(props);
-            expect(subscribe).to.have.callCount(3);
+            expect(subscribe).to.have.callCount(4);
             expect(subscribe.firstCall).to.have.been.calledWithExactly(
                 "dailyMeasuresBySensor",
                 "sensorId",
@@ -264,6 +264,14 @@ describe("`Home` view", () => {
                 "activeEnergy"
             );
             expect(subscribe.secondCall).to.have.been.calledWithExactly(
+                "dailyMeasuresBySensor",
+                "sensorId",
+                "1970-01-01",
+                "1970-01-01",
+                "reading",
+                "maxPower"
+            );
+            expect(subscribe.thirdCall).to.have.been.calledWithExactly(
                 "yearlyConsumptions",
                 "sensorId",
                 "1970",
@@ -293,7 +301,7 @@ describe("`Home` view", () => {
                 }
             };
             subscribeToMeasure(props);
-            expect(subscribe).to.have.callCount(4);
+            expect(subscribe).to.have.callCount(5);
             expect(subscribe.firstCall).to.have.been.calledWithExactly(
                 "dailyMeasuresBySensor",
                 "sensorId",
@@ -311,19 +319,19 @@ describe("`Home` view", () => {
                 "activeEnergy"
             );
             expect(subscribe.thirdCall).to.have.been.calledWithExactly(
-                "yearlyConsumptions",
-                "sensorId",
-                "1970",
-                "reading",
-                "activeEnergy"
-            );
-            expect(subscribe.lastCall).to.have.been.calledWithExactly(
                 "dailyMeasuresBySensor",
                 "sensorId",
                 "1970-01-01",
                 "1970-01-01",
                 "reading",
                 "maxPower"
+            );
+            expect(subscribe.lastCall).to.have.been.calledWithExactly(
+                "yearlyConsumptions",
+                "sensorId-peers-avg",
+                "1970",
+                "reading",
+                "activeEnergy"
             );
         });
 

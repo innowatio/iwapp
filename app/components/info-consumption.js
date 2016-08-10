@@ -9,8 +9,7 @@ const styles = StyleSheet.create({
     container: {
         backgroundColor: colors.transparent,
         flexDirection: "column",
-        justifyContent: "flex-start",
-        paddingTop: 20
+        justifyContent: "flex-start"
     },
     textStandardSmall: {
         color: colors.textGrey,
@@ -59,9 +58,6 @@ const styles = StyleSheet.create({
         alignSelf: "flex-end",
         marginBottom: 5
     },
-    numberMeanTextContainer: {
-        flexDirection: "row"
-    },
     numberOtherMeanTextContainer: {
         flexDirection: "row",
         marginTop: 25
@@ -100,21 +96,103 @@ const styles = StyleSheet.create({
 export default class InfoConsumption extends Component {
 
     static propTypes = {
-        consumptionsMean: PropTypes.string.isRequired,
-        consumptionsMeanUnit: PropTypes.string.isRequired,
-        consumptionsSimilar: PropTypes.string.isRequired,
-        consumptionsSimilarUnit: PropTypes.string.isRequired,
-        heightSwiper: PropTypes.number.isRequired
+        consumptionsDays: PropTypes.number,
+        consumptionsLast: PropTypes.number,
+        consumptionsTotal: PropTypes.number,
+        consumptionsUnit: PropTypes.string,
+        heightSwiper: PropTypes.number.isRequired,
+        peersConsumptionsDays: PropTypes.number,
+        peersConsumptionsLast: PropTypes.number,
+        peersConsumptionsTotal: PropTypes.number,
+        peersConsumptionsUnit: PropTypes.string,
+    }
+
+    renderSmileyBadge () {
+        const {width} = Dimensions.get("window");
+        const {
+            consumptionsLast,
+            peersConsumptionsLast
+        } = this.props;
+        const peersRelativeConsumption = (consumptionsLast * 100 / peersConsumptionsLast) - 100;
+        let badge = {
+            icon: "iw-middling",
+            title: "MWEEE!",
+            text: "Stai andando così così!"
+        };
+        if (peersRelativeConsumption < -10) {
+            badge = {
+                icon: "iw-good",
+                title: "GRANDE!",
+                text: `Stai andando bene! Stai consumando il ${Math.abs(peersRelativeConsumption).toFixed()}% in meno dei tuoi vicini!`
+            };
+        }
+        if (peersRelativeConsumption > 10) {
+            badge = {
+                icon: "iw-bad",
+                title: "AHIOOOO!",
+                text: `Stai andando male! Stai consumando il ${peersRelativeConsumption.toFixed()}% in più dei tuoi vicini!`
+            };
+        }
+        return (consumptionsLast && peersConsumptionsLast && consumptionsLast != 0 && peersConsumptionsLast != 0) ? (
+            <View style={styles.tipsContainerWrp}>
+                <View style={[styles.tipsContainer, {width: width * 0.96}]}>
+                    <View style={styles.iconContainer}>
+                        <Icon color={colors.iconGood} name={badge.icon} size={46} />
+                    </View>
+                    <View style={styles.textTipsContainer}>
+                        <Text style={styles.textTips}>{badge.title}</Text>
+                        <Text allowFontScaling={true} style={[styles.textTipsDescription, {width: width * 0.79}]}>
+                            {badge.text}
+                        </Text>
+                    </View>
+                </View>
+            </View>
+        ) : null;
+    }
+
+    renderMyConsumptions () {
+        const {
+            consumptionsDays,
+            consumptionsTotal,
+            consumptionsUnit
+        } = this.props;
+        return consumptionsTotal ? (
+            <View>
+                <View style={[styles.numberOtherMeanTextContainer]}>
+                    <Text style={styles.textNumber}>{(consumptionsTotal / consumptionsDays).toFixed(2) }</Text>
+                    <Text style={styles.textUnitOfMeasurement}>{consumptionsUnit}</Text>
+                </View>
+                <Text style={styles.textStandard}>{"Media dei consumi\ngiornalieri di attività simili"}</Text>
+            </View>
+        ) : (
+            <View style={[styles.numberOtherMeanTextContainer]}>
+                <Text style={styles.textStandard}>{"Consumi non disponibili"}</Text>
+            </View>
+        );
+    }
+
+    renderPeersConsumptions () {
+        const {
+            peersConsumptionsDays,
+            peersConsumptionsTotal,
+            peersConsumptionsUnit
+        } = this.props;
+        return peersConsumptionsTotal ? (
+            <View>
+                <View style={[styles.numberOtherMeanTextContainer]}>
+                    <Text style={styles.textNumber}>{(peersConsumptionsTotal / peersConsumptionsDays).toFixed(2) }</Text>
+                    <Text style={styles.textUnitOfMeasurement}>{peersConsumptionsUnit}</Text>
+                </View>
+                <Text style={styles.textStandard}>{"Media dei consumi\ngiornalieri di attività simili"}</Text>
+            </View>
+        ) : (
+            <View style={[styles.numberOtherMeanTextContainer]}>
+                <Text style={styles.textStandard}>{"Consumi simili non disponibili"}</Text>
+            </View>
+        );
     }
 
     render () {
-        const {width} = Dimensions.get("window");
-        const {
-            consumptionsMean,
-            consumptionsMeanUnit,
-            consumptionsSimilar,
-            consumptionsSimilarUnit
-        } = this.props;
         return (
             <View style={[styles.container, {height: this.props.heightSwiper}]}>
                 <View style={[styles.infoAndConsumptionContainer]}>
@@ -125,31 +203,11 @@ export default class InfoConsumption extends Component {
                         <Text style={styles.textStandardSmall}>{"Numero di persone \nGrandezza dell'ufficio \nPosizione"}</Text>
                     </View>
                     <View style={styles.meanConsumptionContainer}>
-                        <View style={styles.numberMeanTextContainer}>
-                            <Text style={styles.textNumber}>{consumptionsMean}</Text>
-                            <Text style={styles.textUnitOfMeasurement}>{consumptionsMeanUnit}</Text>
-                        </View>
-                        <Text style={styles.textStandard}>{"Media dei miei\nconsumi giornalieri"}</Text>
-                        <View style={[styles.numberOtherMeanTextContainer]}>
-                            <Text style={styles.textNumber}>{consumptionsSimilar}</Text>
-                            <Text style={styles.textUnitOfMeasurement}>{consumptionsSimilarUnit}</Text>
-                        </View>
-                        <Text style={styles.textStandard}>{"Media dei consumi\ngiornalieri di attività simili"}</Text>
+                        {this.renderMyConsumptions()}
+                        {this.renderPeersConsumptions()}
                     </View>
                 </View>
-                <View style={styles.tipsContainerWrp}>
-                    <View style={[styles.tipsContainer, {width: width * 0.96}]}>
-                        <View style={styles.iconContainer}>
-                            <Icon color={colors.iconGood} name={"iw-good"} size={46} />
-                        </View>
-                        <View style={styles.textTipsContainer}>
-                            <Text style={styles.textTips}>{"GRANDE!"}</Text>
-                            <Text allowFontScaling={true} style={[styles.textTipsDescription, {width: width * 0.79}]}>
-                                {"Stai andando molto bene. Hai usato il 10% di energia in meno dei tuoi vicini"}
-                            </Text>
-                        </View>
-                    </View>
-                </View>
+                {this.renderSmileyBadge()}
             </View>
         );
     }
