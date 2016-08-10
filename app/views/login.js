@@ -84,10 +84,6 @@ const styles = StyleSheet.create({
         color: colors.white,
         marginTop: 8
     },
-    linkSignup: {
-        fontWeight: "bold",
-        color: colors.white
-    },
     textInputWrp: {
         top: 15
     },
