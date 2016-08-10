@@ -65,9 +65,9 @@ describe("`login` view", () => {
 
         it("renders the correct `value`", () => {
             const login = shallow(<Login asteroid={asteroid} />);
-            login.setState({email: "myEmail"});
+            login.setState({email: "email"});
             const emailTextInput = login.find(TextInputLato).first();
-            expect(emailTextInput.prop("value")).to.equal("myEmail");
+            expect(emailTextInput.prop("value")).to.equal("email");
         });
 
     });
@@ -103,40 +103,42 @@ describe("`login` view", () => {
 
         const onLogin = Login.prototype.onLogin;
 
-        it("call `asteroid.loginWithPassword` function with correct credentials", () => {
-            const loginWithPassword = sinon.stub().returns(Promise.resolve());
+        it("call `asteroid.login` function with correct credentials", () => {
+            const login = sinon.stub().returns(Promise.resolve());
             const setLoginError = sinon.spy();
             const instance = {
                 state: {
-                    email: "myEmail",
+                    email: "email",
                     password: "password"
                 },
                 props: {
                     asteroid: {
-                        loginWithPassword
+                        login
                     }
                 },
                 setLoginError
             };
             onLogin.call(instance);
-            expect(loginWithPassword).to.have.callCount(1);
-            expect(loginWithPassword).to.have.been.calledWithExactly({
-                email: "myEmail",
-                password: "password"
+            expect(login).to.have.callCount(1);
+            expect(login).to.have.been.calledWithExactly({
+                sso: {
+                    username: "email",
+                    password: "password"
+                }
             });
         });
 
         it("call `setLoginError` function with `null`", () => {
-            const loginWithPassword = sinon.stub().returns(Promise.resolve());
+            const login = sinon.stub().returns(Promise.resolve());
             const setLoginError = sinon.spy();
             const instance = {
                 state: {
-                    email: "myEmail",
+                    email: "email",
                     password: "password"
                 },
                 props: {
                     asteroid: {
-                        loginWithPassword
+                        login
                     }
                 },
                 setLoginError
@@ -147,22 +149,22 @@ describe("`login` view", () => {
         });
 
         it("call `setLoginError` function with an `error` if promise is rejected", () => {
-            const loginWithPassword = sinon.stub().returns(Promise.reject(new Error("Login Error")));
+            const login = sinon.stub().returns(Promise.reject(new Error("Login Error")));
             const setLoginError = sinon.spy();
             const instance = {
                 state: {
-                    email: "myEmail",
+                    email: "email",
                     password: "password"
                 },
                 props: {
                     asteroid: {
-                        loginWithPassword
+                        login
                     }
                 },
                 setLoginError
             };
             onLogin.call(instance);
-            return loginWithPassword().catch(() => {
+            return login().catch(() => {
                 expect(setLoginError).to.have.callCount(2);
                 expect(setLoginError.secondCall).to.have.calledOn(instance);
                 expect(setLoginError.secondCall).to.have.been.calledWithExactly(new Error("Login Error"));
@@ -206,9 +208,9 @@ describe("`login` view", () => {
             const instance = {
                 setState
             };
-            onChangeText.call(instance, "email", "myEmail");
+            onChangeText.call(instance, "email", "email");
             expect(setState).to.have.callCount(1);
-            expect(setState).to.have.calledWithExactly({email: "myEmail"});
+            expect(setState).to.have.calledWithExactly({email: "email"});
         });
 
     });

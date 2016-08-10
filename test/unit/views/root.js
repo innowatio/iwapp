@@ -221,6 +221,7 @@ describe("`Root` view", () => {
 
         it("call `asteroid.on` with correct parameter", () => {
             const instance = {
+                postLogin: sinon.spy(),
                 props: {
                     onLogout: sinon.spy()
                 },
@@ -264,6 +265,7 @@ describe("`Root` view", () => {
 
         it("call `asteroid.off` with correct parameter", () => {
             const instance = {
+                postLogin: sinon.spy(),
                 props: {
                     onLogout: sinon.spy()
                 },

@@ -17,7 +17,6 @@ import SurveyModal from "../components/survey-modal";
 import asteroid from "../lib/asteroid";
 import {statusBarHeight} from "../lib/const";
 import {primaryBlue, secondaryBlue} from "../lib/colors";
-import {getEmail, getUsername} from "../lib/get-user-info";
 import Login from "./login";
 
 const styles = StyleSheet.create({
@@ -52,8 +51,10 @@ class Root extends Component {
     constructor () {
         super();
         this.state = {
+            email: " ",
             open: false,
-            surveyModalVisible: false
+            surveyModalVisible: false,
+            username: " ",
         };
     }
 
@@ -120,6 +121,13 @@ class Root extends Component {
         return async (userId) => {
             this.props.onLogin(userId);
             this.props.generateSessionId(userId);
+            asteroid.call("getUserInfo").then(userInfo => {
+                this.setState({
+                    username: userInfo.username,
+                    email: userInfo.mail[0],
+                    name: userInfo.givenName[0]
+                });
+            });
         };
     }
 
@@ -156,8 +164,7 @@ class Root extends Component {
     }
 
     renderHeader () {
-        const username = getUsername(this.props.userId, this.props.collections);
-        const email = getEmail(this.props.userId, this.props.collections);
+        const {username, email} = this.state;
         return (
             <Header
                 headerViews={this.getHeaderViews()}

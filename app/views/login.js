@@ -1,5 +1,5 @@
 import React, {Component, PropTypes} from "react";
-import {Dimensions, Image, StyleSheet, View, TouchableOpacity} from "react-native";
+import {Dimensions, Image, StyleSheet, View} from "react-native";
 import Button from "react-native-button";
 import {partial} from "ramda";
 
@@ -80,11 +80,6 @@ const styles = StyleSheet.create({
         width: 26,
         height: 26
     },
-    linkSignupWrp: {
-        flexDirection: "row",
-        alignItems: "flex-end",
-        marginBottom: 10
-    },
     linkText: {
         color: colors.white,
         marginTop: 8
@@ -136,12 +131,13 @@ export default class Login extends Component {
     }
 
     onLogin () {
-        const credentials = {
-            email: this.state.email,
-            password: this.state.password
-        };
         this.setLoginError(null);
-        this.props.asteroid.loginWithPassword(credentials).catch(::this.setLoginError);
+        this.props.asteroid.login({
+            sso: {
+                username: this.state.email,
+                password: this.state.password
+            }
+        }).catch(::this.setLoginError);
     }
 
     setLoginError (error) {
@@ -229,14 +225,6 @@ export default class Login extends Component {
                     >
                         <Text style={styles.buttonLoginText}>{"ACCEDI"}</Text>
                     </Button>
-                    <View style={styles.linkSignupWrp}>
-                        <Text style={styles.linkText}>
-                            {"Non hai un account? "}
-                        </Text>
-                        <TouchableOpacity>
-                            <Text style={styles.linkSignup}>{"Registrati!"}</Text>
-                        </TouchableOpacity>
-                    </View>
                 </View>
             </Image>
         );
