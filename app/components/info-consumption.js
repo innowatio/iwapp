@@ -97,12 +97,10 @@ export default class InfoConsumption extends Component {
 
     static propTypes = {
         consumptionsDays: PropTypes.number,
-        consumptionsLast: PropTypes.number,
         consumptionsTotal: PropTypes.number,
         consumptionsUnit: PropTypes.string,
         heightSwiper: PropTypes.number.isRequired,
         peersConsumptionsDays: PropTypes.number,
-        peersConsumptionsLast: PropTypes.number,
         peersConsumptionsTotal: PropTypes.number,
         peersConsumptionsUnit: PropTypes.string,
     }
@@ -110,30 +108,40 @@ export default class InfoConsumption extends Component {
     renderSmileyBadge () {
         const {width} = Dimensions.get("window");
         const {
-            consumptionsLast,
-            peersConsumptionsLast
+            consumptionsTotal,
+            peersConsumptionsTotal
         } = this.props;
-        const peersRelativeConsumption = (consumptionsLast * 100 / peersConsumptionsLast) - 100;
-        let badge = {
-            icon: "iw-middling",
-            title: "MWEEE!",
-            text: "Stai andando così così!"
-        };
-        if (peersRelativeConsumption < -10) {
+        const relativeConsumption = Math.round((consumptionsTotal * 100 / peersConsumptionsTotal) - 100);
+        let badge = {};
+        if (relativeConsumption < -5) {
             badge = {
                 icon: "iw-good",
                 title: "GRANDE!",
-                text: `Stai andando bene! Stai consumando il ${Math.abs(peersRelativeConsumption).toFixed()}% in meno dei tuoi vicini!`
+                text: `Stai andando molto bene.  Hai usato il ${Math.abs(relativeConsumption)}% di energia in meno di attività simili alla tua.`
             };
         }
-        if (peersRelativeConsumption > 10) {
+        if (relativeConsumption >= -5 && relativeConsumption <= 0) {
+            badge = {
+                icon: "iw-middling",
+                title: "OK!",
+                text: `Sei in linea con il consumo energetico di attività simili alla tua: hai consumato il ${Math.abs(relativeConsumption)}% di energia in meno.`
+            };
+        }
+        if (relativeConsumption > 0 && relativeConsumption <= 5) {
+            badge = {
+                icon: "iw-middling",
+                title: "OK!",
+                text: `Sei in linea con il consumo energetico di attività simili alla tua: hai consumato il ${relativeConsumption}% di energia in più.`
+            };
+        }
+        if (relativeConsumption > 5) {
             badge = {
                 icon: "iw-bad",
-                title: "AHIOOOO!",
-                text: `Stai andando male! Stai consumando il ${peersRelativeConsumption.toFixed()}% in più dei tuoi vicini!`
+                title: "ATTENZIONE!",
+                text: `Hai usato il ${relativeConsumption}% di energia in più rispetto ad attività simili alla tua.`
             };
         }
-        return (consumptionsLast && peersConsumptionsLast && consumptionsLast != 0 && peersConsumptionsLast != 0) ? (
+        return (consumptionsTotal && peersConsumptionsTotal && consumptionsTotal != 0 && peersConsumptionsTotal != 0) ? (
             <View style={styles.tipsContainerWrp}>
                 <View style={[styles.tipsContainer, {width: width * 0.96}]}>
                     <View style={styles.iconContainer}>
@@ -162,7 +170,7 @@ export default class InfoConsumption extends Component {
                     <Text style={styles.textNumber}>{(consumptionsTotal / consumptionsDays).toFixed(2)}</Text>
                     <Text style={styles.textUnitOfMeasurement}>{consumptionsUnit}</Text>
                 </View>
-                <Text style={styles.textStandard}>{"Media dei consumi\ngiornalieri di attività simili"}</Text>
+                <Text style={styles.textStandard}>{"Media dei miei\nconsumi giornalieri"}</Text>
             </View>
         ) : (
             <View style={[styles.numberOtherMeanTextContainer]}>

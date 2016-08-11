@@ -114,7 +114,6 @@ class Home extends Component {
                 }, 0);
                 return {
                     peersConsumptionsDays: measurements.length,
-                    peersConsumptionsLast: parseFloat(measurements[measurements.length - 1] || 0),
                     peersConsumptionsTotal: measurementsTotal,
                     peersConsumptionsUnit: peersConsumptions.get("unitOfMeasurement")
                 };
@@ -132,7 +131,6 @@ class Home extends Component {
                 }, 0);
                 return {
                     consumptionsDays: measurements.length,
-                    consumptionsLast: parseFloat(measurements[measurements.length - 1] || 0),
                     consumptionsTotal: measurementsTotal,
                     consumptionsUnit: yearConsumptions.get("unitOfMeasurement")
                 };
