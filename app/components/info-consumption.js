@@ -35,6 +35,7 @@ const styles = StyleSheet.create({
         flexDirection: "column"
     },
     borderIconGreen: {
+        marginTop:5,
         width: 80,
         height: 80,
         borderWidth: 2,

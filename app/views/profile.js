@@ -4,6 +4,8 @@ import {Dimensions, Linking, StyleSheet, TouchableOpacity, View} from "react-nat
 import * as Progress from "react-native-progress";
 import ImagePicker from "react-native-image-picker";
 import {connect} from "react-redux";
+import {List, Map} from "immutable";
+import {uniq} from "ramda";
 
 import Icon from "../components/iwapp-icons";
 import * as colors from "../lib/colors";
@@ -98,9 +100,6 @@ const styles = StyleSheet.create({
     progressBarStyleWrp: {
         marginBottom: 20
     },
-    progressBarStyle: {
-        width: 200
-    },
 
     // STYLE FOR BUTTON PERCENTAGE OF ANSWER
     progressQuestionnairesWrp: {
@@ -116,6 +115,7 @@ class Profile extends Component {
     static propTypes = {
         asteroid: PropTypes.object.isRequired,
         collections: PropTypes.object.isRequired,
+        site: PropTypes.object.isRequired,
         userId: PropTypes.string
     }
 
@@ -141,16 +141,62 @@ class Profile extends Component {
 
     componentDidMount () {
         this.props.asteroid.subscribe("users");
+        this.subscribeToCategories(this.props.site._id);
+    }
+
+    subscribeToCategories (siteId) {
+        this.getQuestionnaires().map(questionnaire => {
+            const category = questionnaire.key;
+            this.props.asteroid.subscribe("answers", {
+                siteId: siteId,
+                category,
+                type: "questionnaire"
+            });
+            this.props.asteroid.subscribe("questions", {
+                type: "questionnaire",
+                category
+            });
+        });
+    }
+
+    getQuestionsByCategory (category, type) {
+        const questions = this.props.collections.get("questions") || Map();
+        const selectedQuestion = questions.find((question) => {
+            return question.get("type") === type && question.get("category") === category;
+        }) || Map({questions: []});
+        return selectedQuestion.get("questions").size;
+    }
+
+    getAnswersByCategory (category, type, siteId) {
+        const key = `${type}-${category}-${siteId}`;
+        const answers = this.props.collections.getIn(["answers", key, "answers"]) || List();
+        return uniq(answers.map((answer) => {
+            return answer.get("id");
+        }).toJS()).length;
     }
 
     getQuestionnaires () {
+        const type = "questionnaire";
+        const siteId = this.props.site._id;
         return [
-            {color: colors.demographicsSection, name: "Demographics", key: "demographics", icon: "iw-demographics", value: 1, percentage: "100"},
-            {color: colors.buildingsSection, name: "Building", key: "building", icon: "iw-buildings", value: 0.3, percentage: "30"},
-            {color: colors.heatingSection, name: "Heating", key: "heating", icon: "iw-heating", value: 0.8, percentage: "80"},
-            {color: colors.coolingSection, name: "Cooling", key: "cooling", icon: "iw-cooling", value: 1, percentage: "100"},
-            {color: colors.statisticsSection, name: "Statistics", key: "statistics", icon: "iw-statistics", value: 0.5, percentage: "50"}
-        ];
+            {color: colors.demographicsSection, name: "Demographics", key: "demographics", icon: "iw-demographics"},
+            {color: colors.buildingsSection, name: "Building", key: "building", icon: "iw-buildings"},
+            {color: colors.heatingSection, name: "Heating", key: "heating", icon: "iw-heating"},
+            {color: colors.coolingSection, name: "Cooling", key: "cooling", icon: "iw-cooling"},
+            {color: colors.statisticsSection, name: "Statistics", key: "statistics", icon: "iw-statistics"}
+        ].map((questionnaire) => {
+            return {
+                ...questionnaire,
+                value: this.getPercentage(questionnaire.key, type, siteId) || 0
+            };
+        });
+
+    }
+
+    getPercentage (category, type, siteId) {
+        const totalQuestions = this.getQuestionsByCategory(category, type);
+        const totalAnswers = this.getAnswersByCategory(category, type, siteId);
+        return Math.round((totalAnswers / totalQuestions) * 100) / 100;
     }
 
     showImagePicker () {
@@ -237,6 +283,7 @@ class Profile extends Component {
     }
 
     renderProfilePercentage () {
+        const {width} = Dimensions.get("window");
         return (
             <View style={styles.progressBarStyleWrp}>
                 <Progress.Bar
@@ -245,9 +292,9 @@ class Profile extends Component {
                     borderWidth={1}
                     color={colors.secondaryBlue}
                     height={6}
-                    progress={0.5}
-                    style={styles.progressBarStyle}
+                    progress={1}
                     unfilledColor={colors.white}
+                    width={width * 0.9}
                 />
             </View>
         );
@@ -289,6 +336,7 @@ class Profile extends Component {
 function mapStateToProps (state) {
     return {
         collections: state.collections,
+        site: state.site,
         userId: state.userId
     };
 }

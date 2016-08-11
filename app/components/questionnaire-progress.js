@@ -86,7 +86,7 @@ export default class QuestionnaireProgress extends Component {
                         {questionnaire.name}
                     </Text>
                     <Text style={styles.percQuestionnaire}>
-                        {questionnaire.percentage}
+                        {questionnaire.value * 100}
                         {"% completato"}
                     </Text>
                 </View>
