@@ -104,38 +104,34 @@ class Home extends Component {
         return this.props.collections.get("readings-daily-aggregates") || Map();
     }
 
-    getPeersData () {
-        if (this.props.site) {
-            const peersConsumptions = this.getConsumptionAggregate().get(`${this.props.site._id}-peers-avg-${moment().year()}-reading-activeEnergy`);
-            if (peersConsumptions) {
-                const measurements = peersConsumptions.get("measurementValues").split(",") ;
-                const measurementsTotal = measurements.reduce((prev, current) => {
-                    return prev + (parseFloat(current) || 0);
-                }, 0);
-                return {
-                    peersConsumptionsDays: measurements.length,
-                    peersConsumptionsTotal: measurementsTotal,
-                    peersConsumptionsUnit: peersConsumptions.get("unitOfMeasurement")
-                };
-            }
+    getYearlyAggregate (sensorId) {
+        const aggregate = this.getConsumptionAggregate().get(sensorId);
+        if (aggregate) {
+            const measurements = aggregate.get("measurementValues").split(",") ;
+            const measurementsTotal = measurements.reduce((prev, current) => {
+                return prev + (parseFloat(current) || 0);
+            }, 0);
+            return {
+                days: measurements.length,
+                total: measurementsTotal,
+                unit: aggregate.get("unitOfMeasurement")
+            };
         }
     }
 
-    getInfoConsumptionsData () {
-        if (this.props.site) {
-            const yearConsumptions = this.getConsumptionAggregate().get(`${this.props.site._id}-${moment().year()}-reading-activeEnergy`);
-            if (yearConsumptions) {
-                const measurements = yearConsumptions.get("measurementValues").split(",") ;
-                const measurementsTotal = measurements.reduce((prev, current) => {
-                    return prev + parseFloat(current);
-                }, 0);
-                return {
-                    consumptionsDays: measurements.length,
-                    consumptionsTotal: measurementsTotal,
-                    consumptionsUnit: yearConsumptions.get("unitOfMeasurement")
-                };
-            }
-        }
+    getPeersData () {
+        return this.getYearlyAggregate(`${this.props.site._id}-peers-avg-${moment().year()}-reading-activeEnergy`);
+    }
+
+    getConsumptionData () {
+        return this.getYearlyAggregate(`${this.props.site._id}-${moment().year()}-reading-activeEnergy`);
+    }
+
+    getInfoConsumptionData () {
+        return this.props.site ? {
+            consumptions: this.getConsumptionData(),
+            peersConsumptions: this.getPeersData(),
+        } : null;
     }
 
     getWeatherData () {
@@ -185,8 +181,7 @@ class Home extends Component {
                         <View>
                             <InfoConsumption
                                 heightSwiper={heightSwiper}
-                                {...this.getInfoConsumptionsData()}
-                                {...this.getPeersData()}
+                                {...this.getInfoConsumptionData()}
                             />
                         </View>
                         <View>
