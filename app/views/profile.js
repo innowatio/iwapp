@@ -6,6 +6,7 @@ import ImagePicker from "react-native-image-picker";
 import {connect} from "react-redux";
 import {List, Map} from "immutable";
 import {uniq} from "ramda";
+import {Actions} from "react-native-router-flux";
 
 import Icon from "../components/iwapp-icons";
 import * as colors from "../lib/colors";
@@ -190,11 +191,15 @@ class Profile extends Component {
             const {percentage, totalQuestions, totalAnswers} = questions ?
                 this.getPercentage(questions, answers, questionnaire.key, type, siteId) :
                 {percentage: 0, totalQuestions: 0, totalAnswers: 0};
-            return {
+            const questionnareItem = {
                 ...questionnaire,
                 value: percentage || 0,
                 totalQuestions,
                 totalAnswers
+            };
+            return {
+                ...questionnareItem,
+                onPress: () => Actions.questionnaire({selectedQuestionnaire: questionnareItem})
             };
         });
 
