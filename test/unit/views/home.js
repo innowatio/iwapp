@@ -254,7 +254,7 @@ describe("`Home` view", () => {
                 }
             };
             subscribeToMeasure(props);
-            expect(subscribe).to.have.callCount(4);
+            expect(subscribe).to.have.callCount(5);
             expect(subscribe.firstCall).to.have.been.calledWithExactly(
                 "dailyMeasuresBySensor",
                 "sensorId",
@@ -301,7 +301,7 @@ describe("`Home` view", () => {
                 }
             };
             subscribeToMeasure(props);
-            expect(subscribe).to.have.callCount(5);
+            expect(subscribe).to.have.callCount(6);
             expect(subscribe.firstCall).to.have.been.calledWithExactly(
                 "dailyMeasuresBySensor",
                 "sensorId",
@@ -328,7 +328,7 @@ describe("`Home` view", () => {
             );
             expect(subscribe.lastCall).to.have.been.calledWithExactly(
                 "yearlyConsumptions",
-                "sensorId-peers-avg",
+                "sensorId-standby",
                 "1970",
                 "reading",
                 "activeEnergy"
