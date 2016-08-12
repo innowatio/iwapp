@@ -35,7 +35,7 @@
     "moment": "^2.14.1",
     "native-base": "^0.4.8",
     "ramda": "^0.21.0",
-    "react": "^15.2.0",
+    "react": "15.2.1",
     "react-addons-shallow-compare": "^15.2.0",
     "react-immutable-proptypes": "^1.7.1",
     "react-native": "^0.29.0",
