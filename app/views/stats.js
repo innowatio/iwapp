@@ -257,6 +257,9 @@ class Stats extends Component {
         if (number > 9999) {
             fontSize = 27;
         }
+        if (number > 99999) {
+            fontSize = 23;
+        }
         return fontSize;
     }
 
@@ -357,37 +360,56 @@ class Stats extends Component {
         );
     }
 
-    renderSwiper1 () {
+    renderConsumptionsData (sensorId, text) {
         const {width} = Dimensions.get("window");
-        const tabAggregate = getTitleAndSubtitle(this.props.stats.chart.period, this.getConsumptionAggregate().filter(x => x.get("sensorId") == this.props.site._id));
-        var fontSize = this.mapNumberFontSize(tabAggregate.sum);
-        return (
-            <View style={styles.contentStatsWrp}>
-                <Text style={styles.titleSwiper}>{tabAggregate.periodTitle}</Text>
-                <View style={styles.consumptionCircleWrp}>
-                    <Text style={[styles.consumptionCircleValue, {fontSize, lineHeight: fontSize}]}>{tabAggregate.sum}</Text>
-                    <Text style={styles.consumptionCircleMeasure}>{tabAggregate.measureUnit}</Text>
-                </View>
-                {this.renderProgressBar(tabAggregate.comparisons, tabAggregate.measureUnit)}
-                {this.renderAlarmSettings()}
-                <View style={styles.summaryConsumptionContainer}>
-                    <View key={"avg-similar"} style={[styles.summaryConsumptionWrp, {width: width * 0.45}]}>
-                        <Text style={styles.consumptionTitle}>{"Media dei consumi giornalieri di attività simili"}</Text>
-                        <View style={styles.smallConsumptionWrp}>
-                            <Text style={styles.smallConsumptionValue}>{48}</Text>
-                            <Text style={styles.smallConsumptionMeasure}>{"kWh"}</Text>
-                        </View>
-                    </View>
-                    <View key={"standby-similar"} style={[styles.summaryConsumptionWrp, {width: width * 0.45}]}>
-                        <Text style={styles.consumptionTitle}>{"Consumi\nin standby"}</Text>
-                        <View style={styles.smallConsumptionWrp}>
-                            <Text style={styles.smallConsumptionValue}>{18}</Text>
-                            <Text style={styles.smallConsumptionMeasure}>{"kWh"}</Text>
-                        </View>
+        const {
+            stats
+        } = this.props;
+        const aggregate = this.getConsumptionAggregate().filter(x => x.get("sensorId") === sensorId);
+        if (!aggregate.isEmpty()) {
+            const data = getTitleAndSubtitle(stats.chart.period, aggregate);
+            const fontSize = this.mapNumberFontSize(data.sum) - 8;
+            return (
+                <View style={[styles.summaryConsumptionWrp, {width: width * 0.45}]}>
+                    <Text style={styles.consumptionTitle}>{text ? text : data.peersText}</Text>
+                    <View style={styles.smallConsumptionWrp}>
+                        <Text style={[styles.smallConsumptionValue, {fontSize: fontSize, lineHeight: fontSize}]}>{data.sum}</Text>
+                        <Text style={styles.smallConsumptionMeasure}>{"kWh"}</Text>
                     </View>
                 </View>
-            </View>
-        );
+            );
+        } else {
+            return null;
+        }
+    }
+
+    renderSwiper1 () {
+        const {
+            site,
+            stats
+        } = this.props;
+        const aggregates = this.getConsumptionAggregate().filter(x => x.get("sensorId") == site._id);
+        if (!aggregates.isEmpty()) {
+            const tabAggregate = getTitleAndSubtitle(stats.chart.period, this.getConsumptionAggregate().filter(x => x.get("sensorId") == site._id));
+            const fontSize = this.mapNumberFontSize(tabAggregate.sum);
+            return (
+                <View style={styles.contentStatsWrp}>
+                    <Text style={styles.titleSwiper}>{tabAggregate.periodTitle}</Text>
+                    <View style={styles.consumptionCircleWrp}>
+                        <Text style={[styles.consumptionCircleValue, {fontSize, lineHeight: fontSize}]}>{tabAggregate.sum}</Text>
+                        <Text style={styles.consumptionCircleMeasure}>{tabAggregate.measureUnit}</Text>
+                    </View>
+                    {this.renderProgressBar(tabAggregate.comparisons, tabAggregate.measureUnit)}
+                    {this.renderAlarmSettings()}
+                    <View style={styles.summaryConsumptionContainer}>
+                        {this.renderConsumptionsData(`${site._id}-peers-avg`)}
+                        {this.renderConsumptionsData(`${site._id}-standby`, "Consumi\nin standby")}
+                    </View>
+                </View>
+            );
+        } else {
+            return null;
+        }
     }
 
     renderContentTab () {

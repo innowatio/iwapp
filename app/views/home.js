@@ -94,6 +94,13 @@ class Home extends Component {
             "reading",
             "activeEnergy"
         );
+        props.asteroid.subscribe(
+            "yearlyConsumptions",
+            `${charts[0].sensorId}-standby`,
+            moment.utc().format("YYYY"),
+            "reading",
+            "activeEnergy"
+        );
     }
 
     getConsumptionAggregate () {

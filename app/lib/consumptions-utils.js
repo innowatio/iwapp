@@ -19,11 +19,11 @@ function getPreviousPeriod (subtractPeriod, rangePeriod) {
 }
 
 function getInYear (time, period) {
-    return getPeriodRatio(period, time.dayOfYear() - 1);
+    return getPeriodRatio(period, time.dayOfYear());
 }
 
 function getPeriodRatio (period, days) {
-    return days / getDaysIn (period);
+    return days / getDaysIn(period);
 }
 
 function getDaysIn (period) {
@@ -116,6 +116,7 @@ export function getTitleAndSubtitle (period, aggregates) {
                 period: period,
                 periodTitle: "OGGI HAI UTILIZZATO",
                 periodSubtitle: `${moment(periodDates.start).locale("it").format("DD MMMM YYYY")}`.toUpperCase(),
+                peersText: "Media dei consumi giornalieri di attività simili",
                 title: "OGGI",
                 sum: defaultMeasurement,
                 comparisons: [{
@@ -142,8 +143,9 @@ export function getTitleAndSubtitle (period, aggregates) {
                 period: period,
                 periodTitle: "QUESTA SETTIMANA HAI UTILIZZATO",
                 periodSubtitle: `${moment(periodDates.start).format("DD")} - ${moment(periodDates.end).locale("it").format("DD MMMM YYYY")}`.toUpperCase(),
+                peersText: "Media dei consumi settimanali di attività simili",
                 title: "SETTIMANA CORRENTE",
-                sum: periodStats(period),
+                sum: defaultMeasurement,
                 comparisons: [{
                     key: "week-1w",
                     title: "SETTIMANA SCORSA",
@@ -163,6 +165,7 @@ export function getTitleAndSubtitle (period, aggregates) {
                 period: period,
                 periodTitle: `NEL MESE DI ${moment(periodDates.start).locale("it").format("MMMM")} HAI UTILIZZATO`.toUpperCase(),
                 periodSubtitle: `${moment(periodDates.start).format("YYYY")}`,
+                peersText: "Media dei consumi mensili di attività simili",
                 title: "MESE CORRENTE",
                 sum: defaultMeasurement,
                 comparisons: [{
@@ -189,8 +192,9 @@ export function getTitleAndSubtitle (period, aggregates) {
                 period: period,
                 periodTitle: `NEL ${moment(periodDates.start).format("YYYY")} HAI UTILIZZATO`,
                 periodSubtitle: `${moment(periodDates.start).format("YYYY")}`.toUpperCase(),
+                peersText: "Media dei consumi annuali di attività simili",
                 title: "ANNO CORRENTE",
-                sum: result.avg,
+                sum: defaultMeasurement,
                 comparisons: [{
                     key: "year-1y",
                     title: `${moment(getPreviousPeriod(period, period).start).locale("it").format("YYYY")}`.toUpperCase(),
