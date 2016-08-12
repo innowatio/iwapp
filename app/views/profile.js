@@ -159,17 +159,17 @@ class Profile extends Component {
         });
     }
 
-    getQuestionsByCategory (category, type) {
-        const questions = this.props.collections.get("questions") || Map();
-        const selectedQuestion = questions.find((question) => {
+    getQuestionsByCategoryAndType (questionsCollection, category, type) {
+        const questions = questionsCollection.find((question) => {
             return question.get("type") === type && question.get("category") === category;
         }) || Map({questions: []});
-        return selectedQuestion.get("questions").size;
+        return questions.get("questions").size || 0;
     }
 
-    getAnswersByCategory (category, type, siteId) {
+    getAnswersByCategoryTypeAndSiteId (answersCollection, category, type, siteId) {
+        console.log({answersCollection, category, type, siteId});
         const key = `${type}-${category}-${siteId}`;
-        const answers = this.props.collections.getIn(["answers", key, "answers"]) || List();
+        const answers = answersCollection.getIn([key, "answers"]) || List();
         return uniq(answers.map((answer) => {
             return answer.get("id");
         }).toJS()).length;
@@ -178,6 +178,8 @@ class Profile extends Component {
     getQuestionnaires () {
         const type = "questionnaire";
         const siteId = this.props.site._id;
+        const answers = this.props.collections.get("answers") || Map();
+        const questions = this.props.collections.get("questions") || Map();
         return [
             {color: colors.demographicsSection, name: "Demographics", key: "demographics", icon: "iw-demographics"},
             {color: colors.buildingsSection, name: "Building", key: "building", icon: "iw-buildings"},
@@ -185,18 +187,28 @@ class Profile extends Component {
             {color: colors.coolingSection, name: "Cooling", key: "cooling", icon: "iw-cooling"},
             {color: colors.statisticsSection, name: "Statistics", key: "statistics", icon: "iw-statistics"}
         ].map((questionnaire) => {
+            const {percentage, totalQuestions, totalAnswers} = questions ?
+                this.getPercentage(questions, answers, questionnaire.key, type, siteId) :
+                {percentage: 0, totalQuestions: 0, totalAnswers: 0};
             return {
                 ...questionnaire,
-                value: this.getPercentage(questionnaire.key, type, siteId) || 0
+                value: percentage || 0,
+                totalQuestions,
+                totalAnswers
             };
         });
 
     }
 
-    getPercentage (category, type, siteId) {
-        const totalQuestions = this.getQuestionsByCategory(category, type);
-        const totalAnswers = this.getAnswersByCategory(category, type, siteId);
-        return Math.round((totalAnswers / totalQuestions) * 100) / 100;
+    getPercentage (questions, answers, category, type, siteId) {
+        const totalQuestions = this.getQuestionsByCategoryAndType(questions, category, type);
+        const totalAnswers = this.getAnswersByCategoryTypeAndSiteId(answers, category, type, siteId);
+        const percentage = this.roundTwoDecimals(totalAnswers / totalQuestions);
+        return {percentage, totalQuestions, totalAnswers};
+    }
+
+    roundTwoDecimals (number) {
+        return Math.round((number) * 100) / 100;
     }
 
     showImagePicker () {
@@ -282,8 +294,11 @@ class Profile extends Component {
         );
     }
 
-    renderProfilePercentage () {
+    renderProfilePercentage (questionnairePercentages) {
         const {width} = Dimensions.get("window");
+        const progress = this.roundTwoDecimals(questionnairePercentages.reduce((prev, curr) => {
+            return prev + curr.value;
+        }, 0) / questionnairePercentages.length);
         return (
             <View style={styles.progressBarStyleWrp}>
                 <Progress.Bar
@@ -292,7 +307,7 @@ class Profile extends Component {
                     borderWidth={1}
                     color={colors.secondaryBlue}
                     height={6}
-                    progress={1}
+                    progress={progress}
                     unfilledColor={colors.white}
                     width={width * 0.9}
                 />
@@ -308,6 +323,7 @@ class Profile extends Component {
 
     render () {
         const {height} = Dimensions.get("window");
+        const questionnairePercentages = this.getQuestionnaires();
         return (
             <View style={styles.container}>
                 <Content style={{backgroundColor: colors.background, height: height}}>
@@ -322,9 +338,9 @@ class Profile extends Component {
                     </View>
                     <View style={[styles.contentAnswerWrp, {height: height * 0.7}]}>
                         <Text style={styles.titleComplete}>{"Completa il profilo"}</Text>
-                        {this.renderProfilePercentage()}
+                        {this.renderProfilePercentage(questionnairePercentages)}
                         <View style={styles.progressQuestionnairesWrp}>
-                            {this.getQuestionnaires().map(::this.renderQuestionnairesProgress)}
+                            {questionnairePercentages.map(::this.renderQuestionnairesProgress)}
                         </View>
                     </View>
                 </Content>
