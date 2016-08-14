@@ -160,15 +160,14 @@ class Profile extends Component {
         });
     }
 
-    getQuestionsByCategoryAndType (questionsCollection, category, type) {
+    countQuestionsByCategoryAndType (questionsCollection, category, type) {
         const questions = questionsCollection.find((question) => {
             return question.get("type") === type && question.get("category") === category;
         }) || Map({questions: []});
         return questions.get("questions").size || 0;
     }
 
-    getAnswersByCategoryTypeAndSiteId (answersCollection, category, type, siteId) {
-        console.log({answersCollection, category, type, siteId});
+    countAnswersByCategoryTypeAndSiteId (answersCollection, category, type, siteId) {
         const key = `${type}-${category}-${siteId}`;
         const answers = answersCollection.getIn([key, "answers"]) || List();
         return uniq(answers.map((answer) => {
@@ -197,6 +196,7 @@ class Profile extends Component {
                 totalQuestions,
                 totalAnswers
             };
+            // selectedQuestionnaires don't have onPress method
             return {
                 ...questionnareItem,
                 onPress: () => Actions.questionnaire({selectedQuestionnaire: questionnareItem})
@@ -206,8 +206,8 @@ class Profile extends Component {
     }
 
     getPercentage (questions, answers, category, type, siteId) {
-        const totalQuestions = this.getQuestionsByCategoryAndType(questions, category, type);
-        const totalAnswers = this.getAnswersByCategoryTypeAndSiteId(answers, category, type, siteId);
+        const totalQuestions = this.countQuestionsByCategoryAndType(questions, category, type);
+        const totalAnswers = this.countAnswersByCategoryTypeAndSiteId(answers, category, type, siteId);
         const percentage = this.roundTwoDecimals(totalAnswers / totalQuestions);
         return {percentage, totalQuestions, totalAnswers};
     }
@@ -260,6 +260,7 @@ class Profile extends Component {
         return (
             <View style={styles.userPhotoWrp}>
                 <TouchableOpacity
+                    className="userImage"
                     onPress={() => this.showImagePicker()}
                     style={styles.photoWrp}
                     transparent={true}
@@ -301,9 +302,11 @@ class Profile extends Component {
 
     renderProfilePercentage (questionnairePercentages) {
         const {width} = Dimensions.get("window");
-        const progress = this.roundTwoDecimals(questionnairePercentages.reduce((prev, curr) => {
-            return prev + curr.value;
-        }, 0) / questionnairePercentages.length);
+        const totalQuestionnairesProgress = this.roundTwoDecimals(
+            questionnairePercentages.reduce((prev, curr) => {
+                return prev + curr.value;
+            }, 0) / questionnairePercentages.length);
+
         return (
             <View style={styles.progressBarStyleWrp}>
                 <Progress.Bar
@@ -312,7 +315,7 @@ class Profile extends Component {
                     borderWidth={1}
                     color={colors.secondaryBlue}
                     height={6}
-                    progress={progress}
+                    progress={totalQuestionnairesProgress}
                     unfilledColor={colors.white}
                     width={width * 0.9}
                 />
