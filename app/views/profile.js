@@ -4,6 +4,9 @@ import {Dimensions, Linking, StyleSheet, TouchableOpacity, View} from "react-nat
 import * as Progress from "react-native-progress";
 import ImagePicker from "react-native-image-picker";
 import {connect} from "react-redux";
+import {List, Map} from "immutable";
+import {uniq} from "ramda";
+import {Actions} from "react-native-router-flux";
 
 import Icon from "../components/iwapp-icons";
 import * as colors from "../lib/colors";
@@ -98,9 +101,6 @@ const styles = StyleSheet.create({
     progressBarStyleWrp: {
         marginBottom: 20
     },
-    progressBarStyle: {
-        width: 200
-    },
 
     // STYLE FOR BUTTON PERCENTAGE OF ANSWER
     progressQuestionnairesWrp: {
@@ -116,6 +116,7 @@ class Profile extends Component {
     static propTypes = {
         asteroid: PropTypes.object.isRequired,
         collections: PropTypes.object.isRequired,
+        site: PropTypes.object.isRequired,
         userId: PropTypes.string
     }
 
@@ -141,16 +142,83 @@ class Profile extends Component {
 
     componentDidMount () {
         this.props.asteroid.subscribe("users");
+        this.subscribeToCategories(this.props.site._id);
+    }
+
+    subscribeToCategories (siteId) {
+        this.getQuestionnairesDecorator().map(questionnaire => {
+            const category = questionnaire.key;
+            this.props.asteroid.subscribe("answers", {
+                siteId: siteId,
+                category,
+                type: "questionnaire"
+            });
+            this.props.asteroid.subscribe("questions", {
+                type: "questionnaire",
+                category
+            });
+        });
+    }
+
+    countQuestionsByCategoryAndType (questionsCollection, category, type) {
+        const questions = questionsCollection.find((question) => {
+            return question.get("type") === type && question.get("category") === category;
+        }) || Map({questions: []});
+        return questions.get("questions").size || 0;
+    }
+
+    countAnswersByCategoryTypeAndSiteId (answersCollection, category, type, siteId) {
+        const key = `${type}-${category}-${siteId}`;
+        const answers = answersCollection.getIn([key, "answers"]) || List();
+        return uniq(answers.map((answer) => {
+            return answer.get("id");
+        }).toJS()).length;
+    }
+
+    getQuestionnairesDecorator () {
+        return [
+            {color: colors.demographicsSection, name: "Demographics", key: "demographics", icon: "iw-demographics"},
+            {color: colors.buildingsSection, name: "Building", key: "building", icon: "iw-buildings"},
+            {color: colors.heatingSection, name: "Heating", key: "heating", icon: "iw-heating"},
+            {color: colors.coolingSection, name: "Cooling", key: "cooling", icon: "iw-cooling"},
+            {color: colors.statisticsSection, name: "Statistics", key: "statistics", icon: "iw-statistics"}
+        ];
     }
 
     getQuestionnaires () {
-        return [
-            {color: colors.demographicsSection, name: "Demographics", key: "demographics", icon: "iw-demographics", value: 1, percentage: "100"},
-            {color: colors.buildingsSection, name: "Building", key: "building", icon: "iw-buildings", value: 0.3, percentage: "30"},
-            {color: colors.heatingSection, name: "Heating", key: "heating", icon: "iw-heating", value: 0.8, percentage: "80"},
-            {color: colors.coolingSection, name: "Cooling", key: "cooling", icon: "iw-cooling", value: 1, percentage: "100"},
-            {color: colors.statisticsSection, name: "Statistics", key: "statistics", icon: "iw-statistics", value: 0.5, percentage: "50"}
-        ];
+        const type = "questionnaire";
+        const siteId = this.props.site._id;
+        const answers = this.props.collections.get("answers") || Map();
+        const questions = this.props.collections.get("questions") || Map();
+        return this.getQuestionnairesDecorator().map((questionnaire) => {
+            const {percentage, totalQuestions, totalAnswers} = questions ?
+                this.getPercentage(questions, answers, questionnaire.key, type, siteId) :
+                {percentage: 0, totalQuestions: 0, totalAnswers: 0};
+            const questionnareItem = {
+                ...questionnaire,
+                value: percentage || 0,
+                totalQuestions,
+                totalAnswers,
+                text: (percentage || 0) * 100 + "% completato"
+            };
+            // selectedQuestionnaires don't have onPress method
+            return {
+                ...questionnareItem,
+                onPress: () => Actions.questionnaire({selectedQuestionnaire: questionnareItem})
+            };
+        });
+
+    }
+
+    getPercentage (questions, answers, category, type, siteId) {
+        const totalQuestions = this.countQuestionsByCategoryAndType(questions, category, type);
+        const totalAnswers = this.countAnswersByCategoryTypeAndSiteId(answers, category, type, siteId);
+        const percentage = this.roundTwoDecimals(totalAnswers / totalQuestions);
+        return {percentage, totalQuestions, totalAnswers};
+    }
+
+    roundTwoDecimals (number) {
+        return Math.round((number) * 100) / 100;
     }
 
     showImagePicker () {
@@ -197,6 +265,7 @@ class Profile extends Component {
         return (
             <View style={styles.userPhotoWrp}>
                 <TouchableOpacity
+                    className="userImage"
                     onPress={() => this.showImagePicker()}
                     style={styles.photoWrp}
                     transparent={true}
@@ -236,7 +305,13 @@ class Profile extends Component {
         );
     }
 
-    renderProfilePercentage () {
+    renderProfilePercentage (questionnairePercentages) {
+        const {width} = Dimensions.get("window");
+        const totalQuestionnairesProgress = this.roundTwoDecimals(
+            questionnairePercentages.reduce((prev, curr) => {
+                return prev + curr.value;
+            }, 0) / questionnairePercentages.length);
+
         return (
             <View style={styles.progressBarStyleWrp}>
                 <Progress.Bar
@@ -245,9 +320,9 @@ class Profile extends Component {
                     borderWidth={1}
                     color={colors.secondaryBlue}
                     height={6}
-                    progress={0.5}
-                    style={styles.progressBarStyle}
+                    progress={totalQuestionnairesProgress}
                     unfilledColor={colors.white}
+                    width={width * 0.9}
                 />
             </View>
         );
@@ -261,6 +336,7 @@ class Profile extends Component {
 
     render () {
         const {height} = Dimensions.get("window");
+        const questionnairePercentages = this.getQuestionnaires();
         return (
             <View style={styles.container}>
                 <Content style={{backgroundColor: colors.background, height: height}}>
@@ -275,9 +351,9 @@ class Profile extends Component {
                     </View>
                     <View style={[styles.contentAnswerWrp, {height: height * 0.7}]}>
                         <Text style={styles.titleComplete}>{"Completa il profilo"}</Text>
-                        {this.renderProfilePercentage()}
+                        {this.renderProfilePercentage(questionnairePercentages)}
                         <View style={styles.progressQuestionnairesWrp}>
-                            {this.getQuestionnaires().map(::this.renderQuestionnairesProgress)}
+                            {questionnairePercentages.map(::this.renderQuestionnairesProgress)}
                         </View>
                     </View>
                 </Content>
@@ -289,6 +365,7 @@ class Profile extends Component {
 function mapStateToProps (state) {
     return {
         collections: state.collections,
+        site: state.site,
         userId: state.userId
     };
 }

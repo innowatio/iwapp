@@ -1,7 +1,6 @@
 import React, {Component, PropTypes} from "react";
 import {StyleSheet, TouchableOpacity, View} from "react-native";
 import * as Progress from "react-native-progress";
-import {Actions} from "react-native-router-flux";
 
 import Icon from "../components/iwapp-icons";
 import * as colors from "../lib/colors";
@@ -54,7 +53,8 @@ export default class QuestionnaireProgress extends Component {
             color: PropTypes.string.isRequired,
             value: PropTypes.number.isRequired,
             icon: PropTypes.string.isRequired,
-            name: PropTypes.string.isRequired
+            name: PropTypes.string.isRequired,
+            onPress: PropTypes.func
         }).isRequired
     }
 
@@ -71,7 +71,7 @@ export default class QuestionnaireProgress extends Component {
                     style={styles.circleProgress}
                 />
                 <TouchableOpacity
-                    onPress={() => Actions.questionnaire({selectedQuestionnaire: questionnaire})}
+                    onPress={questionnaire.onPress}
                     style={styles.iconQuestionnaireWrp}
                     transparent={true}
                 >
@@ -86,8 +86,7 @@ export default class QuestionnaireProgress extends Component {
                         {questionnaire.name}
                     </Text>
                     <Text style={styles.percQuestionnaire}>
-                        {questionnaire.percentage}
-                        {"% completato"}
+                        {questionnaire.text}
                     </Text>
                 </View>
             </View>
