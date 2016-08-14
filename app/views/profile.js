@@ -146,7 +146,7 @@ class Profile extends Component {
     }
 
     subscribeToCategories (siteId) {
-        this.getQuestionnaires().map(questionnaire => {
+        this.getQuestionnairesDecorator().map(questionnaire => {
             const category = questionnaire.key;
             this.props.asteroid.subscribe("answers", {
                 siteId: siteId,
@@ -175,18 +175,22 @@ class Profile extends Component {
         }).toJS()).length;
     }
 
-    getQuestionnaires () {
-        const type = "questionnaire";
-        const siteId = this.props.site._id;
-        const answers = this.props.collections.get("answers") || Map();
-        const questions = this.props.collections.get("questions") || Map();
+    getQuestionnairesDecorator () {
         return [
             {color: colors.demographicsSection, name: "Demographics", key: "demographics", icon: "iw-demographics"},
             {color: colors.buildingsSection, name: "Building", key: "building", icon: "iw-buildings"},
             {color: colors.heatingSection, name: "Heating", key: "heating", icon: "iw-heating"},
             {color: colors.coolingSection, name: "Cooling", key: "cooling", icon: "iw-cooling"},
             {color: colors.statisticsSection, name: "Statistics", key: "statistics", icon: "iw-statistics"}
-        ].map((questionnaire) => {
+        ];
+    }
+
+    getQuestionnaires () {
+        const type = "questionnaire";
+        const siteId = this.props.site._id;
+        const answers = this.props.collections.get("answers") || Map();
+        const questions = this.props.collections.get("questions") || Map();
+        return this.getQuestionnairesDecorator().map((questionnaire) => {
             const {percentage, totalQuestions, totalAnswers} = questions ?
                 this.getPercentage(questions, answers, questionnaire.key, type, siteId) :
                 {percentage: 0, totalQuestions: 0, totalAnswers: 0};
@@ -194,7 +198,8 @@ class Profile extends Component {
                 ...questionnaire,
                 value: percentage || 0,
                 totalQuestions,
-                totalAnswers
+                totalAnswers,
+                text: (percentage || 0) * 100 + "% completato"
             };
             // selectedQuestionnaires don't have onPress method
             return {
