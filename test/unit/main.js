@@ -30,8 +30,10 @@ describe("`Main` component", () => {
     describe("`componentDidMount` method", () => {
 
         const codePush = {
-            sync: sinon.spy()
+            sync: sinon.spy(),
+            InstallMode: {}
         };
+        // const InstallMode = {};
         const syncStoreAndAsteroid = sinon.spy();
 
         beforeEach(() => {
@@ -43,6 +45,7 @@ describe("`Main` component", () => {
             codePush.sync.reset();
             syncStoreAndAsteroid.reset();
             Main.__ResetDependency__("syncStoreAndAsteroid");
+            Main.__ResetDependency__("InstallMode");
         });
 
         it("call `codePush.sync` function", () => {

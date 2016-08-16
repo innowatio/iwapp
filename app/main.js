@@ -14,7 +14,7 @@ export default class Main extends Component {
     componentDidMount () {
         AppState.addEventListener("change", this.handleAppStateChange);
         syncStoreAndAsteroid(store, asteroid);
-        codePush.sync();
+        codePush.sync({installMode: codePush.InstallMode.ON_NEXT_RESUME, minimumBackgroundDuration: 60 * 10});
     }
 
     componentWillUnmount () {
