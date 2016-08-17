@@ -49,11 +49,11 @@ export default class QuestionnaireProgress extends Component {
 
     static propTypes = {
         questionnaire: PropTypes.shape({
-            key: PropTypes.string.isRequired,
-            color: PropTypes.string.isRequired,
-            value: PropTypes.number.isRequired,
-            icon: PropTypes.string.isRequired,
-            name: PropTypes.string.isRequired,
+            key: PropTypes.string,
+            color: PropTypes.string,
+            value: PropTypes.number,
+            icon: PropTypes.string,
+            name: PropTypes.string,
             onPress: PropTypes.func
         }).isRequired
     }

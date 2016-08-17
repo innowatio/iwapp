@@ -116,7 +116,7 @@ class Profile extends Component {
     static propTypes = {
         asteroid: PropTypes.object.isRequired,
         collections: PropTypes.object.isRequired,
-        site: PropTypes.object.isRequired,
+        site: PropTypes.object,
         userId: PropTypes.string
     }
 
@@ -141,8 +141,10 @@ class Profile extends Component {
     }
 
     componentDidMount () {
-        this.props.asteroid.subscribe("users");
-        this.subscribeToCategories(this.props.site._id);
+        if (this.props.site) {
+            this.props.asteroid.subscribe("users");
+            this.subscribeToCategories(this.props.site._id);
+        }
     }
 
     subscribeToCategories (siteId) {
@@ -186,26 +188,34 @@ class Profile extends Component {
     }
 
     getQuestionnaires () {
-        const type = "questionnaire";
-        const siteId = this.props.site._id;
-        const answers = this.props.collections.get("answers") || Map();
-        const questions = this.props.collections.get("questions") || Map();
         return this.getQuestionnairesDecorator().map((questionnaire) => {
-            const {percentage, totalQuestions, totalAnswers} = questions ?
-                this.getPercentage(questions, answers, questionnaire.key, type, siteId) :
-                {percentage: 0, totalQuestions: 0, totalAnswers: 0};
-            const questionnareItem = {
-                ...questionnaire,
-                value: percentage || 0,
-                totalQuestions,
-                totalAnswers,
-                text: (percentage || 0) * 100 + "% completato"
-            };
-            // selectedQuestionnaires don't have onPress method
-            return {
-                ...questionnareItem,
-                onPress: () => Actions.questionnaire({selectedQuestionnaire: questionnareItem})
-            };
+
+            var questionnareItem = questionnaire;
+
+            if (this.props.site) {
+                const type = "questionnaire";
+                const siteId = this.props.site._id;
+                const answers = this.props.collections.get("answers") || Map();
+                const questions = this.props.collections.get("questions") || Map();
+
+                const {percentage, totalQuestions, totalAnswers} = questions ?
+                    this.getPercentage(questions, answers, questionnaire.key, type, siteId) :
+                    {percentage: 0, totalQuestions: 0, totalAnswers: 0};
+                questionnareItem = {
+                    ...questionnaire,
+                    value: percentage || 0,
+                    totalQuestions,
+                    totalAnswers,
+                    text: (percentage || 0) * 100 + "% completato"
+                };
+                // selectedQuestionnaires don't have onPress method
+                return {
+                    ...questionnareItem,
+                    onPress: () => Actions.questionnaire({selectedQuestionnaire: questionnareItem})
+                };
+            }
+
+            return questionnareItem;
         });
 
     }
