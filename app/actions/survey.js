@@ -8,6 +8,9 @@ export const SAVE_SURVEY_START = "SAVE_SURVEY_START";
 export const SAVE_SURVEY_SUCCESS = "SAVE_SURVEY_SUCCESS";
 export const SAVE_SURVEY_ERROR = "SAVE_SURVEY_ERROR";
 
+export const SURVEY_RATE = "rate";
+export const SURVEY_SIGLE_CHOICE = "singleChoice";
+
 const typeofSaveSurveyAnswers = actionTypeValidator(
     struct({
         questionId: String,

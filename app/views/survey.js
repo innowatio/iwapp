@@ -7,12 +7,15 @@ import {connect} from "react-redux";
 import FaIcons from "react-native-vector-icons/FontAwesome";
 import {Actions} from "react-native-router-flux";
 import {bindActionCreators} from "redux";
+import StarRating from "react-native-star-rating";
 
 import Text from "../components/text-lato";
 import * as colors from "../lib/colors";
 import Stepper from "../components/stepper";
 import ConfirmModal from "../components/confirm-modal";
 import {saveSurveyAnswers} from "../actions/survey";
+import {SURVEY_RATE, SURVEY_SIGLE_CHOICE} from "../actions/survey";
+//import Icon from "./iwapp-icons";
 
 const styles = StyleSheet.create({
     container: {
@@ -103,7 +106,7 @@ const styles = StyleSheet.create({
 
     iconArrow: {
         marginLeft: 6
-    }
+    },
 });
 
 class Survey extends Component {
@@ -188,6 +191,32 @@ class Survey extends Component {
         );
     }
 
+    onRatingPress (rating, activeStepQuestion) {
+        this.setState({
+            starCount: rating
+        });
+        this.setAnswer(activeStepQuestion.get("options").get(rating-1), activeStepQuestion.get("id"));
+    }
+
+    renderRate (activeStepQuestion) {
+        const {width} = Dimensions.get("window");
+        return (
+            <View style={{width, paddingHorizontal: 80}}>
+                <StarRating
+                    disabled={false}
+                    emptyStar={"ios-bulb"}
+                    fullStar={"ios-bulb"}
+                    iconSet={"Ionicons"}
+                    maxStars={activeStepQuestion.get("options").length}
+                    rating={this.state.starCount}
+                    selectedStar={(rating) => this.onRatingPress(rating, activeStepQuestion)}
+                    starColor={"#ffcc00"}
+                    starSize={60}
+                />
+            </View>
+        );
+    }
+
     renderAnswer (option, index, activeStepQuestion) {
         const {width} = Dimensions.get("window");
         return (
@@ -232,6 +261,17 @@ class Survey extends Component {
         );
     }
 
+    renderSwitchAnswer (activeStepQuestion) {
+        switch (activeStepQuestion.get("type")) {
+            case SURVEY_RATE:
+                return this.renderRate(activeStepQuestion);
+            case SURVEY_SIGLE_CHOICE:
+                return activeStepQuestion.get("options").map((option, index) =>
+                    this.renderAnswer(option, index, activeStepQuestion)
+                );
+        }
+    }
+
     renderContentSurvey () {
         const {height} = Dimensions.get("window");
         const activeStepQuestion = this.props.survey.getIn(["questions", this.state.activeStep]);
@@ -246,11 +286,7 @@ class Survey extends Component {
                     {this.renderQuestion(activeStepQuestion.get("text"))}
                 </View>
                 <View style={styles.answerSurveyWrp}>
-                    {
-                        activeStepQuestion.get("options").map((option, index) =>
-                            this.renderAnswer(option, index, activeStepQuestion)
-                        )
-                    }
+                {this.renderSwitchAnswer(activeStepQuestion)}
                 </View>
                 <View style={[styles.buttonSaveWrp, {height: height * 0.3}]}>
                     <TouchableOpacity
@@ -295,9 +331,11 @@ function mapStateToProps (state) {
         sessionId: state.sessionId
     };
 }
+
 function mapDispatchToProps (dispatch) {
     return {
         saveSurveyAnswers: bindActionCreators(saveSurveyAnswers, dispatch)
     };
 }
+
 export default connect(mapStateToProps, mapDispatchToProps)(Survey);

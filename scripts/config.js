@@ -15,15 +15,14 @@ var getIp = function () {
 function getEnvirnomentVariables () {
     return {
         READ_BACKEND_ENDPOINT: process.env.READ_BACKEND_ENDPOINT || `ws://${getIp()}:3000/websocket`,
-        WRITE_API_ENDPOINT: process.env.WRITE_API_ENDPOINT || "http://iwwa-write-api-development.eu-west-1.elasticbeanstalk.com"
+        WRITE_API_ENDPOINT: process.env.WRITE_API_ENDPOINT || "https://iwwa-write-api-development.innowatio-aws.com"
     };
 }
 
-BPromise.resolve()
-    .then(() => {
-        const variables = getEnvirnomentVariables();
-        var env = Object.keys(variables)
-            .map(key => `export const ${key} = "${variables[key]}";`)
-            .join("\n");
-        fs.writeFileSync("env.js", env, "utf8");
-    });
+BPromise.resolve().then(() => {
+    const variables = getEnvirnomentVariables();
+    var env = Object.keys(variables)
+        .map(key => `export const ${key} = "${variables[key]}";`)
+        .join("\n");
+    fs.writeFileSync("env.js", env, "utf8");
+});
