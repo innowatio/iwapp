@@ -1,7 +1,7 @@
 import {shallow} from "enzyme";
 
-import {iwwaMobile as iwwaMobileAndroid} from "../index.android.js";
-import {iwwaMobile as iwwaMobileIos} from "../index.ios.js";
+import {iwwaMobile as iwwaMobileAndroid} from "../index.android";
+import {iwwaMobile as iwwaMobileIos} from "../index.ios";
 
 describe("<iwwaMobile /> [CASE: android]", () => {
 

@@ -19,7 +19,8 @@
     "plugins": [
         "react",
         "react-native",
-        "babel"
+        "babel",
+        "import"
     ],
     "rules": {
         "babel/generator-star-spacing": [2],
@@ -29,6 +30,7 @@
         "brace-style": [2, "1tbs"],
         "comma-spacing": [2, {"before": false, "after": true}],
         "computed-property-spacing": [2, "never"],
+        "import/extensions": [2, "never"],
         "indent": [2, 4, {"SwitchCase": 1, "MemberExpression": 0}],
         "jsx-quotes": [2, "prefer-double"],
         "linebreak-style": [2, "unix"],
@@ -63,7 +65,6 @@
         "react/no-unknown-property": [2],
         "react/prop-types": [2],
         "react/react-in-jsx-scope": [2],
-        "react/require-extension": [2],
         "react/self-closing-comp": [2],
         "react/sort-comp": [2, {
             "order": [
@@ -80,7 +81,7 @@
             }
         }],
         "react/sort-prop-types": [2],
-        "react/wrap-multilines": [2],
+        "react/jsx-wrap-multilines": [2],
         "react-native/no-unused-styles": [2],
         "react-native/split-platform-components": [2],
         "react-native/no-color-literals": [2],
