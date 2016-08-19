@@ -48,7 +48,7 @@ describe("`readingsDailyAggregatesToHighchartsData` function", () => {
         expect(ret[0]).to.be.an("object");
         expect(ret[0]).to.have.all.keys(["data"]);
         expect(ret[0].data).to.be.an("array");
-        expect(ret[0].data.length).to.equal(11);
+        expect(ret[0].data.length).to.equal(24);
     });
 
     it("readings-daily-aggregates -> highcharts data structure [CASE: multiple line]", () => {
@@ -71,8 +71,8 @@ describe("`readingsDailyAggregatesToHighchartsData` function", () => {
             expect(ret[index]).to.have.all.keys(["data"]);
             expect(objectResult.data).to.be.an("array");
         });
-        expect(ret[0].data.length).to.equal(11);
-        expect(ret[1].data.length).to.equal(9);
+        expect(ret[0].data.length).to.equal(24);
+        expect(ret[1].data.length).to.equal(24);
     });
 
     describe("`data` array", () => {
@@ -88,15 +88,34 @@ describe("`readingsDailyAggregatesToHighchartsData` function", () => {
                 readingsDailyAggregates,
                 chartState
             );
-            
-            ret.forEach((res, idx) => {
-                res.data.forEach((data, dataIndex) => {
-                    expect(data[0]).to.be.a("string");
-                    expect(data[1]).to.be.a("number");
-                    expect(data[0]).to.deep.equal(moment.utc(times[source[idx]][dataIndex]).format("HH"));
-                    expect(data[1]).to.deep.equal(values[source[idx]][dataIndex]);
-                });
-            });
+
+            expect(ret).to.deep.equal([{
+                data: [
+                    ["0", 0],
+                    ["1", 0],
+                    ["2", 0],
+                    ["3", 0],
+                    ["4", 0],
+                    ["5", 0],
+                    ["6", 0],
+                    ["7", 0],
+                    ["8", 0],
+                    ["9", 0],
+                    ["10", 0],
+                    ["11", 0],
+                    ["12", 0],
+                    ["13", 12],
+                    ["14", 12],
+                    ["15", 12],
+                    ["16", 332],
+                    ["17", 332],
+                    ["18", 234],
+                    ["19", 234],
+                    ["20", 234],
+                    ["21", 234],
+                    ["22", 234],
+                    ["23", 234]]
+            }]);
         });
     });
 
