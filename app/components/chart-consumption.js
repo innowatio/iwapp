@@ -113,6 +113,7 @@ export default class ChartConsumption extends Component {
     render () {
         const {height} = Dimensions.get("window");
         const sensorId = this.props.charts[0].sensorId;
+        const forecast = this.props.charts.find(x => x.source === "forecast");
         return (
             <View>
                 <View style={[styles.consumptionContainer, {height: height * 0.17}]}>
@@ -141,7 +142,7 @@ export default class ChartConsumption extends Component {
                         onTintColor={colors.HomeSwitchActive}
                         onValueChange={this.props.onToggleSwitch}
                         style={styles.switch}
-                        value={this.props.charts.length === 2}
+                        value={!!forecast}
                     />
                     <View style={styles.switchTextContainer}>
                         <Text style={styles.switchTextHeader}>{"Consumi previsti"}</Text>

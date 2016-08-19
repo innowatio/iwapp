@@ -4,7 +4,7 @@ import IPropTypes from "react-immutable-proptypes";
 import shallowCompare from "react-addons-shallow-compare";
 
 import readingsDailyAggregatesToHighchartsData from "../lib/readings-daily-aggregates-to-highcharts-data";
-import {lineReading, lineForecast} from "../lib/colors";
+import {lineForecast, lineReading, lineStandby} from "../lib/colors";
 
 const styles = StyleSheet.create({
     webView: {
@@ -45,11 +45,11 @@ export default class Highcharts extends Component {
     getSeries () {
         const coordinates = readingsDailyAggregatesToHighchartsData(this.props.aggregates, this.props.charts);
         const colors = [lineReading, lineForecast];
-        const types = ["column", "area"];
+        const types = ["column", "area", "area"];
         return coordinates.map((coordinate, index) => ({
             ...coordinate,
             animation: index === 0 ? false : true,
-            color: colors[index],
+            color: (coordinates.length > 1) && index === (coordinates.length - 1) ? lineStandby : colors[index],
             turboThreshold: 0,
             type: types[index]
         }));

@@ -16,7 +16,7 @@ export default memoize((aggregates, chartsState) => {
     var result;
 
     if (timeFromAggregate) {
-        const chartData = map(chartState => {
+        const chartsData = map(chartState => {
             const {sensorId, day, measurementType, source} = chartState;
             const aggregate = sortedAggregate.get(
                 `${sensorId}-${day}-${source}-${measurementType}`
@@ -27,7 +27,7 @@ export default memoize((aggregates, chartsState) => {
                 const values = aggregate.get("measurementValues").split(",");
                 data = mapIndexed((value, index) => {
                     return {
-                        timestamp: parseInt(times[index]),
+                        hour: moment.utc(parseInt(times[index])).format("H"),
                         value: parseFloat(value)
                     };
                 }, values);
@@ -35,9 +35,21 @@ export default memoize((aggregates, chartsState) => {
             return data;
         }, chartsState);
 
-        result = chartData.map(data => {
-            const chart = data.map(serie => {
-                return [moment.utc(serie.timestamp).format("HH"), serie.value];
+        const filledChartsData = chartsData.map(chartData => {
+            let filledChartData = [];
+            for (var index = 0; index < 24; index++) {
+                let measurement = chartData.find(x => parseInt(x.hour) === index);
+                measurement ? filledChartData[index] = measurement : filledChartData[index] = {
+                    hour: index.toString(),
+                    value: filledChartData[index - 1] ? filledChartData[index - 1].value : 0
+                };
+            }
+            return filledChartData;
+        });
+        
+        result = filledChartsData.map(data => {
+            const chart = data.map(measurement => {
+                return [measurement.hour, measurement.value];
             });
             return {
                 data: chart
