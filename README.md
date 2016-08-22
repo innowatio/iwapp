@@ -16,7 +16,7 @@ N.B. `iwapp` need backend service (iwwa-back) running on local 3000 port.
 
 ### FCM
 
-In [`Firebase console`](https://console.developers.google.com/), you can get `google-services.json` file and place it in `android/app` directory and get `GoogleService-Info.plist` file and place it in `/ios/your-project-name` directory (next to your `Info.plist`).
+In [`Firebase console`](https://console.firebase.google.com/), you can get `google-services.json` file and place it in `android/app` directory and get `GoogleService-Info.plist` file and place it in `/ios/your-project-name` directory (next to your `Info.plist`).
 
 ### ios
 
