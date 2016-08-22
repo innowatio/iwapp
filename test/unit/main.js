@@ -33,11 +33,13 @@ describe("`Main` component", () => {
             sync: sinon.spy(),
             InstallMode: {}
         };
+        const FCM = {};
         // const InstallMode = {};
         const syncStoreAndAsteroid = sinon.spy();
 
         beforeEach(() => {
             Main.__Rewire__("codePush", codePush);
+            Main.__Rewire__("FCM", FCM);
             Main.__Rewire__("syncStoreAndAsteroid", syncStoreAndAsteroid);
         });
 
@@ -45,6 +47,7 @@ describe("`Main` component", () => {
             codePush.sync.reset();
             syncStoreAndAsteroid.reset();
             Main.__ResetDependency__("syncStoreAndAsteroid");
+            Main.__ResetDependency__("FCM");
             Main.__ResetDependency__("InstallMode");
         });
 

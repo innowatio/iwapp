@@ -48,3 +48,8 @@ android/keystores/debug.keystore
 #Visual Studio Code
 .vscode
 tsconfig.json
+
+# Firebase
+
+google-services.json
+GoogleService-info.plist

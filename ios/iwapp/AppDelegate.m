@@ -9,15 +9,18 @@
 
 #import "AppDelegate.h"
 
-#import "RCTPushNotificationManager.h"
 #import "RCTRootView.h"
 #import "CodePush.h"
+#import "RNFIRMessaging.h"
 
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
   NSURL *jsCodeLocation;
+
+  // Use Firebase library to configure APIs
+  [FIRApp configure];
 
   /**
    * Loading JavaScript code - uncomment the one you want.
@@ -33,11 +36,11 @@
    * on the same Wi-Fi network.
    */
 
-  #ifdef DEBUG
-    jsCodeLocation = [NSURL URLWithString:@"http://localhost:8081/index.ios.bundle?platform=ios&dev=true"];
-  #else
+//  #ifdef DEBUG
+//    jsCodeLocation = [NSURL URLWithString:@"http://localhost:8081/index.ios.bundle?platform=ios&dev=true"];
+//  #else
     jsCodeLocation = [CodePush bundleURL];
-  #endif
+//  #endif
 
   /**
    * OPTION 2
@@ -63,27 +66,9 @@
   return YES;
 }
 
-// PUSH NOTIFICATION
-
-// Required to register for notifications
-- (void)application:(UIApplication *)application didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSettings
-{
-  [RCTPushNotificationManager didRegisterUserNotificationSettings:notificationSettings];
-}
-// Required for the register event.
-- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
-{
-  [RCTPushNotificationManager didRegisterForRemoteNotificationsWithDeviceToken:deviceToken];
-}
-// Required for the notification event.
-- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)notification
-{
-  [RCTPushNotificationManager didReceiveRemoteNotification:notification];
-}
-// Required for the localNotification event.
-- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
-{
-  [RCTPushNotificationManager didReceiveLocalNotification:notification];
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)notification fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))handler {
+    [[NSNotificationCenter defaultCenter] postNotificationName:FCMNotificationReceived object:self userInfo:notification];
+    handler(UIBackgroundFetchResultNewData);
 }
 
 @end

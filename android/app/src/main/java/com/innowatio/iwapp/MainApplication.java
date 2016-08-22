@@ -5,6 +5,7 @@ import android.util.Log;
 import android.content.Intent;
 
 import com.facebook.react.ReactApplication;
+import com.evollu.react.fcm.FIRMessagingPackage;
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
@@ -13,7 +14,6 @@ import com.facebook.react.shell.MainReactPackage;
 import com.microsoft.codepush.react.CodePush;
 import com.imagepicker.ImagePickerPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
-import com.dieam.reactnativepushnotification.ReactNativePushNotificationPackage;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
 
 import java.util.Arrays;
@@ -37,11 +37,11 @@ public class MainApplication extends Application implements ReactApplication {
         protected List<ReactPackage> getPackages() {
             return Arrays.<ReactPackage>asList(
             new MainReactPackage(),
+            new RNDeviceInfo(),
+            new FIRMessagingPackage(),
             new ImagePickerPackage(),
             new VectorIconsPackage(),
-            new RNDeviceInfo(),
-            new CodePush(getString(R.string.reactNativeCodePush_androidDeploymentKey), MainApplication.this, BuildConfig.DEBUG),
-            new ReactNativePushNotificationPackage()
+            new CodePush(getString(R.string.reactNativeCodePush_androidDeploymentKey), MainApplication.this, BuildConfig.DEBUG)
             );
         }
     };
