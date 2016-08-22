@@ -75,3 +75,9 @@ React.NavigationExperimental = {
     AnimatedView: React.View,
     Card: React.View
 };
+
+// Mock for React Native RNFIRMessaging for react-native-fcm
+React.NativeModules = {
+    ...React.NativeModules,
+    RNFIRMessaging: {}
+};

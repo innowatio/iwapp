@@ -13,7 +13,7 @@ import store from "./lib/store";
 export default class Main extends Component {
 
     componentDidMount () {
-
+        // TODO
         FCM.requestPermissions(); // for iOS
         FCM.getFCMToken().then(token => {
             console.log(`TOKEN: ${token}`);
@@ -28,7 +28,6 @@ export default class Main extends Component {
             console.log(`TOKEN REFRESH: ${token}`);
             // fcm token may not be available on first load, catch it here
         });
-
         AppState.addEventListener("change", this.handleAppStateChange);
         syncStoreAndAsteroid(store, asteroid);
         codePush.sync({installMode: codePush.InstallMode.ON_NEXT_RESUME, minimumBackgroundDuration: 60 * 10});
@@ -36,6 +35,8 @@ export default class Main extends Component {
 
     componentWillUnmount () {
         AppState.removeEventListener("change", this.handleAppStateChange);
+        this.refreshUnsubscribe();
+        this.notificationUnsubscribe();
     }
 
     handleAppStateChange (currentState) {

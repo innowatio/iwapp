@@ -1,3 +1,4 @@
+import {resolve} from "bluebird";
 import {shallow} from "enzyme";
 import {Provider} from "react-redux";
 
@@ -33,7 +34,11 @@ describe("`Main` component", () => {
             sync: sinon.spy(),
             InstallMode: {}
         };
-        const FCM = {};
+        const FCM = {
+            requestPermissions: sinon.spy(),
+            getFCMToken: sinon.stub().returns(resolve()),
+            on: sinon.spy() 
+        };
         // const InstallMode = {};
         const syncStoreAndAsteroid = sinon.spy();
 
