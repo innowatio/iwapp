@@ -34,8 +34,11 @@ export default memoize((aggregates, chartsState) => {
             }
             return data;
         }, chartsState);
-
+        
         const filledChartsData = chartsData.map(chartData => {
+            if (chartData.length == 0) {
+                return [];
+            }
             let filledChartData = [];
             for (var index = 0; index < 24; index++) {
                 let measurement = chartData.find(x => parseInt(x.hour) === index);

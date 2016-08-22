@@ -114,7 +114,25 @@ describe("`readingsDailyAggregatesToHighchartsData` function", () => {
                     ["20", 234],
                     ["21", 234],
                     ["22", 234],
-                    ["23", 234]]
+                    ["23", 234]
+                ]
+            }]);
+        });
+
+        it("should be an empty array", () => {
+            const chartState = [{
+                sensorId: "sensor_1-standby",
+                day: moment.utc().format("YYYY-MM-DD"),
+                measurementType: "activeEnergy",
+                source: "reading"
+            }];
+            const ret = readingsDailyAggregatesToHighchartsData(
+                readingsDailyAggregates,
+                chartState
+            );
+
+            expect(ret).to.deep.equal([{
+                data: []
             }]);
         });
     });
