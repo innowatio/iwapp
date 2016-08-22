@@ -9,22 +9,32 @@ const defaultChartState = [{
     sensorId: null,
     source: "reading",
     measurementType: "activeEnergy"
+}, {
+    day: moment.utc().format("YYYY-MM-DD"),
+    sensorId: null,
+    source: "reading",
+    measurementType: "activeEnergy"
 }];
 
 function charts (state = defaultChartState, {type, payload}) {
     switch (type) {
         case TOGGLE_FORECAST: {
-            const sources = payload ? ["reading", "forecast"] : ["reading"];
-            return sources.map(source => ({
-                ...state[0],
-                source
-            }));
+            const first = state[0];
+            return payload ? [
+                first, {
+                    ...first,
+                    source: "forecast"
+                }, {
+                    ...first,
+                    sensorId: `${first.sensorId}-standby`
+                }
+            ] : state.filter(x => x.source === "reading");
         }
         case SELECT_SITE: {
-            return state.map(old => {
+            return state.map((old, index) => {
                 return {
                     ...old,
-                    sensorId: payload._id
+                    sensorId: (state.length === index + 1) ? `${payload._id}-standby` : payload._id
                 };
             });
         }

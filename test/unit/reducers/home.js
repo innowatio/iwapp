@@ -10,6 +10,11 @@ describe("`home` reducers", () => {
             sensorId: null,
             source: "reading",
             measurementType: "activeEnergy"
+        }, {
+            day: moment.utc().format("YYYY-MM-DD"),
+            sensorId: null,
+            source: "reading",
+            measurementType: "activeEnergy"
         }]);
     });
 
@@ -36,6 +41,9 @@ describe("`home` reducers", () => {
                 }, {
                     sensorId: "sensorId",
                     source: "forecast"
+                }, {
+                    sensorId: "sensorId-standby",
+                    source: "reading"
                 }]);
             });
 
