@@ -31,7 +31,7 @@ export const loginTextBorder = "#979fd1";
 export const lineForecast = "#a8e1d4";
 export const HomeSwitchActive = "#7FCAC3";
 export const lineReading = "#3E50B4";
-export const lineStandby = "red";
+export const lineStandby = "#ff4081";
 export const titleLightBackground = "#f5f5f5";
 //
 export const demographicsSection = "#536DFE";

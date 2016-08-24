@@ -3,6 +3,7 @@ import React, {Component, PropTypes} from "react";
 import IPropTypes from "react-immutable-proptypes";
 import {Dimensions, View, StyleSheet, Switch} from "react-native";
 import shallowCompare from "react-addons-shallow-compare";
+import FaIcons from "react-native-vector-icons/FontAwesome";
 
 import getDailySumConsumption from "../lib/get-daily-sum-consumption";
 import getRealTimeValue from "../lib/get-realtime";
@@ -42,13 +43,18 @@ const styles = StyleSheet.create({
     consumptionUnitOfMeasurement: {
         color: colors.primaryBlue
     },
+    bottomChartWrp: {
+        flexDirection: "row",
+        justifyContent: "space-around",
+        alignItems: "center"
+    },
     switch: {
-        alignSelf: "flex-start",
-        marginTop: 3,
-        marginLeft: 10
+        marginTop: 3
     },
     switchContainer: {
-        flexDirection: "row"
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "center"
     },
     switchTextContainer: {
         flexDirection: "column",
@@ -65,6 +71,19 @@ const styles = StyleSheet.create({
     subTitle: {
         fontSize: 12,
         color: colors.textGrey
+    },
+    standbyContainer: {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "center"
+    },
+    standbyText: {
+        fontSize: 12,
+        lineHeight: 12,
+        color: colors.textGrey
+    },
+    standbyIcon: {
+        marginHorizontal: 5
     }
 });
 
@@ -137,16 +156,27 @@ export default class ChartConsumption extends Component {
                     charts={this.props.charts}
                     height={this.props.heightSwiper * 0.45}
                 />
-                <View style={styles.switchContainer}>
-                    <Switch
-                        onTintColor={colors.HomeSwitchActive}
-                        onValueChange={this.props.onToggleSwitch}
-                        style={styles.switch}
-                        value={!!forecast}
-                    />
-                    <View style={styles.switchTextContainer}>
-                        <Text style={styles.switchTextHeader}>{"Consumi previsti"}</Text>
-                        <Text style={styles.switchText}>{"basati sulla tua giornata tipo"}</Text>
+                <View style={styles.bottomChartWrp}>
+                    <View style={styles.switchContainer}>
+                        <Switch
+                            onTintColor={colors.HomeSwitchActive}
+                            onValueChange={this.props.onToggleSwitch}
+                            style={styles.switch}
+                            value={!!forecast}
+                        />
+                        <View style={styles.switchTextContainer}>
+                            <Text style={styles.switchTextHeader}>{"Consumi previsti"}</Text>
+                            <Text style={styles.switchText}>{"basati sulla tua giornata tipo"}</Text>
+                        </View>
+                    </View>
+                    <View style={styles.standbyContainer}>
+                        <FaIcons
+                            color={colors.lineStandby}
+                            name={"circle-thin"}
+                            size={22}
+                            style={styles.standbyIcon}
+                        />
+                        <Text style={styles.standbyText}>{"Consumi \nin standby"}</Text>
                     </View>
                 </View>
             </View>
