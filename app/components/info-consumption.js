@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
     },
     textTipsDescription: {
         color: colors.white,
-        fontSize: 13,
+        fontSize: 12,
         lineHeight: 15,
         paddingRight: 5
     },
@@ -121,6 +121,7 @@ export default class InfoConsumption extends Component {
         if (relativeConsumption < -5) {
             badge = {
                 icon: "iw-good",
+                iconColor: colors.iconGood,
                 title: "GRANDE!",
                 text: `Stai andando molto bene.  Hai usato il ${Math.abs(relativeConsumption)}% di energia in meno di attività simili alla tua.`
             };
@@ -128,6 +129,7 @@ export default class InfoConsumption extends Component {
         if (relativeConsumption >= -5 && relativeConsumption <= 0) {
             badge = {
                 icon: "iw-middling",
+                iconColor: colors.iconMiddling,
                 title: "OK!",
                 text: `Sei in linea con il consumo energetico di attività simili alla tua: hai consumato il ${Math.abs(relativeConsumption)}% di energia in meno.`
             };
@@ -135,6 +137,7 @@ export default class InfoConsumption extends Component {
         if (relativeConsumption > 0 && relativeConsumption <= 5) {
             badge = {
                 icon: "iw-middling",
+                iconColor: colors.iconMiddling,
                 title: "OK!",
                 text: `Sei in linea con il consumo energetico di attività simili alla tua: hai consumato il ${relativeConsumption}% di energia in più.`
             };
@@ -142,6 +145,7 @@ export default class InfoConsumption extends Component {
         if (relativeConsumption > 5) {
             badge = {
                 icon: "iw-bad",
+                iconColor: colors.iconBad,
                 title: "ATTENZIONE!",
                 text: `Hai usato il ${relativeConsumption}% di energia in più rispetto ad attività simili alla tua.`
             };
@@ -150,7 +154,7 @@ export default class InfoConsumption extends Component {
             <View style={styles.tipsContainerWrp}>
                 <View style={[styles.tipsContainer, {width: width * 0.96}]}>
                     <View style={styles.iconContainer}>
-                        <Icon color={colors.iconGood} name={badge.icon} size={46} />
+                        <Icon color={badge.iconColor} name={badge.icon} size={46} />
                     </View>
                     <View style={styles.textTipsContainer}>
                         <Text style={styles.textTips}>{badge.title}</Text>
