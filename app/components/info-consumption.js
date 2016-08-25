@@ -2,8 +2,8 @@ import React, {Component, PropTypes} from "react";
 import {Dimensions, StyleSheet, View} from "react-native";
 
 import * as colors from "../lib/colors";
-import Icon from "../components/iwapp-icons";
-import Text from "../components/text-lato";
+import Icon from "./iwapp-icons";
+import Text from "./text-lato";
 
 const styles = StyleSheet.create({
     container: {
@@ -199,25 +199,13 @@ export default class InfoConsumption extends Component {
             consumptions,
             peersConsumptions
         } = this.props;
-        let iconActivityType = {};
-        const activityType = 6;
-        if (activityType > 5) {
-            iconActivityType = {
-                icon: "iw-badge-buildings"
-            };
-        }
-        if (activityType < 5) {
-            iconActivityType = {
-                icon: "iw-badge-house"
-            };
-        }
 
         return (
             <View style={[styles.container, {height: this.props.heightSwiper}]}>
                 <View style={[styles.infoAndConsumptionContainer]}>
                     <View style={styles.infoContainer}>
                         <View style={styles.borderIconGreen}>
-                            <Icon color={colors.iconGreen} name={iconActivityType.icon} size={72} style={styles.iconGreen} />
+                            <Icon color={colors.iconGreen} name={"iw-badge-buildings"} size={72} style={styles.iconGreen} />
                         </View>
                         <Text style={styles.textStandardSmall}>{"23 persone"}</Text>
                         <Text style={styles.textStandardSmall}>{"Ufficio di 167 mq"}</Text>
