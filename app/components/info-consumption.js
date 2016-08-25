@@ -2,8 +2,8 @@ import React, {Component, PropTypes} from "react";
 import {Dimensions, StyleSheet, View} from "react-native";
 
 import * as colors from "../lib/colors";
-import Icon from "./iwapp-icons";
-import Text from "./text-lato";
+import Icon from "../components/iwapp-icons";
+import Text from "../components/text-lato";
 
 const styles = StyleSheet.create({
     container: {
@@ -28,20 +28,21 @@ const styles = StyleSheet.create({
         alignItems: "center"
     },
     infoContainer: {
-        flexDirection: "column"
+        flexDirection: "column",
+        paddingLeft: 25,
+        justifyContent: "center"
     },
     meanConsumptionContainer: {
         flexDirection: "column"
     },
     borderIconGreen: {
-        marginVertical:5,
+        marginVertical: 5,
         width: 80,
         height: 80,
-        borderWidth: 2,
-        borderColor: colors.white,
         borderRadius: 100,
         backgroundColor: colors.borderIconGreen,
-        padding: 2
+        justifyContent: "center",
+        alignItems: "center"
     },
     iconGreen: {
         backgroundColor: colors.transparent
@@ -195,6 +196,7 @@ export default class InfoConsumption extends Component {
     }
 
     render () {
+        const {height, width} = Dimensions.get("window");
         const {
             consumptions,
             peersConsumptions
@@ -202,8 +204,8 @@ export default class InfoConsumption extends Component {
 
         return (
             <View style={[styles.container, {height: this.props.heightSwiper}]}>
-                <View style={[styles.infoAndConsumptionContainer]}>
-                    <View style={styles.infoContainer}>
+                <View style={[styles.infoAndConsumptionContainer, {width}]}>
+                    <View style={[styles.infoContainer, {height: height * .5, width: width * .45}]}>
                         <View style={styles.borderIconGreen}>
                             <Icon color={colors.iconGreen} name={"iw-badge-buildings"} size={72} style={styles.iconGreen} />
                         </View>
@@ -211,7 +213,7 @@ export default class InfoConsumption extends Component {
                         <Text style={styles.textStandardSmall}>{"Ufficio di 167 mq"}</Text>
                         <Text style={styles.textStandardSmall}>{"Bergamo, Lombardia"}</Text>
                     </View>
-                    <View style={styles.meanConsumptionContainer}>
+                    <View style={[styles.meanConsumptionContainer, {width: width * .55}]}>
                         {consumptions ? this.renderMyConsumptions() : null}
                         {peersConsumptions ? this.renderPeersConsumptions() : null}
                     </View>
