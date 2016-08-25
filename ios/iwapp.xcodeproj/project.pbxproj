@@ -34,10 +34,6 @@
 		6B8D2F9F1D017DD30089933D /* Lato-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6BE5B2031CFED3B800D94AB2 /* Lato-Bold.ttf */; };
 		6B8D2FA01D017DDA0089933D /* Lato-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6BE5B2041CFED3B800D94AB2 /* Lato-Light.ttf */; };
 		6B8D2FA11D017DE00089933D /* Lato-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6BE5B2051CFED3B800D94AB2 /* Lato-Regular.ttf */; };
-		6B9619E91D17F7BC00F23043 /* ios-120x120.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B9619DA1D17F7BC00F23043 /* ios-120x120.png */; };
-		6B9619EC1D17F7BC00F23043 /* ios-180x180.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B9619DD1D17F7BC00F23043 /* ios-180x180.png */; };
-		6B9619EE1D17F8AD00F23043 /* ios-87x87.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B9619ED1D17F8AD00F23043 /* ios-87x87.png */; };
-		6B9619F01D17F96300F23043 /* ios-80x80.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B9619EF1D17F96300F23043 /* ios-80x80.png */; };
 		6B9619F11D17FECC00F23043 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		6B9619FF1D18344B00F23043 /* bg_login.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B9619FE1D18344B00F23043 /* bg_login.png */; };
 		6B961A051D1836B700F23043 /* ios-420x480.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B961A001D1836B700F23043 /* ios-420x480.png */; };
@@ -217,10 +213,6 @@
 		6B075ED91D118F4700D81F66 /* ART.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ART.xcodeproj; path = "../node_modules/react-native/Libraries/ART/ART.xcodeproj"; sourceTree = "<group>"; };
 		6B77AB5C1CE5C9D2001C6650 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		6B8AD02B1D686435006D511F /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		6B9619DA1D17F7BC00F23043 /* ios-120x120.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ios-120x120.png"; sourceTree = "<group>"; };
-		6B9619DD1D17F7BC00F23043 /* ios-180x180.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ios-180x180.png"; sourceTree = "<group>"; };
-		6B9619ED1D17F8AD00F23043 /* ios-87x87.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ios-87x87.png"; sourceTree = "<group>"; };
-		6B9619EF1D17F96300F23043 /* ios-80x80.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ios-80x80.png"; sourceTree = "<group>"; };
 		6B9619FE1D18344B00F23043 /* bg_login.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bg_login.png; sourceTree = "<group>"; };
 		6B961A001D1836B700F23043 /* ios-420x480.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ios-420x480.png"; sourceTree = "<group>"; };
 		6B961A011D1836B700F23043 /* ios-640x960.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ios-640x960.png"; sourceTree = "<group>"; };
@@ -519,10 +511,6 @@
 				6B961A031D1836B700F23043 /* ios-750x1334.png */,
 				6B961A041D1836B700F23043 /* ios-1242x2208.png */,
 				6B9619FE1D18344B00F23043 /* bg_login.png */,
-				6B9619EF1D17F96300F23043 /* ios-80x80.png */,
-				6B9619ED1D17F8AD00F23043 /* ios-87x87.png */,
-				6B9619DA1D17F7BC00F23043 /* ios-120x120.png */,
-				6B9619DD1D17F7BC00F23043 /* ios-180x180.png */,
 				1DDF80A91D0EC37A009F67FD /* iwapp.ttf */,
 				6BE5B2031CFED3B800D94AB2 /* Lato-Bold.ttf */,
 				6BE5B2041CFED3B800D94AB2 /* Lato-Light.ttf */,
@@ -822,13 +810,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6B9619F01D17F96300F23043 /* ios-80x80.png in Resources */,
 				6B961A091D1836B700F23043 /* ios-1242x2208.png in Resources */,
 				6B8AD02C1D686435006D511F /* GoogleService-Info.plist in Resources */,
-				6B9619EE1D17F8AD00F23043 /* ios-87x87.png in Resources */,
-				6B9619E91D17F7BC00F23043 /* ios-120x120.png in Resources */,
 				6B961A081D1836B700F23043 /* ios-750x1334.png in Resources */,
-				6B9619EC1D17F7BC00F23043 /* ios-180x180.png in Resources */,
 				1DDF80AA1D0EC37A009F67FD /* iwapp.ttf in Resources */,
 				6B8D2FA11D017DE00089933D /* Lato-Regular.ttf in Resources */,
 				6B8D2FA01D017DDA0089933D /* Lato-Light.ttf in Resources */,

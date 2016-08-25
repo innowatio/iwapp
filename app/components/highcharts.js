@@ -106,7 +106,7 @@ export default class Highcharts extends Component {
         return (`
             <html>
                 <head>
-                    <script type="text/javascript" src="http://code.highcharts.com/highcharts.js"></script>
+                    <script type="text/javascript" src="https://code.highcharts.com/highcharts.js"></script>
                     <style>
                         #chart {
                             height: ${this.props.height - 15}px;

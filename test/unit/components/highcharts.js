@@ -57,7 +57,7 @@ describe("`Highcharts` component", () => {
             expect(ret).to.equal(`
             <html>
                 <head>
-                    <script type="text/javascript" src="http://code.highcharts.com/highcharts.js"></script>
+                    <script type="text/javascript" src="https://code.highcharts.com/highcharts.js"></script>
                     <style>
                         #chart {
                             height: -14px;
