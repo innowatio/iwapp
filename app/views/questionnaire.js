@@ -77,8 +77,7 @@ const styles = StyleSheet.create({
     }
 });
 
-// TODO: Add tests
-export default class Questionnaire extends Component {
+class Questionnaire extends Component {
 
     static propTypes = {
         asteroid: PropTypes.object.isRequired,
