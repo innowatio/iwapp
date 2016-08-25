@@ -14,8 +14,7 @@ const styles = StyleSheet.create({
     textStandardSmall: {
         color: colors.textGrey,
         fontSize: 11,
-        lineHeight: 13,
-        marginTop: 5,
+        lineHeight: 10,
         fontWeight: "400"
     },
     textStandard: {
@@ -35,7 +34,7 @@ const styles = StyleSheet.create({
         flexDirection: "column"
     },
     borderIconGreen: {
-        marginTop:5,
+        marginVertical:5,
         width: 80,
         height: 80,
         borderWidth: 2,
@@ -200,14 +199,29 @@ export default class InfoConsumption extends Component {
             consumptions,
             peersConsumptions
         } = this.props;
+        let iconActivityType = {};
+        const activityType = 6;
+        if (activityType > 5) {
+            iconActivityType = {
+                icon: "iw-badge-buildings"
+            };
+        }
+        if (activityType < 5) {
+            iconActivityType = {
+                icon: "iw-badge-house"
+            };
+        }
+
         return (
             <View style={[styles.container, {height: this.props.heightSwiper}]}>
                 <View style={[styles.infoAndConsumptionContainer]}>
                     <View style={styles.infoContainer}>
                         <View style={styles.borderIconGreen}>
-                            <Icon color={colors.iconGreen} name={"iw-badge-buildings"} size={72} style={styles.iconGreen} />
+                            <Icon color={colors.iconGreen} name={iconActivityType.icon} size={72} style={styles.iconGreen} />
                         </View>
-                        <Text style={styles.textStandardSmall}>{"Numero di persone \nGrandezza dell'ufficio \nPosizione"}</Text>
+                        <Text style={styles.textStandardSmall}>{"23 persone"}</Text>
+                        <Text style={styles.textStandardSmall}>{"Ufficio di 167 mq"}</Text>
+                        <Text style={styles.textStandardSmall}>{"Bergamo, Lombardia"}</Text>
                     </View>
                     <View style={styles.meanConsumptionContainer}>
                         {consumptions ? this.renderMyConsumptions() : null}
