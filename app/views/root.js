@@ -5,7 +5,7 @@ import {Platform, StatusBar, StyleSheet, ScrollView, View} from "react-native";
 import {DefaultRenderer} from "react-native-router-flux";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
-import {contains, equals, last} from "ramda";
+import {equals, last} from "ramda";
 
 import {selectSite} from "../actions/site";
 import {generateSessionId} from "../actions/session-id";
@@ -44,7 +44,7 @@ class Root extends Component {
         onNavigate: PropTypes.func.isRequired,
         selectSite: PropTypes.func.isRequired,
         site: PropTypes.object,
-        survey: PropTypes.arrayOf(PropTypes.string),
+        survey: PropTypes.arrayOf(PropTypes.object),
         userId: PropTypes.string
     }
 
@@ -79,7 +79,9 @@ class Root extends Component {
             return this.setState({
                 surveyModalVisible: (
                     !survey.isEmpty() &&
-                    !contains(survey.get("_id"), nextProps.survey) &&
+                    !nextProps.survey.find(objectSurvey => {
+                        return objectSurvey.id === survey.get("_id");
+                    }) &&
                     last(nextProps.navigationScene) !== "survey"
                 )
             });
@@ -244,6 +246,7 @@ function mapStateToProps (state) {
         userId: state.userId
     };
 }
+
 function mapDispatchToProps (dispatch) {
     return {
         generateSessionId: bindActionCreators(generateSessionId, dispatch),
@@ -252,4 +255,5 @@ function mapDispatchToProps (dispatch) {
         selectSite: bindActionCreators(selectSite, dispatch)
     };
 }
+
 export default connect(mapStateToProps, mapDispatchToProps)(Root);

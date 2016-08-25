@@ -1,7 +1,8 @@
 import moment from "moment";
+import {last, isNil} from "ramda";
 import React, {Component, PropTypes} from "react";
 import IPropTypes from "react-immutable-proptypes";
-import {Dimensions, View, StyleSheet, TouchableOpacity} from "react-native";
+import {Dimensions, View, StyleSheet, TouchableOpacity, Image} from "react-native";
 import Button from "react-native-button";
 import {connect} from "react-redux";
 import FaIcons from "react-native-vector-icons/FontAwesome";
@@ -13,6 +14,7 @@ import Text from "../components/text-lato";
 import * as colors from "../lib/colors";
 import Stepper from "../components/stepper";
 import ConfirmModal from "../components/confirm-modal";
+import ErrorModal from "../components/error-modal";
 import {saveSurveyAnswers} from "../actions/survey";
 import {SURVEY_RATE, SURVEY_SIGLE_CHOICE} from "../actions/survey";
 //import Icon from "./iwapp-icons";
@@ -107,15 +109,33 @@ const styles = StyleSheet.create({
     iconArrow: {
         marginLeft: 6
     },
+
+    //SAVE spinner
+    spinner: {
+        width: 88,
+        height: 88,
+        flexWrap: "wrap",
+        justifyContent: "center",
+        alignItems: "center",
+        marginTop: 30
+    }
+
 });
 
 class Survey extends Component {
 
     static propTypes = {
+        error: PropTypes.bool,
+        errorMessage: PropTypes.object,
+        fetch: PropTypes.bool,
         saveSurveyAnswers: PropTypes.func.isRequired,
         sessionId: PropTypes.string,
         survey: IPropTypes.map.isRequired,
         userId: PropTypes.string
+    }
+
+    static defaultProps = {
+        error: false
     }
 
     constructor (props) {
@@ -128,6 +148,14 @@ class Survey extends Component {
         };
     }
 
+    componentWillReceiveProps (nextProps) {
+        if (!nextProps.error) {
+            if (!nextProps.fetch && !isNil(nextProps.fetch)) {
+                this.toggleConfirmModal();
+            }
+        }
+    }
+
     onForwardStep () {
         this.setState({activeStep: this.state.activeStep + 1});
     }
@@ -138,18 +166,20 @@ class Survey extends Component {
 
     onSaveAnswers () {
         const {survey} = this.props;
+
         const surveyInfo = {
             questionId: survey.get("_id"),
             type: survey.get("type"),
-            category: survey.get("category")
+            category: survey.get("category"),
         };
+
         this.props.saveSurveyAnswers(
             surveyInfo,
             this.state.answers,
             this.props.userId,
             this.props.sessionId
         );
-        this.toggleConfirmModal();
+
     }
 
     setActiveStep (activeStep) {
@@ -247,6 +277,16 @@ class Survey extends Component {
         );
     }
 
+    renderStepper () {
+        return (
+            <Stepper
+                activeStep={this.state.activeStep}
+                onPressDot={::this.setActiveStep}
+                steps={this.props.survey.get("questions").size || 0}
+            />
+        );
+    }
+
     renderConfirmButton () {
         return (
             <Button
@@ -255,7 +295,7 @@ class Survey extends Component {
                 onPress={this.isLastStep() ? ::this.onSaveAnswers : ::this.onForwardStep}
                 style={styles.textButtonSave}
             >
-                {this.isLastStep() ?  "SALVA" : "AVANTI"}
+                {this.isLastStep() ?   "SALVA" : "AVANTI"}
                 <FaIcons color={colors.iconWhite} name={"angle-right"} size={18} style={styles.iconArrow} />
             </Button>
         );
@@ -275,31 +315,40 @@ class Survey extends Component {
     renderContentSurvey () {
         const {height} = Dimensions.get("window");
         const activeStepQuestion = this.props.survey.getIn(["questions", this.state.activeStep]);
-        return (
-            <View style={styles.contentSurveyWrp}>
-                <Stepper
-                    activeStep={this.state.activeStep}
-                    onPressDot={::this.setActiveStep}
-                    steps={this.props.survey.get("questions").size || 0}
-                />
-                <View style={styles.questionSurveyWrp}>
-                    {this.renderQuestion(activeStepQuestion.get("text"))}
+        if (this.props.fetch) {
+            return (
+                <View style={styles.contentSurveyWrp}>
+                    {this.renderStepper()}
+                    <Image source={require("../assets/img/spinner.gif")} style={styles.spinner}/>
+
+                    <View style={styles.questionSurveyWrp}>
+                        {this.renderQuestion("Salvataggio in corso, attendere prego.")}
+                    </View>
                 </View>
-                <View style={styles.answerSurveyWrp}>
-                {this.renderSwitchAnswer(activeStepQuestion)}
+            );
+        } else {
+            return (
+                <View style={styles.contentSurveyWrp}>
+                    {this.renderStepper()}
+                    <View style={styles.questionSurveyWrp}>
+                        {this.renderQuestion(activeStepQuestion.get("text"))}
+                    </View>
+                    <View style={styles.answerSurveyWrp}>
+                    {this.renderSwitchAnswer(activeStepQuestion)}
+                    </View>
+                    <View style={[styles.buttonSaveWrp, {height: height * 0.3}]}>
+                        <TouchableOpacity
+                            disabled={this.state.activeStep === 0}
+                            onPress={::this.onBackwardStep}
+                            style={styles.buttonBack}
+                        >
+                            <FaIcons color={colors.primaryBlue} name={"angle-left"} size={26} />
+                        </TouchableOpacity>
+                        {this.renderConfirmButton()}
+                    </View>
                 </View>
-                <View style={[styles.buttonSaveWrp, {height: height * 0.3}]}>
-                    <TouchableOpacity
-                        disabled={this.state.activeStep === 0}
-                        onPress={::this.onBackwardStep}
-                        style={styles.buttonBack}
-                    >
-                        <FaIcons color={colors.primaryBlue} name={"angle-left"} size={26} />
-                    </TouchableOpacity>
-                    {this.renderConfirmButton()}
-                </View>
-            </View>
-        );
+            );
+        }
     }
 
     render () {
@@ -320,6 +369,12 @@ class Survey extends Component {
                     titleModal={"Grazie per aver compilato il questionario!"}
                     visible={this.state.modalVisible}
                 />
+                <ErrorModal
+                    onPressButton={::this.onSaveAnswers}
+                    textButton={"Riprova"}
+                    titleModal={"Si è verificato un errore nel salvataggio!"}
+                    visible={this.props.error}
+                />
             </View>
         );
     }
@@ -327,8 +382,11 @@ class Survey extends Component {
 
 function mapStateToProps (state) {
     return {
-        userId: state.userId,
-        sessionId: state.sessionId
+        error: last(state.survey).error,
+        errorMessage: last(state.survey).errorMessage,
+        fetch: last(state.survey).fetch,
+        sessionId: state.sessionId,
+        userId: state.userId
     };
 }
 

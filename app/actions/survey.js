@@ -1,4 +1,3 @@
-import get from "lodash.get";
 import actionTypeValidator from "redux-action-type-validator";
 import {maybe, list, struct, Any, Number, String} from "tcomb";
 
@@ -33,6 +32,10 @@ const typeofSaveSurveyAnswers = actionTypeValidator(
 );
 export function saveSurveyAnswers (surveyInfo, answers, userId, sessionId) {
     typeofSaveSurveyAnswers(...arguments);
+
+
+
+
     return async dispatch => {
         try {
             dispatch({
@@ -44,16 +47,9 @@ export function saveSurveyAnswers (surveyInfo, answers, userId, sessionId) {
                 userId,
                 answers,
                 visitId: sessionId
-            })
-            .then(res => {
-                dispatch({
-                    type: SAVE_SURVEY_SUCCESS,
-                    payload: {
-                        result: get(res, "data.result")
-                    }
-                });
-            })
-            .catch(err => {
+            }).then(() => {
+                dispatch({type: SAVE_SURVEY_SUCCESS});
+            }).catch(err => {
                 /*
                 *   We want to dispatch a SAVE_SURVEY_ERROR action only when
                 *   `axios.post` fails (the error is an AxiosError). In all
@@ -62,7 +58,7 @@ export function saveSurveyAnswers (surveyInfo, answers, userId, sessionId) {
                 if (err instanceof AxiosError) {
                     dispatch({
                         type: SAVE_SURVEY_ERROR,
-                        payload: err,
+                        errorMessage: err,
                         error: true
                     });
                 } else {

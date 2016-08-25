@@ -172,10 +172,8 @@ describe("`Survey` view", () => {
         const onSaveAnswers = SurveyView.prototype.onSaveAnswers;
 
         it("call the action for the post", () => {
-            const toggleConfirmModal = sinon.spy();
             const saveSurveyAnswers = sinon.spy();
             const instance = {
-                toggleConfirmModal,
                 props: {
                     saveSurveyAnswers,
                     survey: questionsSurvey,
@@ -188,7 +186,6 @@ describe("`Survey` view", () => {
             };
             onSaveAnswers.call(instance);
             expect(saveSurveyAnswers).to.have.callCount(1);
-            expect(toggleConfirmModal).to.have.callCount(1);
             expect(saveSurveyAnswers).to.have.been.calledWithExactly({
                 questionId: "surveyId",
                 type: "type",
@@ -196,6 +193,52 @@ describe("`Survey` view", () => {
             }, ["1", "2", "3", "4", "5"], "userId", "sessionId");
         });
 
+    });
+
+    describe("`componentWillReceiveProps` method", () => {
+
+        const componentWillReceiveProps = SurveyView.prototype.componentWillReceiveProps;
+
+        it("don't call toggleConfirmModal because fetch is true [CASE: error is true]", () => {
+            const toggleConfirmModal = sinon.spy();
+            const instance = {toggleConfirmModal};
+            const nextProps = {
+                error: true,
+                fetch: true
+            };
+            componentWillReceiveProps.call(instance, nextProps);
+            expect(toggleConfirmModal).to.have.callCount(0);
+        });
+
+        it("don't call toggleConfirmModal because fetch is true [CASE: error is false]", () => {
+            const toggleConfirmModal = sinon.spy();
+            const instance = {toggleConfirmModal};
+            const nextProps = {
+                error: false,
+                fetch: true
+            };
+            componentWillReceiveProps.call(instance, nextProps);
+            expect(toggleConfirmModal).to.have.callCount(0);
+        });
+
+        it("call toggleConfirmModal because fetch is false [CASE: error is false]", () => {
+            const toggleConfirmModal = sinon.spy();
+            const instance = {toggleConfirmModal};
+            const nextProps = {
+                error: false,
+                fetch: false
+            };
+            componentWillReceiveProps.call(instance, nextProps);
+            expect(toggleConfirmModal).to.have.callCount(1);
+        });
+
+        it("don't call toggleConfirmModal because fetch is undefined", () => {
+            const toggleConfirmModal = sinon.spy();
+            const instance = {toggleConfirmModal};
+            const nextProps = {};
+            componentWillReceiveProps.call(instance, nextProps);
+            expect(toggleConfirmModal).to.have.callCount(0);
+        });
     });
 
     describe("`setAnswer` method", () => {

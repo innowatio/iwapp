@@ -1,6 +1,6 @@
 import survey from "reducers/survey";
 
-describe("`userId` reducers", () => {
+describe("`survey` reducers", () => {
 
     const stateCollections = Object.freeze([]);
 
@@ -12,7 +12,10 @@ describe("`userId` reducers", () => {
                 payload: "surveyId"
             };
             const ret = survey(stateCollections, valuePassedFromAction);
-            expect(ret).to.deep.equal(["surveyId"]);
+            expect(ret).to.deep.equal([{
+                id: "surveyId",
+                fetch: true
+            }]);
         });
 
         it("returns the `survey` [CASE: array with field]", () => {
@@ -20,8 +23,28 @@ describe("`userId` reducers", () => {
                 type: "SAVE_SURVEY_START",
                 payload: "surveyId"
             };
-            const ret = survey(["surveyId1", "surveyId2"], valuePassedFromAction);
-            expect(ret).to.deep.equal(["surveyId1", "surveyId2", "surveyId"]);
+            const ret = survey([{
+                id: "surveyId1",
+                fetch: false
+            }, {
+                id: "surveyId2",
+                fetch: false
+            }], valuePassedFromAction);
+            expect(ret).to.deep.equal([
+                {
+                    id: "surveyId1",
+                    fetch: false
+                },
+                {
+                    id: "surveyId2",
+                    fetch: false
+                },
+                {
+                    id: "surveyId",
+                    fetch: true
+                }
+
+            ]);
         });
 
     });

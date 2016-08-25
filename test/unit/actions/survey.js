@@ -92,10 +92,7 @@ describe("`survey` actions", () => {
             await saveSurveyAnswers(surveyInfo, answers, userId, visitId)(dispatch);
             scope.done();
             expect(dispatch).to.have.been.calledWithExactly({
-                type: SAVE_SURVEY_SUCCESS,
-                payload: {
-                    result: "OK"
-                }
+                type: SAVE_SURVEY_SUCCESS
             });
         });
 
@@ -107,8 +104,9 @@ describe("`survey` actions", () => {
             scope.done();
             expect(dispatch).to.have.been.calledWithExactly({
                 type: SAVE_SURVEY_ERROR,
-                payload: sinon.match.instanceOf(AxiosError),
+                errorMessage: sinon.match.instanceOf(AxiosError),
                 error: true
+
             });
         });
 
@@ -120,7 +118,7 @@ describe("`survey` actions", () => {
             scope.done();
             expect(dispatch).to.have.been.calledWithExactly({
                 type: SAVE_SURVEY_ERROR,
-                payload: sinon.match.instanceOf(AxiosError),
+                errorMessage: sinon.match.instanceOf(AxiosError),
                 error: true
             });
         });
@@ -133,7 +131,8 @@ describe("`survey` actions", () => {
             expect(dispatch).to.have.callCount(1);
             expect(dispatch).to.have.been.calledWith({
                 type: SAVE_SURVEY_START,
-                payload: "surveyId"
+                payload: "surveyId",
+
             });
         });
 

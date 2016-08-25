@@ -9,7 +9,7 @@ import * as colors from "../lib/colors";
 
 const styles = StyleSheet.create({
     modalBackground: {
-        backgroundColor: colors.primaryBlue,
+        backgroundColor: colors.backgroundErrorLogin,
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
         textAlign: "center"
     },
     modalIconWrp: {
-        backgroundColor: colors.secondaryBlue,
+        backgroundColor: colors.borderErrorLogin,
         borderRadius: 100,
         width: 140,
         height: 140,
@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
     }
 });
 
-export default class ConfirmModal extends Component {
+export default class ErrorModal extends Component {
 
     static propTypes = {
         onPressButton: PropTypes.func.isRequired,
@@ -88,7 +88,7 @@ export default class ConfirmModal extends Component {
                             onPress={this.props.onPressButton}
                             style={styles.modalButtonText}
                         >
-                            {this.props.textButton || "Confirm"}
+                            {this.props.textButton || "Try Again"}
                         </Button>
                     </View>
                 </View>
