@@ -51,7 +51,7 @@ export default class StepCounter extends Component {
         onBackwardStep: PropTypes.func.isRequired,
         onForwardStep: PropTypes.func.isRequired,
         onSaveAnswers: PropTypes.func.isRequired,
-        saveSurveyAnswers: PropTypes.func.isRequired,
+        saveSurveyAnswers: PropTypes.func,
         totalSteps: PropTypes.number.isRequired
     }
 

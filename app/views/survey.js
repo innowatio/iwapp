@@ -2,25 +2,17 @@ import moment from "moment";
 import {last, isNil} from "ramda";
 import React, {Component, PropTypes} from "react";
 import IPropTypes from "react-immutable-proptypes";
-<<<<<<< HEAD
-import {Dimensions, View, StyleSheet, TouchableOpacity, Image} from "react-native";
+import {Dimensions, View, StyleSheet, TouchableOpacity, Image, ScrollView, FaIcons} from "react-native";
 import Button from "react-native-button";
-=======
-import {Dimensions, View, ScrollView, StyleSheet, TouchableOpacity} from "react-native";
->>>>>>> abb11b4e870a8d4d985ac4f2e58e1c8610ab7c66
 import {connect} from "react-redux";
 import {Actions} from "react-native-router-flux";
 import {bindActionCreators} from "redux";
 import StarRating from "react-native-star-rating";
-
 import Text from "../components/text-lato";
 import * as colors from "../lib/colors";
 import ConfirmModal from "../components/confirm-modal";
-<<<<<<< HEAD
 import ErrorModal from "../components/error-modal";
-=======
 import StepCounter from "../components/step-counter";
->>>>>>> abb11b4e870a8d4d985ac4f2e58e1c8610ab7c66
 import {saveSurveyAnswers} from "../actions/survey";
 import {SURVEY_RATE, SURVEY_SIGLE_CHOICE} from "../actions/survey";
 
@@ -90,7 +82,6 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
         paddingHorizontal: 45
     },
-<<<<<<< HEAD
 
     //SAVE spinner
     spinner: {
@@ -100,13 +91,10 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         marginTop: 30
-    }
-
-=======
+    },
     buttonsWrp: {
         backgroundColor: colors.primaryBlue
     }
->>>>>>> abb11b4e870a8d4d985ac4f2e58e1c8610ab7c66
 });
 
 class Survey extends Component {
@@ -135,14 +123,14 @@ class Survey extends Component {
         };
     }
 
-<<<<<<< HEAD
     componentWillReceiveProps (nextProps) {
         if (!nextProps.error) {
             if (!nextProps.fetch && !isNil(nextProps.fetch)) {
                 this.toggleConfirmModal();
             }
         }
-=======
+    }
+
     getTotalSteps () {
         return this.props.survey.get("questions").size || 0;
     }
@@ -153,7 +141,6 @@ class Survey extends Component {
 
     disabledForward () {
         return this.state.answers.length <= this.state.activeStep;
->>>>>>> abb11b4e870a8d4d985ac4f2e58e1c8610ab7c66
     }
 
     onForwardStep () {
@@ -274,17 +261,6 @@ class Survey extends Component {
         );
     }
 
-<<<<<<< HEAD
-    renderStepper () {
-        return (
-            <Stepper
-                activeStep={this.state.activeStep}
-                onPressDot={::this.setActiveStep}
-                steps={this.props.survey.get("questions").size || 0}
-            />
-        );
-    }
-
     renderConfirmButton () {
         return (
             <Button
@@ -296,7 +272,9 @@ class Survey extends Component {
                 {this.isLastStep() ?   "SALVA" : "AVANTI"}
                 <FaIcons color={colors.iconWhite} name={"angle-right"} size={18} style={styles.iconArrow} />
             </Button>
-=======
+        );
+    }
+
     renderQuestionCounter () {
         return (
             <StepCounter
@@ -308,7 +286,6 @@ class Survey extends Component {
                 onSaveAnswers={::this.onSaveAnswers}
                 totalSteps={this.getTotalSteps()}
             />
->>>>>>> abb11b4e870a8d4d985ac4f2e58e1c8610ab7c66
         );
     }
 
@@ -326,11 +303,9 @@ class Survey extends Component {
     renderContentSurvey () {
         const {height, width} = Dimensions.get("window");
         const activeStepQuestion = this.props.survey.getIn(["questions", this.state.activeStep]);
-<<<<<<< HEAD
         if (this.props.fetch) {
             return (
                 <View style={styles.contentSurveyWrp}>
-                    {this.renderStepper()}
                     <Image source={require("../assets/img/spinner.gif")} style={styles.spinner}/>
 
                     <View style={styles.questionSurveyWrp}>
@@ -340,37 +315,20 @@ class Survey extends Component {
             );
         } else {
             return (
-                <View style={styles.contentSurveyWrp}>
-                    {this.renderStepper()}
-=======
-        return (
-            <View style={[styles.contentSurveyWrp, {height: height * .85}]}>
-                <ScrollView>
->>>>>>> abb11b4e870a8d4d985ac4f2e58e1c8610ab7c66
-                    <View style={styles.questionSurveyWrp}>
-                        {this.renderQuestion(activeStepQuestion.get("text"))}
+                <View style={[styles.contentSurveyWrp, {height: height * .85}]}>
+                    <ScrollView>
+                        <View style={styles.questionSurveyWrp}>
+                            {this.renderQuestion(activeStepQuestion.get("text"))}
+                        </View>
+                        <View style={styles.answerSurveyWrp}>
+                        {this.renderSwitchAnswer(activeStepQuestion)}
+                        </View>
+                    </ScrollView>
+                    <View style={[styles.buttonsWrp, {width, height: height * .15}]}>
+                        {this.renderQuestionCounter()}
                     </View>
-                    <View style={styles.answerSurveyWrp}>
-                    {this.renderSwitchAnswer(activeStepQuestion)}
-                    </View>
-<<<<<<< HEAD
-                    <View style={[styles.buttonSaveWrp, {height: height * 0.3}]}>
-                        <TouchableOpacity
-                            disabled={this.state.activeStep === 0}
-                            onPress={::this.onBackwardStep}
-                            style={styles.buttonBack}
-                        >
-                            <FaIcons color={colors.primaryBlue} name={"angle-left"} size={26} />
-                        </TouchableOpacity>
-                        {this.renderConfirmButton()}
-                    </View>
-=======
-                </ScrollView>
-                <View style={[styles.buttonsWrp, {width, height: height * .15}]}>
-                    {this.renderQuestionCounter()}
->>>>>>> abb11b4e870a8d4d985ac4f2e58e1c8610ab7c66
                 </View>
-            );
+                );
         }
     }
 
