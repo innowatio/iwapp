@@ -1,28 +1,25 @@
 import moment from "moment";
 import React, {Component, PropTypes} from "react";
 import IPropTypes from "react-immutable-proptypes";
-import {Dimensions, View, StyleSheet, TouchableOpacity} from "react-native";
-import Button from "react-native-button";
+import {Dimensions, View, ScrollView, StyleSheet, TouchableOpacity} from "react-native";
 import {connect} from "react-redux";
-import FaIcons from "react-native-vector-icons/FontAwesome";
 import {Actions} from "react-native-router-flux";
 import {bindActionCreators} from "redux";
 import StarRating from "react-native-star-rating";
 
 import Text from "../components/text-lato";
 import * as colors from "../lib/colors";
-import Stepper from "../components/stepper";
 import ConfirmModal from "../components/confirm-modal";
+import StepCounter from "../components/step-counter";
 import {saveSurveyAnswers} from "../actions/survey";
 import {SURVEY_RATE, SURVEY_SIGLE_CHOICE} from "../actions/survey";
-//import Icon from "./iwapp-icons";
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: "center",
         alignItems: "stretch",
-        backgroundColor: colors.transparent,
+        backgroundColor: colors.white,
         flexDirection: "row"
     },
     titleBarWrp: {
@@ -42,7 +39,6 @@ const styles = StyleSheet.create({
     },
     // CONTENT
     contentSurveyWrp: {
-        paddingVertical: 10,
         alignItems: "center"
     },
     questionSurveyWrp: {
@@ -54,7 +50,7 @@ const styles = StyleSheet.create({
     },
     questionSurvey: {
         textAlign: "center",
-        fontSize: 18,
+        fontSize: 16,
         color: colors.primaryBlue
     },
     answerSurveyWrp: {
@@ -71,42 +67,22 @@ const styles = StyleSheet.create({
         backgroundColor: colors.selectedAnswer,
     },
     activeAnswer: {
-        color: colors.textGrey
+        color: colors.textDarkGrey
     },
     answer: {
-        fontSize: 16,
-        color: colors.grey,
+        fontSize: 14,
+        color: colors.textLightGrey,
         textAlign: "center"
     },
 
-    // BUTTON SAVE
-    buttonSaveWrp: {
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "center"
+    ratingWrp: {
+        alignItems: "stretch",
+        paddingVertical: 10,
+        paddingHorizontal: 45
     },
-    buttonSave: {
-        width: 150,
-        height: 30,
-        marginHorizontal: 10,
-        backgroundColor: colors.buttonPrimary,
-        borderRadius: 100,
-        justifyContent: "center",
-        alignItems: "center"
-    },
-    buttonBack: {
-        marginRight: 20
-    },
-    textButtonSave: {
-        color: colors.white,
-        fontSize: 14,
-        fontWeight: "normal",
-        backgroundColor: colors.transparent
-    },
-
-    iconArrow: {
-        marginLeft: 6
-    },
+    buttonsWrp: {
+        backgroundColor: colors.primaryBlue
+    }
 });
 
 class Survey extends Component {
@@ -126,6 +102,18 @@ class Survey extends Component {
             answers: [],
             questions: []
         };
+    }
+
+    getTotalSteps () {
+        return this.props.survey.get("questions").size || 0;
+    }
+
+    disabledBackward () {
+        return this.state.activeStep < 1;
+    }
+
+    disabledForward () {
+        return this.state.answers.length <= this.state.activeStep;
     }
 
     onForwardStep () {
@@ -150,10 +138,6 @@ class Survey extends Component {
             this.props.sessionId
         );
         this.toggleConfirmModal();
-    }
-
-    setActiveStep (activeStep) {
-        this.setState({activeStep});
     }
 
     setAnswer (answer, id) {
@@ -201,17 +185,18 @@ class Survey extends Component {
     renderRate (activeStepQuestion) {
         const {width} = Dimensions.get("window");
         return (
-            <View style={{width, paddingHorizontal: 80}}>
+            <View style={[styles.ratingWrp, {width}]}>
                 <StarRating
                     disabled={false}
-                    emptyStar={"ios-bulb"}
+                    emptyStar={"ios-bulb-outline"}
+                    emptyStarColor={colors.rateStarColor}
                     fullStar={"ios-bulb"}
                     iconSet={"Ionicons"}
                     maxStars={activeStepQuestion.get("options").length}
                     rating={this.state.starCount}
                     selectedStar={(rating) => this.onRatingPress(rating, activeStepQuestion)}
-                    starColor={"#ffcc00"}
-                    starSize={60}
+                    starColor={colors.rateStarColor}
+                    starSize={40}
                 />
             </View>
         );
@@ -247,17 +232,17 @@ class Survey extends Component {
         );
     }
 
-    renderConfirmButton () {
+    renderQuestionCounter () {
         return (
-            <Button
-                containerStyle={styles.buttonSave}
-                disabled={this.state.answers.length - 1 < this.state.activeStep}
-                onPress={this.isLastStep() ? ::this.onSaveAnswers : ::this.onForwardStep}
-                style={styles.textButtonSave}
-            >
-                {this.isLastStep() ?  "SALVA" : "AVANTI"}
-                <FaIcons color={colors.iconWhite} name={"angle-right"} size={18} style={styles.iconArrow} />
-            </Button>
+            <StepCounter
+                currentStep={this.state.activeStep + 1}
+                disabledBackward={this.disabledBackward()}
+                disabledForward={this.disabledForward()}
+                onBackwardStep={::this.onBackwardStep}
+                onForwardStep={::this.onForwardStep}
+                onSaveAnswers={::this.onSaveAnswers}
+                totalSteps={this.getTotalSteps()}
+            />
         );
     }
 
@@ -273,30 +258,20 @@ class Survey extends Component {
     }
 
     renderContentSurvey () {
-        const {height} = Dimensions.get("window");
+        const {height, width} = Dimensions.get("window");
         const activeStepQuestion = this.props.survey.getIn(["questions", this.state.activeStep]);
         return (
-            <View style={styles.contentSurveyWrp}>
-                <Stepper
-                    activeStep={this.state.activeStep}
-                    onPressDot={::this.setActiveStep}
-                    steps={this.props.survey.get("questions").size || 0}
-                />
-                <View style={styles.questionSurveyWrp}>
-                    {this.renderQuestion(activeStepQuestion.get("text"))}
-                </View>
-                <View style={styles.answerSurveyWrp}>
-                {this.renderSwitchAnswer(activeStepQuestion)}
-                </View>
-                <View style={[styles.buttonSaveWrp, {height: height * 0.3}]}>
-                    <TouchableOpacity
-                        disabled={this.state.activeStep === 0}
-                        onPress={::this.onBackwardStep}
-                        style={styles.buttonBack}
-                    >
-                        <FaIcons color={colors.primaryBlue} name={"angle-left"} size={26} />
-                    </TouchableOpacity>
-                    {this.renderConfirmButton()}
+            <View style={[styles.contentSurveyWrp, {height: height * .85}]}>
+                <ScrollView>
+                    <View style={styles.questionSurveyWrp}>
+                        {this.renderQuestion(activeStepQuestion.get("text"))}
+                    </View>
+                    <View style={styles.answerSurveyWrp}>
+                    {this.renderSwitchAnswer(activeStepQuestion)}
+                    </View>
+                </ScrollView>
+                <View style={[styles.buttonsWrp, {width, height: height * .15}]}>
+                    {this.renderQuestionCounter()}
                 </View>
             </View>
         );
@@ -317,7 +292,7 @@ class Survey extends Component {
                     onPressButton={Actions.home}
                     onRequestClose={::this.toggleConfirmModal}
                     textButton={"VAI ALL'APP"}
-                    titleModal={"Grazie per aver compilato il questionario!"}
+                    titleModal={"Grazie per aver compilato il survey!"}
                     visible={this.state.modalVisible}
                 />
             </View>

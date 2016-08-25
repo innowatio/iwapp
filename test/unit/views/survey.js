@@ -1,11 +1,9 @@
 import {shallow} from "enzyme";
 import {fromJS} from "immutable";
-import {TouchableOpacity} from "react-native";
-import Button from "react-native-button";
 
 import Survey from "views/survey";
 import ConfirmModal from "components/confirm-modal";
-import Stepper from "components/stepper";
+import StepCounter from "components/step-counter";
 
 describe("`Survey` view", () => {
 
@@ -79,40 +77,19 @@ describe("`Survey` view", () => {
         expect(survey.find(ConfirmModal).prop("visible")).to.deep.equal(false);
     });
 
-    it("renders `Stepper` with correct props", () => {
+    it("renders `StepCounter` with correct props", () => {
         const survey = shallow(
             <SurveyView
                 saveSurveyAnswers={saveSurveyAnswers}
                 survey={questionsSurvey}
             />
         );
-        expect(survey.find(Stepper)).to.have.length(1);
-        survey.setState({activeStep: 2});
-        expect(survey.find(Stepper).prop("activeStep")).to.deep.equal(2);
-    });
-
-    it("renders confirm button disabled if answers length is less than activeStep", () => {
-        const survey = shallow(
-            <SurveyView
-                saveSurveyAnswers={saveSurveyAnswers}
-                survey={questionsSurvey}
-            />
-        );
-        expect(survey.find(Button)).to.have.length(1);
-        survey.setState({answers: [1, 2, 3, 4], activeStep: 3});
-        expect(survey.find(Button).prop("disabled")).to.equal(false);
-        survey.setState({answers: [1, 2, 3, 4], activeStep: 4});
-        expect(survey.find(Button).prop("disabled")).to.equal(true);
-    });
-
-    it("renders the correct number of TouchableOpacity", () => {
-        const survey = shallow(
-            <SurveyView
-                saveSurveyAnswers={saveSurveyAnswers}
-                survey={questionsSurvey}
-            />
-        );
-        expect(survey.find(TouchableOpacity)).to.have.length(5);
+        expect(survey.find(StepCounter)).to.have.length(1);
+        survey.setState({activeStep: 1});
+        expect(survey.find(StepCounter).prop("currentStep")).to.deep.equal(2);
+        expect(survey.find(StepCounter).prop("disabledBackward")).to.deep.equal(false);
+        expect(survey.find(StepCounter).prop("disabledForward")).to.deep.equal(true);
+        expect(survey.find(StepCounter).prop("totalSteps")).to.deep.equal(5);
     });
 
     describe("`onForwardStep` method", () => {
@@ -153,18 +130,67 @@ describe("`Survey` view", () => {
 
     });
 
-    describe("`setActiveStep` method", () => {
+    // describe("`setActiveStep` method", () => {
+    //
+    //     const setActiveStep = SurveyView.prototype.setActiveStep;
+    //
+    //     it("adds 1 to activeStep state", () => {
+    //         const setState = sinon.spy();
+    //         const instance = {setState};
+    //         setActiveStep.call(instance, 2);
+    //         expect(setState).to.have.callCount(1);
+    //         expect(setState).to.have.been.calledWith({activeStep: 2});
+    //     });
+    //
+    // });
 
-        const setActiveStep = SurveyView.prototype.setActiveStep;
+    describe("`disabledForward` method", () => {
 
-        it("adds 1 to activeStep state", () => {
-            const setState = sinon.spy();
-            const instance = {setState};
-            setActiveStep.call(instance, 2);
-            expect(setState).to.have.callCount(1);
-            expect(setState).to.have.been.calledWith({activeStep: 2});
+        const disabledForward = SurveyView.prototype.disabledForward;
+
+        it("returns true if the actual answer is not set", () => {
+            const instance = {
+                state: {
+                    answers: [],
+                    activeStep: 0
+                }
+            };
+            disabledForward.call(instance);
+            expect(disabledForward.call(instance)).to.equal(true);
         });
 
+        it("returns false if the actual answer is set", () => {
+            const instance = {
+                state: {
+                    answers: ["answer number 0"],
+                    activeStep: 0
+                }
+            };
+            disabledForward.call(instance);
+            expect(disabledForward.call(instance)).to.equal(false);
+        });
+
+        it("returns false if the actual answer is set", () => {
+            const instance = {
+                state: {
+                    answers: ["answer0", "answer1", "answer2", "answer3"],
+                    activeStep: 1
+                }
+            };
+            disabledForward.call(instance);
+            expect(disabledForward.call(instance)).to.equal(false);
+        });
+
+        it("returns true if `activeStep` is grater than number of answers", () => {
+            const instance = {
+                state: {
+                    answers: ["answer0", "answer1", "answer2", "answer3"],
+                    activeStep: 9
+                }
+            };
+            disabledForward.call(instance);
+            expect(disabledForward.call(instance)).to.equal(true);
+        });
     });
 
     describe("`onSaveAnswers` method", () => {
