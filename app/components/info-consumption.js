@@ -2,8 +2,8 @@ import React, {Component, PropTypes} from "react";
 import {Dimensions, StyleSheet, View} from "react-native";
 
 import * as colors from "../lib/colors";
-import Icon from "../components/iwapp-icons";
-import Text from "../components/text-lato";
+import Icon from "./iwapp-icons";
+import Text from "./text-lato";
 
 const styles = StyleSheet.create({
     container: {
@@ -14,8 +14,7 @@ const styles = StyleSheet.create({
     textStandardSmall: {
         color: colors.textGrey,
         fontSize: 11,
-        lineHeight: 13,
-        marginTop: 5,
+        lineHeight: 10,
         fontWeight: "400"
     },
     textStandard: {
@@ -35,7 +34,7 @@ const styles = StyleSheet.create({
         flexDirection: "column"
     },
     borderIconGreen: {
-        marginTop:5,
+        marginVertical:5,
         width: 80,
         height: 80,
         borderWidth: 2,
@@ -80,7 +79,7 @@ const styles = StyleSheet.create({
     },
     textTipsDescription: {
         color: colors.white,
-        fontSize: 13,
+        fontSize: 12,
         lineHeight: 15,
         paddingRight: 5
     },
@@ -121,6 +120,7 @@ export default class InfoConsumption extends Component {
         if (relativeConsumption < -5) {
             badge = {
                 icon: "iw-good",
+                iconColor: colors.iconGood,
                 title: "GRANDE!",
                 text: `Stai andando molto bene.  Hai usato il ${Math.abs(relativeConsumption)}% di energia in meno di attività simili alla tua.`
             };
@@ -128,6 +128,7 @@ export default class InfoConsumption extends Component {
         if (relativeConsumption >= -5 && relativeConsumption <= 0) {
             badge = {
                 icon: "iw-middling",
+                iconColor: colors.iconMiddling,
                 title: "OK!",
                 text: `Sei in linea con il consumo energetico di attività simili alla tua: hai consumato il ${Math.abs(relativeConsumption)}% di energia in meno.`
             };
@@ -135,6 +136,7 @@ export default class InfoConsumption extends Component {
         if (relativeConsumption > 0 && relativeConsumption <= 5) {
             badge = {
                 icon: "iw-middling",
+                iconColor: colors.iconMiddling,
                 title: "OK!",
                 text: `Sei in linea con il consumo energetico di attività simili alla tua: hai consumato il ${relativeConsumption}% di energia in più.`
             };
@@ -142,6 +144,7 @@ export default class InfoConsumption extends Component {
         if (relativeConsumption > 5) {
             badge = {
                 icon: "iw-bad",
+                iconColor: colors.iconBad,
                 title: "ATTENZIONE!",
                 text: `Hai usato il ${relativeConsumption}% di energia in più rispetto ad attività simili alla tua.`
             };
@@ -150,7 +153,7 @@ export default class InfoConsumption extends Component {
             <View style={styles.tipsContainerWrp}>
                 <View style={[styles.tipsContainer, {width: width * 0.96}]}>
                     <View style={styles.iconContainer}>
-                        <Icon color={colors.iconGood} name={badge.icon} size={46} />
+                        <Icon color={badge.iconColor} name={badge.icon} size={46} />
                     </View>
                     <View style={styles.textTipsContainer}>
                         <Text style={styles.textTips}>{badge.title}</Text>
@@ -196,6 +199,7 @@ export default class InfoConsumption extends Component {
             consumptions,
             peersConsumptions
         } = this.props;
+
         return (
             <View style={[styles.container, {height: this.props.heightSwiper}]}>
                 <View style={[styles.infoAndConsumptionContainer]}>
@@ -203,7 +207,9 @@ export default class InfoConsumption extends Component {
                         <View style={styles.borderIconGreen}>
                             <Icon color={colors.iconGreen} name={"iw-badge-buildings"} size={72} style={styles.iconGreen} />
                         </View>
-                        <Text style={styles.textStandardSmall}>{"Numero di persone \nGrandezza dell'ufficio \nPosizione"}</Text>
+                        <Text style={styles.textStandardSmall}>{"23 persone"}</Text>
+                        <Text style={styles.textStandardSmall}>{"Ufficio di 167 mq"}</Text>
+                        <Text style={styles.textStandardSmall}>{"Bergamo, Lombardia"}</Text>
                     </View>
                     <View style={styles.meanConsumptionContainer}>
                         {consumptions ? this.renderMyConsumptions() : null}
