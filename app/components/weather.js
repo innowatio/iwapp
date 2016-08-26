@@ -122,19 +122,19 @@ export default class Weather extends Component {
                                 <Text style={styles.labelPercentage}>
                                     {"UMIDITA'"}
                                 </Text>
-                                <Text style={styles.textPercentage}>{`${humidity} ${humidityUnit ? humidityUnit : "%"}`}</Text>
+                                <Text style={styles.textPercentage}>{`${humidity.toFixed()} ${humidityUnit ? humidityUnit : "%"}`}</Text>
                             </View>
                             <View style={styles.climateVariables}>
                                 <Text style={styles.labelPercentage}>
                                     {"NUVOLOSITA'"}
                                 </Text>
-                                <Text style={styles.textPercentage}>{`${cloudness} ${cloudnessUnit ? cloudnessUnit : "%"}`}</Text>
+                                <Text style={styles.textPercentage}>{`${cloudness.toFixed()} ${cloudnessUnit ? cloudnessUnit : "%"}`}</Text>
                             </View>
                         </View>
                     </View>
                     <View>
                         <View style={styles.textDegreesWrp}>
-                            <Text style={styles.textDegreesValue}>{`${temperature}`}</Text>
+                            <Text style={styles.textDegreesValue}>{`${temperature.toFixed()}`}</Text>
                             <Text style={styles.textDegrees}>{`${temperatureUnit ? temperatureUnit : ""}`}</Text>
                         </View>
                         <Text style={styles.textDescDegrees}>
