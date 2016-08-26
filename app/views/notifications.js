@@ -1,6 +1,8 @@
 import React, {Component} from "react";
 import {Dimensions, StyleSheet, ScrollView, View} from "react-native";
 import {Content} from "native-base";
+import FaIcons from "react-native-vector-icons/FontAwesome";
+import Button from "react-native-button";
 
 import Icon from "../components/iwapp-icons";
 import Text from "../components/text-lato";
@@ -57,6 +59,27 @@ const styles = StyleSheet.create({
         color: colors.lightGrey,
         fontSize: 13,
         alignSelf: "flex-end"
+    },
+
+    buttonScrollWrp: {
+        position: "absolute",
+        height: 30,
+        zIndex: 100,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        margin: 10,
+        justifyContent: "flex-end",
+        alignItems: "flex-end"
+    },
+    buttonScroll: {
+        borderRadius: 100,
+        height: 30,
+        width: 30,
+        backgroundColor: colors.primaryBlue,
+        justifyContent: "center",
+        alignItems: "center"
+
     }
 });
 
@@ -130,6 +153,21 @@ export default class Notifications extends Component {
         ];
     }
 
+    renderScrollButton () {
+        const {height} = Dimensions.get("window");
+        return (
+            <View style={[styles.buttonScrollWrp, {top: height * .75}]}>
+                <Button containerStyle={styles.buttonScroll}>
+                    <FaIcons
+                        color={colors.iconWhite}
+                        name={"angle-down"}
+                        size={20}
+                    />
+                </Button>
+            </View>
+        );
+    }
+
     renderNotificationsList () {
         return (
             <View style={styles.containerView}>
@@ -187,6 +225,7 @@ export default class Notifications extends Component {
                         {this.renderNotificationsList()}
                     </View>
                 </Content>
+                {this.renderScrollButton()}
             </View>
         );
     }
