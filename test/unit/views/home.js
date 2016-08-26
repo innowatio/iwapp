@@ -59,8 +59,8 @@ describe("`Home` view", () => {
         expect(homeView.find(Swiper)).to.have.length(1);
     });
 
-    it("renders a `Swiper` with 3 children", () => {
-        expect(homeView.find(Swiper).children()).to.have.length(3);
+    it("renders a `Swiper` with 2 children", () => {
+        expect(homeView.find(Swiper).children()).to.have.length(2);
     });
 
     it("renders a `Weather` component", () => {

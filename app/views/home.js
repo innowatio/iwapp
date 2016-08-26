@@ -200,9 +200,6 @@ class Home extends Component {
                                 onToggleSwitch={this.props.toggleForecast}
                             />
                         </View>
-                        <View>
-                            <Text style={{color: colors.textGrey}}>{"Grafico a torta"}</Text>
-                        </View>
                     </Swiper>
                 </Content>
             </View>
