@@ -93,6 +93,37 @@ class Root extends Component {
         asteroid.off("loggedOut", this.props.onLogout);
     }
 
+    getMenuItems () {
+        return [{
+            icon: "overview",
+            title: "Overview",
+            navigateTo: "home"
+        }, {
+            icon: "chart",
+            title: "Statistiche",
+            navigateTo: "stats"
+        }
+        // coming soon™
+        /*, {
+            icon: "gauge",
+            title: "Il mio smartmeter",
+            navigateTo: "home"
+        }, {
+            icon: "badge",
+            title: "Badgeboard",
+            navigateTo: "home"
+        }, {
+            icon: "lightbulb",
+            title: "Risparmio energetico",
+            navigateTo: "home"
+        }, {
+            icon: "report",
+            title: "Report",
+            navigateTo: "home"
+        }*/
+        ];
+    }
+
     getNavigationChildrenIndex () {
         const currentScene = last(this.props.navigationScene);
         const scenes = this.props.navigationState.children;
@@ -185,6 +216,7 @@ class Root extends Component {
                 content={
                     <SideMenu
                         asteroid={asteroid}
+                        menuItems={this.getMenuItems()}
                         onSelectSite={selectSite}
                         onTriggerClose={::this.closeHamburger}
                         optionItems={this.getSites()}

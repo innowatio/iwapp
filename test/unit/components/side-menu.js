@@ -12,8 +12,34 @@ describe("`SideMenu` component", () => {
         collections: new Map()
     };
 
+    const items = [{
+        icon: "overview",
+        title: "Overview",
+        navigateTo: "home"
+    }, {
+        icon: "chart",
+        title: "Statistiche",
+        navigateTo: "stats"
+    }, {
+        icon: "gauge",
+        title: "Il mio smartmeter",
+        navigateTo: "home"
+    }, {
+        icon: "badge",
+        title: "Badgeboard",
+        navigateTo: "home"
+    }, {
+        icon: "lightbulb",
+        title: "Risparmio energetico",
+        navigateTo: "home"
+    }, {
+        icon: "report",
+        title: "Report",
+        navigateTo: "home"
+    }];
+
     it("renders SideMenu", () => {
-        const dropDown = shallow(<SideMenu asteroid={asteroid} />);
+        const dropDown = shallow(<SideMenu asteroid={asteroid} menuItems={items}/>);
 
         expect(dropDown.find(DropDown)).to.have.length(1);
 

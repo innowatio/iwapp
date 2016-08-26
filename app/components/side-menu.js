@@ -36,10 +36,19 @@ export default class SideMenu extends Component {
 
     static propTypes = {
         asteroid: PropTypes.object.isRequired,
+        menuItems: React.PropTypes.arrayOf(React.PropTypes.shape({
+            icon: React.PropTypes.string.isRequired,
+            title: React.PropTypes.string.isRequired,
+            navigateTo: React.PropTypes.string.isRequired
+        })),
         onSelectSite: PropTypes.func.isRequired,
         onTriggerClose: PropTypes.func,
         optionItems: PropTypes.array.isRequired,
         site: PropTypes.object
+    }
+
+    static defaultProps = {
+        menuItems: []
     }
 
     constructor () {
@@ -76,34 +85,7 @@ export default class SideMenu extends Component {
         onTriggerClose();
     }
 
-    renderMenuItems () {
-        const items = [
-            {
-                icon: "overview",
-                title: "Overview",
-                navigateTo: "home"
-            }, {
-                icon: "chart",
-                title: "Statistiche",
-                navigateTo: "stats"
-            }, {
-                icon: "gauge",
-                title: "Il mio smartmeter",
-                navigateTo: "home"
-            }, {
-                icon: "badge",
-                title: "Badgeboard",
-                navigateTo: "home"
-            }, {
-                icon: "lightbulb",
-                title: "Risparmio energetico",
-                navigateTo: "home"
-            }, {
-                icon: "report",
-                title: "Report",
-                navigateTo: "home"
-            }
-        ];
+    renderMenuItems (items) {
         return items.map(item => (
             <ListItem key={item.icon} style={styles.menuItem}>
                 <TouchableOpacity onPress={this.navigateTo(item)} style={styles.rightIcon}>
@@ -121,7 +103,7 @@ export default class SideMenu extends Component {
             <View>
                 <View style={{height: (height * .78), backgroundColor: colors.primaryBlue}}>
                     <List>
-                        {this.renderMenuItems()}
+                        {this.renderMenuItems(this.props.menuItems)}
                     </List>
                 </View>
                 <View style={{height: (height * .22) - (74), backgroundColor: colors.primaryBlue}}>
