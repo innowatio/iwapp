@@ -11,7 +11,6 @@ import {bindActionCreators} from "redux";
 import ChartConsumption from "../components/chart-consumption";
 import InfoConsumption from "../components/info-consumption";
 import Weather from "../components/weather";
-import Text from "../components/text-lato";
 import {toggleForecast} from "../actions/home";
 import * as colors from "../lib/colors";
 import {mapWeatherIcon, mapWeatherBackground} from "../lib/weather-mapper";

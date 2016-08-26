@@ -3,17 +3,15 @@ import moment from "moment";
 import {Content} from "native-base";
 import React, {Component, PropTypes} from "react";
 import IPropTypes from "react-immutable-proptypes";
-import {Dimensions, View, StyleSheet, TouchableOpacity} from "react-native";
+import {Dimensions, View, StyleSheet} from "react-native";
 import * as Progress from "react-native-progress";
 import Button from "react-native-button";
 import {connect} from "react-redux";
 import Swiper from "react-native-swiper";
-import {Actions} from "react-native-router-flux";
 import {bindActionCreators} from "redux";
 
 import {selectPeriod} from "../actions/stats";
 import Highcharts from "../components/highcharts";
-import Icon from "../components/iwapp-icons";
 import RealTimeSpinner from "../components/realtime";
 import Text from "../components/text-lato";
 import * as colors from "../lib/colors";
@@ -129,33 +127,33 @@ const styles = StyleSheet.create({
     },
 
     // ALERT
-    alarmsButtonWrp: {
-        borderTopWidth: 0.5,
-        borderBottomWidth: 0.5,
-        borderTopColor: colors.lightGrey,
-        borderBottomColor: colors.lightGrey,
-        marginBottom: 10
-    },
-    alarmsButton: {
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "flex-start",
-        paddingHorizontal: 20,
-        paddingVertical: 3
-    },
-    iconAlarmWrp: {
-        backgroundColor: colors.primaryBlue,
-        borderRadius: 100,
-        width: 36,
-        height: 36,
-        marginRight: 5,
-        alignItems: "center",
-        justifyContent: "center"
-    },
-    alarmsButtonText: {
-        color: colors.textGrey,
-        fontSize: 13
-    },
+    // alarmsButtonWrp: {
+    //     borderTopWidth: 0.5,
+    //     borderBottomWidth: 0.5,
+    //     borderTopColor: colors.lightGrey,
+    //     borderBottomColor: colors.lightGrey,
+    //     marginBottom: 10
+    // },
+    // alarmsButton: {
+    //     flexDirection: "row",
+    //     alignItems: "center",
+    //     justifyContent: "flex-start",
+    //     paddingHorizontal: 20,
+    //     paddingVertical: 3
+    // },
+    // iconAlarmWrp: {
+    //     backgroundColor: colors.primaryBlue,
+    //     borderRadius: 100,
+    //     width: 36,
+    //     height: 36,
+    //     marginRight: 5,
+    //     alignItems: "center",
+    //     justifyContent: "center"
+    // },
+    // alarmsButtonText: {
+    //     color: colors.textGrey,
+    //     fontSize: 13
+    // },
 
     // SUMMARY CONSUMPTION
     summaryConsumptionContainer: {
