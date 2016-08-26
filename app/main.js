@@ -30,7 +30,11 @@ export default class Main extends Component {
         });
         AppState.addEventListener("change", this.handleAppStateChange);
         syncStoreAndAsteroid(store, asteroid);
-        codePush.sync({installMode: codePush.InstallMode.ON_NEXT_RESUME, minimumBackgroundDuration: 60 * 10});
+        codePush.sync({
+            installMode: codePush.InstallMode.ON_NEXT_RESTART,
+            mandatoryInstallMode: codePush.InstallMode.ON_NEXT_RESTART,
+            minimumBackgroundDuration: 60 * 10
+        });
     }
 
     componentWillUnmount () {
