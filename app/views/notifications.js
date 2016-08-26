@@ -87,69 +87,72 @@ export default class Notifications extends Component {
 
     getNotification () {
         return [
-            {
-                bgcolor: colors.energeticTip,
-                date: "Oggi",
-                key: "Tips energetico",
-                icon: "iw-energetic-tip",
-                text: "E’ disponibile il report dei tuoi consumi settimanali."
-            },
-            {
-                bgcolor: colors.alarmsTip,
-                date: "Oggi",
-                key: "Allarme",
-                icon: "iw-alarms-tip",
-                text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-            },
-            {
-                bgcolor: colors.welcomeNotification,
-                date: "Ieri",
-                key: "Notifica benvenuto al pilot",
-                icon: "iw-welcome",
-                text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-            },
-            {
-                bgcolor: colors.endPilotNotification,
-                date: "Ieri",
-                key: "Notifica di fine pilot",
-                icon: "iw-like",
-                text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-            },
-            {
-                bgcolor: colors.badgeNotification,
-                date: "Ieri",
-                key: "Notifica nuovo badge",
-                icon: "iw-badge",
-                text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-            },
-            {
-                bgcolor: colors.upgradeNotification,
-                date: "Ieri",
-                key: "Notifica upgrade",
-                icon: "iw-upgrade",
-                text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-            },
-            {
-                bgcolor: colors.energeticTip,
-                date: "Oggi",
-                key: "Tips energetico2",
-                icon: "iw-energetic-tip",
-                text: "E’ disponibile il report dei tuoi consumi settimanali."
-            },
-            {
-                bgcolor: colors.alarmsTip,
-                date: "Oggi",
-                key: "Allarme2",
-                icon: "iw-alarms-tip",
-                text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-            },
-            {
-                bgcolor: colors.welcomeNotification,
-                date: "Ieri",
-                key: "Notifica benvenuto al pilot2",
-                icon: "iw-welcome",
-                text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-            }
+            // TODO remove when we have notifications on DB
+            // also handle in a better way the visibility of the `scrollButton`
+
+            // {
+            //     bgcolor: colors.energeticTip,
+            //     date: "Oggi",
+            //     key: "Tips energetico",
+            //     icon: "iw-energetic-tip",
+            //     text: "E’ disponibile il report dei tuoi consumi settimanali."
+            // },
+            // {
+            //     bgcolor: colors.alarmsTip,
+            //     date: "Oggi",
+            //     key: "Allarme",
+            //     icon: "iw-alarms-tip",
+            //     text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+            // },
+            // {
+            //     bgcolor: colors.welcomeNotification,
+            //     date: "Ieri",
+            //     key: "Notifica benvenuto al pilot",
+            //     icon: "iw-welcome",
+            //     text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+            // },
+            // {
+            //     bgcolor: colors.endPilotNotification,
+            //     date: "Ieri",
+            //     key: "Notifica di fine pilot",
+            //     icon: "iw-like",
+            //     text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+            // },
+            // {
+            //     bgcolor: colors.badgeNotification,
+            //     date: "Ieri",
+            //     key: "Notifica nuovo badge",
+            //     icon: "iw-badge",
+            //     text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+            // },
+            // {
+            //     bgcolor: colors.upgradeNotification,
+            //     date: "Ieri",
+            //     key: "Notifica upgrade",
+            //     icon: "iw-upgrade",
+            //     text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+            // },
+            // {
+            //     bgcolor: colors.energeticTip,
+            //     date: "Oggi",
+            //     key: "Tips energetico2",
+            //     icon: "iw-energetic-tip",
+            //     text: "E’ disponibile il report dei tuoi consumi settimanali."
+            // },
+            // {
+            //     bgcolor: colors.alarmsTip,
+            //     date: "Oggi",
+            //     key: "Allarme2",
+            //     icon: "iw-alarms-tip",
+            //     text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+            // },
+            // {
+            //     bgcolor: colors.welcomeNotification,
+            //     date: "Ieri",
+            //     key: "Notifica benvenuto al pilot2",
+            //     icon: "iw-welcome",
+            //     text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+            // }
         ];
     }
 
@@ -225,7 +228,7 @@ export default class Notifications extends Component {
                         {this.renderNotificationsList()}
                     </View>
                 </Content>
-                {this.renderScrollButton()}
+                {this.getNotification().length > 6 ? this.renderScrollButton() : undefined}
             </View>
         );
     }
