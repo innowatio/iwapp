@@ -30,8 +30,7 @@ const styles = StyleSheet.create({
     infoContainer: {
         flexDirection: "column",
         paddingLeft: 25,
-        justifyContent: "center",
-        backgroundColor: colors.black
+        justifyContent: "center"
     },
     meanConsumptionContainer: {
         flexDirection: "column",
