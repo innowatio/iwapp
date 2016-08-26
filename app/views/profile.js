@@ -232,6 +232,10 @@ class Profile extends Component {
     }
 
     showImagePicker () {
+        // TODO waiting for SSO support for images
+        // also de-comment the unit test about this
+
+        /*
         const options = {
             title: null, // specify null or empty string to remove the title
             cancelButtonTitle: "Cancella",
@@ -254,6 +258,8 @@ class Profile extends Component {
                 path: "images" // ios only - will save image at /Documents/images rather than the root
             }
         };
+
+
         ImagePicker.showImagePicker(options, (response) => {
             if (response.didCancel) {
                 console.log("User cancelled image picker");
@@ -268,6 +274,7 @@ class Profile extends Component {
                 });
             }
         });
+        */
     }
 
     renderUserImage () {
