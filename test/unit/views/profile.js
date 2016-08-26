@@ -140,9 +140,9 @@ describe("`Profile` view", () => {
             expect(profile.find(".userImage")).to.have.length(1);
         });
 
-        it("on click on `user image` calls the `showImagePicker` method", () => {
-            profile.find(".userImage").simulate("press");
-            expect(showImagePickerSpy).to.have.property("callCount", 1);
-        });
+        // it("on click on `user image` calls the `showImagePicker` method", () => {
+        //     profile.find(".userImage").simulate("press");
+        //     expect(showImagePickerSpy).to.have.property("callCount", 1);
+        // });
     });
 });

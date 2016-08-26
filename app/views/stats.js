@@ -278,24 +278,26 @@ class Stats extends Component {
     }
 
     renderAlarmSettings () {
-        const {width} = Dimensions.get("window");
-        return (
-            <View style={[styles.alarmsButtonWrp, {width: width}]}>
-                <TouchableOpacity
-                    onPress={() => Actions.alarmsSettings()}
-                    style={[styles.alarmsButton, {width: width * 0.9}]}
-                >
-                    <View style={styles.iconAlarmWrp}>
-                        <Icon
-                            color={colors.iconWhite}
-                            name={"iw-alert"}
-                            size={24}
-                        />
-                    </View>
-                    <Text style={styles.alarmsButtonText}>{"Imposta allarmi"}</Text>
-                </TouchableOpacity>
-            </View>
-        );
+        // TODO waiting the alarms feature
+
+        // const {width} = Dimensions.get("window");
+        // return (
+        //     <View style={[styles.alarmsButtonWrp, {width: width}]}>
+        //         <TouchableOpacity
+        //             onPress={() => Actions.alarmsSettings()}
+        //             style={[styles.alarmsButton, {width: width * 0.9}]}
+        //         >
+        //             <View style={styles.iconAlarmWrp}>
+        //                 <Icon
+        //                     color={colors.iconWhite}
+        //                     name={"iw-alert"}
+        //                     size={24}
+        //                 />
+        //             </View>
+        //             <Text style={styles.alarmsButtonText}>{"Imposta allarmi"}</Text>
+        //         </TouchableOpacity>
+        //     </View>
+        // );
     }
 
     renderProgressBar (consumptions, unit) {
