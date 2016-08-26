@@ -33,7 +33,9 @@ const styles = StyleSheet.create({
         justifyContent: "center"
     },
     meanConsumptionContainer: {
-        flexDirection: "column"
+        flexDirection: "column",
+        paddingHorizontal: 20,
+        overflow: "hidden"
     },
     borderIconGreen: {
         marginVertical: 5,
@@ -205,7 +207,7 @@ export default class InfoConsumption extends Component {
         return (
             <View style={[styles.container, {height: this.props.heightSwiper}]}>
                 <View style={[styles.infoAndConsumptionContainer, {width}]}>
-                    <View style={[styles.infoContainer, {height: height * .5, width: width * .45}]}>
+                    <View style={[styles.infoContainer, {height: height * .35, width: width * .42}]}>
                         <View style={styles.borderIconGreen}>
                             <Icon color={colors.iconGreen} name={"iw-badge-buildings"} size={72} style={styles.iconGreen} />
                         </View>
@@ -213,7 +215,7 @@ export default class InfoConsumption extends Component {
                         <Text style={styles.textStandardSmall}>{"Ufficio di 167 mq"}</Text>
                         <Text style={styles.textStandardSmall}>{"Bergamo, Lombardia"}</Text>
                     </View>
-                    <View style={[styles.meanConsumptionContainer, {width: width * .55}]}>
+                    <View style={[styles.meanConsumptionContainer, {height: height * .35, width: width * .58}]}>
                         {consumptions ? this.renderMyConsumptions() : null}
                         {peersConsumptions ? this.renderPeersConsumptions() : null}
                     </View>
