@@ -20,6 +20,9 @@ export const backgroundBlackOpacity = "rgba(0, 0, 0, 0.3)";
 // Error
 export const backgroundError = "#ff1744";
 export const backgroundIconError = "#c41637";
+// ModalError
+export const backgroundModalError = "#eb2953";
+export const backgroundIconModalError = "#ea5a7c";
 // Login
 export const loginTextBackground = "rgba(0, 0, 0, 0.2)";
 export const backgroundErrorLogin = "rgba(255, 23, 68, 0.6)";
@@ -62,6 +65,7 @@ export const alarmInstantPower = "#536dfe";
 // Survey
 export const selectedAnswer = "#eeeeee";
 export const rateStarColor = "#ffd600";
+export const buttonsDisabled = "#a147a8";
 // Questionnaire
 export const borderAccordion = "#D2DADE";
 export const iconArrow = "#85959D";

@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
     textStandardSmall: {
         color: colors.textGrey,
         fontSize: 11,
-        lineHeight: 10,
+        lineHeight: 11,
         fontWeight: "400"
     },
     textStandard: {
@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20,
         overflow: "hidden"
     },
-    borderIconGreen: {
+    iconActivityWrp: {
         marginVertical: 5,
         width: 80,
         height: 80,
@@ -46,8 +46,11 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center"
     },
-    iconGreen: {
-        backgroundColor: colors.transparent
+    iconActivity: {
+        backgroundColor: colors.transparent,
+        justifyContent: "center",
+        alignItems: "center",
+        lineHeight: 78
     },
     textNumber: {
         paddingRight: 5,
@@ -78,13 +81,15 @@ const styles = StyleSheet.create({
     textTips: {
         color: colors.white,
         fontSize: 18,
-        lineHeight: 20
+        lineHeight: 20,
+        backgroundColor: colors.transparent
     },
     textTipsDescription: {
         color: colors.white,
         fontSize: 12,
         lineHeight: 15,
-        paddingRight: 5
+        paddingRight: 5,
+        backgroundColor: colors.transparent
     },
     textTipsContainer: {
         flexDirection: "column",
@@ -160,7 +165,7 @@ export default class InfoConsumption extends Component {
                     </View>
                     <View style={styles.textTipsContainer}>
                         <Text style={styles.textTips}>{badge.title}</Text>
-                        <Text allowFontScaling={true} style={[styles.textTipsDescription, {width: width * 0.79}]}>
+                        <Text allowFontScaling={true} style={[styles.textTipsDescription, {width: width * 0.78}]}>
                             {badge.text}
                         </Text>
                     </View>
@@ -208,8 +213,8 @@ export default class InfoConsumption extends Component {
             <View style={[styles.container, {height: this.props.heightSwiper}]}>
                 <View style={[styles.infoAndConsumptionContainer, {width}]}>
                     <View style={[styles.infoContainer, {height: height * .35, width: width * .42}]}>
-                        <View style={styles.borderIconGreen}>
-                            <Icon color={colors.iconGreen} name={"iw-badge-buildings"} size={72} style={styles.iconGreen} />
+                        <View style={styles.iconActivityWrp}>
+                            <Icon color={colors.iconGreen} name={"iw-badge-buildings"} size={72} style={styles.iconActivity} />
                         </View>
                         <Text style={styles.textStandardSmall}>{"23 persone"}</Text>
                         <Text style={styles.textStandardSmall}>{"Ufficio di 167 mq"}</Text>
