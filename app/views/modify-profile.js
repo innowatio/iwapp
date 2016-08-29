@@ -115,10 +115,10 @@ const styles = StyleSheet.create({
         alignItems: "center",
         top: 0,
         left: 0,
-        backgroundColor: colors.backgroundErrorPassword
+        backgroundColor: colors.backgroundError
     },
     iconAlertWrp: {
-        backgroundColor: colors.backgroundIconErrorPassword,
+        backgroundColor: colors.backgroundIconError,
         borderRadius: 100,
         width: 35,
         height: 35,
