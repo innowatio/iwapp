@@ -1,11 +1,12 @@
 import {Map} from "immutable";
+import {equals, last} from "ramda";
 import Drawer from "react-native-drawer";
 import React, {Component, PropTypes} from "react";
 import {Platform, StatusBar, StyleSheet, ScrollView, View} from "react-native";
+import FCM from "react-native-fcm";
 import {DefaultRenderer} from "react-native-router-flux";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
-import {equals, last} from "ramda";
 
 import {selectSite} from "../actions/site";
 import {generateSessionId} from "../actions/session-id";
@@ -17,6 +18,7 @@ import SurveyModal from "../components/survey-modal";
 import asteroid from "../lib/asteroid";
 import {statusBarHeight} from "../lib/const";
 import {primaryBlue, secondaryBlue} from "../lib/colors";
+import getDeviceInfo from "../lib/get-device-info";
 import Login from "./login";
 
 const styles = StyleSheet.create({
@@ -59,6 +61,15 @@ class Root extends Component {
     }
 
     componentDidMount () {
+        this.notificationUnsubscribe = FCM.on("notification", notif => {
+            console.log("NOTIFICA");
+            console.log(notif);
+            // there are two parts of notif. notif.notification contains the notification payload, notif.data contains data payload
+        });
+        this.refreshUnsubscribe = FCM.on("refreshToken", (token) => {
+            console.log(`TOKEN REFRESH: ${token}`);
+            // fcm token may not be available on first load, catch it here
+        });
         asteroid.on("loggedIn", this.onLoginActions());
         asteroid.on("loggedOut", this.props.onLogout);
         asteroid.ddp.on("added", ({collection, fields, id}) => {
@@ -160,6 +171,11 @@ class Root extends Component {
                     email: userInfo.mail[0],
                     name: userInfo.givenName[0]
                 });
+            });
+            FCM.getFCMToken().then(token => {
+                const deviceInfo = getDeviceInfo();
+                // store fcm token in your server
+                asteroid.call("saveFCMToken", token, deviceInfo);
             });
         };
     }

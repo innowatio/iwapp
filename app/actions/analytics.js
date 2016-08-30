@@ -1,9 +1,9 @@
 import actionTypeValidator from "redux-action-type-validator";
 import {String} from "tcomb";
 import moment from "moment";
-import DeviceInfo from "react-native-device-info";
 
 import axios, {AxiosError} from "../lib/axios";
+import getDeviceInfo from "../lib/get-device-info";
 
 export const ANALYTICS_POST_START = "ANALYTICS_POST_START";
 export const ANALYTICS_POST_SUCCESS = "ANALYTICS_POST_SUCCESS";
@@ -14,15 +14,7 @@ export function postAnalytics (userId, visitId) {
     typeofOnLogin(...arguments);
     return (dispatch, getState) => {
         const {analytics} = getState();
-        const details = {
-            uuid: DeviceInfo.getUniqueID(),
-            model: DeviceInfo.getModel(),
-            platform: DeviceInfo.getSystemName(),
-            version: DeviceInfo.getSystemVersion(),
-            appVersion: DeviceInfo.getVersion(),
-            bundle: DeviceInfo.getBundleId(),
-            userAgent: DeviceInfo.getUserAgent()
-        };
+        const details = getDeviceInfo();
         try {
             dispatch({type: ANALYTICS_POST_START});
             return axios.post("/user-interactions", {
