@@ -50,16 +50,28 @@ describe("`Survey` view", () => {
         }]
     });
 
+    const Dimensions = {
+        get: sinon.stub().returns({height: 100}),
+        reset: sinon.spy()
+    };
+
+    const heightWithoutHeader = sinon.stub().returns(100);
+
     before(() => {
         Survey.__Rewire__("Actions", Actions);
+        Survey.__Rewire__("Dimensions", Dimensions);
+        Survey.__Rewire__("heightWithoutHeader", heightWithoutHeader);
     });
 
     beforeEach(() => {
         saveSurveyAnswers.reset();
+        Dimensions.reset();
     });
 
     after(() => {
         Survey.__ResetDependency__("Actions");
+        Survey.__ResetDependency__("Dimensions");
+        Survey.__ResetDependency__("heightWithoutHeader");
     });
 
     it("renders `ConfirmModal` with correct props", () => {
@@ -106,7 +118,10 @@ describe("`Survey` view", () => {
             };
             onForwardStep.call(instance);
             expect(setState).to.have.callCount(1);
-            expect(setState).to.have.been.calledWith({activeStep: 2});
+            expect(setState).to.have.been.calledWith({
+                activeStep: 2,
+                beforeScroll: true
+            });
         });
 
     });
@@ -125,24 +140,13 @@ describe("`Survey` view", () => {
             };
             onBackwardStep.call(instance);
             expect(setState).to.have.callCount(1);
-            expect(setState).to.have.been.calledWith({activeStep: 0});
+            expect(setState).to.have.been.calledWith({
+                activeStep: 0,
+                beforeScroll: true
+            });
         });
 
     });
-
-    // describe("`setActiveStep` method", () => {
-    //
-    //     const setActiveStep = SurveyView.prototype.setActiveStep;
-    //
-    //     it("adds 1 to activeStep state", () => {
-    //         const setState = sinon.spy();
-    //         const instance = {setState};
-    //         setActiveStep.call(instance, 2);
-    //         expect(setState).to.have.callCount(1);
-    //         expect(setState).to.have.been.calledWith({activeStep: 2});
-    //     });
-    //
-    // });
 
     describe("`disabledForward` method", () => {
 
@@ -317,7 +321,10 @@ describe("`Survey` view", () => {
             };
             setAnswer.call(instance, answer, 3);
             expect(setState).to.have.callCount(1);
-            expect(setState).to.have.been.calledWithExactly({answers: expectedAnswers});
+            expect(setState).to.have.been.calledWithExactly({
+                answers: expectedAnswers,
+                beforeScroll: true
+            });
         });
 
         it("set the answer correctly in the state [CASE: not the last step]", () => {
@@ -343,7 +350,10 @@ describe("`Survey` view", () => {
             setAnswer.call(instance, answer, 3);
             expect(setState).to.have.callCount(1);
             expect(onForwardStep).to.have.callCount(1);
-            expect(setState).to.have.been.calledWithExactly({answers: expectedAnswers});
+            expect(setState).to.have.been.calledWithExactly({
+                answers: expectedAnswers,
+                beforeScroll: true
+            });
         });
 
     });
@@ -469,5 +479,83 @@ describe("`Survey` view", () => {
         });
 
     });
+
+    describe("`onContentSizeChange` method", () => {
+
+        const onContentSizeChange = SurveyView.prototype.onContentSizeChange;
+
+        it("not returns `Scroll` if the height is less than 80%", () => {
+            const setState = sinon.spy();
+            const instance = {
+                setState
+            };
+            onContentSizeChange.call(instance, 100, 80);
+            expect(setState).to.have.callCount(1);
+            expect(setState).to.have.calledWithExactly({
+                toScroll: false
+            });
+        });
+
+        it("returns `Scroll` if the height is greater than 80%", () => {
+            const setState = sinon.spy();
+            const instance = {
+                setState
+            };
+            onContentSizeChange.call(instance, 100, 81);
+            expect(setState).to.have.callCount(1);
+            expect(setState).to.have.calledWithExactly({
+                toScroll: true
+            });
+        });
+
+    });
+
+    describe("`onScroll` method", () => {
+
+        const onScroll = SurveyView.prototype.onScroll;
+
+        it("renders Scroll option [CASE: `onScroll` returns true]", () => {
+            const setState = sinon.spy();
+            const instance = {
+                setState,
+                state: {
+                    beforeScroll: true
+                }
+            };
+            onScroll.call(instance);
+            expect(setState).to.have.callCount(1);
+            expect(setState).to.have.calledWithExactly({
+                beforeScroll: false
+            });
+        });
+
+        it("renders `Scroll` [CASE: `onScroll` returns false]", () => {
+            const setState = sinon.spy();
+            const instance = {
+                setState,
+                state: {
+                    beforeScroll: false
+                }
+            };
+            onScroll.call(instance);
+            expect(setState).to.have.callCount(0);
+        });
+
+        it("renders `Scroll` [CASE: `onScroll` returns null]", () => {
+            const setState = sinon.spy();
+            const instance = {
+                setState,
+                state: {
+                    beforeScroll: null
+                }
+            };
+            onScroll.call(instance);
+            expect(setState).to.have.callCount(0);
+        });
+
+    });
+        // onScroll () {
+        //     return this.state.beforeScroll ? this.setState({beforeScroll: false}) : null;
+        // }
 
 });

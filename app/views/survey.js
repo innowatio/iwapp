@@ -2,19 +2,21 @@ import moment from "moment";
 import {last, isNil} from "ramda";
 import React, {Component, PropTypes} from "react";
 import IPropTypes from "react-immutable-proptypes";
-import {Dimensions, View, StyleSheet, TouchableOpacity, Image, ScrollView, FaIcons} from "react-native";
-import Button from "react-native-button";
+import {Dimensions, View, StyleSheet, TouchableOpacity, Image, ScrollView} from "react-native";
 import {connect} from "react-redux";
 import {Actions} from "react-native-router-flux";
 import {bindActionCreators} from "redux";
 import StarRating from "react-native-star-rating";
+
 import Text from "../components/text-lato";
 import * as colors from "../lib/colors";
+import {heightWithoutHeader} from "../lib/const";
 import ConfirmModal from "../components/confirm-modal";
 import ErrorModal from "../components/error-modal";
 import StepCounter from "../components/step-counter";
 import {saveSurveyAnswers} from "../actions/survey";
 import {SURVEY_RATE, SURVEY_SIGLE_CHOICE} from "../actions/survey";
+import Scroll from "../components/scroll";
 
 const styles = StyleSheet.create({
     container: {
@@ -82,18 +84,27 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
         paddingHorizontal: 45
     },
+    buttonsWrp: {
+        backgroundColor: colors.primaryBlue
+    },
 
     //SAVE spinner
+    errorPageWrp: {
+        alignItems: "center",
+        justifyContent: "center"
+    },
     spinner: {
         width: 88,
         height: 88,
         flexWrap: "wrap",
         justifyContent: "center",
-        alignItems: "center",
-        marginTop: 30
+        alignItems: "center"
     },
-    buttonsWrp: {
-        backgroundColor: colors.primaryBlue
+    messageWrp: {
+        paddingVertical: 10,
+        paddingHorizontal: 25,
+        justifyContent: "center",
+        alignItems: "center"
     }
 });
 
@@ -116,8 +127,10 @@ class Survey extends Component {
     constructor (props) {
         super(props);
         this.state = {
+            beforeScroll: true,
             activeStep: 0,
             modalVisible: false,
+            toScroll: false,
             answers: [],
             questions: []
         };
@@ -144,11 +157,17 @@ class Survey extends Component {
     }
 
     onForwardStep () {
-        this.setState({activeStep: this.state.activeStep + 1});
+        this.setState({
+            activeStep: this.state.activeStep + 1,
+            beforeScroll: true
+        });
     }
 
     onBackwardStep () {
-        this.setState({activeStep: this.state.activeStep - 1});
+        this.setState({
+            activeStep: this.state.activeStep - 1,
+            beforeScroll: true
+        });
     }
 
     onSaveAnswers () {
@@ -185,7 +204,10 @@ class Survey extends Component {
         if (!this.isLastStep()) {
             this.onForwardStep();
         }
-        return this.setState({answers});
+        this.setState({
+            answers,
+            beforeScroll: true
+        });
     }
 
     toggleConfirmModal () {
@@ -202,6 +224,18 @@ class Survey extends Component {
             option === this.state.answers[this.state.activeStep].answer :
             false
         );
+    }
+
+    onContentSizeChange (contentWidth, contentHeight) {
+        const {height} = Dimensions.get("window");
+        // FIXME: to search the exact height when to scroll
+        this.setState({toScroll: (heightWithoutHeader(height) * 80 / 100) < contentHeight});
+    }
+
+    onScroll () {
+        if (this.state.beforeScroll) {
+            this.setState({beforeScroll: false});
+        }
     }
 
     onRatingPress (rating, activeStepQuestion) {
@@ -261,20 +295,6 @@ class Survey extends Component {
         );
     }
 
-    renderConfirmButton () {
-        return (
-            <Button
-                containerStyle={styles.buttonSave}
-                disabled={this.state.answers.length - 1 < this.state.activeStep}
-                onPress={this.isLastStep() ? ::this.onSaveAnswers : ::this.onForwardStep}
-                style={styles.textButtonSave}
-            >
-                {this.isLastStep() ?   "SALVA" : "AVANTI"}
-                <FaIcons color={colors.iconWhite} name={"angle-right"} size={18} style={styles.iconArrow} />
-            </Button>
-        );
-    }
-
     renderQuestionCounter () {
         return (
             <StepCounter
@@ -300,15 +320,13 @@ class Survey extends Component {
         }
     }
 
-    renderContentSurvey () {
+    renderContentSurvey (activeStepQuestion) {
         const {height, width} = Dimensions.get("window");
-        const activeStepQuestion = this.props.survey.getIn(["questions", this.state.activeStep]);
         if (this.props.fetch) {
             return (
-                <View style={styles.contentSurveyWrp}>
-                    <Image source={require("../assets/img/spinner.gif")} style={styles.spinner}/>
-
-                    <View style={styles.questionSurveyWrp}>
+                <View style={[styles.errorPageWrp, {height: height * .6}]}>
+                    <Image source={require("../assets/img/spinner.gif")} style={[styles.spinner, {marginTop: height * .15}]}/>
+                    <View style={styles.messageWrp}>
                         {this.renderQuestion("Salvataggio in corso, attendere prego.")}
                     </View>
                 </View>
@@ -316,7 +334,11 @@ class Survey extends Component {
         } else {
             return (
                 <View style={[styles.contentSurveyWrp, {height: height * .85}]}>
-                    <ScrollView>
+                    <ScrollView
+                        onContentSizeChange={::this.onContentSizeChange}
+                        onScroll={::this.onScroll}
+                        scrollEventThrottle={1000}
+                    >
                         <View style={styles.questionSurveyWrp}>
                             {this.renderQuestion(activeStepQuestion.get("text"))}
                         </View>
@@ -333,6 +355,7 @@ class Survey extends Component {
     }
 
     render () {
+        const activeStepQuestion = this.props.survey.getIn(["questions", this.state.activeStep]);
         return (
             <View style={styles.container}>
                 <View style={{flex: 1}}>
@@ -341,7 +364,10 @@ class Survey extends Component {
                             <Text style={styles.title}>{"SURVEY"}</Text>
                         </View>
                     </View>
-                    {this.renderContentSurvey()}
+                    {this.renderContentSurvey(activeStepQuestion)}
+                    <Scroll
+                        visible={this.state.toScroll && this.state.beforeScroll}
+                    />
                 </View>
                 <ConfirmModal
                     onPressButton={Actions.home}
@@ -352,8 +378,8 @@ class Survey extends Component {
                 />
                 <ErrorModal
                     onPressButton={::this.onSaveAnswers}
-                    textButton={"Riprova"}
-                    titleModal={"Si è verificato un errore nel salvataggio!"}
+                    textButton={"RIPROVA"}
+                    titleModal={"Ops! Si è verificato un errore nel salvataggio"}
                     visible={this.props.error}
                 />
             </View>
