@@ -470,4 +470,53 @@ describe("`Survey` view", () => {
 
     });
 
+
+    describe("`getTotalSteps` method", () => {
+        //TODO:
+    });
+
+    describe("`disabledBackward` method", () => {
+        //TODO:
+    });
+
+    describe("`indexSelectedAnswer` method", () => {
+        //TODO:
+    });
+
+    describe("`onRatingPress` method", () => {
+        //TODO:
+    });
+
+    describe("`renderRate` method", () => {
+        //TODO:
+    });
+
+    describe("`renderAnswer` method", () => {
+        //TODO:
+    });
+
+    describe("`renderQuestion` method", () => {
+        //TODO:
+    });
+
+    describe("`renderConfirmButton` method", () => {
+        //TODO:
+    });
+
+    describe("`renderQuestionCounter` method", () => {
+        //TODO:
+    });
+
+    describe("`renderSwitchAnswer` method", () => {
+        //TODO:
+    });
+
+    describe("`renderContentSurvey` method", () => {
+        //TODO:
+    });
+
+    describe("`render` method", () => {
+        //TODO:
+    });
+
 });

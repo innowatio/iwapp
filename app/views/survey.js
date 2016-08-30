@@ -204,6 +204,13 @@ class Survey extends Component {
         );
     }
 
+    indexSelectedAnswer (activeStepQuestion) {
+        return (this.state.answers[this.state.activeStep] ?
+            activeStepQuestion.get("options").indexOf(this.state.answers[this.state.activeStep].answer)+1 :
+            0
+        );
+    }
+
     onRatingPress (rating, activeStepQuestion) {
         this.setState({
             starCount: rating
@@ -212,17 +219,18 @@ class Survey extends Component {
     }
 
     renderRate (activeStepQuestion) {
+        const numberOfStart = activeStepQuestion.get("options").size;
         const {width} = Dimensions.get("window");
         return (
-            <View style={[styles.ratingWrp, {width}]}>
+            <View key={activeStepQuestion.get("id")} style={[styles.ratingWrp, {width}]}>
                 <StarRating
                     disabled={false}
                     emptyStar={"ios-bulb-outline"}
                     emptyStarColor={colors.rateStarColor}
                     fullStar={"ios-bulb"}
                     iconSet={"Ionicons"}
-                    maxStars={activeStepQuestion.get("options").length}
-                    rating={this.state.starCount}
+                    maxStars={numberOfStart}
+                    rating={this.indexSelectedAnswer(activeStepQuestion)}
                     selectedStar={(rating) => this.onRatingPress(rating, activeStepQuestion)}
                     starColor={colors.rateStarColor}
                     starSize={40}
@@ -294,6 +302,7 @@ class Survey extends Component {
             case SURVEY_RATE:
                 return this.renderRate(activeStepQuestion);
             case SURVEY_SIGLE_CHOICE:
+            default:
                 return activeStepQuestion.get("options").map((option, index) =>
                     this.renderAnswer(option, index, activeStepQuestion)
                 );
