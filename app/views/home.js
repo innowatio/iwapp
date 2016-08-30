@@ -183,7 +183,7 @@ class Home extends Component {
                             {...this.getWeatherData()}
                         />
                     </View>
-                    <Swiper height={heightSwiper} index={0} loop={false} showButtons={true}>
+                    <Swiper height={heightSwiper} index={1} loop={false} showButtons={true}>
                         <View>
                             <InfoConsumption
                                 heightSwiper={heightSwiper}
