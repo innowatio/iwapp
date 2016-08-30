@@ -9,7 +9,7 @@ import * as colors from "../lib/colors";
 
 const styles = StyleSheet.create({
     modalBackground: {
-        backgroundColor: colors.backgroundErrorLogin,
+        backgroundColor: colors.backgroundModalError,
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
         textAlign: "center"
     },
     modalIconWrp: {
-        backgroundColor: colors.borderErrorLogin,
+        backgroundColor: colors.backgroundIconModalError,
         borderRadius: 100,
         width: 140,
         height: 140,
@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
         justifyContent: "center"
     },
     modalButton: {
-        backgroundColor: colors.buttonPrimary,
+        backgroundColor: colors.primaryBlue,
         borderRadius: 100,
         width: 150,
         paddingVertical: 5
@@ -73,12 +73,7 @@ export default class ErrorModal extends Component {
                 <View style={[styles.modalBackground, {height}]}>
                     <View style={styles.modalTitleWrp}>
                         <View style={styles.modalIconWrp}>
-                            <Icon
-                                color={colors.iconWhite}
-                                name={"iw-check"}
-                                size={100}
-                                style={styles.modalIcon}
-                            />
+                            <Icon color={colors.iconWhite} name={"iw-alert"} size={80} style={styles.modalIcon} />
                         </View>
                         <Text style={styles.titleModal}>{this.props.titleModal || ""}</Text>
                     </View>
@@ -88,7 +83,7 @@ export default class ErrorModal extends Component {
                             onPress={this.props.onPressButton}
                             style={styles.modalButtonText}
                         >
-                            {this.props.textButton || "Try Again"}
+                            {this.props.textButton || "RIPROVA"}
                         </Button>
                     </View>
                 </View>

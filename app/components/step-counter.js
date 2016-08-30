@@ -80,10 +80,16 @@ export default class StepCounter extends Component {
         const btnWidth = (
             this.isLastStep() ? 150 : 30
         );
+        const btnColorForward = (
+            this.props.disabledForward ? colors.buttonsDisabled  : colors.buttonPrimary
+        );
+        const btnColorBackward = (
+            this.props.disabledBackward ? colors.buttonsDisabled : colors.buttonPrimary
+        );
         return (
             <View style={styles.buttonsWrp}>
                 <Button
-                    containerStyle={styles.button}
+                    containerStyle={[styles.button, {backgroundColor: btnColorBackward}]}
                     disabled={this.props.disabledBackward}
                     onPress={this.props.onBackwardStep}
                 >
@@ -91,7 +97,7 @@ export default class StepCounter extends Component {
                 </Button>
                 {this.renderCounter()}
                 <Button
-                    containerStyle={[styles.button, {width: btnWidth}]}
+                    containerStyle={[styles.button, {width: btnWidth, backgroundColor: btnColorForward}]}
                     disabled={this.props.disabledForward}
                     onPress={this.isLastStep() ? this.props.onSaveAnswers : this.props.onForwardStep}
                     style={styles.textButtonSave}
