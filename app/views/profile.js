@@ -140,9 +140,17 @@ class Profile extends Component {
     }
 
     componentDidMount () {
-        if (this.props.site) {
+        this.doSubscriptions(this.props);
+    }
+
+    componentWillReceiveProps (nextProps) {
+        this.doSubscriptions(nextProps);
+    }
+
+    doSubscriptions (props) {
+        if (props.site) {
             this.props.asteroid.subscribe("users");
-            this.subscribeToCategories(this.props.site._id);
+            this.subscribeToCategories(props.site._id);
         }
     }
 
