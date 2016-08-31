@@ -33,7 +33,7 @@ export default memoize((aggregates, chartsState) => {
                 }, values);
             }
             return {
-                toFill: sensorId.contains("standby"),
+                toFill: sensorId.includes("-standby"),
                 data
             };
         }, chartsState);
@@ -55,7 +55,7 @@ export default memoize((aggregates, chartsState) => {
 
                 measurement ? filledChartData[index] = measurement : filledChartData[index] = {
                     hour: index.toString(),
-                    value: chartData.toFill ? (filledChartData[index - 1].value || 0) : 0
+                    value: chartData.toFill ? (filledChartData[index - 1] ? filledChartData[index - 1].value : 0) : 0
                 };
             }
             return filledChartData;

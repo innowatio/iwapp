@@ -36,6 +36,25 @@ describe("`readingsDailyAggregatesToHighchartsData` function", () => {
         fromJS
     )(range(0, 2));
 
+    const standByReadingsDailyAggregates = pipe(
+        map(idx => {
+            const sensorId = "sensor_1-standby";
+            const day = moment.utc().format("YYYY-MM-DD");
+            const _id = `${sensorId}-${day}-${source[idx]}-activeEnergy`;
+            return [_id, {
+                _id,
+                sensorId,
+                day,
+                source: source[idx],
+                measurementType: "activeEnergy",
+                measurementValues: values[source[idx]].join(","),
+                measurementTimes: times[source[idx]].join(",")
+            }];
+        }),
+        fromPairs,
+        fromJS
+    )(range(0, 2));
+
     it("readings-daily-aggregates -> highcharts data structure [CASE: single line]", () => {
         const chartState = [{
             sensorId: "sensor_1",
@@ -104,17 +123,59 @@ describe("`readingsDailyAggregatesToHighchartsData` function", () => {
                     ["10", 0],
                     ["11", 0],
                     ["12", 0],
-                    ["13", 12],
-                    ["14", 12],
-                    ["15", 12],
+                    ["13", 149],
+                    ["14", 0],
+                    ["15", 0],
+                    ["16", 332],
+                    ["17", 0],
+                    ["18", 237],
+                    ["19", 0],
+                    ["20", 0],
+                    ["21", 0],
+                    ["22", 0],
+                    ["23", 0]
+                ]
+            }]);
+        });
+
+        it("should be an array of correct filled values", () => {
+            const chartState = [{
+                sensorId: "sensor_1-standby",
+                day: moment.utc().format("YYYY-MM-DD"),
+                measurementType: "activeEnergy",
+                source: "reading"
+            }];
+            const ret = readingsDailyAggregatesToHighchartsData(
+                standByReadingsDailyAggregates,
+                chartState
+            );
+
+            expect(ret).to.deep.equal([{
+                data: [
+                    ["0", 0],
+                    ["1", 0],
+                    ["2", 0],
+                    ["3", 0],
+                    ["4", 0],
+                    ["5", 0],
+                    ["6", 0],
+                    ["7", 0],
+                    ["8", 0],
+                    ["9", 0],
+                    ["10", 0],
+                    ["11", 0],
+                    ["12", 0],
+                    ["13", 149],
+                    ["14", 149],
+                    ["15", 149],
                     ["16", 332],
                     ["17", 332],
-                    ["18", 234],
-                    ["19", 234],
-                    ["20", 234],
-                    ["21", 234],
-                    ["22", 234],
-                    ["23", 234]
+                    ["18", 237],
+                    ["19", 237],
+                    ["20", 237],
+                    ["21", 237],
+                    ["22", 237],
+                    ["23", 237]
                 ]
             }]);
         });
@@ -128,6 +189,23 @@ describe("`readingsDailyAggregatesToHighchartsData` function", () => {
             }];
             const ret = readingsDailyAggregatesToHighchartsData(
                 readingsDailyAggregates,
+                chartState
+            );
+
+            expect(ret).to.deep.equal([{
+                data: []
+            }]);
+        });
+
+        it("should be an empty filled array", () => {
+            const chartState = [{
+                sensorId: "sensor_2-standby",
+                day: moment.utc().format("YYYY-MM-DD"),
+                measurementType: "activeEnergy",
+                source: "reading"
+            }];
+            const ret = readingsDailyAggregatesToHighchartsData(
+                standByReadingsDailyAggregates,
                 chartState
             );
 
