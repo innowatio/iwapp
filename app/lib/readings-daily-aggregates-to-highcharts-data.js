@@ -81,11 +81,13 @@ export default memoize((aggregates, chartsState) => {
             if (aggregate) {
                 const values = aggregate.get("measurementValues").split(",");
                 data = values.map((value, index) => {
-                    return {
-                        period: dayTime.add(1, "day").get(period),
+                    const obj = {
+                        period: dayTime.get(period),
                         formatted: getFormat(period, dayTime),
-                        value: parseFloat(values[index])
+                        value: parseFloat(values[index]) || 0
                     };
+                    dayTime.add(1, "day");
+                    return obj;
                 }).filter(x => x.period === time.get(period));
             }
             if ("year" === period) {
