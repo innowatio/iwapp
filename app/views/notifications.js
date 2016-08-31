@@ -6,6 +6,7 @@ import {connect} from "react-redux";
 import IPropTypes from "react-immutable-proptypes";
 import FaIcons from "react-native-vector-icons/FontAwesome";
 import Button from "react-native-button";
+import moment from "moment";
 
 import Icon from "../components/iwapp-icons";
 import Text from "../components/text-lato";
@@ -188,7 +189,7 @@ class Notifications extends Component {
                         {notification.text}
                     </Text>
                     <Text style={styles.notificationDate}>
-                        {notification.date}
+                        {moment.utc(notification.date).format("ddd DD MMM")}
                     </Text>
                 </View>
             </View>
