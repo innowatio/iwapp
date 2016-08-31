@@ -1,6 +1,6 @@
 import {Content} from "native-base";
 import React, {Component, PropTypes} from "react";
-import {Dimensions, Linking, StyleSheet, TouchableOpacity, View} from "react-native";
+import {Dimensions, Linking, Platform, StyleSheet, TouchableOpacity, View} from "react-native";
 import * as Progress from "react-native-progress";
 import {connect} from "react-redux";
 import {List, Map} from "immutable";
@@ -345,6 +345,17 @@ class Profile extends Component {
     }
 
     renderQuestionnairesProgress (questionnaire) {
+
+        // FIXME: on android you can get only full circle or none circle at all
+        // to be removed when this get fixed:
+        // https://github.com/oblador/react-native-progress/issues/3
+        if (Platform.OS === "android") {
+            questionnaire = {
+                ...questionnaire,
+                value: questionnaire.value === 1 ? 1 : 0
+            };
+        }
+
         return (
             <QuestionnaireProgress key={questionnaire.key} questionnaire={questionnaire} />
         );

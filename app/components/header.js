@@ -60,6 +60,9 @@ const styles = StyleSheet.create({
         fontSize: 20,
         fontWeight: "bold"
     },
+    textNotification: {
+        color: colors.white
+    },
     buttonBack: {
         flexDirection: "row",
         alignItems: "center",
@@ -76,6 +79,7 @@ export default class Header extends Component {
             view: PropTypes.string.isRequired,
             header: PropTypes.string.isRequired
         })).isRequired,
+        notifications: PropTypes.number.isRequired,
         onToggleHamburger: PropTypes.func.isRequired,
         selectedView: PropTypes.arrayOf(PropTypes.string).isRequired,
         userName: PropTypes.string
@@ -140,6 +144,7 @@ export default class Header extends Component {
                     style={[styles.iconAlarmButton, {backgroundColor: alarmColor}]}
                     transparent={true}
                 >
+                    <Text style={styles.textNotification}>{this.props.notifications}</Text>
                     <Icon color={colors.iconWhite} name={"iw-alarm"} size={20} style={{backgroundColor: colors.transparent}} />
                 </TouchableOpacity>
                 <TouchableOpacity

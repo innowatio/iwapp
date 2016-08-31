@@ -55,6 +55,7 @@ class Root extends Component {
             open: false,
             surveyModalVisible: false,
             username: " ",
+            notifications: 0
         };
     }
 
@@ -161,6 +162,11 @@ class Root extends Component {
                     name: userInfo.givenName[0]
                 });
             });
+            asteroid.call("getUnreadNotifications").then(notifications => {
+                this.setState({
+                    notifications
+                });
+            });
         };
     }
 
@@ -197,10 +203,11 @@ class Root extends Component {
     }
 
     renderHeader () {
-        const {username, email} = this.state;
+        const {username, email, notifications} = this.state;
         return (
             <Header
                 headerViews={this.getHeaderViews()}
+                notifications={notifications}
                 onToggleHamburger={::this.toggleHamburger}
                 selectedView={this.props.navigationScene}
                 userName={(username[0] || email[0] || "").toUpperCase()}
