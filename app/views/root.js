@@ -212,11 +212,22 @@ class Root extends Component {
         return questions.find(question => question.get("type") === "survey") || Map();
     }
 
+    resetNotifications () {
+        console.log("resetNotifications");
+        asteroid.call("setReadedNotifications").then(() => {
+            this.setState({
+                notifications: 0
+            });
+        });
+    }
+
     renderHeader () {
-        const {username, email} = this.state;
+        const {username, email, notifications} = this.state;
         return (
             <Header
                 headerViews={this.getHeaderViews()}
+                notifications={notifications}
+                notificationsAction={::this.resetNotifications}
                 onToggleHamburger={::this.toggleHamburger}
                 selectedView={this.props.navigationScene}
                 userName={(username[0] || email[0] || "").toUpperCase()}

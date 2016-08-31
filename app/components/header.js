@@ -76,15 +76,16 @@ export default class Header extends Component {
             view: PropTypes.string.isRequired,
             header: PropTypes.string.isRequired
         })).isRequired,
+        notifications: PropTypes.number.isRequired,
+        notificationsAction: PropTypes.func,
         onToggleHamburger: PropTypes.func.isRequired,
         selectedView: PropTypes.arrayOf(PropTypes.string).isRequired,
         userName: PropTypes.string
     }
 
-    renderEmptyHeader () {
-        return (
-            <View style={styles.headerEmpty} />
-        );
+    navigateNotifications (selectedView) {
+        Actions.notifications(getNavigationType(selectedView));
+        this.props.notificationsAction ? this.props.notificationsAction() : null;
     }
 
     renderBackArrowHeader () {
@@ -102,6 +103,12 @@ export default class Header extends Component {
                     />
                 </TouchableOpacity>
             </View>
+        );
+    }
+
+    renderEmptyHeader () {
+        return (
+            <View style={styles.headerEmpty} />
         );
     }
 
@@ -136,7 +143,7 @@ export default class Header extends Component {
         return (
             <View style={styles.rightHeader}>
                 <TouchableOpacity
-                    onPress={() => Actions.notifications(getNavigationType(this.props.selectedView))}
+                    onPress={() => this.navigateNotifications(this.props.selectedView)}
                     style={[styles.iconAlarmButton, {backgroundColor: alarmColor}]}
                     transparent={true}
                 >

@@ -1,6 +1,9 @@
-import React, {Component} from "react";
+import {Map} from "immutable";
+import React, {Component, PropTypes} from "react";
 import {Dimensions, StyleSheet, ScrollView, View} from "react-native";
 import {Content} from "native-base";
+import {connect} from "react-redux";
+import IPropTypes from "react-immutable-proptypes";
 import FaIcons from "react-native-vector-icons/FontAwesome";
 import Button from "react-native-button";
 
@@ -83,77 +86,55 @@ const styles = StyleSheet.create({
     }
 });
 
-export default class Notifications extends Component {
+class Notifications extends Component {
 
-    getNotification () {
-        return [
-            // TODO remove when we have notifications on DB
-            // also handle in a better way the visibility of the `scrollButton`
+    static propTypes = {
+        asteroid: PropTypes.object.isRequired,
+        collections: IPropTypes.map.isRequired
+    }
 
-            // {
-            //     bgcolor: colors.energeticTip,
-            //     date: "Oggi",
-            //     key: "Tips energetico",
-            //     icon: "iw-energetic-tip",
-            //     text: "E’ disponibile il report dei tuoi consumi settimanali."
-            // },
-            // {
-            //     bgcolor: colors.alarmsTip,
-            //     date: "Oggi",
-            //     key: "Allarme",
-            //     icon: "iw-alarms-tip",
-            //     text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-            // },
-            // {
-            //     bgcolor: colors.welcomeNotification,
-            //     date: "Ieri",
-            //     key: "Notifica benvenuto al pilot",
-            //     icon: "iw-welcome",
-            //     text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-            // },
-            // {
-            //     bgcolor: colors.endPilotNotification,
-            //     date: "Ieri",
-            //     key: "Notifica di fine pilot",
-            //     icon: "iw-like",
-            //     text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-            // },
-            // {
-            //     bgcolor: colors.badgeNotification,
-            //     date: "Ieri",
-            //     key: "Notifica nuovo badge",
-            //     icon: "iw-badge",
-            //     text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-            // },
-            // {
-            //     bgcolor: colors.upgradeNotification,
-            //     date: "Ieri",
-            //     key: "Notifica upgrade",
-            //     icon: "iw-upgrade",
-            //     text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-            // },
-            // {
-            //     bgcolor: colors.energeticTip,
-            //     date: "Oggi",
-            //     key: "Tips energetico2",
-            //     icon: "iw-energetic-tip",
-            //     text: "E’ disponibile il report dei tuoi consumi settimanali."
-            // },
-            // {
-            //     bgcolor: colors.alarmsTip,
-            //     date: "Oggi",
-            //     key: "Allarme2",
-            //     icon: "iw-alarms-tip",
-            //     text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-            // },
-            // {
-            //     bgcolor: colors.welcomeNotification,
-            //     date: "Ieri",
-            //     key: "Notifica benvenuto al pilot2",
-            //     icon: "iw-welcome",
-            //     text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-            // }
-        ];
+    componentDidMount () {
+        this.props.asteroid.subscribe("notifications");
+    }
+
+    getNotificationBackgroundColor (type) {
+        switch (type) {
+            case "alarm":
+                return colors.acidGreen;
+            case "notification":
+                return colors.alarmDailyEnergy;
+            case "tip":
+                return colors.aquaGreen;
+            default:
+                return colors.badgeNotification;
+        }
+    }
+
+    getNotificationIcon (type) {
+        switch (type) {
+            case "alarm":
+                return "iw-alarms-tip";
+            case "notification":
+                return "iw-like";
+            case "tip":
+                return "iw-energetic-tip";
+            default:
+                return "iw-welcome";
+        }
+    }
+
+    getNotifications () {
+        const notifs = this.props.collections.get("notifications") || Map();
+        return notifs.map((notification, index) => {
+            const type = notification.get("type");
+            return {
+                key: index,
+                text: notification.get("message"),
+                icon: this.getNotificationIcon(type),
+                bgcolor: this.getNotificationBackgroundColor(type),
+                date: notification.get("date")
+            };
+        }).toArray();
     }
 
     renderScrollButton () {
@@ -182,7 +163,7 @@ export default class Notifications extends Component {
                     showsVerticalScrollIndicator={true}
                     style={styles.scrollView}
                 >
-                    {this.getNotification().map(this.renderNotification)}
+                    {this.getNotifications().map(this.renderNotification)}
                 </ScrollView>
             </View>
         );
@@ -228,9 +209,16 @@ export default class Notifications extends Component {
                         {this.renderNotificationsList()}
                     </View>
                 </Content>
-                {this.getNotification().length > 6 ? this.renderScrollButton() : undefined}
+                {this.getNotifications().length > 6 ? this.renderScrollButton() : undefined}
             </View>
         );
     }
-
 }
+
+function mapStateToProps (state) {
+    return {
+        collections: state.collections
+    };
+}
+
+export default connect(mapStateToProps)(Notifications);
