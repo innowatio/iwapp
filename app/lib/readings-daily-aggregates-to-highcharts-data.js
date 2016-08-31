@@ -32,24 +32,35 @@ export default memoize((aggregates, chartsState) => {
                     };
                 }, values);
             }
-            return data;
+            return {
+                toFill: sensorId.contains("standby"),
+                data
+            };
         }, chartsState);
-        
+
         const filledChartsData = chartsData.map(chartData => {
-            if (chartData.length == 0) {
+            if (chartData.data.length == 0) {
                 return [];
             }
             let filledChartData = [];
             for (var index = 0; index < 24; index++) {
-                let measurement = chartData.find(x => parseInt(x.hour) === index);
+
+                let measurements = chartData.data.filter(x => parseInt(x.hour) === index);
+                let measurement = measurements.reduce((state, current) => {
+                    return {
+                        hour: current.hour,
+                        value: state ? state.value + current.value : current.value
+                    };
+                }, null);
+
                 measurement ? filledChartData[index] = measurement : filledChartData[index] = {
                     hour: index.toString(),
-                    value: filledChartData[index - 1] ? filledChartData[index - 1].value : 0
+                    value: chartData.toFill ? (filledChartData[index - 1].value || 0) : 0
                 };
             }
             return filledChartData;
         });
-        
+
         result = filledChartsData.map(data => {
             const chart = data.map(measurement => {
                 return [measurement.hour, measurement.value];
