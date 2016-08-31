@@ -63,7 +63,7 @@ export default memoize((aggregates, chartsState) => {
 
         result = filledChartsData.map(data => {
             const chart = data.map(measurement => {
-                return [measurement.hour, measurement.value];
+                return [measurement.hour, Math.round(measurement.value * 10) / 10];
             });
             return {
                 data: chart
@@ -111,7 +111,7 @@ export default memoize((aggregates, chartsState) => {
 
         result = chartData.map(data => {
             const chart = data.map(serie => {
-                return [serie.formatted, serie.value];
+                return [serie.formatted, Math.round(serie.value * 10) / 10];
             });
             return {
                 data: chart
