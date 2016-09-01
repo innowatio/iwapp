@@ -330,6 +330,7 @@ class Stats extends Component {
     renderSwiper2 () {
         const {height, width} = Dimensions.get("window");
         const sensorId = this.props.stats.chart.sensorId;
+        const showThreshold = false;
         return (
             <View style={styles.contentStatsWrp}>
                 <View style={{marginBottom: 40}}>
@@ -341,13 +342,13 @@ class Stats extends Component {
                     />
                 </View>
                 <View style={styles.summaryConsumptionContainer}>
-                    <View key={"Daily Threshold"} style={[styles.summaryConsumptionWrp, {width: width * 0.5}]}>
+                    {showThreshold ? <View key={"Daily Threshold"} style={[styles.summaryConsumptionWrp, {width: width * 0.5}]}>
                         <Text style={styles.consumptionTitle}>{"Superamento soglia\ncontrattuale giornaliera"}</Text>
                         <View style={styles.smallConsumptionWrp}>
                             <Text style={styles.smallConsumptionValue}>{"3"}</Text>
                             <Text style={styles.smallConsumptionMeasure}>{"volte"}</Text>
                         </View>
-                    </View>
+                    </View> : null}
                     <View key={"Actual Power"} style={[styles.summaryConsumptionWrp, {width: width * 0.5}]}>
                         <Text style={styles.consumptionTitle}>{"Potenza\nattuale"}</Text>
                         <RealTimeSpinner

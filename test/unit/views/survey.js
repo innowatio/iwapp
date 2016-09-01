@@ -3,7 +3,10 @@ import {fromJS} from "immutable";
 
 import Survey from "views/survey";
 import ConfirmModal from "components/confirm-modal";
+import ErrorModal from "components/error-modal";
 import StepCounter from "components/step-counter";
+import {ScrollView} from "react-native";
+import StarRating from "react-native-star-rating";
 
 describe("`Survey` view", () => {
 
@@ -13,6 +16,7 @@ describe("`Survey` view", () => {
     const Actions = {
         home: sinon.spy()
     };
+
     const questionsSurvey = fromJS({
         _id: "surveyId",
         type: "type",
@@ -21,7 +25,7 @@ describe("`Survey` view", () => {
             id: 1,
             category: "category",
             text: "Question 1",
-            type: "singleChoice",
+            type: "rate",
             options: ["answer1", "answer2", "answer3", "answer4"]
         }, {
             id: 2,
@@ -48,6 +52,13 @@ describe("`Survey` view", () => {
             type: "singleChoice",
             options: ["answer1", "answer2", "answer3", "answer4"]
         }]
+    });
+
+    const questionsSurveyUndefined = fromJS({
+        _id: "surveyId",
+        type: "type",
+        category: "category",
+        questions: []
     });
 
     const Dimensions = {
@@ -82,11 +93,16 @@ describe("`Survey` view", () => {
             />
         );
         expect(survey.find(ConfirmModal)).to.have.length(1);
-        expect(survey.find(ConfirmModal).prop("onPressButton")).to.deep.equal(Actions.home);
-        survey.setState({modalVisible: true});
-        expect(survey.find(ConfirmModal).prop("visible")).to.deep.equal(true);
-        survey.setState({modalVisible: false});
-        expect(survey.find(ConfirmModal).prop("visible")).to.deep.equal(false);
+    });
+
+    it("renders `ErrorModal` with correct props", () => {
+        const survey = shallow(
+            <SurveyView
+                saveSurveyAnswers={saveSurveyAnswers}
+                survey={questionsSurvey}
+            />
+        );
+        expect(survey.find(ErrorModal)).to.have.length(1);
     });
 
     it("renders `StepCounter` with correct props", () => {
@@ -102,6 +118,26 @@ describe("`Survey` view", () => {
         expect(survey.find(StepCounter).prop("disabledBackward")).to.deep.equal(false);
         expect(survey.find(StepCounter).prop("disabledForward")).to.deep.equal(true);
         expect(survey.find(StepCounter).prop("totalSteps")).to.deep.equal(5);
+    });
+
+    it("renders `ScrollView` with correct props", () => {
+        const survey = shallow(
+            <SurveyView
+                saveSurveyAnswers={saveSurveyAnswers}
+                survey={questionsSurvey}
+            />
+        );
+        expect(survey.find(ScrollView)).to.have.length(1);
+    });
+
+    it("renders `StarRating` with correct props", () => {
+        const survey = shallow(
+            <SurveyView
+                saveSurveyAnswers={saveSurveyAnswers}
+                survey={questionsSurvey}
+            />
+        );
+        expect(survey.find(StarRating)).to.have.length(1);
     });
 
     describe("`onForwardStep` method", () => {
@@ -480,6 +516,161 @@ describe("`Survey` view", () => {
 
     });
 
+    describe("`getTotalSteps` method", () => {
+
+        const getTotalSteps = SurveyView.prototype.getTotalSteps;
+
+        it("return 0 if question size is not set", () => {
+            const instance = {
+                props: {
+                    survey: questionsSurveyUndefined
+                }
+            };
+
+            const ret = getTotalSteps.call(instance);
+            expect(ret).to.equal(0);
+        });
+
+        it("return the correct size if question size is set", () => {
+            const instance = {
+                props: {
+                    survey: questionsSurvey
+                }
+            };
+
+            const ret = getTotalSteps.call(instance);
+            expect(ret).to.equal(instance.props.survey.get("questions").size);
+        });
+    });
+
+    describe("`disabledBackward` method", () => {
+
+        const disabledBackward = SurveyView.prototype.disabledBackward;
+
+        it("returns true if `activeStep` is less than 1", () => {
+            const instance = {
+                state: {
+                    answers: ["answer0", "answer1", "answer2", "answer3"],
+                    activeStep: 0
+                }
+            };
+            disabledBackward.call(instance);
+            expect(disabledBackward.call(instance)).to.equal(true);
+        });
+
+        it("returns false if `activeStep` is greather or equal than 1", () => {
+            const instance = {
+                state: {
+                    answers: ["answer0", "answer1", "answer2", "answer3"],
+                    activeStep: 1
+                }
+            };
+            disabledBackward.call(instance);
+            expect(disabledBackward.call(instance)).to.equal(false);
+        });
+    });
+
+    describe("`indexSelectedAnswer` method", () => {
+        const indexSelectedAnswer = SurveyView.prototype.indexSelectedAnswer;
+
+        it("returns 0 if no answer is selected", () => {
+            const instance = {
+                state: {
+                    activeStep: 0,
+                    answers: []
+                }
+            };
+
+            const activeStepQuestion = {
+                get: sinon.stub().returns(["answer1", "answer2", "answer3", "answer3"])
+            };
+
+            const ret = indexSelectedAnswer.call(instance, activeStepQuestion);
+            expect(ret).to.equal(0);
+        });
+
+        it("returns index of selected answer + 1 if 1 answer is selected", () => {
+            const instance = {
+                state: {
+                    activeStep: 0,
+                    answers: [{
+                        id: 1,
+                        answer: "answer2"
+                    }]
+                }
+            };
+            const activeStepQuestion = fromJS({"options": ["answer1", "answer2", "answer3", "answer3"]});
+
+            const ret = indexSelectedAnswer.call(instance, activeStepQuestion);
+            expect(ret).to.equal(2);
+        });
+    });
+
+    describe("`onRatingPress` method", () => {
+        const onRatingPress = SurveyView.prototype.onRatingPress;
+        const rating = 1;
+
+        it("set the correct value of answer based on rate selected", () => {
+            const setState =  sinon.spy();
+            const setAnswer = sinon.spy();
+            const instance = {
+                setState,
+                setAnswer
+            };
+
+            const activeStepQuestion = fromJS({
+                "id": 1,
+                "options": ["answer1", "answer2", "answer3", "answer3"]
+            });
+
+            onRatingPress.call(instance, rating, activeStepQuestion);
+            expect(setAnswer).to.have.callCount(1);
+            expect(setState).to.have.callCount(1);
+            expect(setState).to.have.been.calledWithExactly({
+                starCount: rating
+            });
+        });
+    });
+
+    describe("`renderSwitchAnswer` method", () => {
+        const renderSwitchAnswer = SurveyView.prototype.renderSwitchAnswer;
+
+
+        it("if `type` is equal to `rate` renderRate will be called", () => {
+            const renderRate =  sinon.spy();
+            const renderAnswer = sinon.spy();
+            const instance = {
+                renderRate,
+                renderAnswer
+            };
+            const activeStepQuestion = fromJS({
+                "id": 1,
+                "type": "rate",
+                "options": ["answer1", "answer2", "answer3", "answer3"]
+            });
+            renderSwitchAnswer.call(instance, activeStepQuestion);
+            expect(renderRate).to.have.callCount(1);
+            expect(renderAnswer).to.have.callCount(0);
+        });
+
+        it("if `type` is equal to `singleChoice` renderAnswer will be called", () => {
+            const renderRate =  sinon.spy();
+            const renderAnswer = sinon.spy();
+            const instance = {
+                renderRate,
+                renderAnswer
+            };
+            const activeStepQuestion = fromJS({
+                "id": 1,
+                "type": "singleChoice",
+                "options": ["answer1", "answer2", "answer3", "answer3"]
+            });
+            renderSwitchAnswer.call(instance, activeStepQuestion);
+            expect(renderRate).to.have.callCount(0);
+            expect(renderAnswer).to.have.callCount(4);
+        });
+    });
+
     describe("`onContentSizeChange` method", () => {
 
         const onContentSizeChange = SurveyView.prototype.onContentSizeChange;
@@ -552,10 +743,5 @@ describe("`Survey` view", () => {
             onScroll.call(instance);
             expect(setState).to.have.callCount(0);
         });
-
     });
-        // onScroll () {
-        //     return this.state.beforeScroll ? this.setState({beforeScroll: false}) : null;
-        // }
-
 });

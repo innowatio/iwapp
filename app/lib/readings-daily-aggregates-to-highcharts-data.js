@@ -32,27 +32,38 @@ export default memoize((aggregates, chartsState) => {
                     };
                 }, values);
             }
-            return data;
+            return {
+                toFill: sensorId.includes("-standby"),
+                data
+            };
         }, chartsState);
-        
+
         const filledChartsData = chartsData.map(chartData => {
-            if (chartData.length == 0) {
+            if (chartData.data.length == 0) {
                 return [];
             }
             let filledChartData = [];
             for (var index = 0; index < 24; index++) {
-                let measurement = chartData.find(x => parseInt(x.hour) === index);
+
+                let measurements = chartData.data.filter(x => parseInt(x.hour) === index);
+                let measurement = measurements.reduce((state, current) => {
+                    return {
+                        hour: current.hour,
+                        value: state ? state.value + current.value : current.value
+                    };
+                }, null);
+
                 measurement ? filledChartData[index] = measurement : filledChartData[index] = {
                     hour: index.toString(),
-                    value: filledChartData[index - 1] ? filledChartData[index - 1].value : 0
+                    value: chartData.toFill ? (filledChartData[index - 1] ? filledChartData[index - 1].value : 0) : 0
                 };
             }
             return filledChartData;
         });
-        
+
         result = filledChartsData.map(data => {
             const chart = data.map(measurement => {
-                return [measurement.hour, measurement.value];
+                return [measurement.hour, Math.round(measurement.value * 10) / 10];
             });
             return {
                 data: chart
@@ -70,11 +81,13 @@ export default memoize((aggregates, chartsState) => {
             if (aggregate) {
                 const values = aggregate.get("measurementValues").split(",");
                 data = values.map((value, index) => {
-                    return {
-                        period: dayTime.add(1, "day").get(period),
+                    const obj = {
+                        period: dayTime.get(period),
                         formatted: getFormat(period, dayTime),
-                        value: parseFloat(values[index])
+                        value: parseFloat(values[index]) || 0
                     };
+                    dayTime.add(1, "day");
+                    return obj;
                 }).filter(x => x.period === time.get(period));
             }
             if ("year" === period) {
@@ -98,7 +111,7 @@ export default memoize((aggregates, chartsState) => {
 
         result = chartData.map(data => {
             const chart = data.map(serie => {
-                return [serie.formatted, serie.value];
+                return [serie.formatted, Math.round(serie.value * 10) / 10];
             });
             return {
                 data: chart

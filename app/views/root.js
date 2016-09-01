@@ -57,6 +57,7 @@ class Root extends Component {
             open: false,
             surveyModalVisible: false,
             username: " ",
+            notifications: 0
         };
     }
 
@@ -176,6 +177,11 @@ class Root extends Component {
                 const deviceInfo = getDeviceInfo();
                 // store fcm token in your server
                 asteroid.call("saveFCMToken", token, deviceInfo);
+            });
+            asteroid.call("getUnreadNotifications").then(notifications => {
+                this.setState({
+                    notifications
+                });
             });
         };
     }
