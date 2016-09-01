@@ -190,7 +190,7 @@ class Profile extends Component {
             {color: colors.buildingsSection, name: "Building", key: "building", icon: "iw-buildings"},
             {color: colors.heatingSection, name: "Heating", key: "heating", icon: "iw-heating"},
             {color: colors.coolingSection, name: "Cooling", key: "cooling", icon: "iw-cooling"},
-            {color: colors.statisticsSection, name: "Statistics", key: "statistics", icon: "iw-statistics"}
+            {color: colors.statisticsSection, name: "Statistics", key: "behavioural", icon: "iw-statistics"}
         ];
     }
 
