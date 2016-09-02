@@ -1,4 +1,3 @@
-import {resolve} from "bluebird";
 import {shallow} from "enzyme";
 import {ScrollView, StatusBar} from "react-native";
 import Drawer from "react-native-drawer";
@@ -11,17 +10,14 @@ import Header from "components/header";
 
 describe("`Root` view", () => {
 
-    const asteroid = {};
     const onNavigate = sinon.spy();
     const secondaryBlue = "secondaryBlue";
 
     before(() => {
-        Root.__Rewire__("asteroid", asteroid);
         Root.__Rewire__("secondaryBlue", secondaryBlue);
     });
 
     after(() => {
-        Root.__ResetDependency__("asteroid");
         Root.__ResetDependency__("secondaryBlue");
     });
 
@@ -75,8 +71,10 @@ describe("`Root` view", () => {
     });
 
     it("renders `Login` view if `userId` is not specified with the correct props", () => {
+        const asteroid = {};
         const rootView = shallow(
             <RootView
+                asteroid={asteroid}
                 collections={Map()}
                 navigationScene={["home"]}
                 navigationState={navigationState}
@@ -206,24 +204,17 @@ describe("`Root` view", () => {
             }
         };
 
-        before(() => {
-            Root.__Rewire__("asteroid", asteroid);
-        });
-
         beforeEach(() => {
             asteroid.subscribe.reset();
             asteroid.on.reset();
             asteroid.ddp.on.reset();
         });
 
-        after(() => {
-            Root.__ResetDependency__("asteroid");
-        });
-
         it("call `asteroid.on` with correct parameter", () => {
             const instance = {
                 postLogin: sinon.spy(),
                 props: {
+                    asteroid,
                     onLogout: sinon.spy()
                 },
                 onLoginActions: sinon.spy()
@@ -237,6 +228,7 @@ describe("`Root` view", () => {
         it("call `asteroid.subscribe` with correct parameter", () => {
             const instance = {
                 props: {
+                    asteroid,
                     onLogout: sinon.spy()
                 },
                 onLoginActions: sinon.spy()
@@ -268,6 +260,7 @@ describe("`Root` view", () => {
             const instance = {
                 postLogin: sinon.spy(),
                 props: {
+                    asteroid,
                     onLogout: sinon.spy()
                 },
                 onLoginActions: sinon.spy()
@@ -276,86 +269,6 @@ describe("`Root` view", () => {
             expect(asteroid.off).to.have.callCount(2);
             expect(asteroid.off.firstCall).to.have.been.calledWith("loggedIn", instance.onLoginActions);
             expect(asteroid.off.secondCall).to.have.been.calledWith("loggedOut", instance.props.onLogout);
-        });
-
-    });
-
-    describe("`onLoginActions` function", () => {
-
-        const setState = sinon.spy();
-        const instance = {
-            props: {
-                onLogin: sinon.spy(),
-                generateSessionId: sinon.spy()
-            },
-            setState
-        };
-        const FCM = {
-            getFCMToken: sinon.stub().returns(resolve("token"))
-        };
-        const getDeviceInfo = sinon.stub().returns({
-            device: {}
-        });
-        const asteroid = {
-            call: sinon.stub().returns(resolve({
-                username: "username",
-                mail: ["mail"],
-                givenName: ["name"]
-            }))
-        };
-
-        before(() => {
-            Root.__Rewire__("asteroid", asteroid);
-            Root.__Rewire__("FCM", FCM);
-            Root.__Rewire__("getDeviceInfo", getDeviceInfo);
-        });
-
-        after(() => {
-            Root.__ResetDependency__("asteroid");
-            Root.__ResetDependency__("FCM");
-            Root.__ResetDependency__("getDeviceInfo");
-        });
-
-        beforeEach(() => {
-            FCM.getFCMToken.reset();
-            getDeviceInfo.reset();
-            asteroid.call.reset();
-            setState.reset();
-        });
-
-        const onLoginActions = RootView.prototype.onLoginActions.call(instance);
-
-        it("call `onLogin` with correct parameter", () => {
-            onLoginActions("userId");
-            expect(instance.props.onLogin).to.have.been.calledWith("userId");
-        });
-
-        it("call `generateSessionId` with correct parameter", () => {
-            onLoginActions("userId");
-            expect(instance.props.generateSessionId).to.have.been.calledWith("userId");
-        });
-
-        it("call `generateSessionId` with correct parameter", () => {
-            onLoginActions("userId");
-            expect(asteroid.call).to.have.callCount(1);
-            return asteroid.call().then(() => {
-                expect(setState).to.have.callCount(1);
-                expect(setState).to.have.been.calledWith({
-                    username: "username",
-                    email: "mail",
-                    name: "name"
-                });
-            });
-        });
-
-        it("call `FCM.getFCMToken` function", () => {
-            onLoginActions("userId");
-            expect(FCM.getFCMToken).to.have.callCount(1);
-            return FCM.getFCMToken().then(() => {
-                expect(getDeviceInfo).to.have.callCount(1);
-                expect(asteroid.call).to.have.callCount(2);
-                expect(asteroid.call.secondCall).to.have.been.calledWith("saveFCMToken", "token", {device: {}});
-            });
         });
 
     });

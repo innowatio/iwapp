@@ -1,5 +1,5 @@
 import {Map} from "immutable";
-import {equals, last} from "ramda";
+import {equals, isEmpty, last} from "ramda";
 import Drawer from "react-native-drawer";
 import React, {Component, PropTypes} from "react";
 import {Platform, StatusBar, StyleSheet, ScrollView, View} from "react-native";
@@ -8,6 +8,7 @@ import {DefaultRenderer} from "react-native-router-flux";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 
+import {setNotificationsReaded} from "../actions/notifications";
 import {selectSite} from "../actions/site";
 import {generateSessionId} from "../actions/session-id";
 import {onLogin, onLogout} from "../actions/user-id";
@@ -15,7 +16,6 @@ import Header from "../components/header";
 import KeyboardSpacer from "../components/keyboard-spacer";
 import SideMenu from "../components/side-menu";
 import SurveyModal from "../components/survey-modal";
-import asteroid from "../lib/asteroid";
 import {statusBarHeight} from "../lib/const";
 import {primaryBlue, secondaryBlue} from "../lib/colors";
 import getDeviceInfo from "../lib/get-device-info";
@@ -35,6 +35,7 @@ const styles = StyleSheet.create({
 class Root extends Component {
 
     static propTypes = {
+        asteroid: PropTypes.object.isRequired,
         collections: PropTypes.object.isRequired,
         generateSessionId: PropTypes.func.isRequired,
         navigationScene: PropTypes.arrayOf(PropTypes.string).isRequired,
@@ -45,6 +46,7 @@ class Root extends Component {
         onLogout: PropTypes.func.isRequired,
         onNavigate: PropTypes.func.isRequired,
         selectSite: PropTypes.func.isRequired,
+        setNotificationsReaded: PropTypes.func.isRequired,
         site: PropTypes.object,
         survey: PropTypes.arrayOf(PropTypes.object),
         userId: PropTypes.string
@@ -62,15 +64,7 @@ class Root extends Component {
     }
 
     componentDidMount () {
-        this.notificationUnsubscribe = FCM.on("notification", notif => {
-            console.log("NOTIFICA");
-            console.log(notif);
-            // there are two parts of notif. notif.notification contains the notification payload, notif.data contains data payload
-        });
-        this.refreshUnsubscribe = FCM.on("refreshToken", (token) => {
-            console.log(`TOKEN REFRESH: ${token}`);
-            // fcm token may not be available on first load, catch it here
-        });
+        const {asteroid} = this.props;
         asteroid.on("loggedIn", this.onLoginActions());
         asteroid.on("loggedOut", this.props.onLogout);
         asteroid.ddp.on("added", ({collection, fields, id}) => {
@@ -101,6 +95,7 @@ class Root extends Component {
     }
 
     componentWillUnmount () {
+        const {asteroid} = this.props;
         asteroid.off("loggedIn", this.onLoginActions);
         asteroid.off("loggedOut", this.props.onLogout);
     }
@@ -163,6 +158,7 @@ class Root extends Component {
     }
 
     onLoginActions () {
+        const {asteroid} = this.props;
         return async (userId) => {
             this.props.onLogin(userId);
             this.props.generateSessionId(userId);
@@ -180,7 +176,8 @@ class Root extends Component {
             });
             asteroid.call("getUnreadNotifications").then(notifications => {
                 this.setState({
-                    notifications
+                    notifications: notifications.length,
+                    notificationsId: notifications.map(notification => notification._id)
                 });
             });
         };
@@ -219,12 +216,10 @@ class Root extends Component {
     }
 
     resetNotifications () {
-        console.log("resetNotifications");
-        asteroid.call("setReadedNotifications").then(() => {
-            this.setState({
-                notifications: 0
-            });
-        });
+        if (!isEmpty(this.state.notificationsId)) {
+            this.props.setNotificationsReaded(this.state.notificationsId);
+        }
+        this.setState({notifications: 0, notificationsId: []});
     }
 
     renderHeader () {
@@ -242,7 +237,7 @@ class Root extends Component {
     }
 
     renderView () {
-        const {site, selectSite} = this.props;
+        const {asteroid, site, selectSite} = this.props;
         return this.props.userId ? (
             <Drawer
                 captureGestures={true}
@@ -317,7 +312,8 @@ function mapDispatchToProps (dispatch) {
         generateSessionId: bindActionCreators(generateSessionId, dispatch),
         onLogin: bindActionCreators(onLogin, dispatch),
         onLogout: bindActionCreators(onLogout, dispatch),
-        selectSite: bindActionCreators(selectSite, dispatch)
+        selectSite: bindActionCreators(selectSite, dispatch),
+        setNotificationsReaded: bindActionCreators(setNotificationsReaded, dispatch)
     };
 }
 
