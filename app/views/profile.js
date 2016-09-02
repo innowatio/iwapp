@@ -213,7 +213,7 @@ class Profile extends Component {
                     value: percentage || 0,
                     totalQuestions,
                     totalAnswers,
-                    text: (percentage || 0) * 100 + "% completato"
+                    text: ((percentage || 0) * 100).toFixed() + "% completato"
                 };
                 // selectedQuestionnaires don't have onPress method
                 return {
