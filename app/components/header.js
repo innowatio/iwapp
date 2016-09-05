@@ -60,8 +60,23 @@ const styles = StyleSheet.create({
         fontSize: 20,
         fontWeight: "bold"
     },
+    textNotificationWrp: {
+        backgroundColor: colors.notificationsCircle,
+        borderRadius: 100,
+        width: 15,
+        height: 15,
+        position: "absolute",
+        top: 0,
+        right: 8,
+        zIndex: 1000,
+        alignItems: "center",
+        justifyContent: "center",
+        padding: 0
+    },
     textNotification: {
-        color: colors.white
+        color: colors.white,
+        fontSize: 8,
+        backgroundColor: colors.transparent
     },
     buttonBack: {
         flexDirection: "row",
@@ -145,14 +160,18 @@ export default class Header extends Component {
         );
         return (
             <View style={styles.rightHeader}>
-                <TouchableOpacity
-                    onPress={() => this.navigateNotifications(this.props.selectedView)}
-                    style={[styles.iconAlarmButton, {backgroundColor: alarmColor}]}
-                    transparent={true}
-                >
-                    <Text style={styles.textNotification}>{this.props.notifications}</Text>
-                    <Icon color={colors.iconWhite} name={"iw-alarm"} size={20} style={{backgroundColor: colors.transparent}} />
-                </TouchableOpacity>
+                <View>
+                    <View style={styles.textNotificationWrp}>
+                        <Text style={styles.textNotification}>{this.props.notifications}</Text>
+                    </View>
+                    <TouchableOpacity
+                        onPress={() => this.navigateNotifications(this.props.selectedView)}
+                        style={[styles.iconAlarmButton, {backgroundColor: alarmColor}]}
+                        transparent={true}
+                    >
+                        <Icon color={colors.iconWhite} name={"iw-alarm"} size={20} style={{backgroundColor: colors.transparent}} />
+                    </TouchableOpacity>
+                </View>
                 <TouchableOpacity
                     onPress={() => Actions.profile(getNavigationType(this.props.selectedView))}
                     style={styles.iconUserButton}

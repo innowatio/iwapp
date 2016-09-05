@@ -49,6 +49,7 @@ export const iconBad = "#ff1744";
 export const borderIconGreen = "#76ff03";
 export const iconGreen = "#ff4081";
 // Notifications
+export const notificationsCircle = "#c41637";
 export const energeticTip = "#536DFE";
 export const alarmsTip = "#ff4081";
 export const welcomeNotification = "#cddc39";
