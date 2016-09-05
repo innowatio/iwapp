@@ -115,9 +115,8 @@ export default class Weather extends Component {
             temperatureUnit
         } = this.props;
         const {height, width} = Dimensions.get("window");
-        // onLayout={nativeEvent: {layout: {x, y, width, height}}}
         return (
-            <Image resizeMode={"cover"} source={background} style={styles.backgroundImage}>
+            <Image source={background} style={styles.backgroundImage}>
                 <View style={[styles.textHelloWrp, {height: height * .06}]}>
                     <Text style={styles.textHello}>
                         {this.getGreeting()}
