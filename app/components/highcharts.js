@@ -8,7 +8,8 @@ import {lineForecast, lineReading, lineStandby} from "../lib/colors";
 
 const styles = StyleSheet.create({
     webView: {
-        marginBottom: -10
+        marginBottom: -5,
+        marginRight: -5
     }
 });
 

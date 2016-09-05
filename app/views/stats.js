@@ -29,15 +29,14 @@ const styles = StyleSheet.create({
     titleBarWrp: {
         justifyContent: "center",
         alignItems: "center",
-        paddingVertical: 5,
         backgroundColor: colors.secondaryBlue
     },
     title: {
         fontWeight: "bold",
+        fontSize: 12,
         color: colors.white
     },
     tabsContainer: {
-        paddingVertical: 5,
         backgroundColor: colors.secondaryBlue,
         flexDirection: "row",
         justifyContent: "space-around",
@@ -50,79 +49,84 @@ const styles = StyleSheet.create({
         borderBottomColor: colors.buttonPrimary
     },
     tabTitle: {
-        color: colors.white
+        color: colors.white,
+        fontSize: 11
     },
 
     // CONTENT
     contentStatsWrp: {
         paddingVertical: 10,
         alignItems: "center",
-        height: 500
+        justifyContent: "center"
+    },
+    consumptionWrp: {
+        alignItems: "center",
+        justifyContent: "center"
     },
     titleSwiper: {
         color: colors.primaryBlue,
-        textAlign: "center"
+        textAlign: "center",
+        fontSize: 11,
+        lineHeight: 11
     },
 
     // CONSUMPTION CIRCLE Swiper 1
     consumptionCircleWrp: {
         backgroundColor: colors.secondaryBlue,
-        width: 110,
-        height: 110,
         borderRadius: 100,
         alignItems: "center",
         justifyContent: "center",
         marginTop: 5
     },
     consumptionCircleValue: {
+        letterSpacing: -2,
         color: colors.white,
         fontWeight: "bold",
-        lineHeight: 35
+        backgroundColor: colors.transparent
     },
     consumptionCircleMeasure: {
         color: colors.white,
-        fontSize: 15
+        fontSize: 14,
+        lineHeight: 14,
+        backgroundColor: colors.transparent
     },
     // CONSUMPTION CIRCLE SMALL
     smallConsumptionWrp: {
         backgroundColor: colors.secondaryBlue,
-        width: 75,
-        height: 75,
-        marginVertical: 8,
         borderRadius: 100,
         alignItems: "center",
         justifyContent: "center"
     },
     smallConsumptionValue: {
         color: colors.white,
-        fontSize: 30,
+        fontSize: 26,
+        letterSpacing: -.8,
         fontWeight: "bold",
-        lineHeight: 30
+        backgroundColor: colors.transparent
     },
     smallConsumptionMeasure: {
         color: colors.white,
-        fontSize: 11,
-        fontWeight: "bold"
+        fontSize: 10,
+        fontWeight: "400",
+        lineHeight: 10,
+        backgroundColor: colors.transparent
     },
 
     // PROGRESS BAR
-    progressBarStyleWrp: {
-        marginBottom: 10
-    },
     progressBarValuesWrp: {
         flexDirection: "row",
         justifyContent: "space-between"
     },
     progressBarTitle: {
         color: colors.textGrey,
-        fontSize: 13
+        fontSize: 12
     },
     progressBarPercentageValue: {
-        fontSize: 11,
+        fontSize: 10,
         color: colors.grey
     },
     progressBarConsumptionValue: {
-        fontSize: 11,
+        fontSize: 10,
         color: colors.secondaryBlue
     },
 
@@ -167,10 +171,10 @@ const styles = StyleSheet.create({
     },
     consumptionTitle: {
         color: colors.textGrey,
-        fontSize: 11,
+        fontSize: 10,
         textAlign: "center",
         marginBottom: 5,
-        marginHorizontal: 15,
+        marginHorizontal: 0,
         lineHeight: 13
     }
 });
@@ -248,15 +252,15 @@ class Stats extends Component {
     }
 
     mapNumberFontSize (number) {
-        var fontSize = 40;
+        var fontSize = 34;
         if (number > 999) {
-            fontSize = 32;
+            fontSize = 28;
         }
         if (number > 9999) {
-            fontSize = 27;
+            fontSize = 24;
         }
         if (number > 99999) {
-            fontSize = 23;
+            fontSize = 20;
         }
         return fontSize;
     }
@@ -280,7 +284,7 @@ class Stats extends Component {
 
         // const {width} = Dimensions.get("window");
         // return (
-        //     <View style={[styles.alarmsButtonWrp, {width: width}]}>
+        //     <View style={[styles.alarmsButtonWrp, {width}]}>
         //         <TouchableOpacity
         //             onPress={() => Actions.alarmsSettings()}
         //             style={[styles.alarmsButton, {width: width * 0.9}]}
@@ -299,10 +303,10 @@ class Stats extends Component {
     }
 
     renderProgressBar (consumptions, unit) {
-        const {width} = Dimensions.get("window");
+        const {width, height} = Dimensions.get("window");
         return consumptions.map(consumption => {
             return (
-                <View key={consumption.key} style={styles.progressBarStyleWrp}>
+                <View key={consumption.key} style={[styles.progressBarStyleWrp, {margin: height * .01}]}>
                     <Text style={styles.progressBarTitle}>{consumption.title}</Text>
                     <Progress.Bar
                         borderColor={(consumption.max / consumption.now < .8) ? colors.secondaryBlue : colors.progressBarError}
@@ -333,23 +337,32 @@ class Stats extends Component {
         const showThreshold = false;
         return (
             <View style={styles.contentStatsWrp}>
-                <View style={{marginBottom: 40}}>
+                <View style={{height: height * .42, marginBottom: height * .05}}>
                     <Text style={styles.titleSwiper}>{this.mapPeriodLabel()}</Text>
                     <Highcharts
                         aggregates={this.getStatsAggregate()}
                         charts={[this.props.stats.chart]}
-                        height={height * .3}
+                        height={height * .35}
                     />
                 </View>
-                <View style={styles.summaryConsumptionContainer}>
-                    {showThreshold ? <View key={"Daily Threshold"} style={[styles.summaryConsumptionWrp, {width: width * 0.5}]}>
-                        <Text style={styles.consumptionTitle}>{"Superamento soglia\ncontrattuale giornaliera"}</Text>
-                        <View style={styles.smallConsumptionWrp}>
+                <View style={[styles.summaryConsumptionContainer, {height: height * .2}]}>
+                    {showThreshold ? <View key={"Daily Threshold"} style={[styles.summaryConsumptionWrp, {
+                        width: width * .5
+                    }]}>
+                        <Text style={styles.consumptionTitle}>
+                            {"Superamento soglia\ncontrattuale giornaliera"}
+                        </Text>
+                        <View
+                            style={[
+                                styles.smallConsumptionWrp,
+                                {width: height * .12, height: height * .12, marginVertical: height * .01}
+                            ]}
+                        >
                             <Text style={styles.smallConsumptionValue}>{"3"}</Text>
                             <Text style={styles.smallConsumptionMeasure}>{"volte"}</Text>
                         </View>
                     </View> : null}
-                    <View key={"Actual Power"} style={[styles.summaryConsumptionWrp, {width: width * 0.5}]}>
+                    <View key={"Actual Power"} style={[styles.summaryConsumptionWrp, {width: width * .5}]}>
                         <Text style={styles.consumptionTitle}>{"Potenza\nattuale"}</Text>
                         <RealTimeSpinner
                             charts={this.props.stats}
@@ -362,19 +375,27 @@ class Stats extends Component {
     }
 
     renderConsumptionsData (sensorId, text) {
-        const {width} = Dimensions.get("window");
+        const {width, height} = Dimensions.get("window");
         const {
             stats
         } = this.props;
         const aggregate = this.getConsumptionAggregate().filter(x => x.get("sensorId") === sensorId);
         if (!aggregate.isEmpty()) {
             const data = getTitleAndSubtitle(stats.chart.period, aggregate);
-            const fontSize = this.mapNumberFontSize(data.sum) - 8;
+            const fontSize = this.mapNumberFontSize(data.sum) - 10;
             return (
-                <View style={[styles.summaryConsumptionWrp, {width: width * 0.45}]}>
-                    <Text style={styles.consumptionTitle}>{text ? text : data.peersText}</Text>
-                    <View style={styles.smallConsumptionWrp}>
-                        <Text style={[styles.smallConsumptionValue, {fontSize: fontSize, lineHeight: fontSize}]}>{data.sum}</Text>
+                <View style={[styles.summaryConsumptionWrp, {width: width * .45}]}>
+                    <View style={{marginHorizontal: width * .025}}>
+                        <Text style={styles.consumptionTitle}>{text ? text : data.peersText}</Text>
+                    </View>
+                    <View style={[styles.smallConsumptionWrp, {width: height * .12, height: height * .12}]}>
+                        <Text
+                            style={[styles.smallConsumptionValue, {
+                                fontSize: fontSize, lineHeight: fontSize
+                            }]}
+                        >
+                            {data.sum}
+                        </Text>
                         <Text style={styles.smallConsumptionMeasure}>{"kWh"}</Text>
                     </View>
                 </View>
@@ -389,20 +410,31 @@ class Stats extends Component {
             site,
             stats
         } = this.props;
+        const {height} = Dimensions.get("window");
         const aggregates = this.getConsumptionAggregate().filter(x => x.get("sensorId") == site._id);
         if (!aggregates.isEmpty()) {
-            const tabAggregate = getTitleAndSubtitle(stats.chart.period, this.getConsumptionAggregate().filter(x => x.get("sensorId") == site._id));
+            const tabAggregate = getTitleAndSubtitle(
+                stats.chart.period, this.getConsumptionAggregate().filter(x => x.get("sensorId") == site._id)
+            );
             const fontSize = this.mapNumberFontSize(tabAggregate.sum);
             return (
                 <View style={styles.contentStatsWrp}>
-                    <Text style={styles.titleSwiper}>{tabAggregate.periodTitle}</Text>
-                    <View style={styles.consumptionCircleWrp}>
-                        <Text style={[styles.consumptionCircleValue, {fontSize, lineHeight: fontSize}]}>{tabAggregate.sum}</Text>
-                        <Text style={styles.consumptionCircleMeasure}>{tabAggregate.measureUnit}</Text>
+                    <View style={[styles.consumptionWrp, {height: height * .2}]}>
+                        <Text style={styles.titleSwiper}>{tabAggregate.periodTitle}</Text>
+                        <View style={[styles.consumptionCircleWrp, {width: height * .16, height: height * .16}]}>
+                            <Text style={[styles.consumptionCircleValue, {fontSize, lineHeight: fontSize}]}>
+                                {tabAggregate.sum}
+                            </Text>
+                            <Text style={styles.consumptionCircleMeasure}>
+                                {tabAggregate.measureUnit}
+                            </Text>
+                        </View>
                     </View>
-                    {this.renderProgressBar(tabAggregate.comparisons, tabAggregate.measureUnit)}
+                    <View style={{height: height * .28}}>
+                        {this.renderProgressBar(tabAggregate.comparisons, tabAggregate.measureUnit)}
+                    </View>
                     {this.renderAlarmSettings()}
-                    <View style={styles.summaryConsumptionContainer}>
+                    <View style={[styles.summaryConsumptionContainer, {height: height * .2}]}>
                         {this.renderConsumptionsData(`${site._id}-peers-avg`)}
                         {this.renderConsumptionsData(`${site._id}-standby`, "Consumi\nin standby")}
                     </View>
@@ -415,7 +447,7 @@ class Stats extends Component {
 
     renderContentTab () {
         const {height} = Dimensions.get("window");
-        const heightSwiper = height * 0.8;
+        const heightSwiper = height * 0.78;
         return (
             <Swiper height={heightSwiper} index={0} loop={false} showButtons={true}>
                 {this.renderSwiper1()}
@@ -430,22 +462,34 @@ class Stats extends Component {
         const {selectPeriod} = this.props;
         return (
             <View style={styles.container}>
-                <Content style={{backgroundColor: colors.background, height: height}}>
+                <Content style={{backgroundColor: colors.background, height}}>
                     <View>
-                        <View style={styles.titleBarWrp}>
+                        <View style={[styles.titleBarWrp, {height: height * .045}]}>
                             <Text style={styles.title}>{"STATISTICHE"}</Text>
                         </View>
-                        <View style={styles.tabsContainer}>
-                            <Button containerStyle={(period === "day" ? styles.tabWrpActive : {})} onPress={() => selectPeriod("day")}>
+                        <View style={[styles.tabsContainer, {paddingVertical: height * .003}]}>
+                            <Button
+                                containerStyle={(period === "day" ? styles.tabWrpActive : {})}
+                                onPress={() => selectPeriod("day")}
+                            >
                                 <Text style={styles.tabTitle}>{"GIORNO"}</Text>
                             </Button>
-                            <Button containerStyle={(period === "week" ? styles.tabWrpActive : {})} onPress={() => selectPeriod("week")}>
+                            <Button
+                                containerStyle={(period === "week" ? styles.tabWrpActive : {})}
+                                onPress={() => selectPeriod("week")}
+                            >
                                 <Text style={styles.tabTitle}>{"SETTIMANA"}</Text>
                             </Button>
-                            <Button containerStyle={(period === "month" ? styles.tabWrpActive : {})} onPress={() => selectPeriod("month")}>
+                            <Button
+                                containerStyle={(period === "month" ? styles.tabWrpActive : {})}
+                                onPress={() => selectPeriod("month")}
+                            >
                                 <Text style={styles.tabTitle}>{"MESE"}</Text>
                             </Button>
-                            <Button containerStyle={(period === "year" ? styles.tabWrpActive : {})} onPress={() => selectPeriod("year")}>
+                            <Button
+                                containerStyle={(period === "year" ? styles.tabWrpActive : {})}
+                                onPress={() => selectPeriod("year")}
+                            >
                                 <Text style={styles.tabTitle}>{"ANNO"}</Text>
                             </Button>
                         </View>

@@ -17,6 +17,7 @@ export const grey = "#999999";
 export const aquaGreen = "#12b0c5";
 export const acidGreen = "#cddc39";
 export const backgroundBlackOpacity = "rgba(0, 0, 0, 0.3)";
+export const blackOpacity = "rgba(0, 0, 0, 0.5)";
 // Error
 export const backgroundError = "#ff1744";
 export const backgroundIconError = "#c41637";
@@ -49,6 +50,7 @@ export const iconBad = "#ff1744";
 export const borderIconGreen = "#76ff03";
 export const iconGreen = "#ff4081";
 // Notifications
+export const notificationsCircle = "#c41637";
 export const energeticTip = "#536DFE";
 export const alarmsTip = "#ff4081";
 export const welcomeNotification = "#cddc39";

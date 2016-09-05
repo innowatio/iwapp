@@ -1,6 +1,6 @@
 import React, {Component, PropTypes} from "react";
 import IPropTypes from "react-immutable-proptypes";
-import {Modal, StyleSheet, View} from "react-native";
+import {Dimensions, Modal, StyleSheet, View} from "react-native";
 import Button from "react-native-button";
 import {Actions} from "react-native-router-flux";
 
@@ -19,11 +19,6 @@ const styles = StyleSheet.create({
         backgroundColor: colors.buttonPrimary,
         paddingVertical: 5
     },
-    logoInnowatio: {
-        padding: 0,
-        margin: 0,
-        height: 80
-    },
     titleModal: {
         color: colors.white,
         textAlign: "center"
@@ -40,22 +35,21 @@ const styles = StyleSheet.create({
         paddingBottom: 30
     },
     descriptionModal: {
+        fontSize: 13,
         color: colors.white,
-        textAlign: "center",
-        marginTop: 10
+        textAlign: "center"
     },
     modalButton: {
-        marginTop: 20,
         backgroundColor: colors.buttonPrimary,
-        width: 200,
-        paddingVertical: 8,
-        borderRadius: 50
+        justifyContent: "center",
+        alignItems: "center",
+        borderRadius: 100
     },
     modalButtonText: {
         color: colors.white,
-        fontSize: 14,
-        backgroundColor: colors.transparent,
-        fontWeight: "300"
+        fontSize: 11,
+        textAlign: "center",
+        backgroundColor: colors.transparent
     }
 });
 
@@ -69,6 +63,7 @@ export default class SurveyModal extends Component {
 
     render () {
         const title = this.props.survey.get("title") || "";
+        const {height, width} = Dimensions.get("window");
         return (
             <Modal
                 onRequestClose={this.props.onCloseModal}
@@ -80,29 +75,29 @@ export default class SurveyModal extends Component {
                         <Text style={styles.titleModal}>{" "}</Text>
                     </View>
                     <View style={styles.modalContentWrp}>
-
-                        <View style={styles.badgeIconActive}>
+                        <View style={{height: height * .18}}>
                             <Icon
                                 color={colors.iconWhite}
                                 name={"iw-innowatio-logo"}
-                                size={100}
-                                style={styles.logoInnowatio}
+                                size={height * .18}
                             />
                         </View>
-                        <Text style={styles.descriptionModal}>
-                            <Text style={styles.textBold}>{title.toUpperCase()}</Text>
-                            {"\n\n"}
-                            {this.props.survey.get("description")}
-                        </Text>
+                        <View style={{}}>
+                            <Text style={styles.descriptionModal}>
+                                <Text style={styles.textBold}>{title.toUpperCase()}{"\n"}</Text>
+                                {this.props.survey.get("description")}
+                            </Text>
+                        </View>
                         <Button
-                            containerStyle={styles.modalButton}
+                            containerStyle={[styles.modalButton,
+                                {width: width * .6, height: height * .05, marginTop: height * .03}
+                            ]}
                             onPress={() => {
                                 this.props.onCloseModal();
                                 Actions.survey({survey: this.props.survey});
                             }}
-                            style={styles.modalButtonText}
                         >
-                            {"VAI AL QUESTIONARIO"}
+                            <Text style={styles.modalButtonText}>{"VAI AL QUESTIONARIO"}</Text>
                         </Button>
                     </View>
                 </View>

@@ -13,14 +13,11 @@ const styles = StyleSheet.create({
     },
     textStandardSmall: {
         color: colors.textGrey,
-        fontSize: 11,
-        lineHeight: 11,
-        fontWeight: "400"
+        fontSize: 10
     },
     textStandard: {
         color: colors.textGrey,
-        fontSize: 13,
-        marginTop: 0
+        fontSize: 12
     },
     infoAndConsumptionContainer: {
         flexDirection: "row",
@@ -39,8 +36,6 @@ const styles = StyleSheet.create({
     },
     iconActivityWrp: {
         marginVertical: 5,
-        width: 80,
-        height: 80,
         borderRadius: 100,
         backgroundColor: colors.borderIconGreen,
         justifyContent: "center",
@@ -50,50 +45,55 @@ const styles = StyleSheet.create({
         backgroundColor: colors.transparent,
         justifyContent: "center",
         alignItems: "center",
-        lineHeight: 78
+
+        lineHeight: 62
     },
     textNumber: {
         paddingRight: 5,
-        fontSize: 34,
+        fontSize: 32,
         fontWeight: "bold",
-        textAlign: "center",
         color: colors.secondaryBlue
     },
     textUnitOfMeasurement: {
         color: colors.secondaryBlue,
         alignSelf: "flex-end",
-        marginBottom: 5
+        marginBottom: 5,
+        fontSize: 14
     },
-    numberOtherMeanTextContainer: {
+    numberOtherMeanContainer: {
+        justifyContent: "center"
+    },
+    textContainer: {
         flexDirection: "row",
-        marginTop: 25
-    },
-    tipsContainerWrp: {
-        marginTop: 20
+        alignItems: "center"
     },
     tipsContainer: {
+        alignItems: "center",
+        justifyContent: "center"
+    },
+    tipsWrp: {
         backgroundColor: colors.secondaryBlue,
         flexDirection: "row",
         alignSelf: "center",
         borderRadius: 14,
-        paddingVertical: 6,
+        paddingVertical: 6
+    },
+    textTipsWrp: {
+        flexDirection: "column",
+        marginHorizontal: 5
     },
     textTips: {
         color: colors.white,
-        fontSize: 18,
-        lineHeight: 20,
+        fontSize: 16,
+        fontWeight: "bold",
         backgroundColor: colors.transparent
     },
     textTipsDescription: {
         color: colors.white,
         fontSize: 12,
-        lineHeight: 15,
+        lineHeight: 14,
         paddingRight: 5,
         backgroundColor: colors.transparent
-    },
-    textTipsContainer: {
-        flexDirection: "column",
-        marginLeft: 10
     },
     iconContainer: {
         alignSelf: "center",
@@ -158,30 +158,31 @@ export default class InfoConsumption extends Component {
             };
         }
         return (
-            <View style={styles.tipsContainerWrp}>
-                <View style={[styles.tipsContainer, {width: width * 0.96}]}>
-                    <View style={styles.iconContainer}>
-                        <Icon color={badge.iconColor} name={badge.icon} size={46} />
-                    </View>
-                    <View style={styles.textTipsContainer}>
-                        <Text style={styles.textTips}>{badge.title}</Text>
-                        <Text allowFontScaling={true} style={[styles.textTipsDescription, {width: width * 0.78}]}>
-                            {badge.text}
-                        </Text>
-                    </View>
+            <View style={[styles.tipsWrp, {width: width * 0.96}]}>
+                <View style={styles.iconContainer}>
+                    <Icon color={badge.iconColor} name={badge.icon} size={width * 0.14} />
+                </View>
+                <View style={styles.textTipsWrp}>
+                    <Text style={styles.textTips}>{badge.title}</Text>
+                    <Text ellipsizeMode={"tail"} numberOfLines={3}  style={[styles.textTipsDescription, {width: width * 0.78}]}>
+                        {badge.text}
+                    </Text>
                 </View>
             </View>
         );
     }
 
     renderConsumptions (consumptions, text) {
+        const {height} = Dimensions.get("window");
         return (
-            <View>
-                <View style={[styles.numberOtherMeanTextContainer]}>
+            <View style={[styles.numberOtherMeanContainer, {height: height * .175}]}>
+                <View style={styles.textContainer}>
                     <Text style={styles.textNumber}>{(consumptions.total / consumptions.days).toFixed(2)}</Text>
                     <Text style={styles.textUnitOfMeasurement}>{consumptions.unit}</Text>
                 </View>
-                <Text style={styles.textStandard}>{text}</Text>
+                <View style={{height: height * .07}}>
+                    <Text style={styles.textStandard}>{text}</Text>
+                </View>
             </View>
         );
     }
@@ -211,10 +212,15 @@ export default class InfoConsumption extends Component {
 
         return (
             <View style={[styles.container, {height: this.props.heightSwiper}]}>
-                <View style={[styles.infoAndConsumptionContainer, {width}]}>
+                <View style={[styles.infoAndConsumptionContainer, {width, height: height * .35}]}>
                     <View style={[styles.infoContainer, {height: height * .35, width: width * .42}]}>
-                        <View style={styles.iconActivityWrp}>
-                            <Icon color={colors.iconGreen} name={"iw-badge-buildings"} size={72} style={styles.iconActivity} />
+                        <View style={[styles.iconActivityWrp, {width: height * .14, height: height * .14}]}>
+                            <Icon
+                                color={colors.iconGreen}
+                                name={"iw-badge-buildings"}
+                                size={height * .12}
+                                style={styles.iconActivity}
+                            />
                         </View>
                         <Text style={styles.textStandardSmall}>{"23 persone"}</Text>
                         <Text style={styles.textStandardSmall}>{"Ufficio di 167 mq"}</Text>
@@ -225,7 +231,9 @@ export default class InfoConsumption extends Component {
                         {peersConsumptions ? this.renderPeersConsumptions() : null}
                     </View>
                 </View>
-                {(consumptions && peersConsumptions) ? this.renderSmileyBadge() : null}
+                <View style={[styles.tipsContainer, {width, height: height * .16}]}>
+                    {(consumptions && peersConsumptions) ? this.renderSmileyBadge() : null}
+                </View>
             </View>
         );
     }

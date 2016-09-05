@@ -14,9 +14,7 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         backgroundColor: colors.transparent,
-        flexDirection: "column",
-        paddingLeft: 20,
-        paddingRight: 20
+        flexDirection: "column"
     },
     backgroundImage: {
         flex: 1,
@@ -32,11 +30,10 @@ const styles = StyleSheet.create({
     logoTitle: {
         color: colors.white,
         margin: 0,
-        fontSize: 26
+        fontSize: 20
     },
     logoDescription: {
         color: colors.white,
-        marginBottom: 40,
         fontSize: 14
     },
     errorLoginContainer: {
@@ -47,18 +44,12 @@ const styles = StyleSheet.create({
         borderTopRightRadius: 10,
         borderBottomLeftRadius: 10,
         borderBottomRightRadius: 10,
-        alignSelf: "stretch",
-        marginBottom: 20,
-        padding: -5,
-        flexDirection: "column",
         justifyContent: "center",
         alignItems: "center"
     },
     errorLogin: {
         fontSize: 13,
         fontWeight: "bold",
-        alignSelf: "center",
-        margin: 20,
         color: colors.white
     },
     inputWrp: {
@@ -91,18 +82,16 @@ const styles = StyleSheet.create({
         top: -28
     },
     buttonLogin: {
-        padding: 8,
         width: 200,
         height: 34,
         overflow: "hidden",
         borderRadius: 15,
         backgroundColor: colors.buttonPrimary,
-        marginTop: 25,
-        marginBottom: 20
+        justifyContent: "center"
     },
     buttonLoginText: {
         color: colors.white,
-        fontSize: 16,
+        fontSize: 14,
         textAlign: "center"
     }
 });
@@ -143,9 +132,10 @@ export default class Login extends Component {
     }
 
     renderErrorLogin () {
+        const {height, width} = Dimensions.get("window");
         return this.state.loginError ? (
-            <View style={styles.errorLoginContainer}>
-                <Text style={styles.errorLogin}>
+            <View style={[styles.errorLoginContainer, {width: width * .9, marginBottom: height * .02}]}>
+                <Text style={[styles.errorLogin, {marginVertical: height * .02, marginHorizontal: width * .02}]}>
                     {"Login non riuscito: email o password errate"}
                 </Text>
             </View>
@@ -153,18 +143,18 @@ export default class Login extends Component {
     }
 
     render () {
-        const {width} = Dimensions.get("window");
+        const {width, height} = Dimensions.get("window");
         return (
             <Image source={require("../assets/img/bg_login.png")} style={styles.backgroundImage}>
-                <View style={[styles.container, {width: width}]}>
+                <View style={[styles.container, {width: width * .9}]}>
                     <Icon
                         color={colors.iconWhite}
                         name="iw-innowatio-logo"
-                        size={130}
-                        style={styles.logoIcon}
+                        size={height * .25}
+                        style={[styles.logoIcon, {height: height * .21}]}
                     />
                     <Text style={styles.logoTitle}>{"Lucy"}</Text>
-                    <Text style={styles.logoDescription}>{"innowatio"}</Text>
+                    <Text style={[styles.logoDescription, {marginBottom: height * .05}]}>{"innowatio"}</Text>
                     {this.renderErrorLogin()}
                     <View style={styles.inputWrp}>
                         <View style={styles.textInputWrp}>
@@ -209,10 +199,10 @@ export default class Login extends Component {
                         </View>
                     </View>
                     <Button
-                        containerStyle={styles.buttonLogin}
+                        containerStyle={[styles.buttonLogin, {marginVertical: height * .04}]}
                         onPress={::this.onLogin}
                     >
-                        <Text style={styles.buttonLoginText}>{"ACCEDI"}</Text>
+                        <Text style={[styles.buttonLoginText, {padding: height * .04}]}>{"ACCEDI"}</Text>
                     </Button>
                 </View>
             </Image>

@@ -1,5 +1,5 @@
 import React, {Component, PropTypes} from "react";
-import {Image, StyleSheet, View} from "react-native";
+import {Dimensions, Image, StyleSheet, View} from "react-native";
 
 import Icon from "./iwapp-icons";
 import Text from "./text-lato";
@@ -12,25 +12,31 @@ const styles = StyleSheet.create({
         width: null,
         height: null
     },
+    textHelloWrp: {
+        alignItems: "center",
+        justifyContent: "center"
+    },
     textHello: {
         color: colors.white,
         backgroundColor: colors.transparent,
-        marginTop: 5,
-        marginBottom: 25,
-        fontSize: 16,
+        fontSize: 14,
         fontWeight: "bold",
         textAlign: "center",
-        textShadowColor: colors.backgroundBlackOpacity
+        textShadowColor: colors.blackOpacity,
+        textShadowOffset: ({width: 1, height: 1}),
+        textShadowRadius: 3
     },
     weatherWrp: {
         flex: 1,
         flexDirection: "row",
-        justifyContent: "space-around",
-        alignItems: "center",
+        alignItems: "flex-end",
         backgroundColor: colors.backgroundBlackOpacity
     },
+    weatherCol: {
+        justifyContent: "space-around",
+        alignSelf: "center"
+    },
     iconWrp: {
-        height: 85,
         alignItems: "center"
     },
     climateVariablesWrp: {
@@ -43,34 +49,39 @@ const styles = StyleSheet.create({
     },
     labelPercentage: {
         color: colors.white,
-        fontSize: 10,
+        fontSize: 9,
+        lineHeight: 9,
         textAlign: "center"
     },
     textPercentage: {
         color: colors.white,
-        fontSize: 24,
+        fontSize: 20,
+        lineHeight: 19,
         fontWeight: "bold",
         textAlign: "center"
     },
     textDegreesWrp: {
         flexDirection: "row",
-        height: 85
+        justifyContent: "center",
+        alignItems: "center"
     },
     textDegreesValue: {
         color: colors.white,
-        fontSize: 66,
-        fontWeight: "bold"
+        fontSize: 58,
+        fontWeight: "bold",
+        justifyContent: "center",
+    },
+    textDescDegreesWrp: {
+        justifyContent: "center"
     },
     textDegrees: {
         color: colors.white,
-        fontSize: 30,
-        alignSelf: "center",
+        fontSize: 22,
         fontWeight: "bold"
     },
     textDescDegrees: {
         color: colors.white,
-        fontSize: 13,
-        marginRight: 15,
+        fontSize: 12,
         textAlign: "center"
     }
 });
@@ -103,43 +114,55 @@ export default class Weather extends Component {
             temperature,
             temperatureUnit
         } = this.props;
+        const {height, width} = Dimensions.get("window");
+        // onLayout={nativeEvent: {layout: {x, y, width, height}}}
         return (
-            <Image source={background} style={styles.backgroundImage}>
-                <Text style={styles.textHello}>{this.getGreeting()}</Text>
-                <View style={styles.weatherWrp}>
-                    <View>
-                        <View style={styles.iconWrp}>
+            <Image resizeMode={"cover"} source={background} style={styles.backgroundImage}>
+                <View style={[styles.textHelloWrp, {height: height * .06}]}>
+                    <Text style={styles.textHello}>
+                        {this.getGreeting()}
+                    </Text>
+                </View>
+                <View style={[styles.weatherWrp, {width}]}>
+                    <View style={[styles.weatherCol, {width: width * .55}]}>
+                        <View style={[styles.iconWrp, {height: height * .12}]}>
                             {icon ? (
                                 <Icon
                                     color={colors.iconWhite}
                                     name={`${icon}`}
-                                    size={90}
+                                    size={height * .14}
                                 />
                             ) : null}
                         </View>
-                        <View style={styles.climateVariablesWrp}>
+                        <View style={[styles.climateVariablesWrp, {height: height * .08}]}>
                             <View style={styles.climateVariables}>
                                 <Text style={styles.labelPercentage}>
                                     {"UMIDITA'"}
                                 </Text>
-                                <Text style={styles.textPercentage}>{`${humidity.toFixed()} ${humidityUnit ? humidityUnit : "%"}`}</Text>
+                                <Text style={styles.textPercentage}>
+                                    {`${humidity.toFixed()} ${humidityUnit ? humidityUnit : "%"}`}
+                                </Text>
                             </View>
                             <View style={styles.climateVariables}>
                                 <Text style={styles.labelPercentage}>
                                     {"NUVOLOSITA'"}
                                 </Text>
-                                <Text style={styles.textPercentage}>{`${cloudness.toFixed()} ${cloudnessUnit ? cloudnessUnit : "%"}`}</Text>
+                                <Text style={styles.textPercentage}>
+                                    {`${cloudness.toFixed()} ${cloudnessUnit ? cloudnessUnit : "%"}`}
+                                </Text>
                             </View>
                         </View>
                     </View>
-                    <View>
-                        <View style={styles.textDegreesWrp}>
+                    <View style={[styles.weatherCol, {width: width * .45}]}>
+                        <View style={[styles.textDegreesWrp, {height: height * .12}]}>
                             <Text style={styles.textDegreesValue}>{`${temperature.toFixed()}`}</Text>
                             <Text style={styles.textDegrees}>{`${temperatureUnit ? temperatureUnit : ""}`}</Text>
                         </View>
-                        <Text style={styles.textDescDegrees}>
-                            {"TEMPERATURA \n ESTERNA"}
-                        </Text>
+                        <View style={[styles.textDescDegreesWrp, {height: height * .08}]}>
+                            <Text style={styles.textDescDegrees}>
+                                {"TEMPERATURA \n ESTERNA"}
+                            </Text>
+                        </View>
                     </View>
                 </View>
             </Image>

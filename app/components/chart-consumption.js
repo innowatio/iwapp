@@ -31,13 +31,15 @@ const styles = StyleSheet.create({
     },
     summaryConsumption: {
         alignItems: "center",
-        flexDirection: "row"
+        flexDirection: "row",
+        justifyContent: "center"
     },
     consumptionNumber: {
         paddingRight: 5,
-        fontSize: 46,
+        fontSize: 40,
         fontWeight: "bold",
         textAlign: "center",
+        alignSelf: "center",
         color: colors.primaryBlue
     },
     consumptionUnitOfMeasurement: {
@@ -45,8 +47,9 @@ const styles = StyleSheet.create({
     },
     bottomChartWrp: {
         flexDirection: "row",
-        justifyContent: "space-around",
-        alignItems: "center"
+        justifyContent: "center",
+        alignItems: "center",
+        marginHorizontal: 20
     },
     switch: {
         marginTop: 3
@@ -54,37 +57,32 @@ const styles = StyleSheet.create({
     switchContainer: {
         flexDirection: "row",
         alignItems: "center",
-        justifyContent: "center"
+        justifyContent: "flex-start"
     },
     switchTextContainer: {
         flexDirection: "column",
-        marginLeft: 10
+        marginLeft: 4
     },
     switchTextHeader: {
-        fontSize: 15,
+        fontSize: 12,
         color: colors.textGrey
     },
     switchText: {
-        fontSize: 12,
+        fontSize: 10,
         color: colors.textGrey
     },
     subTitle: {
-        fontSize: 12,
+        fontSize: 11,
         color: colors.textGrey
     },
     standbyContainer: {
         flexDirection: "row",
         alignItems: "center",
-        justifyContent: "center"
+        justifyContent: "flex-start"
     },
-    standbyText: {
-        fontSize: 12,
-        lineHeight: 12,
-        color: colors.textGrey
-    },
-    standbyIcon: {
-        marginHorizontal: 5
-    }
+    // standbyIcon: {
+    //     marginHorizontal: 5
+    // }
 });
 
 export default class ChartConsumption extends Component {
@@ -130,12 +128,12 @@ export default class ChartConsumption extends Component {
     }
 
     render () {
-        const {height} = Dimensions.get("window");
+        const {height, width} = Dimensions.get("window");
         const sensorId = this.props.charts[0].sensorId;
         const forecast = this.props.charts.find(x => x.source === "forecast");
         return (
             <View>
-                <View style={[styles.consumptionContainer, {height: height * 0.17}]}>
+                <View style={[styles.consumptionContainer, {height: height * .175}]}>
                     <View style={styles.summaryConsumptionContainer}>
                         <Text style={styles.subTitle}>{"Consumo di oggi"}</Text>
                         <View style={styles.summaryConsumption}>
@@ -156,27 +154,42 @@ export default class ChartConsumption extends Component {
                     charts={this.props.charts}
                     height={this.props.heightSwiper * 0.45}
                 />
-                <View style={styles.bottomChartWrp}>
-                    <View style={styles.switchContainer}>
+                <View style={[styles.bottomChartWrp, {width: width * .9, height: height * 0.08}]}>
+                    <View style={[styles.switchContainer, {width: width * .65}]}>
                         <Switch
                             onTintColor={colors.HomeSwitchActive}
                             onValueChange={this.props.onToggleSwitch}
                             style={styles.switch}
                             value={!!forecast}
                         />
-                        <View style={styles.switchTextContainer}>
-                            <Text style={styles.switchTextHeader}>{"Consumi previsti"}</Text>
-                            <Text style={styles.switchText}>{"basati sulla tua giornata tipo"}</Text>
+                        <View style={[styles.switchTextContainer, {width: width * .45}]}>
+                            <Text
+                                ellipsizeMode={"tail"}
+                                numberOfLines={1}
+                                style={styles.switchTextHeader}
+                            >
+                                {"Consumi previsti"}
+                            </Text>
+                            <Text
+                                ellipsizeMode={"tail"}
+                                numberOfLines={1}
+                                style={styles.switchText}
+                            >
+                                {"basati sulla tua giornata tipo"}
+                            </Text>
                         </View>
                     </View>
-                    <View style={styles.standbyContainer}>
+                    <View style={[styles.standbyContainer, {width: width * .25}]}>
                         <FaIcons
                             color={colors.lineStandby}
                             name={"circle-thin"}
                             size={22}
                             style={styles.standbyIcon}
                         />
-                        <Text style={styles.standbyText}>{"Consumi \nin standby"}</Text>
+                        <View style={styles.switchTextContainer}>
+                            <Text style={styles.switchTextHeader}>{"Consumi"}</Text>
+                            <Text style={styles.switchText}>{"in standby"}</Text>
+                        </View>
                     </View>
                 </View>
             </View>

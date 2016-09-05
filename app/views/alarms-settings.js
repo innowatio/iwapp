@@ -18,11 +18,11 @@ const styles = StyleSheet.create({
     titleBarWrp: {
         justifyContent: "center",
         alignItems: "center",
-        paddingVertical: 5,
         backgroundColor: colors.secondaryBlue
     },
     title: {
         fontWeight: "bold",
+        fontSize: 12,
         color: colors.white
     },
     tabsContainer: {
@@ -39,7 +39,8 @@ const styles = StyleSheet.create({
         borderBottomColor: colors.buttonPrimary
     },
     tabTitle: {
-        color: colors.white
+        color: colors.white,
+        fontSize: 11
     },
 
     alarmsContainer: {
@@ -239,7 +240,7 @@ export default class AlarmsSettings extends Component {
             <View style={styles.container}>
                 <Content style={{backgroundColor: colors.background, height: height}}>
                     <View>
-                        <View style={styles.titleBarWrp}>
+                        <View style={[styles.titleBarWrp, {height: height * .045}]}>
                             <Text style={styles.title}>{"ALLARMI"}</Text>
                         </View>
                         {this.renderTabs()}

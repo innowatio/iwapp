@@ -23,7 +23,6 @@ const styles = StyleSheet.create({
     titleBarWrp: {
         justifyContent: "center",
         alignItems: "center",
-        paddingVertical: 5,
         backgroundColor: colors.secondaryBlue
     },
     titleBar: {
@@ -32,73 +31,75 @@ const styles = StyleSheet.create({
         borderBottomColor: colors.buttonPrimary
     },
     title: {
-        color: colors.white
+        color: colors.white,
+        fontSize: 12
     },
     contentUserWrp: {
-        paddingHorizontal: 20,
-        flexDirection: "row",
-        justifyContent: "space-between",
+        justifyContent: "center",
         alignItems: "center",
         borderBottomColor: colors.lightGrey,
         borderBottomWidth: 1
     },
-    iconsUserOptionsWrp: {
-        flexDirection: "column",
-        justifyContent: "center",
+    contentUser: {
+        flexDirection: "row",
+        justifyContent: "space-between",
         alignItems: "center"
     },
+    iconsUserOptionsWrp: {
+        flexDirection: "column",
+        alignItems: "flex-end"
+    },
     iconOptionsWrp: {
-        flexDirection: "row",
-        borderRadius: 20,
-        width: 32,
-        height: 32,
+        borderRadius: 100,
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: colors.primaryBlue,
-        marginBottom: 40
+        backgroundColor: colors.primaryBlue
     },
     userPhotoWrp: {
         flexDirection: "row",
-        justifyContent: "flex-end",
+        justifyContent: "flex-start",
         alignItems: "center"
     },
     photoWrp: {
         backgroundColor: colors.buttonPrimary,
         borderRadius: 100,
-        width: 70,
-        height: 70,
         alignItems: "center",
         justifyContent: "center"
     },
     textPhoto: {
         color: colors.white,
-        fontSize: 40,
+        fontSize: 34,
         fontWeight: "bold"
     },
     userInfoWrp: {
-        paddingLeft: 18
+        paddingLeft: 10
     },
     textUser: {
+        overflow: "hidden",
         fontSize: 16,
         padding: 0,
         color: colors.textGrey
     },
     textEmail: {
-        fontSize: 12,
+        overflow: "hidden",
+        fontSize: 10,
         padding: 0,
         color: colors.textGrey
     },
 
     // STYLE FOR PROFILE PERCENTAGE COMPLETED
     contentAnswerWrp: {
-        padding: 20
+        justifyContent: "center",
+        alignItems: "center"
+    },
+    contentAnswer: {
+        alignItems: "center"
     },
     titleComplete: {
+        fontSize: 10,
+        alignSelf: "flex-start",
         marginBottom: 5,
         color: colors.textGrey
-    },
-    progressBarStyleWrp: {
-        marginBottom: 20
     },
 
     // STYLE FOR BUTTON PERCENTAGE OF ANSWER
@@ -285,33 +286,39 @@ class Profile extends Component {
     }
 
     renderUserImage () {
+        const {width, height} = Dimensions.get("window");
         const {username, email} = this.state;
         return (
-            <View style={styles.userPhotoWrp}>
+            <View style={[styles.userPhotoWrp, {width: width * .76}]}>
                 <TouchableOpacity
                     className="userImage"
                     onPress={() => this.showImagePicker()}
-                    style={styles.photoWrp}
+                    style={[styles.photoWrp, {width: height * .11, height: height * .11}]}
                     transparent={true}
                 >
                     <Text style={styles.textPhoto}>{(username[0] || email[0] || "").toUpperCase()}</Text>
                 </TouchableOpacity>
-                <View style={styles.userInfoWrp}>
-                    <Text style={styles.textUser}>{username}</Text>
-                    <Text style={styles.textEmail}>{email}</Text>
+                <View style={[styles.userInfoWrp, {width: width * .56}]}>
+                    <Text ellipsizeMode={"tail"} numberOfLines={1} style={styles.textUser}>{username}</Text>
+                    <Text ellipsizeMode={"tail"} numberOfLines={1} style={styles.textEmail}>{email}</Text>
                 </View>
             </View>
         );
     }
 
     renderUserOption () {
+        const {width, height} = Dimensions.get("window");
         return (
-            <View style={styles.iconsUserOptionsWrp}>
-                <TouchableOpacity onPress={() => Linking.openURL("http://sso.innowatio.it")} style={styles.iconOptionsWrp} transparent={true}>
+            <View style={[styles.iconsUserOptionsWrp, {width: width * .13}]}>
+                <TouchableOpacity
+                    onPress={() => Linking.openURL("http://sso.innowatio.it")}
+                    style={[styles.iconOptionsWrp, {height: height * .055, width: height * .055, marginBottom: height * .05}]}
+                    transparent={true}
+                >
                     <Icon
                         color={colors.iconWhite}
                         name="iw-edit"
-                        size={23}
+                        size={height * .04}
                         style={{backgroundColor: colors.transparent}}
                     />
                 </TouchableOpacity>
@@ -330,14 +337,14 @@ class Profile extends Component {
     }
 
     renderProfilePercentage (questionnairePercentages) {
-        const {width} = Dimensions.get("window");
+        const {width, height} = Dimensions.get("window");
         const totalQuestionnairesProgress = this.roundTwoDecimals(
             questionnairePercentages.reduce((prev, curr) => {
                 return prev + curr.value;
             }, 0) / questionnairePercentages.length);
 
         return (
-            <View style={styles.progressBarStyleWrp}>
+            <View style={[styles.progressBarStyleWrp, {marginBottom: height * .03}]}>
                 <Progress.Bar
                     borderColor={colors.secondaryBlue}
                     borderRadius={30}
@@ -370,25 +377,29 @@ class Profile extends Component {
     }
 
     render () {
-        const {height} = Dimensions.get("window");
+        const {height, width} = Dimensions.get("window");
         const questionnairePercentages = this.getQuestionnaires();
         return (
             <View style={styles.container}>
-                <Content style={{backgroundColor: colors.background, height: height}}>
-                    <View style={styles.titleBarWrp}>
+                <Content style={{backgroundColor: colors.background, height}}>
+                    <View style={[styles.titleBarWrp, {height: height * .045}]}>
                         <View style={styles.titleBar}>
                             <Text style={styles.title}>{"IL MIO PROFILO"}</Text>
                         </View>
                     </View>
-                    <View style={[styles.contentUserWrp, {height: height * 0.2}]}>
-                        {this.renderUserImage()}
-                        {this.renderUserOption()}
+                    <View style={[styles.contentUserWrp, {width, height: height * 0.18}]}>
+                        <View style={[styles.contentUser, {width: width * .9}]}>
+                            {this.renderUserImage()}
+                            {this.renderUserOption()}
+                        </View>
                     </View>
-                    <View style={[styles.contentAnswerWrp, {height: height * 0.7}]}>
-                        <Text style={styles.titleComplete}>{"Completa il profilo"}</Text>
-                        {this.renderProfilePercentage(questionnairePercentages)}
-                        <View style={styles.progressQuestionnairesWrp}>
-                            {questionnairePercentages.map(::this.renderQuestionnairesProgress)}
+                    <View style={[styles.contentAnswerWrp, {height: height * 0.65}]}>
+                        <View style={[styles.contentAnswer, {width: width * .9}]}>
+                            <Text style={styles.titleComplete}>{"Completa il profilo"}</Text>
+                            {this.renderProfilePercentage(questionnairePercentages)}
+                            <View style={[styles.progressQuestionnairesWrp, {marginBottom: height * .03}]}>
+                                {questionnairePercentages.map(::this.renderQuestionnairesProgress)}
+                            </View>
                         </View>
                     </View>
                 </Content>

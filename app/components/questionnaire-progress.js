@@ -1,5 +1,5 @@
 import React, {Component, PropTypes} from "react";
-import {StyleSheet, TouchableOpacity, View} from "react-native";
+import {Dimensions, StyleSheet, TouchableOpacity, View} from "react-native";
 import * as Progress from "react-native-progress";
 
 import Icon from "../components/iwapp-icons";
@@ -9,36 +9,25 @@ import Text from "../components/text-lato";
 const styles = StyleSheet.create({
     progressQuestionnaire: {
         flexDirection: "column",
-        alignItems: "stretch",
-        marginTop: 20,
-        width: 90,
-        marginHorizontal: 5
+        alignItems: "stretch"
     },
     circleProgress: {
-        width: 90,
         alignItems: "center"
     },
     iconQuestionnaireWrp: {
         position: "absolute",
-        width: 90,
-        height: 80,
+        left: 0,
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: colors.transparent,
-        top: 0,
-        left: 0
+        backgroundColor: colors.transparent
     },
     titQuestionnaire: {
-        width: 90,
-        fontSize: 14,
-        padding: 0,
+        fontSize: 11,
         textAlign: "center",
-        marginTop: 3,
         color: colors.textGrey
     },
     percQuestionnaire: {
-        fontSize: 11,
-        padding: 0,
+        fontSize: 9,
         textAlign: "center",
         color: colors.textGrey
     }
@@ -60,34 +49,40 @@ export default class QuestionnaireProgress extends Component {
 
     render () {
         const {questionnaire} = this.props;
+        const {width, height} = Dimensions.get("window");
+
         return (
-            <View style={styles.progressQuestionnaire}>
+            <View style={[styles.progressQuestionnaire, {marginHorizontal: width * .02, marginVertical: height * .015}]}>
                 <Progress.Circle
                     animating={false}
                     borderWidth={0}
                     color={questionnaire.color}
                     progress={questionnaire.value}
-                    size={80}
-                    style={styles.circleProgress}
+                    size={height * .14}
+                    style={[styles.circleProgress, {width: width * .25, height: height * .15}]}
                 />
                 <TouchableOpacity
                     onPress={questionnaire.onPress}
-                    style={styles.iconQuestionnaireWrp}
+                    style={[styles.iconQuestionnaireWrp, {top: height * .01, width: width * .25, height: height * .12}]}
                     transparent={true}
                 >
                     <Icon
                         color={questionnaire.color}
                         name={questionnaire.icon}
-                        size={52}
+                        size={width * .14}
                     />
                 </TouchableOpacity>
                 <View>
-                    <Text style={styles.titQuestionnaire}>
-                        {questionnaire.name}
-                    </Text>
-                    <Text style={styles.percQuestionnaire}>
-                        {questionnaire.text}
-                    </Text>
+                    <View style={{width: width * .25}}>
+                        <Text style={styles.titQuestionnaire}>
+                            {questionnaire.name}
+                        </Text>
+                    </View>
+                    <View style={{width: width * .25}}>
+                        <Text style={styles.percQuestionnaire}>
+                            {questionnaire.text}
+                        </Text>
+                    </View>
                 </View>
             </View>
         );

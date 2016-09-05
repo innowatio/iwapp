@@ -19,7 +19,6 @@ const styles = StyleSheet.create({
     titleBarWrp: {
         justifyContent: "center",
         alignItems: "center",
-        paddingVertical: 5,
         backgroundColor: colors.secondaryBlue
     },
     titleBar: {
@@ -28,7 +27,8 @@ const styles = StyleSheet.create({
         borderBottomColor: colors.buttonPrimary
     },
     title: {
-        color: colors.white
+        color: colors.white,
+        fontSize: 12
     },
     containerView: {
         flex: 1,
@@ -219,7 +219,7 @@ export default class Notifications extends Component {
         return (
             <View style={styles.container}>
                 <Content style={{backgroundColor: colors.background, height: height}}>
-                    <View style={styles.titleBarWrp}>
+                    <View style={[styles.titleBarWrp, {height: height * .045}]}>
                         <View style={styles.titleBar}>
                             <Text style={styles.title}>{"NOTIFICHE"}</Text>
                         </View>

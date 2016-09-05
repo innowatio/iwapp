@@ -16,7 +16,7 @@ describe("`TextLato` components", () => {
     );
         expect(text.find(Text).prop("style")).to.deep.equal([{
             fontFamily: "lato"
-        }, {}]);
+        }, {}, {}]);
     });
 
     it("renders a Text Component with `fontFamily` lato and custom style [CASE: style created with StyleSheet]", () => {
@@ -34,7 +34,7 @@ describe("`TextLato` components", () => {
         }, {
             width: 100,
             height: 200
-        }]);
+        }, {}]);
     });
 
     it("renders a Text Component with `fontFamily` lato and custom style [CASE: style is a plain object]", () => {
@@ -52,7 +52,7 @@ describe("`TextLato` components", () => {
         }, {
             width: 100,
             height: 200
-        }]);
+        }, {}]);
     });
 
 });

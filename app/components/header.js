@@ -1,5 +1,5 @@
 import React, {Component, PropTypes} from "react";
-import {StyleSheet, View, TouchableOpacity} from "react-native";
+import {Dimensions, StyleSheet, View, TouchableOpacity} from "react-native";
 import {Actions} from "react-native-router-flux";
 import {last} from "ramda";
 import FaIcons from "react-native-vector-icons/FontAwesome";
@@ -34,9 +34,8 @@ const styles = StyleSheet.create({
         justifyContent: "flex-end",
         flexDirection: "row"
     },
-    iconRightButton: {
-        padding: 0,
-        marginHorizontal: 3
+    iconButton: {
+        marginHorizontal: 5
     },
     iconAlarmButton: {
         justifyContent: "center",
@@ -44,7 +43,7 @@ const styles = StyleSheet.create({
         borderRadius: 100,
         width: 34,
         height: 34,
-        marginRight: 12,
+        marginRight: 16
     },
     iconUserButton: {
         justifyContent: "center",
@@ -53,15 +52,30 @@ const styles = StyleSheet.create({
         borderRadius: 100,
         width: 34,
         height: 34,
-        marginRight: 8
+        marginRight: 15
     },
     textUser: {
         color: colors.white,
         fontSize: 20,
         fontWeight: "bold"
     },
+    textNotificationWrp: {
+        backgroundColor: colors.notificationsCircle,
+        borderRadius: 100,
+        width: 15,
+        height: 15,
+        position: "absolute",
+        top: 0,
+        right: 8,
+        zIndex: 1000,
+        alignItems: "center",
+        justifyContent: "center",
+        padding: 0
+    },
     textNotification: {
-        color: colors.white
+        color: colors.white,
+        fontSize: 8,
+        backgroundColor: colors.transparent
     },
     buttonBack: {
         flexDirection: "row",
@@ -111,21 +125,27 @@ export default class Header extends Component {
 
     renderLeftButton () {
         const {onToggleHamburger} = this.props;
+        const {width} = Dimensions.get("window");
         return (
-            <View style={styles.leftHeader}>
+            <View style={[styles.leftHeader, {width: width * .5}]}>
                 <TouchableOpacity
                     onPress={onToggleHamburger}
-                    style={styles.iconRightButton}
+                    style={styles.iconButton}
                     transparent={true}
                 >
                     <Icon color={colors.iconWhite} name={"iw-menu"} size={42} />
                 </TouchableOpacity>
                 <TouchableOpacity
                     onPress={Actions.home}
-                    style={styles.iconRightButton}
+                    style={styles.iconButton}
                     transparent={true}
                 >
-                    <Icon color={colors.iconWhite} name={"iw-innowatio-logo"} size={32} style={{marginTop: 4}} />
+                    <Icon
+                        color={colors.iconWhite}
+                        name={"iw-innowatio-logo"}
+                        size={32}
+                        style={{marginTop: 4}}
+                    />
                 </TouchableOpacity>
             </View>
         );
@@ -137,16 +157,26 @@ export default class Header extends Component {
             colors.buttonPrimary :
             colors.secondaryBlue
         );
+        const {width} = Dimensions.get("window");
         return (
-            <View style={styles.rightHeader}>
-                <TouchableOpacity
-                    onPress={() => Actions.notifications(getNavigationType(this.props.selectedView))}
-                    style={[styles.iconAlarmButton, {backgroundColor: alarmColor}]}
-                    transparent={true}
-                >
-                    <Text style={styles.textNotification}>{this.props.notifications}</Text>
-                    <Icon color={colors.iconWhite} name={"iw-alarm"} size={20} style={{backgroundColor: colors.transparent}} />
-                </TouchableOpacity>
+            <View style={[styles.rightHeader, {width: width * .5}]}>
+                <View style={{position: "relative"}}>
+                    <View style={styles.textNotificationWrp}>
+                        <Text style={[styles.textNotification]}>{this.props.notifications}</Text>
+                    </View>
+                    <TouchableOpacity
+                        onPress={() => Actions.notifications(getNavigationType(this.props.selectedView))}
+                        style={[styles.iconAlarmButton, {backgroundColor: alarmColor}]}
+                        transparent={true}
+                    >
+                        <Icon
+                            color={colors.iconWhite}
+                            name={"iw-alarm"}
+                            size={20}
+                            style={{backgroundColor: colors.transparent}}
+                        />
+                    </TouchableOpacity>
+                </View>
                 <TouchableOpacity
                     onPress={() => Actions.profile(getNavigationType(this.props.selectedView))}
                     style={styles.iconUserButton}

@@ -29,7 +29,6 @@ const styles = StyleSheet.create({
     titleBarWrp: {
         justifyContent: "center",
         alignItems: "center",
-        paddingVertical: 5,
         backgroundColor: colors.secondaryBlue
     },
     titleBar: {
@@ -39,22 +38,22 @@ const styles = StyleSheet.create({
     },
     title: {
         fontWeight: "bold",
+        fontSize: 12,
         color: colors.white
     },
     // CONTENT
     contentSurveyWrp: {
+        flex: 1,
         alignItems: "center"
     },
     questionSurveyWrp: {
-        paddingVertical: 30,
-        paddingHorizontal: 25,
         alignItems: "center",
         borderBottomWidth: .5,
         borderBottomColor: colors.lightGrey
     },
     questionSurvey: {
         textAlign: "center",
-        fontSize: 16,
+        fontSize: 14,
         color: colors.primaryBlue
     },
     answerSurveyWrp: {
@@ -62,8 +61,6 @@ const styles = StyleSheet.create({
         borderBottomColor: colors.lightGrey
     },
     answerSurvey: {
-        paddingVertical: 20,
-        paddingHorizontal: 10,
         alignItems: "center",
         justifyContent: "center"
     },
@@ -80,12 +77,16 @@ const styles = StyleSheet.create({
     },
 
     ratingWrp: {
-        alignItems: "stretch",
-        paddingVertical: 10,
-        paddingHorizontal: 45
+        alignItems: "stretch"
     },
     buttonsWrp: {
-        backgroundColor: colors.primaryBlue
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: colors.primaryBlue,
+        // position: "absolute",
+        // bottom: 0,
+        // left: 0,
+        // right:0
     },
 
     //SAVE spinner
@@ -254,9 +255,12 @@ class Survey extends Component {
 
     renderRate (activeStepQuestion) {
         const numberOfStart = activeStepQuestion.get("options").size;
-        const {width} = Dimensions.get("window");
+        const {width, height} = Dimensions.get("window");
         return (
-            <View key={activeStepQuestion.get("id")} style={[styles.ratingWrp, {width}]}>
+            <View
+                key={activeStepQuestion.get("id")}
+                style={[styles.ratingWrp, {width, paddingHorizontal: width * .15, paddingVertical: height * .02}]}
+            >
                 <StarRating
                     disabled={false}
                     emptyStar={"ios-bulb-outline"}
@@ -267,37 +271,37 @@ class Survey extends Component {
                     rating={this.indexSelectedAnswer(activeStepQuestion)}
                     selectedStar={(rating) => this.onRatingPress(rating, activeStepQuestion)}
                     starColor={colors.rateStarColor}
-                    starSize={40}
+                    starSize={height * .06}
                 />
             </View>
         );
     }
 
     renderAnswer (option, index, activeStepQuestion) {
-        const {width} = Dimensions.get("window");
+        const {width, height} = Dimensions.get("window");
         return (
             <View key={index} style={styles.answerSurveyWrp}>
                 <TouchableOpacity
                     onPress={() => this.setAnswer(option, activeStepQuestion.get("id"))}
                     style={[
                         styles.answerSurvey,
-                        {width},
+                        {width, paddingVertical: height * .035},
                         this.isSelectedAnswer(option) ? styles.activeAnswerSurvey : {}
                     ]}
                 >
-                    <Text style={[
-                        styles.answer,
-                        this.isSelectedAnswer(option) ? styles.activeAnswer : null
-                    ]}>{option}</Text>
+                    <View>
+                        <Text style={[styles.answer, this.isSelectedAnswer(option) ? styles.activeAnswer : null]}>
+                            {option}
+                        </Text>
+                    </View>
                 </TouchableOpacity>
             </View>
         );
     }
 
     renderQuestion (question) {
-        const {width} = Dimensions.get("window");
         return (
-            <Text style={[styles.questionSurvey, {width}]}>
+            <Text style={styles.questionSurvey}>
                 {question}
             </Text>
         );
@@ -334,7 +338,10 @@ class Survey extends Component {
         if (this.props.fetch) {
             return (
                 <View style={[styles.errorPageWrp, {height: height * .6}]}>
-                    <Image source={require("../assets/img/spinner.gif")} style={[styles.spinner, {marginTop: height * .15}]}/>
+                    <Image
+                        source={require("../assets/img/spinner.gif")}
+                        style={[styles.spinner, {marginTop: height * .15}]}
+                    />
                     <View style={styles.messageWrp}>
                         {this.renderQuestion("Salvataggio in corso, attendere prego.")}
                     </View>
@@ -342,20 +349,22 @@ class Survey extends Component {
             );
         } else {
             return (
-                <View style={[styles.contentSurveyWrp, {height: height * .85}]}>
-                    <ScrollView
-                        onContentSizeChange={::this.onContentSizeChange}
-                        onScroll={::this.onScroll}
-                        scrollEventThrottle={1000}
-                    >
-                        <View style={styles.questionSurveyWrp}>
-                            {this.renderQuestion(activeStepQuestion.get("text"))}
-                        </View>
-                        <View style={styles.answerSurveyWrp}>
-                        {this.renderSwitchAnswer(activeStepQuestion)}
-                        </View>
-                    </ScrollView>
-                    <View style={[styles.buttonsWrp, {width, height: height * .15}]}>
+                <View style={styles.contentSurveyWrp}>
+                    <View style={{height: height * .71}}>
+                        <ScrollView
+                            onContentSizeChange={::this.onContentSizeChange}
+                            onScroll={::this.onScroll}
+                            scrollEventThrottle={1000}
+                        >
+                            <View style={[styles.questionSurveyWrp, {width, padding: height * .04}]}>
+                                {this.renderQuestion(activeStepQuestion.get("text"))}
+                            </View>
+                            <View style={styles.answerSurveyWrp}>
+                                {this.renderSwitchAnswer(activeStepQuestion)}
+                            </View>
+                        </ScrollView>
+                    </View>
+                    <View style={[styles.buttonsWrp, {width, height: height * .12}]}>
                         {this.renderQuestionCounter()}
                     </View>
                 </View>
@@ -364,17 +373,19 @@ class Survey extends Component {
     }
 
     render () {
+        const {height, width} = Dimensions.get("window");
         const activeStepQuestion = this.props.survey.getIn(["questions", this.state.activeStep]);
         return (
             <View style={styles.container}>
-                <View style={{flex: 1}}>
-                    <View style={styles.titleBarWrp}>
+                <View style={{width}}>
+                    <View style={[styles.titleBarWrp, {height: height * .045}]}>
                         <View style={styles.titleBar}>
                             <Text style={styles.title}>{"SURVEY"}</Text>
                         </View>
                     </View>
                     {this.renderContentSurvey(activeStepQuestion)}
                     <Scroll
+                        style={{margin: height * .02, top: height * .67, alignItems: "flex-end"}}
                         visible={this.state.toScroll && this.state.beforeScroll}
                     />
                 </View>

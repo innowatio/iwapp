@@ -12,23 +12,18 @@ const styles = StyleSheet.create({
         backgroundColor: colors.primaryBlue,
         flexDirection: "column",
         justifyContent: "center",
-        alignItems: "center",
-        padding: 30
+        alignItems: "center"
     },
     titleModal: {
         color: colors.white,
-        padding: 30,
-        fontSize: 20,
+        fontSize: 16,
         textAlign: "center"
     },
     modalIconWrp: {
         backgroundColor: colors.secondaryBlue,
         borderRadius: 100,
-        width: 140,
-        height: 140,
         alignSelf: "center",
         justifyContent: "center",
-        marginBottom: 40
     },
     modalIcon: {
         textAlign: "center",
@@ -41,12 +36,12 @@ const styles = StyleSheet.create({
     modalButton: {
         backgroundColor: colors.buttonPrimary,
         borderRadius: 100,
-        width: 150,
-        paddingVertical: 5
+        alignItems: "center",
+        justifyContent: "center"
     },
     modalButtonText: {
-        marginHorizontal: 10,
-        fontSize: 15,
+        fontSize: 12,
+        textAlign: "center",
         color: colors.white,
         fontWeight: "normal"
     }
@@ -63,7 +58,7 @@ export default class ConfirmModal extends Component {
     }
 
     render () {
-        const {height} = Dimensions.get("window");
+        const {height, width} = Dimensions.get("window");
         return (
             <Modal
                 onRequestClose={this.props.onRequestClose || identity}
@@ -72,23 +67,24 @@ export default class ConfirmModal extends Component {
             >
                 <View style={[styles.modalBackground, {height}]}>
                     <View style={styles.modalTitleWrp}>
-                        <View style={styles.modalIconWrp}>
+                        <View style={[styles.modalIconWrp, {width: height * .25, height: height * .25}]}>
                             <Icon
                                 color={colors.iconWhite}
                                 name={"iw-check"}
-                                size={100}
+                                size={height * .18}
                                 style={styles.modalIcon}
                             />
                         </View>
-                        <Text style={styles.titleModal}>{this.props.titleModal || ""}</Text>
+                        <View style={{paddingHorizontal: width * .2, paddingVertical: height * .06}}>
+                            <Text style={styles.titleModal}>{this.props.titleModal || ""}</Text>
+                        </View>
                     </View>
                     <View style={styles.modalButtonWrp}>
                         <Button
-                            containerStyle={styles.modalButton}
+                            containerStyle={[styles.modalButton, {height: height * .05, width: width * .4}]}
                             onPress={this.props.onPressButton}
-                            style={styles.modalButtonText}
                         >
-                            {this.props.textButton || "Confirm"}
+                            <Text style={styles.modalButtonText}>{this.props.textButton || "Confirm"}</Text>
                         </Button>
                     </View>
                 </View>

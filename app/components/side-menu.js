@@ -1,4 +1,4 @@
-import {Content, List, ListItem} from "native-base";
+import {List, ListItem} from "native-base";
 import React, {Component, PropTypes} from "react";
 import {Dimensions, StyleSheet, View, TouchableOpacity} from "react-native";
 import {Actions} from "react-native-router-flux";
@@ -15,8 +15,9 @@ const styles = StyleSheet.create({
     rightIcon: {
         justifyContent: "flex-start",
         alignItems: "center",
-        flexDirection: "row",
-        height: 50
+        flexDirection: "row"
+    },
+    logoutItemWrp: {
     },
     menuItem: {
         borderColor: colors.primaryBlue,
@@ -86,10 +87,11 @@ export default class SideMenu extends Component {
     }
 
     renderMenuItems (items) {
+        const {height} = Dimensions.get("window");
         return items.map(item => (
             <ListItem key={item.icon} style={styles.menuItem}>
-                <TouchableOpacity onPress={this.navigateTo(item)} style={styles.rightIcon}>
-                    <Icon name={`iw-${item.icon}`} size={24} style={styles.itemIcon} />
+                <TouchableOpacity onPress={this.navigateTo(item)} style={[styles.rightIcon, {marginTop: height * .04}]}>
+                    <Icon name={`iw-${item.icon}`} size={height * .045} style={styles.itemIcon} />
                     <Text style={styles.itemText}>{item.title}</Text>
                 </TouchableOpacity>
             </ListItem>
@@ -100,23 +102,24 @@ export default class SideMenu extends Component {
         const {height} = Dimensions.get("window");
         const {showMenuItems} = this.state;
         return showMenuItems ? (
-            <View>
-                <View style={{height: (height * .78), backgroundColor: colors.primaryBlue}}>
+            <View style={{height, backgroundColor: colors.primaryBlue}}>
+                <View style={{justifyContent: "flex-start", height: height * .62}}>
                     <List>
                         {this.renderMenuItems(this.props.menuItems)}
                     </List>
                 </View>
-                <View style={{height: (height * .22) - (74), backgroundColor: colors.primaryBlue}}>
-                    <Content>
-                        <List>
-                            <ListItem key={"logout"} style={styles.menuItem}>
-                                <TouchableOpacity onPress={this.onLogout.bind(this)} style={styles.rightIcon}>
-                                    <Icon name={"iw-logout"} size={24} style={styles.itemIcon} />
-                                    <Text style={styles.itemText}>{"Logout"}</Text>
-                                </TouchableOpacity>
-                            </ListItem>
-                        </List>
-                    </Content>
+                <View style={[styles.logoutItemWrp, {justifyContent: "flex-end", height: height * .2}]}>
+                    <List>
+                        <ListItem key={"logout"} style={styles.menuItem}>
+                            <TouchableOpacity
+                                onPress={this.onLogout.bind(this)}
+                                style={[styles.rightIcon, {marginTop: height * .04}]}
+                            >
+                                <Icon name={"iw-logout"} size={height * .045} style={styles.itemIcon} />
+                                <Text style={styles.itemText}>{"Logout"}</Text>
+                            </TouchableOpacity>
+                        </ListItem>
+                    </List>
                 </View>
             </View>
         ) : null;
