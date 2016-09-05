@@ -1,6 +1,7 @@
 import {Map} from "immutable";
+import {equals} from "ramda";
 import React, {Component, PropTypes} from "react";
-import {Dimensions, StyleSheet, ScrollView, View} from "react-native";
+import {Dimensions, StyleSheet, ListView, View} from "react-native";
 import {Content} from "native-base";
 import {connect} from "react-redux";
 import IPropTypes from "react-immutable-proptypes";
@@ -71,8 +72,20 @@ class Notifications extends Component {
         collections: IPropTypes.map.isRequired
     }
 
+    constructor (props) {
+        super(props);
+        const dataSource = new ListView.DataSource({rowHasChanged: (r1, r2) => !equals(r1, r2)});
+        this.state = {dataSource};
+    }
+
     componentDidMount () {
         this.props.asteroid.subscribe("notifications");
+    }
+
+    componentWillReceiveProps (nextProps) {
+        this.setState({
+            dataSource: this.state.dataSource.cloneWithRows(this.getNotifications(nextProps))
+        });
     }
 
     getNotificationBackgroundColor (type) {
@@ -101,8 +114,9 @@ class Notifications extends Component {
         }
     }
 
-    getNotifications () {
-        const notifs = this.props.collections.get("notifications") || Map();
+    getNotifications (nextProps) {
+        const props = nextProps ? nextProps : this.props;
+        const notifs = props.collections.get("notifications") || Map();
         return notifs.map((notification, index) => {
             const type = notification.get("type");
             return {
@@ -117,18 +131,11 @@ class Notifications extends Component {
 
     renderNotificationsList () {
         return (
-            <View style={styles.containerView}>
-                <ScrollView
-                    automaticallyAdjustContentInsets={false}
-                    key={"scrollView1"}
-                    scrollEnabled={true}
-                    scrollEventThrottle={6}
-                    showsVerticalScrollIndicator={true}
-                    style={styles.scrollView}
-                >
-                    {this.getNotifications().map(this.renderNotification)}
-                </ScrollView>
-            </View>
+            <ListView
+                dataSource={this.state.dataSource}
+                renderRow={this.renderNotification}
+                style={styles.containerView}
+            />
         );
     }
 
