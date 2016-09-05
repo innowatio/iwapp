@@ -146,10 +146,25 @@ export default class Header extends Component {
                     style={styles.iconRightButton}
                     transparent={true}
                 >
-                    <Icon color={colors.iconWhite} name={"iw-innowatio-logo"} size={32} style={{marginTop: 4}} />
+                    <Icon
+                        color={colors.iconWhite}
+                        name={"iw-innowatio-logo"}
+                        size={32} style={{marginTop: 4}}
+                    />
                 </TouchableOpacity>
             </View>
         );
+    }
+
+    renderNotificationNumber () {
+        const numberOfNotifications = (
+            this.props.notifications > 9 ? "9+" : this.props.notifications
+        );
+        return this.props.notifications ? (
+            <View style={styles.textNotificationWrp}>
+                <Text style={styles.textNotification}>{numberOfNotifications}</Text>
+            </View>
+        ) : null;
     }
 
     renderRightButton () {
@@ -161,15 +176,18 @@ export default class Header extends Component {
         return (
             <View style={styles.rightHeader}>
                 <View>
-                    <View style={styles.textNotificationWrp}>
-                        <Text style={styles.textNotification}>{this.props.notifications}</Text>
-                    </View>
+                    {this.renderNotificationNumber()}
                     <TouchableOpacity
                         onPress={() => this.navigateNotifications(this.props.selectedView)}
                         style={[styles.iconAlarmButton, {backgroundColor: alarmColor}]}
                         transparent={true}
                     >
-                        <Icon color={colors.iconWhite} name={"iw-alarm"} size={20} style={{backgroundColor: colors.transparent}} />
+                        <Icon
+                            color={colors.iconWhite}
+                            name={"iw-alarm"}
+                            size={20}
+                            style={{backgroundColor: colors.transparent}}
+                        />
                     </TouchableOpacity>
                 </View>
                 <TouchableOpacity
