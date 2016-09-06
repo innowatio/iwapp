@@ -99,6 +99,8 @@ export default class ChartConsumption extends Component {
         consumptionAggregates:IPropTypes.map,
         dailyAggregates: IPropTypes.map,
         heightSwiper: PropTypes.number.isRequired,
+        isForecastData: PropTypes.bool,
+        isStandbyData: PropTypes.bool,
         onToggleSwitch: PropTypes.func.isRequired
     }
 
@@ -126,6 +128,22 @@ export default class ChartConsumption extends Component {
             this.props.consumptionAggregates,
             {sensorId, year, source, measurementType},
             dayOfYear
+        );
+    }
+
+    renderTextForecast () {
+        return this.props.isForecastData ? (
+            <Text style={styles.switchText}>{"basati sulla tua giornata tipo"}</Text>
+        ) : (
+            <Text style={styles.switchText}>{"(disponibili a breve)"}</Text>
+        );
+    }
+
+    renderTextStandby () {
+        return this.props.isStandbyData ? (
+            null
+        ) : (
+            <Text style={styles.switchText}>{"(disponibili a breve)"}</Text>
         );
     }
 
@@ -159,6 +177,7 @@ export default class ChartConsumption extends Component {
                 <View style={styles.bottomChartWrp}>
                     <View style={styles.switchContainer}>
                         <Switch
+                            disabled={!this.props.isForecastData}
                             onTintColor={colors.HomeSwitchActive}
                             onValueChange={this.props.onToggleSwitch}
                             style={styles.switch}
@@ -166,7 +185,7 @@ export default class ChartConsumption extends Component {
                         />
                         <View style={styles.switchTextContainer}>
                             <Text style={styles.switchTextHeader}>{"Consumi previsti"}</Text>
-                            <Text style={styles.switchText}>{"basati sulla tua giornata tipo"}</Text>
+                            {this.renderTextForecast()}
                         </View>
                     </View>
                     <View style={styles.standbyContainer}>
@@ -176,7 +195,10 @@ export default class ChartConsumption extends Component {
                             size={22}
                             style={styles.standbyIcon}
                         />
-                        <Text style={styles.standbyText}>{"Consumi \nin standby"}</Text>
+                        <Text style={styles.standbyText}>
+                            {"Consumi \nin standby \n"}
+                            {this.renderTextStandby()}
+                        </Text>
                     </View>
                 </View>
             </View>

@@ -69,7 +69,7 @@ describe("`survey` actions", () => {
 
 
         it("dispatches a SAVE_SURVEY_START action right away", async function () {
-            this.timeout(3000);
+            this.timeout(5000);
             await saveSurveyAnswers(surveyInfo, answers, userId, visitId)(dispatch);
             const dispatchFirstCall = dispatch.getCall(0);
             expect(dispatchFirstCall.args[0]).to.deep.equal({
