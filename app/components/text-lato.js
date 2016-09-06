@@ -13,10 +13,7 @@ export default class TextLato extends Component {
         ])
     }
 
-    getCorrectFontSizeForScreen (currentFont) {
-        const {height, width} = Dimensions.get("window");
-
-        let devRatio = PixelRatio.get();
+    getCorrectFontSizeForScreen (currentFont, height, width, devRatio) {
         let factor = (((width*devRatio)/320)+((height*devRatio)/640))/2.0;
         let maxFontDifferFactor = 3; //the maximum pixels of font size we can go up or down
 
@@ -35,15 +32,16 @@ export default class TextLato extends Component {
 
     render () {
         const fontSize = getStyle(this.props.style).fontSize;
+        const {height, width} = Dimensions.get("window");
+        let devRatio = PixelRatio.get();
+
         const text = (
             <Text {...this.props}/>
         );
-        console.log("CACCA");
-        console.log(Dimensions.get("window"));
         return cloneElement(text, {
             style: [{
                 fontFamily: "lato"
-            }, getStyle(this.props.style), fontSize ? {fontSize: this.getCorrectFontSizeForScreen(fontSize)} : {}]
+            }, getStyle(this.props.style), fontSize ? {fontSize: this.getCorrectFontSizeForScreen(fontSize, height, width, devRatio)} : {}]
         });
     }
 }
