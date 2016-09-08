@@ -78,9 +78,12 @@ describe("`Header` component", () => {
         });
 
         it("renders the buttons with correct props [CASE: third button]", () => {
+            const notificationsAction = sinon.spy();
             const header = shallow(
                 <Header
                     headerViews={[]}
+                    notifications={4}
+                    notificationsAction={notificationsAction}
                     onToggleHamburger={onToggleHamburger}
                     selectedView={selectedView}
                 />
@@ -88,6 +91,7 @@ describe("`Header` component", () => {
             expect(header.find(TouchableOpacity).at(2).prop("onPress")).to.be.a("function");
             header.find(TouchableOpacity).at(2).simulate("press");
             expect(Actions.notifications).to.have.callCount(1);
+            expect(notificationsAction).to.have.callCount(1);
             expect(getNavigationType).to.have.callCount(1);
             expect(getNavigationType).to.have.been.calledWithExactly(selectedView);
             expect(Actions.notifications).to.have.been.calledWithExactly({type: "RESET"});

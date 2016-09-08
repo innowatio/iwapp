@@ -97,6 +97,8 @@ export default class ChartConsumption extends Component {
         consumptionAggregates:IPropTypes.map,
         dailyAggregates: IPropTypes.map,
         heightSwiper: PropTypes.number.isRequired,
+        isForecastData: PropTypes.bool,
+        isStandbyData: PropTypes.bool,
         onToggleSwitch: PropTypes.func.isRequired
     }
 
@@ -124,6 +126,28 @@ export default class ChartConsumption extends Component {
             this.props.consumptionAggregates,
             {sensorId, year, source, measurementType},
             dayOfYear
+        );
+    }
+
+    renderTextForecast () {
+        return this.props.isForecastData ? (
+            <Text
+                ellipsizeMode={"tail"}
+                numberOfLines={1}
+                style={styles.switchText}
+            >
+                {"basati sulla tua giornata tipo"}
+            </Text>
+        ) : (
+            <Text style={styles.switchText}>{"(disponibili a breve)"}</Text>
+        );
+    }
+
+    renderTextStandby () {
+        return this.props.isStandbyData ? (
+            null
+        ) : (
+            <Text style={styles.switchText}>{"(disponibili a breve)"}</Text>
         );
     }
 
@@ -155,8 +179,9 @@ export default class ChartConsumption extends Component {
                     height={this.props.heightSwiper * 0.45}
                 />
                 <View style={[styles.bottomChartWrp, {width: width * .9, height: height * 0.08}]}>
-                    <View style={[styles.switchContainer, {width: width * .65}]}>
+                    <View style={[styles.switchContainer, {width: width * .55}]}>
                         <Switch
+                            disabled={!this.props.isForecastData}
                             onTintColor={colors.HomeSwitchActive}
                             onValueChange={this.props.onToggleSwitch}
                             style={styles.switch}
@@ -168,18 +193,12 @@ export default class ChartConsumption extends Component {
                                 numberOfLines={1}
                                 style={styles.switchTextHeader}
                             >
-                                {"Consumi previsti"}
+                                <Text style={styles.switchTextHeader}>{"Consumi previsti"}</Text>
                             </Text>
-                            <Text
-                                ellipsizeMode={"tail"}
-                                numberOfLines={1}
-                                style={styles.switchText}
-                            >
-                                {"basati sulla tua giornata tipo"}
-                            </Text>
+                            {this.renderTextForecast()}
                         </View>
                     </View>
-                    <View style={[styles.standbyContainer, {width: width * .25}]}>
+                    <View style={[styles.standbyContainer, {width: width * .40}]}>
                         <FaIcons
                             color={colors.lineStandby}
                             name={"circle-thin"}
@@ -187,8 +206,8 @@ export default class ChartConsumption extends Component {
                             style={styles.standbyIcon}
                         />
                         <View style={styles.switchTextContainer}>
-                            <Text style={styles.switchTextHeader}>{"Consumi"}</Text>
-                            <Text style={styles.switchText}>{"in standby"}</Text>
+                            <Text style={styles.switchTextHeader}>{"Consumi in standby"}</Text>
+                            {this.renderTextStandby()}
                         </View>
                     </View>
                 </View>

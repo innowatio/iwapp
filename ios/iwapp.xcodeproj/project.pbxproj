@@ -30,6 +30,7 @@
 		486EBCEE26F141F28B2E1063 /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0A7CE644DF5D4AE887DFE5E4 /* Octicons.ttf */; };
 		5AF929C4274A47A0AFDC1A90 /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5E1F76705F7B49218502628E /* Zocial.ttf */; };
 		6B075EEC1D118F6100D81F66 /* libART.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B075EDE1D118F4700D81F66 /* libART.a */; };
+		6B3D5A601D79C53C005E8636 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6B3D5A5F1D79C53C005E8636 /* GoogleService-Info.plist */; };
 		6B77AB5D1CE5C9D2001C6650 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B77AB5C1CE5C9D2001C6650 /* libz.tbd */; };
 		6B8D2F9F1D017DD30089933D /* Lato-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6BE5B2031CFED3B800D94AB2 /* Lato-Bold.ttf */; };
 		6B8D2FA01D017DDA0089933D /* Lato-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6BE5B2041CFED3B800D94AB2 /* Lato-Light.ttf */; };
@@ -212,6 +213,7 @@
 		52B822D926674D8592D56BEB /* Entypo.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Entypo.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Entypo.ttf"; sourceTree = "<group>"; };
 		5E1F76705F7B49218502628E /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
 		6B075ED91D118F4700D81F66 /* ART.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ART.xcodeproj; path = "../node_modules/react-native/Libraries/ART/ART.xcodeproj"; sourceTree = "<group>"; };
+		6B3D5A5F1D79C53C005E8636 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		6B77AB5C1CE5C9D2001C6650 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		6B9619FE1D18344B00F23043 /* bg_login.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bg_login.png; sourceTree = "<group>"; };
 		6B961A001D1836B700F23043 /* ios-420x480.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ios-420x480.png"; sourceTree = "<group>"; };
@@ -350,12 +352,12 @@
 		13B07FAE1A68108700A75B9A /* iwapp */ = {
 			isa = PBXGroup;
 			children = (
-				1D978ABE1D7EC14500327671 /* GoogleService-Info.plist */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
+				6B3D5A5F1D79C53C005E8636 /* GoogleService-Info.plist */,
 				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
 				13B07FB71A68108700A75B9A /* main.m */,
 			);
@@ -829,6 +831,7 @@
 				486EBCEE26F141F28B2E1063 /* Octicons.ttf in Resources */,
 				5AF929C4274A47A0AFDC1A90 /* Zocial.ttf in Resources */,
 				B41FC66EB05F44CF9491E3FA /* Entypo.ttf in Resources */,
+				6B3D5A601D79C53C005E8636 /* GoogleService-Info.plist in Resources */,
 				BA7F3DAAD40D4728AF0632F8 /* FontAwesome.ttf in Resources */,
 				1D978ABF1D7EC14500327671 /* GoogleService-Info.plist in Resources */,
 			);

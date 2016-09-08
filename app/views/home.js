@@ -42,6 +42,14 @@ class Home extends Component {
         toggleForecast: PropTypes.func.isRequired
     }
 
+    constructor (props) {
+        super(props);
+        this.state = {
+            isForecastData: false,
+            isStandbyData: false
+        };
+    }
+
     componentDidMount () {
         this.props.asteroid.subscribe("sites");
         if (this.props.site) {
@@ -51,6 +59,10 @@ class Home extends Component {
 
     componentWillReceiveProps (nextProps) {
         if (nextProps.site) {
+            this.setState({
+                isForecastData: this.isForecastData(nextProps),
+                isStandbyData: this.isStandbyData(nextProps)
+            });
             this.subscribeToMeasure(nextProps);
         }
     }
@@ -59,21 +71,42 @@ class Home extends Component {
         this.props.asteroid.logout();
     }
 
+    isForecastData (nextProps) {
+        const chart = nextProps.home.charts[0];
+        const day = moment.utc().format("YYYY-MM-DD");
+        return !(nextProps.collections.getIn(
+                ["readings-daily-aggregates", `${chart.sensorId}-${day}-forecast-activeEnergy`]
+            ) || Map()).isEmpty();
+    }
+
+    isStandbyData (nextProps) {
+        const chart = nextProps.home.charts[0];
+        return !(nextProps.collections.getIn(
+                ["consumptions-yearly-aggregates", `${chart.sensorId}-standby`]
+            ) || Map()).isEmpty();
+    }
+
     subscribeToMeasure (props) {
-        const charts = props.home.charts;
-        charts.forEach(chart => {
-            props.asteroid.subscribe(
-                "dailyMeasuresBySensor",
-                chart.sensorId,
-                chart.day,
-                chart.day,
-                chart.source,
-                chart.measurementType
-            );
-        });
+        const chart = props.home.charts[0];
         props.asteroid.subscribe(
             "dailyMeasuresBySensor",
-            charts[0].sensorId,
+            chart.sensorId,
+            chart.day,
+            chart.day,
+            "reading",
+            chart.measurementType
+        );
+        props.asteroid.subscribe(
+            "dailyMeasuresBySensor",
+            chart.sensorId,
+            chart.day,
+            chart.day,
+            "forecast",
+            chart.measurementType
+        );
+        props.asteroid.subscribe(
+            "dailyMeasuresBySensor",
+            chart.sensorId,
             moment.utc().format("YYYY-MM-DD"),
             moment.utc().format("YYYY-MM-DD"),
             "reading",
@@ -81,21 +114,21 @@ class Home extends Component {
         );
         props.asteroid.subscribe(
             "yearlyConsumptions",
-            charts[0].sensorId,
+            chart.sensorId,
             moment.utc().format("YYYY"),
             "reading",
             "activeEnergy"
         );
         props.asteroid.subscribe(
             "yearlyConsumptions",
-            `${charts[0].sensorId}-peers-avg`,
+            `${chart.sensorId}-peers-avg`,
             moment.utc().format("YYYY"),
             "reading",
             "activeEnergy"
         );
         props.asteroid.subscribe(
             "yearlyConsumptions",
-            `${charts[0].sensorId}-standby`,
+            `${chart.sensorId}-standby`,
             moment.utc().format("YYYY"),
             "reading",
             "activeEnergy"
@@ -196,6 +229,8 @@ class Home extends Component {
                                 consumptionAggregates={this.getConsumptionAggregate()}
                                 dailyAggregates={this.getDailyAggregate()}
                                 heightSwiper={heightSwiper}
+                                isForecastData={this.state.isForecastData}
+                                isStandbyData={this.state.isStandbyData}
                                 onToggleSwitch={this.props.toggleForecast}
                             />
                         </View>

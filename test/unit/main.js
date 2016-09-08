@@ -1,4 +1,3 @@
-import {resolve} from "bluebird";
 import {shallow} from "enzyme";
 import {Provider} from "react-redux";
 
@@ -32,20 +31,21 @@ describe("`Main` component", () => {
 
         const codePush = {
             sync: sinon.spy(),
-            InstallMode: {}
+            InstallMode: {
+                ON_NEXT_RESTART: "next_restart"
+            }
         };
         const FCM = {
             requestPermissions: sinon.spy(),
-            getFCMToken: sinon.stub().returns(resolve()),
-            on: sinon.spy() 
         };
-        // const InstallMode = {};
         const syncStoreAndAsteroid = sinon.spy();
 
         beforeEach(() => {
             Main.__Rewire__("codePush", codePush);
             Main.__Rewire__("FCM", FCM);
             Main.__Rewire__("syncStoreAndAsteroid", syncStoreAndAsteroid);
+            FCM.requestPermissions.reset();
+            codePush.sync.reset();
         });
 
         afterEach(() => {
@@ -53,18 +53,28 @@ describe("`Main` component", () => {
             syncStoreAndAsteroid.reset();
             Main.__ResetDependency__("syncStoreAndAsteroid");
             Main.__ResetDependency__("FCM");
-            Main.__ResetDependency__("InstallMode");
+            Main.__ResetDependency__("codePush");
         });
 
         it("call `codePush.sync` function", () => {
             Main.prototype.componentDidMount();
             expect(codePush.sync).to.have.callCount(1);
+            expect(codePush.sync).to.have.been.calledWithExactly({
+                installMode: "next_restart",
+                mandatoryInstallMode: "next_restart",
+                minimumBackgroundDuration: 60 * 10
+            });
         });
 
-        it("call `codePush.sync` function", () => {
+        it("call `syncStoreAndAsteroid` function", () => {
             Main.prototype.componentDidMount();
             expect(syncStoreAndAsteroid).to.have.callCount(1);
             expect(syncStoreAndAsteroid).to.have.calledWith(store, asteroid);
+        });
+
+        it("call `requestPermissions` function", () => {
+            Main.prototype.componentDidMount();
+            expect(FCM.requestPermissions).to.have.callCount(1);
         });
 
     });

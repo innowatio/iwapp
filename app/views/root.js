@@ -1,12 +1,14 @@
 import {Map} from "immutable";
+import {equals, isEmpty, last} from "ramda";
 import Drawer from "react-native-drawer";
 import React, {Component, PropTypes} from "react";
 import {Platform, StatusBar, StyleSheet, ScrollView, View} from "react-native";
+import FCM from "react-native-fcm";
 import {DefaultRenderer} from "react-native-router-flux";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
-import {equals, last} from "ramda";
 
+import {setNotificationsReaded} from "../actions/notifications";
 import {selectSite} from "../actions/site";
 import {generateSessionId} from "../actions/session-id";
 import {onLogin, onLogout} from "../actions/user-id";
@@ -14,9 +16,9 @@ import Header from "../components/header";
 import KeyboardSpacer from "../components/keyboard-spacer";
 import SideMenu from "../components/side-menu";
 import SurveyModal from "../components/survey-modal";
-import asteroid from "../lib/asteroid";
 import {statusBarHeight} from "../lib/const";
 import {primaryBlue, secondaryBlue} from "../lib/colors";
+import getDeviceInfo from "../lib/get-device-info";
 import Login from "./login";
 
 const styles = StyleSheet.create({
@@ -33,6 +35,7 @@ const styles = StyleSheet.create({
 class Root extends Component {
 
     static propTypes = {
+        asteroid: PropTypes.object.isRequired,
         collections: PropTypes.object.isRequired,
         generateSessionId: PropTypes.func.isRequired,
         navigationScene: PropTypes.arrayOf(PropTypes.string).isRequired,
@@ -43,6 +46,7 @@ class Root extends Component {
         onLogout: PropTypes.func.isRequired,
         onNavigate: PropTypes.func.isRequired,
         selectSite: PropTypes.func.isRequired,
+        setNotificationsReaded: PropTypes.func.isRequired,
         site: PropTypes.object,
         survey: PropTypes.arrayOf(PropTypes.object),
         userId: PropTypes.string
@@ -55,11 +59,13 @@ class Root extends Component {
             open: false,
             surveyModalVisible: false,
             username: " ",
-            notifications: 0
+            notifications: 0,
+            notificationsId: []
         };
     }
 
     componentDidMount () {
+        const {asteroid} = this.props;
         asteroid.on("loggedIn", this.onLoginActions());
         asteroid.on("loggedOut", this.props.onLogout);
         asteroid.ddp.on("added", ({collection, fields, id}) => {
@@ -90,6 +96,7 @@ class Root extends Component {
     }
 
     componentWillUnmount () {
+        const {asteroid} = this.props;
         asteroid.off("loggedIn", this.onLoginActions);
         asteroid.off("loggedOut", this.props.onLogout);
     }
@@ -152,6 +159,7 @@ class Root extends Component {
     }
 
     onLoginActions () {
+        const {asteroid} = this.props;
         return async (userId) => {
             this.props.onLogin(userId);
             this.props.generateSessionId(userId);
@@ -162,9 +170,15 @@ class Root extends Component {
                     name: userInfo.givenName[0]
                 });
             });
+            FCM.getFCMToken().then(token => {
+                const deviceInfo = getDeviceInfo();
+                // store fcm token in your server
+                asteroid.call("saveFCMToken", token, deviceInfo);
+            });
             asteroid.call("getUnreadNotifications").then(notifications => {
                 this.setState({
-                    notifications
+                    notifications: notifications.length,
+                    notificationsId: notifications.map(notification => notification._id)
                 });
             });
         };
@@ -202,12 +216,20 @@ class Root extends Component {
         return questions.find(question => question.get("type") === "survey") || Map();
     }
 
+    resetNotifications () {
+        if (!isEmpty(this.state.notificationsId)) {
+            this.props.setNotificationsReaded(this.state.notificationsId);
+        }
+        this.setState({notifications: 0, notificationsId: []});
+    }
+
     renderHeader () {
         const {username, email, notifications} = this.state;
         return (
             <Header
                 headerViews={this.getHeaderViews()}
                 notifications={notifications}
+                notificationsAction={::this.resetNotifications}
                 onToggleHamburger={::this.toggleHamburger}
                 selectedView={this.props.navigationScene}
                 userName={(username[0] || email[0] || "").toUpperCase()}
@@ -216,7 +238,7 @@ class Root extends Component {
     }
 
     renderView () {
-        const {site, selectSite} = this.props;
+        const {asteroid, site, selectSite} = this.props;
         return this.props.userId ? (
             <Drawer
                 captureGestures={true}
@@ -291,7 +313,8 @@ function mapDispatchToProps (dispatch) {
         generateSessionId: bindActionCreators(generateSessionId, dispatch),
         onLogin: bindActionCreators(onLogin, dispatch),
         onLogout: bindActionCreators(onLogout, dispatch),
-        selectSite: bindActionCreators(selectSite, dispatch)
+        selectSite: bindActionCreators(selectSite, dispatch),
+        setNotificationsReaded: bindActionCreators(setNotificationsReaded, dispatch)
     };
 }
 

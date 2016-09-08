@@ -35,6 +35,7 @@ const styles = StyleSheet.create({
         flexDirection: "row"
     },
     iconButton: {
+        padding: 0,
         marginHorizontal: 5
     },
     iconAlarmButton: {
@@ -67,7 +68,6 @@ const styles = StyleSheet.create({
         position: "absolute",
         top: 0,
         right: 8,
-        zIndex: 1000,
         alignItems: "center",
         justifyContent: "center",
         padding: 0
@@ -94,15 +94,15 @@ export default class Header extends Component {
             header: PropTypes.string.isRequired
         })).isRequired,
         notifications: PropTypes.number.isRequired,
+        notificationsAction: PropTypes.func,
         onToggleHamburger: PropTypes.func.isRequired,
         selectedView: PropTypes.arrayOf(PropTypes.string).isRequired,
         userName: PropTypes.string
     }
 
-    renderEmptyHeader () {
-        return (
-            <View style={styles.headerEmpty} />
-        );
+    navigateNotifications (selectedView) {
+        Actions.notifications(getNavigationType(selectedView));
+        this.props.notificationsAction ? this.props.notificationsAction() : null;
     }
 
     renderBackArrowHeader () {
@@ -120,6 +120,12 @@ export default class Header extends Component {
                     />
                 </TouchableOpacity>
             </View>
+        );
+    }
+
+    renderEmptyHeader () {
+        return (
+            <View style={styles.headerEmpty} />
         );
     }
 
@@ -151,21 +157,30 @@ export default class Header extends Component {
         );
     }
 
+    renderNotificationNumber () {
+        const numberOfNotifications = (
+            this.props.notifications > 9 ? "9+" : this.props.notifications
+        );
+        return this.props.notifications ? (
+            <View style={styles.textNotificationWrp}>
+                <Text style={styles.textNotification}>{numberOfNotifications}</Text>
+            </View>
+        ) : null;
+    }
+
     renderRightButton () {
         const alarmColor = (
             last(this.props.selectedView) === "notifications" ?
             colors.buttonPrimary :
             colors.secondaryBlue
         );
-        const {width} = Dimensions.get("window");
+        //
+
         return (
-            <View style={[styles.rightHeader, {width: width * .5}]}>
-                <View style={{position: "relative"}}>
-                    <View style={styles.textNotificationWrp}>
-                        <Text style={[styles.textNotification]}>{this.props.notifications}</Text>
-                    </View>
+            <View style={styles.rightHeader}>
+                <View>
                     <TouchableOpacity
-                        onPress={() => Actions.notifications(getNavigationType(this.props.selectedView))}
+                        onPress={() => this.navigateNotifications(this.props.selectedView)}
                         style={[styles.iconAlarmButton, {backgroundColor: alarmColor}]}
                         transparent={true}
                     >
@@ -176,6 +191,7 @@ export default class Header extends Component {
                             style={{backgroundColor: colors.transparent}}
                         />
                     </TouchableOpacity>
+                    {this.renderNotificationNumber()}
                 </View>
                 <TouchableOpacity
                     onPress={() => Actions.profile(getNavigationType(this.props.selectedView))}

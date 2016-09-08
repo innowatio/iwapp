@@ -2,6 +2,7 @@ import {shallow} from "enzyme";
 import {Map, fromJS} from "immutable";
 import {Content} from "native-base";
 import Swiper from "react-native-swiper";
+import moment from "moment";
 
 import ChartConsumption from "components/chart-consumption";
 import Weather from "components/weather";
@@ -104,6 +105,8 @@ describe("`Home` view", () => {
             consumptionAggregates: fromJS({"_id": "sensorId-year-source-measurementType"}),
             dailyAggregates: fromJS({"_id": "sensorId-day-source-measurementType"}),
             heightSwiper: 60,
+            isForecastData: false,
+            isStandbyData: false,
             onToggleSwitch: toggleForecast
         });
     });
@@ -119,6 +122,8 @@ describe("`Home` view", () => {
             consumptionAggregates: Map(),
             dailyAggregates: Map(),
             heightSwiper: 60,
+            isForecastData: false,
+            isStandbyData: false,
             onToggleSwitch: toggleForecast
         });
     });
@@ -178,19 +183,31 @@ describe("`Home` view", () => {
 
         const componentWillReceiveProps = HomeView.prototype.componentWillReceiveProps;
 
-        it("calls `subscribeToMeasure` with `props` as arguments if `site` in `nextProps` is not empty", () => {
+        it("calls `subscribeToMeasure` and `setState` with `props` as arguments if `site` in `nextProps` is not empty", () => {
             const subscribe = sinon.spy();
+            const isForecastData = sinon.stub().returns(true);
+            const isStandbyData = sinon.stub().returns(true);
+            const setState = sinon.spy();
             const nextProps = {
                 asteroid: {subscribe},
                 site: "site"
             };
             const subscribeToMeasure = sinon.spy();
             const instance = {
-                subscribeToMeasure
+                subscribeToMeasure,
+                isForecastData,
+                isStandbyData,
+                setState
             };
             componentWillReceiveProps.call(instance, nextProps);
             expect(subscribeToMeasure).to.have.callCount(1);
             expect(subscribeToMeasure).to.have.been.calledWithExactly(nextProps);
+            expect(isForecastData).to.have.callCount(1);
+            expect(setState).to.have.callCount(1);
+            expect(setState).to.have.been.calledWithExactly({
+                isForecastData: true,
+                isStandbyData: true
+            });
         });
 
         it("doesn't call `subscribeToMeasure` with `props` as arguments if `site` in `nextProps` is empty", () => {
@@ -204,6 +221,70 @@ describe("`Home` view", () => {
             };
             componentWillReceiveProps.call(instance, nextProps);
             expect(subscribeToMeasure).to.have.callCount(0);
+        });
+
+    });
+
+    describe("`isForecastData` function", () => {
+
+        const isForecastData = HomeView.prototype.isForecastData;
+
+        it("return false if forecast data is present", () => {
+            const ret = isForecastData({
+                collections: Map(),
+                home: {
+                    charts: [{sensorId: "sensorId"}]
+                }
+            });
+            expect(ret).to.equal(false);
+        });
+
+        it("return true if forecast data is present", () => {
+            const ret = isForecastData({
+                collections: fromJS({
+                    "readings-daily-aggregates": {
+                        [`sensorId-${moment.utc().format("YYYY-MM-DD")}-forecast-activeEnergy`]: {
+                            data: "data"
+                        }
+                    }
+                }),
+                home: {
+                    charts: [{sensorId: "sensorId"}]
+                }
+            });
+            expect(ret).to.equal(true);
+        });
+
+    });
+
+    describe("`isStandbyData` function", () => {
+
+        const isStandbyData = HomeView.prototype.isStandbyData;
+
+        it("return false if forecast data is present", () => {
+            const ret = isStandbyData({
+                collections: Map(),
+                home: {
+                    charts: [{sensorId: "sensorId"}]
+                }
+            });
+            expect(ret).to.equal(false);
+        });
+
+        it("return true if forecast data is present", () => {
+            const ret = isStandbyData({
+                collections: fromJS({
+                    "consumptions-yearly-aggregates": {
+                        ["sensorId-standby"]: {
+                            data: "data"
+                        }
+                    }
+                }),
+                home: {
+                    charts: [{sensorId: "sensorId"}]
+                }
+            });
+            expect(ret).to.equal(true);
         });
 
     });
@@ -238,49 +319,7 @@ describe("`Home` view", () => {
 
         const subscribeToMeasure = HomeView.prototype.subscribeToMeasure;
 
-        it("calls asteroid's `subscribe` method with correct arguments [CASE: charts array of length 1]", () => {
-            const subscribe = sinon.spy();
-            const props = {
-                asteroid: {
-                    subscribe
-                },
-                home: {
-                    charts: [{
-                        sensorId: "sensorId",
-                        source: "reading",
-                        measurementType: "activeEnergy",
-                        day: "1970-01-01"
-                    }]
-                }
-            };
-            subscribeToMeasure(props);
-            expect(subscribe).to.have.callCount(5);
-            expect(subscribe.firstCall).to.have.been.calledWithExactly(
-                "dailyMeasuresBySensor",
-                "sensorId",
-                "1970-01-01",
-                "1970-01-01",
-                "reading",
-                "activeEnergy"
-            );
-            expect(subscribe.secondCall).to.have.been.calledWithExactly(
-                "dailyMeasuresBySensor",
-                "sensorId",
-                "1970-01-01",
-                "1970-01-01",
-                "reading",
-                "maxPower"
-            );
-            expect(subscribe.thirdCall).to.have.been.calledWithExactly(
-                "yearlyConsumptions",
-                "sensorId",
-                "1970",
-                "reading",
-                "activeEnergy"
-            );
-        });
-
-        it("calls asteroid's `subscribe` method with correct arguments [CASE: charts array of length 2]", () => {
+        it("calls asteroid's `subscribe` method with correct arguments", () => {
             const subscribe = sinon.spy();
             const props = {
                 asteroid: {
