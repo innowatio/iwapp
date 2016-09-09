@@ -66,8 +66,7 @@ const styles = StyleSheet.create({
     titleSwiper: {
         color: colors.primaryBlue,
         textAlign: "center",
-        fontSize: 11,
-        lineHeight: 11
+        fontSize: 11
     },
 
     // CONSUMPTION CIRCLE Swiper 1
@@ -87,7 +86,6 @@ const styles = StyleSheet.create({
     consumptionCircleMeasure: {
         color: colors.white,
         fontSize: 14,
-        lineHeight: 14,
         backgroundColor: colors.transparent
     },
     // CONSUMPTION CIRCLE SMALL
@@ -108,7 +106,6 @@ const styles = StyleSheet.create({
         color: colors.white,
         fontSize: 10,
         fontWeight: "400",
-        lineHeight: 10,
         backgroundColor: colors.transparent
     },
 
@@ -174,8 +171,7 @@ const styles = StyleSheet.create({
         fontSize: 10,
         textAlign: "center",
         marginBottom: 5,
-        marginHorizontal: 0,
-        lineHeight: 13
+        marginHorizontal: 0
     }
 });
 

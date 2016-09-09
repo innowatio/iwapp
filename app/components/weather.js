@@ -50,13 +50,11 @@ const styles = StyleSheet.create({
     labelPercentage: {
         color: colors.white,
         fontSize: 9,
-        lineHeight: 9,
         textAlign: "center"
     },
     textPercentage: {
         color: colors.white,
         fontSize: 20,
-        lineHeight: 19,
         fontWeight: "bold",
         textAlign: "center"
     },

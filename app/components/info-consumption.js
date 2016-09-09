@@ -42,11 +42,7 @@ const styles = StyleSheet.create({
         alignItems: "center"
     },
     iconActivity: {
-        backgroundColor: colors.transparent,
-        justifyContent: "center",
-        alignItems: "center",
-
-        lineHeight: 62
+        backgroundColor: colors.transparent
     },
     textNumber: {
         paddingRight: 5,
@@ -91,7 +87,6 @@ const styles = StyleSheet.create({
     textTipsDescription: {
         color: colors.white,
         fontSize: 12,
-        lineHeight: 14,
         paddingRight: 5,
         backgroundColor: colors.transparent
     },

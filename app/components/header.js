@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
     },
     textNotification: {
         color: colors.white,
-        fontSize: 8,
+        fontSize: 10,
         backgroundColor: colors.transparent
     },
     buttonBack: {
@@ -163,7 +163,7 @@ export default class Header extends Component {
         );
         return this.props.notifications ? (
             <View style={styles.textNotificationWrp}>
-                <Text style={styles.textNotification}>{numberOfNotifications}</Text>
+                <Text style={[styles.textNotification]}>{numberOfNotifications}</Text>
             </View>
         ) : null;
     }
