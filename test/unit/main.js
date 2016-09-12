@@ -32,7 +32,8 @@ describe("`Main` component", () => {
         const codePush = {
             sync: sinon.spy(),
             InstallMode: {
-                ON_NEXT_RESTART: "next_restart"
+                ON_NEXT_RESTART: "next_restart",
+                IMMEDIATE: "immediate"
             }
         };
         const FCM = {
@@ -61,7 +62,7 @@ describe("`Main` component", () => {
             expect(codePush.sync).to.have.callCount(1);
             expect(codePush.sync).to.have.been.calledWithExactly({
                 installMode: "next_restart",
-                mandatoryInstallMode: "next_restart",
+                mandatoryInstallMode: "immediate",
                 minimumBackgroundDuration: 60 * 10
             });
         });
