@@ -1,18 +1,15 @@
 import React, {Component, PropTypes} from "react";
 import {Dimensions, StyleSheet, TouchableOpacity, View} from "react-native";
-import * as Progress from "react-native-progress";
 
-import Icon from "../components/iwapp-icons";
 import * as colors from "../lib/colors";
+import CircleProgress from "../components/circle-progress";
+import Icon from "../components/iwapp-icons";
 import Text from "../components/text-lato";
 
 const styles = StyleSheet.create({
     progressQuestionnaire: {
         flexDirection: "column",
         alignItems: "stretch"
-    },
-    circleProgress: {
-        alignItems: "center"
     },
     iconQuestionnaireWrp: {
         position: "absolute",
@@ -50,16 +47,13 @@ export default class QuestionnaireProgress extends Component {
     render () {
         const {questionnaire} = this.props;
         const {width, height} = Dimensions.get("window");
-
         return (
             <View style={[styles.progressQuestionnaire, {marginHorizontal: width * .02, marginVertical: height * .015}]}>
-                <Progress.Circle
-                    animating={false}
-                    borderWidth={0}
-                    color={questionnaire.color}
-                    progress={questionnaire.value}
-                    size={height * .14}
-                    style={[styles.circleProgress, {width: width * .25, height: height * .15}]}
+                <CircleProgress
+                    percentage={questionnaire.value}
+                    size={90}
+                    strokeColor={questionnaire.color}
+                    strokeWidth={2}
                 />
                 <TouchableOpacity
                     onPress={questionnaire.onPress}
