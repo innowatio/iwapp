@@ -8,7 +8,7 @@
  */
 
 #import "AppDelegate.h"
-
+#import "RCTBundleURLProvider.h"
 #import "RCTRootView.h"
 #import "CodePush.h"
 #import "RNFIRMessaging.h"
@@ -37,7 +37,7 @@
    */
 
  #ifdef DEBUG
-   jsCodeLocation = [NSURL URLWithString:@"http://localhost:8081/index.ios.bundle?platform=ios&dev=true"];
+   jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index.ios" fallbackResource:nil];
  #else
     jsCodeLocation = [CodePush bundleURL];
  #endif
