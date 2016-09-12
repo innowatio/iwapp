@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
         marginLeft: 4
     },
     switchTextHeader: {
-        fontSize: 12,
+        fontSize: 11,
         color: colors.textGrey
     },
     switchText: {

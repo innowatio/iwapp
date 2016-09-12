@@ -26,38 +26,39 @@ const styles = StyleSheet.create({
     },
     infoContainer: {
         flexDirection: "column",
-        paddingLeft: 25,
+        paddingLeft: 15,
         justifyContent: "center"
-    },
-    meanConsumptionContainer: {
-        flexDirection: "column",
-        paddingHorizontal: 20,
-        overflow: "hidden"
     },
     iconActivityWrp: {
         marginVertical: 5,
         borderRadius: 100,
-        backgroundColor: colors.borderIconGreen,
-        justifyContent: "center",
-        alignItems: "center"
+        alignItems: "center",
+        backgroundColor: colors.borderIconGreen
     },
     iconActivity: {
         backgroundColor: colors.transparent
     },
+    meanConsumptionContainer: {
+        flexDirection: "column",
+        paddingHorizontal: 15,
+        justifyContent: "center",
+        overflow: "hidden"
+    },
+    numberOtherMeanContainer: {
+        justifyContent: "center"
+    },
     textNumber: {
         paddingRight: 5,
-        fontSize: 32,
+        fontSize: 30,
         fontWeight: "bold",
-        color: colors.secondaryBlue
+        color: colors.secondaryBlue,
+        overflow: "hidden"
     },
     textUnitOfMeasurement: {
         color: colors.secondaryBlue,
         alignSelf: "flex-end",
-        marginBottom: 5,
+        marginBottom: 4,
         fontSize: 14
-    },
-    numberOtherMeanContainer: {
-        justifyContent: "center"
     },
     textContainer: {
         flexDirection: "row",
@@ -76,7 +77,7 @@ const styles = StyleSheet.create({
     },
     textTipsWrp: {
         flexDirection: "column",
-        marginHorizontal: 5
+        marginHorizontal: 4
     },
     textTips: {
         color: colors.white,
@@ -87,12 +88,12 @@ const styles = StyleSheet.create({
     textTipsDescription: {
         color: colors.white,
         fontSize: 12,
-        paddingRight: 5,
+        paddingRight: 4,
         backgroundColor: colors.transparent
     },
     iconContainer: {
         alignSelf: "center",
-        marginLeft: 5
+        marginLeft: 4
     }
 });
 
@@ -155,11 +156,11 @@ export default class InfoConsumption extends Component {
         return (
             <View style={[styles.tipsWrp, {width: width * 0.96}]}>
                 <View style={styles.iconContainer}>
-                    <Icon color={badge.iconColor} name={badge.icon} size={width * 0.14} />
+                    <Icon color={badge.iconColor} name={badge.icon} size={width * 0.13} />
                 </View>
                 <View style={styles.textTipsWrp}>
                     <Text style={styles.textTips}>{badge.title}</Text>
-                    <Text ellipsizeMode={"tail"} numberOfLines={3}  style={[styles.textTipsDescription, {width: width * 0.78}]}>
+                    <Text style={[styles.textTipsDescription, {width: width * 0.78}]}>
                         {badge.text}
                     </Text>
                 </View>
@@ -168,14 +169,16 @@ export default class InfoConsumption extends Component {
     }
 
     renderConsumptions (consumptions, text) {
-        const {height} = Dimensions.get("window");
+        const {width, height} = Dimensions.get("window");
         return (
             <View style={[styles.numberOtherMeanContainer, {height: height * .175}]}>
                 <View style={styles.textContainer}>
-                    <Text style={styles.textNumber}>{(consumptions.total / consumptions.days).toFixed(2)}</Text>
+                    <Text ellipsizeMode={"tail"} numberOfLines={1} style={[styles.textNumber, {maxWidth: width * .4}]}>
+                        {(consumptions.total / consumptions.days).toFixed(2)}
+                    </Text>
                     <Text style={styles.textUnitOfMeasurement}>{consumptions.unit}</Text>
                 </View>
-                <View style={{height: height * .07}}>
+                <View>
                     <Text style={styles.textStandard}>{text}</Text>
                 </View>
             </View>
@@ -208,20 +211,20 @@ export default class InfoConsumption extends Component {
         return (
             <View style={[styles.container, {height: this.props.heightSwiper}]}>
                 <View style={[styles.infoAndConsumptionContainer, {width, height: height * .35}]}>
-                    <View style={[styles.infoContainer, {height: height * .35, width: width * .42}]}>
+                    <View style={[styles.infoContainer, {height: height * .35, width: width * .41}]}>
                         <View style={[styles.iconActivityWrp, {width: height * .14, height: height * .14}]}>
                             <Icon
                                 color={colors.iconGreen}
                                 name={"iw-badge-buildings"}
                                 size={height * .12}
-                                style={styles.iconActivity}
+                                style={[styles.iconActivity, {paddingVertical: height * .01}]}
                             />
                         </View>
                         <Text style={styles.textStandardSmall}>{"23 persone"}</Text>
                         <Text style={styles.textStandardSmall}>{"Ufficio di 167 mq"}</Text>
                         <Text style={styles.textStandardSmall}>{"Bergamo, Lombardia"}</Text>
                     </View>
-                    <View style={[styles.meanConsumptionContainer, {height: height * .35, width: width * .58}]}>
+                    <View style={[styles.meanConsumptionContainer, {height: height * .35, width: width * .59}]}>
                         {consumptions ? this.renderMyConsumptions() : null}
                         {peersConsumptions ? this.renderPeersConsumptions() : null}
                     </View>

@@ -418,7 +418,7 @@ class Stats extends Component {
                     <View style={[styles.consumptionWrp, {height: height * .2}]}>
                         <Text style={styles.titleSwiper}>{tabAggregate.periodTitle}</Text>
                         <View style={[styles.consumptionCircleWrp, {width: height * .16, height: height * .16}]}>
-                            <Text style={[styles.consumptionCircleValue, {fontSize, lineHeight: fontSize}]}>
+                            <Text ellipsizeMode={"tail"} numberOfLines={1} style={[styles.consumptionCircleValue, {fontSize, lineHeight: fontSize}]}>
                                 {tabAggregate.sum}
                             </Text>
                             <Text style={styles.consumptionCircleMeasure}>
