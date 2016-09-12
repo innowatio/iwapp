@@ -31,10 +31,10 @@ const styles = StyleSheet.create({
         borderTopWidth: .5,
         borderTopColor: colors.borderAccordion,
         flexDirection: "row",
-        height: 60,
         alignItems: "center",
         justifyContent: "space-between",
-        paddingHorizontal: 15
+        paddingHorizontal: 18,
+        paddingVertical: 5
     },
     lastHeader: {
         borderBottomWidth: .5,
@@ -51,7 +51,12 @@ const styles = StyleSheet.create({
         marginRight: 10,
         alignSelf: "center"
     },
+    questionTextWrp: {
+        justifyContent: "center",
+        minHeight: 40
+    },
     questionText: {
+        fontSize: 13,
         color: colors.textGrey
     },
     answerStatus: {
@@ -73,6 +78,7 @@ const styles = StyleSheet.create({
     },
     textAnswer: {
         alignSelf: "center",
+        fontSize: 13,
         color: colors.questionnaireAnswerStatusText,
     }
 });
@@ -250,13 +256,14 @@ class Questionnaire extends Component {
             >
                 <View style={{flexDirection: "row"}}>
                     {this.renderQuestionStatus(question, questionIndex)}
-                    <Text style={[styles.questionText, {width: width * 0.75}]}>{question.text}</Text>
+                    <View style={[styles.questionTextWrp, {width: width * 0.75}]}>
+                        <Text style={styles.questionText}>{question.text} {"neowniwofnewoifniwoenfwiofnwioncjwiebeiw uwjqibdqiud dbwqui jdiw jiwe wi"}</Text>
+                    </View>
                 </View>
                 <FaIcons
                     color={colors.iconArrow}
                     name={isActive ? "angle-up" : "angle-down"}
                     size={26}
-                    style={{marginRight: 10}}
                 />
             </View>
         );
