@@ -257,7 +257,7 @@ class Questionnaire extends Component {
                 <View style={{flexDirection: "row"}}>
                     {this.renderQuestionStatus(question, questionIndex)}
                     <View style={[styles.questionTextWrp, {width: width * 0.75}]}>
-                        <Text style={styles.questionText}>{question.text} {"neowniwofnewoifniwoenfwiofnwioncjwiebeiw uwjqibdqiud dbwqui jdiw jiwe wi"}</Text>
+                        <Text style={styles.questionText}>{question.text}</Text>
                     </View>
                 </View>
                 <FaIcons
