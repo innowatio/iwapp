@@ -18,7 +18,7 @@ export default class Main extends Component {
         syncStoreAndAsteroid(store, asteroid);
         codePush.sync({
             installMode: codePush.InstallMode.ON_NEXT_RESTART,
-            mandatoryInstallMode: codePush.InstallMode.ON_NEXT_RESTART,
+            mandatoryInstallMode: codePush.InstallMode.IMMEDIATE,
             minimumBackgroundDuration: 60 * 10
         });
     }

@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
     },
     bottomChartWrp: {
         flexDirection: "row",
-        justifyContent: "center",
+        justifyContent: "space-between",
         alignItems: "center",
         marginHorizontal: 20
     },
@@ -179,7 +179,7 @@ export default class ChartConsumption extends Component {
                     height={this.props.heightSwiper * 0.45}
                 />
                 <View style={[styles.bottomChartWrp, {width: width * .9, height: height * 0.08}]}>
-                    <View style={[styles.switchContainer, {width: width * .55}]}>
+                    <View style={styles.switchContainer}>
                         <Switch
                             disabled={!this.props.isForecastData}
                             onTintColor={colors.HomeSwitchActive}
@@ -187,7 +187,7 @@ export default class ChartConsumption extends Component {
                             style={styles.switch}
                             value={!!forecast}
                         />
-                        <View style={[styles.switchTextContainer, {width: width * .45}]}>
+                        <View style={styles.switchTextContainer}>
                             <Text
                                 ellipsizeMode={"tail"}
                                 numberOfLines={1}
@@ -198,7 +198,7 @@ export default class ChartConsumption extends Component {
                             {this.renderTextForecast()}
                         </View>
                     </View>
-                    <View style={[styles.standbyContainer, {width: width * .40}]}>
+                    <View style={styles.standbyContainer}>
                         <FaIcons
                             color={colors.lineStandby}
                             name={"circle-thin"}
