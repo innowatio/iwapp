@@ -54,12 +54,9 @@ const styles = StyleSheet.create({
         alignItems: "center"
     },
     notificationTextWrp: {
+        flexDirection: "column",
         justifyContent: "center",
         alignItems: "flex-start"
-    },
-    notificationText: {
-        color: colors.textGrey,
-        fontSize: 13
     },
     notificationDateWrp: {
         justifyContent: "flex-end",
@@ -138,14 +135,12 @@ class Notifications extends Component {
     }
 
     getNotificationText (notification, index, rowID) {
-        return (
-            <Text
-                ellipsizeMode={"tail"}
-                numberOfLines={rowID === index ? undefined : 2}
-                style={styles.notificationText}
-            >
-                {notification.get("message")}
-            </Text>);
+        return {
+            ellipsizeMode: "tail",
+            numberOfLines: rowID === index ? undefined : 2,
+            style: {color: colors.textGrey, fontSize: 13},
+            children: notification.get("message")
+        };
     }
 
     getNotifications (nextProps, rowID) {
@@ -155,7 +150,7 @@ class Notifications extends Component {
             const type = notification.get("type");
             return {
                 key: index,
-                text: this.getNotificationText(notification, index, parseInt(rowID)),
+                text: (<Text {...this.getNotificationText(notification, index, parseInt(rowID))} />),
                 icon: this.getNotificationIcon(type),
                 bgcolor: this.getNotificationBackgroundColor(type),
                 date: notification.get("date")
@@ -167,42 +162,41 @@ class Notifications extends Component {
         const {width} = Dimensions.get("window");
         const date = new Date(notification.date);
         return (
-            <View key={notification.key} style={[styles.notificationWrp, {width: width * .9}]}>
-                <View style={{width: width * .17}}>
-                    <View style={[styles.notificationIcon, {
-                        width: width * .14,
-                        height: width * .14,
-                        backgroundColor: notification.bgcolor}
-                    ]}>
-                        <Icon
-                            color={colors.iconWhite}
-                            name={notification.icon}
-                            size={width * .10}
-                            style={{backgroundColor: colors.transparent}}
-                        />
+            <TouchableHighlight
+                key={notification.key}
+                onPress={() => {
+                    ::this.pressRow(index);
+                }}
+                underlayColor={colors.white}
+            >
+                <View style={[styles.notificationWrp, {width: width * .9}]}>
+                    <View style={{width: width * .17}}>
+                        <View style={[styles.notificationIcon, {
+                            width: width * .14,
+                            height: width * .14,
+                            backgroundColor: notification.bgcolor}
+                        ]}>
+                            <Icon
+                                color={colors.iconWhite}
+                                name={notification.icon}
+                                size={width * .10}
+                                style={{backgroundColor: colors.transparent}}
+                            />
+                        </View>
                     </View>
-                </View>
-                <TouchableHighlight
-                    onPress={() => {
-                        ::this.pressRow(index);
-                    }}
-                    underlayColor={colors.white}
-                >
-                    <View style={{flexDirection: "column", width: width * .73}}>
-                        <View style={[
-                            styles.notificationTextWrp,
-                            {minHeight: width * .12, width: width * .7}
+                    <View style={{width: width * .73}}>
+                        <View style={[styles.notificationTextWrp, {minHeight: width * .12}
                         ]}>
                             {notification.text}
                         </View>
-                        <View style={[styles.notificationDateWrp]}>
+                        <View style={styles.notificationDateWrp}>
                             <Text style={styles.notificationDate}>
                                 {moment.utc(date).format("ddd DD MMM")}
                             </Text>
                         </View>
                     </View>
-                </TouchableHighlight>
-            </View>
+                </View>
+            </TouchableHighlight>
         );
     }
     renderNotificationsList () {
