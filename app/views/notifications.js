@@ -138,32 +138,19 @@ class Notifications extends Component {
     }
 
     getNotificationText (notification, index, rowID) {
-        if (rowID === index) {
-            return (
-                <Text style={styles.notificationText}>
-                    {notification.get("message")} {"ndua inv iaon vaiovn aio mcoianoa no nion in ioni n ion in ndua inv iaon vaiovn aio mcoianoa no nion in ioni fine."}
-                </Text>
-            );
-        } else {
-            return (
-                <Text
-                    ellipsizeMode={"tail"}
-                    numberOfLines={2}
-                    style={styles.notificationText}
-                >
-                    {notification.get("message")} {"ndua inv iaon vaiovn aio mcoianoa no nion in ioni n ion in ndua inv iaon vaiovn aio mcoianoa no nion in ioni fine."}
-                </Text>
-            );
-        }
+        return (
+            <Text
+                ellipsizeMode={"tail"}
+                numberOfLines={rowID === index ? undefined : 2}
+                style={styles.notificationText}
+            >
+                {notification.get("message")}
+            </Text>);
     }
-
-    // text: this.getNotificationText(notification, index, this.state.pressed),
 
     getNotifications (nextProps, rowID) {
         const props = nextProps ? nextProps : this.props;
         const notifs = props.collections.get("notifications") || Map();
-        console.log("rowID");
-        console.log(rowID);
         return notifs.sortBy(notification => -notification.date).toArray().map((notification, index) => {
             const type = notification.get("type");
             return {
@@ -179,8 +166,6 @@ class Notifications extends Component {
     renderNotification (notification, rowID, index) {
         const {width} = Dimensions.get("window");
         const date = new Date(notification.date);
-        console.log("ROWIDIDIDIDI");
-        console.log(index);
         return (
             <View key={notification.key} style={[styles.notificationWrp, {width: width * .9}]}>
                 <View style={{width: width * .17}}>
