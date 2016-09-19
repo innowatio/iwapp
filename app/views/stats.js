@@ -256,7 +256,7 @@ class Stats extends Component {
             fontSize = 24;
         }
         if (number > 99999) {
-            fontSize = 20;
+            fontSize = 22;
         }
         return fontSize;
     }
@@ -406,6 +406,7 @@ class Stats extends Component {
             site,
             stats
         } = this.props;
+        const {period} = this.props.stats.chart;
         const {height} = Dimensions.get("window");
         const aggregates = this.getConsumptionAggregate().filter(x => x.get("sensorId") == site._id);
         if (!aggregates.isEmpty()) {
@@ -418,7 +419,7 @@ class Stats extends Component {
                     <View style={[styles.consumptionWrp, {height: height * .2}]}>
                         <Text style={styles.titleSwiper}>{tabAggregate.periodTitle}</Text>
                         <View style={[styles.consumptionCircleWrp, {width: height * .16, height: height * .16}]}>
-                            <Text style={[styles.consumptionCircleValue, {fontSize, lineHeight: fontSize}]}>
+                            <Text ellipsizeMode={"tail"} numberOfLines={1} style={[styles.consumptionCircleValue, {fontSize, lineHeight: fontSize}]}>
                                 {tabAggregate.sum}
                             </Text>
                             <Text style={styles.consumptionCircleMeasure}>
@@ -427,19 +428,20 @@ class Stats extends Component {
                         </View>
                     </View>
                     <View style={{height: height * .28}}>
-                        {this.renderProgressBar(tabAggregate.comparisons, tabAggregate.measureUnit)}
+                        {period === "year" || period === "month" ? null : this.renderProgressBar(tabAggregate.comparisons, tabAggregate.measureUnit)}
                     </View>
                     {this.renderAlarmSettings()}
-                    <View style={[styles.summaryConsumptionContainer, {height: height * .2}]}>
-                        {this.renderConsumptionsData(`${site._id}-peers-avg`)}
-                        {this.renderConsumptionsData(`${site._id}-standby`, "Consumi\nin standby")}
-                    </View>
                 </View>
             );
         } else {
             return null;
         }
     }
+
+    // <View style={[styles.summaryConsumptionContainer, {height: height * .2}]}>
+    //     {this.renderConsumptionsData(`${site._id}-peers-avg`)}
+    //     {this.renderConsumptionsData(`${site._id}-standby`, "Consumi\nin standby")}
+    // </View>
 
     renderContentTab () {
         const {height} = Dimensions.get("window");
@@ -463,7 +465,7 @@ class Stats extends Component {
                         <View style={[styles.titleBarWrp, {height: height * .045}]}>
                             <Text style={styles.title}>{"STATISTICHE"}</Text>
                         </View>
-                        <View style={[styles.tabsContainer, {paddingVertical: height * .003}]}>
+                        <View style={[styles.tabsContainer, {paddingVertical: height * .008}]}>
                             <Button
                                 containerStyle={(period === "day" ? styles.tabWrpActive : {})}
                                 onPress={() => selectPeriod("day")}
