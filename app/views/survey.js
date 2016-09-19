@@ -83,10 +83,8 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
         backgroundColor: colors.primaryBlue,
-        // position: "absolute",
-        // bottom: 0,
-        // left: 0,
-        // right:0
+        position: "absolute",
+        bottom: 0
     },
 
     //SAVE spinner
@@ -349,8 +347,8 @@ class Survey extends Component {
             );
         } else {
             return (
-                <View style={styles.contentSurveyWrp}>
-                    <View style={{height: height * .71}}>
+                <View style={[styles.contentSurveyWrp, {height: height * .83}]}>
+                    <View style={{height: height * .73}}>
                         <ScrollView
                             onContentSizeChange={::this.onContentSizeChange}
                             onScroll={::this.onScroll}
@@ -364,7 +362,7 @@ class Survey extends Component {
                             </View>
                         </ScrollView>
                     </View>
-                    <View style={[styles.buttonsWrp, {width, height: height * .12}]}>
+                    <View style={[styles.buttonsWrp, {width, height: height * .1}]}>
                         {this.renderQuestionCounter()}
                     </View>
                 </View>
