@@ -1,23 +1,25 @@
-import {List, ListItem} from "native-base";
+import {ListItem} from "native-base";
 import {isEmpty} from "ramda";
 import React, {Component, PropTypes} from "react";
-import {Animated, Dimensions, StyleSheet, View, TouchableOpacity} from "react-native";
+import {Animated, Dimensions, StyleSheet, ScrollView, View, TouchableOpacity} from "react-native";
 import FaIcons from "react-native-vector-icons/FontAwesome";
+import {heightWithoutHeader} from "../lib/const";
 
 import Text from "./text-lato";
 import * as colors from "../lib/colors";
+import Scroll from "./scroll";
 
 const styles = StyleSheet.create({
     header: {
         backgroundColor: colors.secondaryBlue,
-        justifyContent: "space-around",
+        justifyContent: "space-between",
         flexDirection: "row",
         alignItems: "center",
-        height: 50
+        height: 50,
+        paddingHorizontal: 18
     },
     itemIcon: {
-        color: colors.white,
-        marginRight: 10
+        color: colors.white
     },
     view: {
         borderTopWidth: 1,
@@ -27,12 +29,10 @@ const styles = StyleSheet.create({
     projectContainer: {
         borderColor: colors.secondaryBlue,
         padding: 0,
-        paddingLeft: 20
     },
     projectItem: {
         alignItems: "center",
-        flexDirection: "row",
-        height: 50
+        flexDirection: "row"
     },
     projectText: {
         color: colors.white
@@ -52,13 +52,28 @@ export default class DropDown extends Component {
         super();
         this.state = {
             showItems: false,
-            slidingAnimationValue: new Animated.Value(0)
+            slidingAnimationValue: new Animated.Value(0),
+            beforeScroll: true,
+            toScroll: false
         };
+    }
+
+    onContentSizeChange (contentWidth, contentHeight) {
+        const {height} = Dimensions.get("window");
+        // FIXME: to search the exact height when to scroll
+        this.setState({toScroll: (heightWithoutHeader(height) * 80 / 100) < contentHeight});
+    }
+
+    onScroll () {
+        if (this.state.beforeScroll) {
+            this.setState({beforeScroll: false});
+        }
     }
 
     toggleItems () {
         this.setState({
-            showItems: !this.state.showItems
+            showItems: !this.state.showItems,
+            beforeScroll: true
         });
         const {onToggleItems} = this.props;
         onToggleItems(this.state.showItems);
@@ -84,14 +99,15 @@ export default class DropDown extends Component {
     }
 
     renderOptionItems () {
+        const {width, height} = Dimensions.get("window");
         const {optionItems} = this.props;
         return optionItems.map((item, index) => (
             <ListItem key={index} style={styles.projectContainer}>
                 <TouchableOpacity
                     onPress={this.selectionChanged({index, selection: item})}
-                    style={styles.projectItem}
+                    style={[styles.projectItem, {alignItems: "center", justifyContent: "flex-start", height: height * .08}]}
                 >
-                    <Text style={styles.projectText}>{item.title}</Text>
+                    <Text ellipsizeMode={"tail"} numberOfLines={1} style={[styles.projectText, {width: width * .56}]}>{item.title}</Text>
                 </TouchableOpacity>
             </ListItem>
         ));
@@ -100,9 +116,13 @@ export default class DropDown extends Component {
     renderList () {
         return isEmpty(this.props.optionItems) ?
             null :(
-            <List>
+            <ScrollView
+                onContentSizeChange={::this.onContentSizeChange}
+                onScroll={::this.onScroll}
+                scrollEventThrottle={1000}
+            >
                 {this.renderOptionItems()}
-            </List>
+            </ScrollView>
         );
     }
 
@@ -119,24 +139,31 @@ export default class DropDown extends Component {
                 }
             ]}>
                 {this.renderList()}
+                <Scroll
+                    style={{margin: height * .02, top: height * .78, alignItems: "flex-end"}}
+                    visible={this.state.toScroll && this.state.beforeScroll}
+                />
             </Animated.View>
         ) : null;
     }
 
     render () {
+        const {width} = Dimensions.get("window");
         const {titlePlaceholder} = this.props;
         return (
             <View>
                 <TouchableOpacity onPress={this.toggleItems.bind(this)}>
                     <View style={styles.header}>
                         <Text
-                            style={{color: colors.white}}
+                            ellipsizeMode={"tail"}
+                            numberOfLines={1}
+                            style={{color: colors.white, width: width * .46}}
                         >
                             {titlePlaceholder ? titlePlaceholder : "Select an item"}
                         </Text>
                         <FaIcons
                             name={this.state.showItems ? "angle-up" : "angle-down"}
-                            size={26}
+                            size={width * .07}
                             style={styles.itemIcon}
                         />
                     </View>
