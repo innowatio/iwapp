@@ -84,6 +84,7 @@
     "eslint-plugin-react": "^6.1.2",
     "eslint-plugin-react-native": "^2.0.0",
     "mocha": "^3.0.2",
+    "moment-timezone": "^0.5.5",
     "nock": "^8.0.0",
     "node-hook": "^0.4.0",
     "npm-run-all": "^3.0.0",

@@ -6,9 +6,9 @@ const mapIndexed = addIndex(map);
 function getDailyAggregate (dailyAggregates, chartState) {
     const {sensorId, day, measurementType, source} = chartState;
     const date = [
-        moment(day).subtract({day: 1}).format("YYYY-MM-DD"),
+        moment.utc(day).subtract({day: 1}).format("YYYY-MM-DD"),
         day,
-        moment(day).add({day: 1}).format("YYYY-MM-DD")
+        moment.utc(day).add({day: 1}).format("YYYY-MM-DD")
     ];
     const aggregates = date.map(dataDay => dailyAggregates.get(
         `${sensorId}-${dataDay}-${source}-${measurementType}`
