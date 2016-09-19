@@ -344,16 +344,16 @@ describe("`Home` view", () => {
             expect(subscribe.firstCall).to.have.been.calledWithExactly(
                 "dailyMeasuresBySensor",
                 "sensorId",
-                "1970-01-01",
-                "1970-01-01",
+                "1969-12-31",
+                "1970-01-02",
                 "reading",
                 "activeEnergy"
             );
             expect(subscribe.secondCall).to.have.been.calledWithExactly(
                 "dailyMeasuresBySensor",
                 "sensorId",
-                "1970-01-01",
-                "1970-01-01",
+                "1969-12-31",
+                "1970-01-02",
                 "forecast",
                 "activeEnergy"
             );

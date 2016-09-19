@@ -1,56 +1,84 @@
 import moment from "moment";
-import {map, range, pipe, fromPairs} from "ramda";
+import {map, range, pipe, fromPairs, unnest} from "ramda";
 import {fromJS} from "immutable";
 
 import readingsDailyAggregatesToHighchartsData from "lib/readings-daily-aggregates-to-highcharts-data";
 
 describe("`readingsDailyAggregatesToHighchartsData` function", () => {
 
+    var clock;
+
+    before(() => {
+        clock = sinon.useFakeTimers(1473984000000);
+    });
+
+    after(() => {
+        clock.restore();
+    });
+
     const values = {
-        reading: [12, 15, 16, 12, 1, 0, 6, 87, 332, 234, 3],
+        reading: [12, 15, 16, 12, 6, 87, 332, 234, 3],
         forecast: [16, 0, 3, 1, 4, 12, 122, 1, 334]
     };
 
     const times = {
-        reading: [1465477616813, 1465478616813, 1465478900000, 1465479000000, 1465479520000, 1465479620000, 1465479840000, 1465479940000, 1465490120000, 1465497120000, 1465497720000],
-        forecast: [1465477616813, 1465478516813, 1465478700000, 1465478900000, 1465479000000, 1465479520000, 14654798660000, 1465479731000, 1465495120000, 1465499320000, 146550020000]
+        reading: [
+            [1473897600000, 1473904800000, 1473944400000, 1473944450000, 1473944470000, 1473944488000, 1473944492000, 1473958800000, 1473982140000],
+            [1473984000000, 1474002000000, 1474002110000, 1474030800000, 1474031000000, 1474031750000, 1474031800000, 1474046100000, 1474065000000],
+            [1474070400000, 1474070600000, 1474088400000, 1474089600000, 1474110300000, 1474117500000, 1474118500000, 1474131900000, 1474132900000]
+        ],
+        forecast: [
+            [1473897600000, 1473904800000, 1473944400000, 1473944470000, 1473944488000, 1473944492000, 1473958800000, 1473982140000],
+            [1473984000000, 1474002000000, 1474002110000, 1474030800000, 1474031700000, 1474031750000, 1474031800000, 1474046100000],
+            [1474070400000, 1474070600000, 1474088400000, 1474110300000, 1474117500000, 1474118500000, 1474131900000, 1474132900000]
+        ]
     };
     const source = ["reading", "forecast"];
 
+    const dates = [
+        "2016-09-15",
+        "2016-09-16",
+        "2016-09-17"
+    ];
+
     const readingsDailyAggregates = pipe(
-        map(idx => {
-            const sensorId = "sensor_1";
-            const day = moment.utc().format("YYYY-MM-DD");
-            const _id = `${sensorId}-${day}-${source[idx]}-activeEnergy`;
-            return [_id, {
-                _id,
-                sensorId,
-                day,
-                source: source[idx],
-                measurementType: "activeEnergy",
-                measurementValues: values[source[idx]].join(","),
-                measurementTimes: times[source[idx]].join(",")
-            }];
-        }),
+        map(idx =>
+            dates.map((day, index) => {
+                const sensorId = "sensor_1";
+                const _id = `${sensorId}-${day}-${source[idx]}-activeEnergy`;
+                return [_id, {
+                    _id,
+                    sensorId,
+                    day,
+                    source: source[idx],
+                    measurementType: "activeEnergy",
+                    measurementValues: values[source[idx]].join(","),
+                    measurementTimes: times[source[idx]][index].join(",")
+                }];
+            }),
+        ),
+        unnest,
         fromPairs,
         fromJS
     )(range(0, 2));
 
     const standByReadingsDailyAggregates = pipe(
-        map(idx => {
-            const sensorId = "sensor_1-standby";
-            const day = moment.utc().format("YYYY-MM-DD");
-            const _id = `${sensorId}-${day}-${source[idx]}-activeEnergy`;
-            return [_id, {
-                _id,
-                sensorId,
-                day,
-                source: source[idx],
-                measurementType: "activeEnergy",
-                measurementValues: values[source[idx]].join(","),
-                measurementTimes: times[source[idx]].join(",")
-            }];
-        }),
+        map(idx =>
+            dates.map((day, index) => {
+                const sensorId = "sensor_1-standby";
+                const _id = `${sensorId}-${day}-${source[idx]}-activeEnergy`;
+                return [_id, {
+                    _id,
+                    sensorId,
+                    day,
+                    source: source[idx],
+                    measurementType: "activeEnergy",
+                    measurementValues: values[source[idx]].join(","),
+                    measurementTimes: times[source[idx]][index].join(",")
+                }];
+            }),
+        ),
+        unnest,
         fromPairs,
         fromJS
     )(range(0, 2));
@@ -107,29 +135,28 @@ describe("`readingsDailyAggregatesToHighchartsData` function", () => {
                 readingsDailyAggregates,
                 chartState
             );
-
             expect(ret).to.deep.equal([{
                 data: [
                     ["0", 0],
-                    ["1", 0],
-                    ["2", 0],
+                    ["1", 3],
+                    ["2", 12],
                     ["3", 0],
                     ["4", 0],
                     ["5", 0],
                     ["6", 0],
-                    ["7", 0],
+                    ["7", 31],
                     ["8", 0],
                     ["9", 0],
                     ["10", 0],
                     ["11", 0],
                     ["12", 0],
-                    ["13", 149],
+                    ["13", 0],
                     ["14", 0],
-                    ["15", 0],
-                    ["16", 332],
+                    ["15", 437],
+                    ["16", 0],
                     ["17", 0],
-                    ["18", 237],
-                    ["19", 0],
+                    ["18", 0],
+                    ["19", 234],
                     ["20", 0],
                     ["21", 0],
                     ["22", 0],
@@ -149,33 +176,32 @@ describe("`readingsDailyAggregatesToHighchartsData` function", () => {
                 standByReadingsDailyAggregates,
                 chartState
             );
-
             expect(ret).to.deep.equal([{
                 data: [
                     ["0", 0],
-                    ["1", 0],
-                    ["2", 0],
-                    ["3", 0],
-                    ["4", 0],
-                    ["5", 0],
-                    ["6", 0],
-                    ["7", 0],
-                    ["8", 0],
-                    ["9", 0],
-                    ["10", 0],
-                    ["11", 0],
-                    ["12", 0],
-                    ["13", 149],
-                    ["14", 149],
-                    ["15", 149],
-                    ["16", 332],
-                    ["17", 332],
-                    ["18", 237],
-                    ["19", 237],
-                    ["20", 237],
-                    ["21", 237],
-                    ["22", 237],
-                    ["23", 237]
+                    ["1", 3],
+                    ["2", 12],
+                    ["3", 12],
+                    ["4", 12],
+                    ["5", 12],
+                    ["6", 12],
+                    ["7", 31],
+                    ["8", 31],
+                    ["9", 31],
+                    ["10", 31],
+                    ["11", 31],
+                    ["12", 31],
+                    ["13", 31],
+                    ["14", 31],
+                    ["15", 437],
+                    ["16", 437],
+                    ["17", 437],
+                    ["18", 437],
+                    ["19", 234],
+                    ["20", 234],
+                    ["21", 234],
+                    ["22", 234],
+                    ["23", 234]
                 ]
             }]);
         });
@@ -213,6 +239,7 @@ describe("`readingsDailyAggregatesToHighchartsData` function", () => {
                 data: []
             }]);
         });
+
     });
 
 });
