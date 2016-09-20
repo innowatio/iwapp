@@ -2,5 +2,5 @@ export const headerHeight = 40;
 export const statusBarHeight = 22;
 
 export function heightWithoutHeader (height) {
-    return height - headerHeight - statusBarHeight - 12;
+    return (height - headerHeight - statusBarHeight)*0.935;
 }

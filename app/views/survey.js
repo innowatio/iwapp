@@ -43,7 +43,6 @@ const styles = StyleSheet.create({
     },
     // CONTENT
     contentSurveyWrp: {
-        flex: 1,
         alignItems: "center"
     },
     questionSurveyWrp: {
@@ -347,7 +346,7 @@ class Survey extends Component {
             );
         } else {
             return (
-                <View style={[styles.contentSurveyWrp, {height: height * .83}]}>
+                <View style={[styles.contentSurveyWrp, {height: heightWithoutHeader(height)}]}>
                     <View style={{height: height * .73}}>
                         <ScrollView
                             onContentSizeChange={::this.onContentSizeChange}
@@ -374,7 +373,7 @@ class Survey extends Component {
         const {height, width} = Dimensions.get("window");
         const activeStepQuestion = this.props.survey.getIn(["questions", this.state.activeStep]);
         return (
-            <View style={styles.container}>
+            <View style={[styles.container]}>
                 <View style={{width}}>
                     <View style={[styles.titleBarWrp, {height: height * .045}]}>
                         <View style={styles.titleBar}>
