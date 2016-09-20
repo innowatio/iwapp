@@ -28,9 +28,7 @@ export const backgroundIconModalError = "#ea5a7c";
 export const loginTextBackground = "rgba(0, 0, 0, 0.2)";
 export const backgroundErrorLogin = "rgba(255, 23, 68, 0.6)";
 export const borderErrorLogin = "#c41637";
-// FIXME: https://github.com/facebook/react-native/issues/3652
-// export const loginTextBorder = "rgba(255, 255, 255, 0.5)";
-export const loginTextBorder = "#979fd1";
+export const loginTextBorder = "rgba(255, 255, 255, 0.5)";
 // Overview
 export const lineForecast = "#a8e1d4";
 export const HomeSwitchActive = "#7FCAC3";
