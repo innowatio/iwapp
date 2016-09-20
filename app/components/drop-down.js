@@ -1,7 +1,7 @@
 import {ListItem} from "native-base";
 import {isEmpty} from "ramda";
 import React, {Component, PropTypes} from "react";
-import {Animated, Dimensions, StyleSheet, ScrollView, View, TouchableOpacity} from "react-native";
+import {Animated, Dimensions, StyleSheet, ScrollView, View, TouchableOpacity, TextInput} from "react-native";
 import FaIcons from "react-native-vector-icons/FontAwesome";
 import {heightWithoutHeader} from "../lib/const";
 
@@ -36,6 +36,10 @@ const styles = StyleSheet.create({
     },
     projectText: {
         color: colors.white
+    },
+    textInput: {
+        padding: 2,
+        height: 30
     }
 });
 
@@ -54,8 +58,13 @@ export default class DropDown extends Component {
             showItems: false,
             slidingAnimationValue: new Animated.Value(0),
             beforeScroll: true,
-            toScroll: false
+            toScroll: false,
+            searchText: "",
         };
+    }
+
+    onChangeText (searchText) {
+        this.setState({searchText});
     }
 
     onContentSizeChange (contentWidth, contentHeight) {
@@ -98,10 +107,9 @@ export default class DropDown extends Component {
         };
     }
 
-    renderOptionItems () {
+    renderOptionItems (filtered) {
         const {width, height} = Dimensions.get("window");
-        const {optionItems} = this.props;
-        return optionItems.map((item, index) => (
+        return filtered.map((item, index) => (
             <ListItem key={index} style={styles.projectContainer}>
                 <TouchableOpacity
                     onPress={this.selectionChanged({index, selection: item})}
@@ -114,14 +122,18 @@ export default class DropDown extends Component {
     }
 
     renderList () {
-        return isEmpty(this.props.optionItems) ?
+        const self = this;
+        const filtered = this.props.optionItems.filter(function (d) {
+            return d.title.indexOf(self.state.searchText)>-1;
+        });
+        return isEmpty(filtered) ?
             null :(
             <ScrollView
                 onContentSizeChange={::this.onContentSizeChange}
                 onScroll={::this.onScroll}
                 scrollEventThrottle={1000}
             >
-                {this.renderOptionItems()}
+                {this.renderOptionItems(filtered)}
             </ScrollView>
         );
     }
@@ -129,21 +141,29 @@ export default class DropDown extends Component {
     renderDropDown () {
         const {height} = Dimensions.get("window");
         return this.state.showItems ? (
-            <Animated.View style={[
-                styles.view,
-                {
-                    height: height - 74,
-                    transform: [{
-                        translateY: this.state.slidingAnimationValue
-                    }]
-                }
-            ]}>
-                {this.renderList()}
-                <Scroll
-                    style={{margin: height * .02, top: height * .78, alignItems: "flex-end"}}
-                    visible={this.state.toScroll && this.state.beforeScroll}
+            <View>
+                <TextInput
+                    onChangeText={(searchText) => this.onChangeText(searchText)}
+                    placeholder="search"
+                    style={styles.textInput}
+                    value={this.state.searchText}
                 />
-            </Animated.View>
+                <Animated.View style={[
+                    styles.view,
+                    {
+                        height: height - 74,
+                        transform: [{
+                            translateY: this.state.slidingAnimationValue
+                        }]
+                    }
+                ]}>
+                    {this.renderList()}
+                    <Scroll
+                        style={{margin: height * .02, top: height * .78, alignItems: "flex-end"}}
+                        visible={this.state.toScroll && this.state.beforeScroll}
+                    />
+                </Animated.View>
+            </View>
         ) : null;
     }
 
