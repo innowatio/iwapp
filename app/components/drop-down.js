@@ -159,7 +159,7 @@ export default class DropDown extends Component {
                 ]}>
                     {this.renderList()}
                     <Scroll
-                        style={{margin: height * .02, top: height * .78, alignItems: "flex-end"}}
+                        style={{margin: height * .02, top: height * .75, alignItems: "flex-end"}}
                         visible={this.state.toScroll && this.state.beforeScroll}
                     />
                 </Animated.View>
