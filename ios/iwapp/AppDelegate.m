@@ -71,4 +71,8 @@
     handler(UIBackgroundFetchResultNewData);
 }
 
+-(void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification {
+    [[NSNotificationCenter defaultCenter] postNotificationName:FCMLocalNotificationReceived object:self userInfo:notification.userInfo];
+}
+
 @end

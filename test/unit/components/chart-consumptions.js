@@ -72,6 +72,7 @@ describe("`ChartConsumption` component", () => {
                 charts={charts}
                 consumptionAggregates={consumptionAggregates}
                 dailyAggregates={dailyAggregates}
+                heightSwiper={0}
                 onToggleSwitch={onToggleSwitch}
             />
         );

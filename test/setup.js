@@ -11,6 +11,7 @@ import sinonChai from "sinon-chai";
 import chaiAsPromise from "chai-as-promised";
 import ws from "ws";
 import hook from "node-hook";
+import mockery from "mockery";
 
 // Added test cross platform to handle the
 const PLATFORM = process.env.PLATFORM || "android";
@@ -19,6 +20,13 @@ function logLoadedFilename (source, filename) {
     return `console.log(${filename});\n + ${source}`;
 }
 hook.hook(`.${PLATFORM}.js`, logLoadedFilename);
+
+// Mock react-native-svg
+mockery.enable({
+    warnOnReplace: false,
+    warnOnUnregistered: false
+});
+mockery.registerMock("react-native-svg", () => null);
 
 // This function is for fix an issue with `react-native-router-flux`, that import
 //a png file without compile it. If require a png file, return null.
