@@ -44,7 +44,7 @@
     "react-native-collapsible": "^0.7.0",
     "react-native-device-info": "rebeccahughes/react-native-device-info#d383d2982e2cc29fde8741a31259ce338f0b5202",
     "react-native-drawer": "^2.2.6",
-    "react-native-fcm": "^1.0.16",
+    "react-native-fcm": "1.1.0",
     "react-native-image-picker": "^0.21.5",
     "react-native-keyboard-spacer": "^0.3.0",
     "react-native-menu": "^0.20.1",
