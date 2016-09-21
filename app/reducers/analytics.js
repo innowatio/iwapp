@@ -1,3 +1,4 @@
+import get from "lodash.get";
 import moment from "moment";
 
 import {
@@ -41,7 +42,7 @@ export default function analytics (state = defaultState, {type, payload}) {
                 navigationHistory: [
                     ...state.navigationHistory,
                     {
-                        view: state.navigationHistory[state.navigationHistory.length - 2].view,
+                        view: get(state, `navigationHistory[${state.navigationHistory.length - 2}].view`, "home"),
                         timestamp: moment.utc().format()
                     }
                 ]
