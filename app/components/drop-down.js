@@ -6,7 +6,7 @@ import FaIcons from "react-native-vector-icons/FontAwesome";
 import {heightWithoutHeader} from "../lib/const";
 
 import Text from "./text-lato";
-// import Icon from "../components/iwapp-icons";
+import Icon from "../components/iwapp-icons";
 import * as colors from "../lib/colors";
 import Scroll from "./scroll";
 
@@ -173,10 +173,10 @@ export default class DropDown extends Component {
                     }
                 ]}>
                     <View style={[styles.textInputWrp]}>
-                        <FaIcons
+                        <Icon
                             color={colors.white}
-                            name={"search"}
-                            size={width * .04}
+                            name={"iw-search"}
+                            size={width * .05}
                             style={styles.inputIcon}
                         />
                         <TextInput
@@ -185,7 +185,7 @@ export default class DropDown extends Component {
                             onChangeText={(searchText) => this.onChangeText(searchText)}
                             placeholder="Cerca un sito"
                             placeholderTextColor={colors.white}
-                            style={[styles.textInput, {height: height * .045, width: width * .48}]}
+                            style={[styles.textInput, {height: height * .046, width: width * .46}]}
                             underlineColorAndroid={colors.transparent}
                             value={this.state.searchText}
                         />
