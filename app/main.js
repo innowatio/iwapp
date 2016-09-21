@@ -25,8 +25,6 @@ export default class Main extends Component {
 
     componentWillUnmount () {
         AppState.removeEventListener("change", this.handleAppStateChange);
-        this.refreshUnsubscribe();
-        this.notificationUnsubscribe();
     }
 
     handleAppStateChange (currentState) {

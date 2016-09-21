@@ -91,24 +91,24 @@ class Home extends Component {
         props.asteroid.subscribe(
             "dailyMeasuresBySensor",
             chart.sensorId,
-            chart.day,
-            chart.day,
+            moment(chart.day).subtract({day: 1}).format("YYYY-MM-DD"),
+            moment(chart.day).add({day: 1}).format("YYYY-MM-DD"),
             "reading",
             chart.measurementType
         );
         props.asteroid.subscribe(
             "dailyMeasuresBySensor",
             chart.sensorId,
-            chart.day,
-            chart.day,
+            moment(chart.day).subtract({day: 1}).format("YYYY-MM-DD"),
+            moment(chart.day).add({day: 1}).format("YYYY-MM-DD"),
             "forecast",
             chart.measurementType
         );
         props.asteroid.subscribe(
             "dailyMeasuresBySensor",
             chart.sensorId,
-            moment.utc().format("YYYY-MM-DD"),
-            moment.utc().format("YYYY-MM-DD"),
+            moment(chart.day).add({minutes: moment().utcOffset()}).format("YYYY-MM-DD"),
+            moment(chart.day).add({minutes: moment().utcOffset()}).format("YYYY-MM-DD"),
             "reading",
             "maxPower"
         );

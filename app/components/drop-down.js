@@ -1,23 +1,26 @@
-import {List, ListItem} from "native-base";
+import {ListItem} from "native-base";
 import {isEmpty} from "ramda";
 import React, {Component, PropTypes} from "react";
-import {Animated, Dimensions, StyleSheet, View, TouchableOpacity} from "react-native";
+import {Animated, Dimensions, StyleSheet, ScrollView, View, TouchableOpacity, TextInput} from "react-native";
 import FaIcons from "react-native-vector-icons/FontAwesome";
+import {heightWithoutHeader} from "../lib/const";
 
 import Text from "./text-lato";
+// import Icon from "../components/iwapp-icons";
 import * as colors from "../lib/colors";
+import Scroll from "./scroll";
 
 const styles = StyleSheet.create({
     header: {
         backgroundColor: colors.secondaryBlue,
-        justifyContent: "space-around",
+        justifyContent: "space-between",
         flexDirection: "row",
         alignItems: "center",
-        height: 50
+        height: 50,
+        paddingHorizontal: 18
     },
     itemIcon: {
-        color: colors.white,
-        marginRight: 10
+        color: colors.white
     },
     view: {
         borderTopWidth: 1,
@@ -27,16 +30,32 @@ const styles = StyleSheet.create({
     projectContainer: {
         borderColor: colors.secondaryBlue,
         padding: 0,
-        paddingLeft: 20
     },
     projectItem: {
         alignItems: "center",
-        flexDirection: "row",
-        height: 50
+        flexDirection: "row"
     },
     projectText: {
         color: colors.white
-    }
+    },
+    textInputWrp: {
+        backgroundColor: colors.primaryBlue,
+        borderRadius: 100,
+        flexDirection: "row",
+        alignItems: "center",
+        marginHorizontal: 15,
+        marginVertical: 10
+    },
+    textInput: {
+        padding: 2,
+        fontSize: 12,
+        color: colors.white
+    },
+    inputIcon: {
+        backgroundColor: colors.transparent,
+        marginLeft: 10,
+        marginRight: 5
+    },
 });
 
 export default class DropDown extends Component {
@@ -52,13 +71,33 @@ export default class DropDown extends Component {
         super();
         this.state = {
             showItems: false,
-            slidingAnimationValue: new Animated.Value(0)
+            slidingAnimationValue: new Animated.Value(0),
+            beforeScroll: true,
+            toScroll: false,
+            searchText: "",
         };
+    }
+
+    onChangeText (searchText) {
+        this.setState({searchText});
+    }
+
+    onContentSizeChange (contentWidth, contentHeight) {
+        const {height} = Dimensions.get("window");
+        // FIXME: to search the exact height when to scroll
+        this.setState({toScroll: (heightWithoutHeader(height) * 80 / 100) < contentHeight});
+    }
+
+    onScroll () {
+        if (this.state.beforeScroll) {
+            this.setState({beforeScroll: false});
+        }
     }
 
     toggleItems () {
         this.setState({
-            showItems: !this.state.showItems
+            showItems: !this.state.showItems,
+            beforeScroll: true
         });
         const {onToggleItems} = this.props;
         onToggleItems(this.state.showItems);
@@ -83,60 +122,101 @@ export default class DropDown extends Component {
         };
     }
 
-    renderOptionItems () {
-        const {optionItems} = this.props;
-        return optionItems.map((item, index) => (
+    renderOptionItems (filtered) {
+        const {width, height} = Dimensions.get("window");
+        return filtered.map((item, index) => (
             <ListItem key={index} style={styles.projectContainer}>
                 <TouchableOpacity
                     onPress={this.selectionChanged({index, selection: item})}
-                    style={styles.projectItem}
+                    style={[styles.projectItem, {alignItems: "center", justifyContent: "flex-start", height: height * .08}]}
                 >
-                    <Text style={styles.projectText}>{item.title}</Text>
+                    <Text ellipsizeMode={"tail"} numberOfLines={1} style={[styles.projectText, {width: width * .56}]}>{item.title}</Text>
                 </TouchableOpacity>
             </ListItem>
         ));
     }
 
     renderList () {
-        return isEmpty(this.props.optionItems) ?
+        const self = this;
+        const filtered = this.props.optionItems.filter(function (d) {
+            return d.title.toLowerCase().indexOf(self.state.searchText.toLowerCase())>-1;
+        });
+        return isEmpty(filtered) ?
             null :(
-            <List>
-                {this.renderOptionItems()}
-            </List>
+            <ScrollView
+                onContentSizeChange={::this.onContentSizeChange}
+                onScroll={::this.onScroll}
+                scrollEventThrottle={1000}
+            >
+                {this.renderOptionItems(filtered)}
+            </ScrollView>
         );
     }
+    // <Icon
+    //     color={colors.iconWhite}
+    //     name="iw-innowatio-logo"
+    //     size={width * .06}
+    //     style={styles.inputIcon}
+    // />
 
     renderDropDown () {
-        const {height} = Dimensions.get("window");
+        const {height, width} = Dimensions.get("window");
         return this.state.showItems ? (
-            <Animated.View style={[
-                styles.view,
-                {
-                    height: height - 74,
-                    transform: [{
-                        translateY: this.state.slidingAnimationValue
-                    }]
-                }
-            ]}>
-                {this.renderList()}
-            </Animated.View>
+            <View>
+                <Animated.View style={[
+                    styles.view,
+                    {
+                        height: height - 74,
+                        transform: [{
+                            translateY: this.state.slidingAnimationValue
+                        }]
+                    }
+                ]}>
+                    <View style={[styles.textInputWrp]}>
+                        <FaIcons
+                            color={colors.white}
+                            name={"search"}
+                            size={width * .04}
+                            style={styles.inputIcon}
+                        />
+                        <TextInput
+                            autoCorrect={false}
+                            keyboardType={"default"}
+                            onChangeText={(searchText) => this.onChangeText(searchText)}
+                            placeholder="Cerca un sito"
+                            placeholderTextColor={colors.white}
+                            style={[styles.textInput, {height: height * .045, width: width * .48}]}
+                            underlineColorAndroid={colors.transparent}
+                            value={this.state.searchText}
+                        />
+                    </View>
+                    {this.renderList()}
+                    <Scroll
+                        style={{margin: height * .02, top: height * .75, alignItems: "flex-end"}}
+                        visible={this.state.toScroll && this.state.beforeScroll}
+                    />
+                </Animated.View>
+            </View>
         ) : null;
     }
 
     render () {
+        const {width} = Dimensions.get("window");
         const {titlePlaceholder} = this.props;
         return (
             <View>
                 <TouchableOpacity onPress={this.toggleItems.bind(this)}>
                     <View style={styles.header}>
                         <Text
-                            style={{color: colors.white}}
+                            ellipsizeMode={"tail"}
+                            numberOfLines={1}
+                            style={{color: colors.white, width: width * .46}}
                         >
                             {titlePlaceholder ? titlePlaceholder : "Select an item"}
                         </Text>
                         <FaIcons
                             name={this.state.showItems ? "angle-up" : "angle-down"}
-                            size={26}
+                            size={width * .07}
                             style={styles.itemIcon}
                         />
                     </View>

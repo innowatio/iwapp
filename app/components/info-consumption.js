@@ -1,5 +1,5 @@
 import React, {Component, PropTypes} from "react";
-import {Dimensions, StyleSheet, View} from "react-native";
+import {Dimensions, StyleSheet, Image, View} from "react-native";
 
 import * as colors from "../lib/colors";
 import Icon from "../components/iwapp-icons";
@@ -30,13 +30,7 @@ const styles = StyleSheet.create({
         justifyContent: "center"
     },
     iconActivityWrp: {
-        marginVertical: 5,
-        borderRadius: 100,
-        alignItems: "center",
-        backgroundColor: colors.borderIconGreen
-    },
-    iconActivity: {
-        backgroundColor: colors.transparent
+        marginVertical: 5
     },
     meanConsumptionContainer: {
         flexDirection: "column",
@@ -212,12 +206,10 @@ export default class InfoConsumption extends Component {
             <View style={[styles.container, {height: this.props.heightSwiper}]}>
                 <View style={[styles.infoAndConsumptionContainer, {width, height: height * .35}]}>
                     <View style={[styles.infoContainer, {height: height * .35, width: width * .41}]}>
-                        <View style={[styles.iconActivityWrp, {width: height * .14, height: height * .14}]}>
-                            <Icon
-                                color={colors.iconGreen}
-                                name={"iw-badge-buildings"}
-                                size={height * .12}
-                                style={[styles.iconActivity, {paddingVertical: height * .01}]}
+                        <View style={styles.iconActivityWrp}>
+                            <Image
+                                source={require("../assets/img/ico_default.gif")}
+                                style={{width: height * .14, height: height * .14}}
                             />
                         </View>
                         <Text style={styles.textStandardSmall}>{"23 persone"}</Text>

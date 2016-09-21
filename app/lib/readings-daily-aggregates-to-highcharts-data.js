@@ -1,7 +1,30 @@
-import {addIndex, map, memoize} from "ramda";
+import {addIndex, findIndex, findLastIndex, map, memoize} from "ramda";
 import moment from "moment";
 
 const mapIndexed = addIndex(map);
+
+function getDailyAggregate (dailyAggregates, chartState) {
+    const {sensorId, day, measurementType, source} = chartState;
+    const date = [
+        moment.utc(day).subtract({day: 1}).format("YYYY-MM-DD"),
+        day,
+        moment.utc(day).add({day: 1}).format("YYYY-MM-DD")
+    ];
+    const aggregates = date.map(dataDay => dailyAggregates.get(
+        `${sensorId}-${dataDay}-${source}-${measurementType}`
+    ));
+    return aggregates.reduce((acc, aggregate) => {
+        if (!aggregate) {
+            return acc;
+        }
+        const times = aggregate.get("measurementTimes").split(",");
+        const values = aggregate.get("measurementValues").split(",");
+        return {
+            values: [...acc.values, ...values],
+            times: [...acc.times, ...times]
+        };
+    }, {values: [], times: []});
+}
 
 export default memoize((aggregates, chartsState) => {
 
@@ -17,21 +40,27 @@ export default memoize((aggregates, chartsState) => {
 
     if (timeFromAggregate) {
         const chartsData = map(chartState => {
-            const {sensorId, day, measurementType, source} = chartState;
-            const aggregate = sortedAggregate.get(
-                `${sensorId}-${day}-${source}-${measurementType}`
-            );
-            var data = [];
-            if (aggregate) {
-                const times = aggregate.get("measurementTimes").split(",");
-                const values = aggregate.get("measurementValues").split(",");
-                data = mapIndexed((value, index) => {
-                    return {
-                        hour: moment.utc(parseInt(times[index])).format("H"),
-                        value: parseFloat(value)
-                    };
-                }, values);
+            const {sensorId, day} = chartState;
+            // Get daily aggregate with correct offset per timezone
+            const aggregate = getDailyAggregate(sortedAggregate, chartState);
+            const firstIndex = findIndex(time =>
+                parseInt(time) >= moment(day).valueOf()
+            )(aggregate.times);
+            var lastIndex = findLastIndex(time =>
+                parseInt(time) <= moment(day).endOf("day").valueOf()
+            )(aggregate.times);
+            if (lastIndex < 0 && firstIndex >= 0) {
+                lastIndex = aggregate.values.length;
             }
+            const values = aggregate.values.slice(firstIndex, lastIndex + 1);
+            const times = aggregate.times.slice(firstIndex, lastIndex + 1);
+            var data = [];
+            data = mapIndexed((value, index) => {
+                return {
+                    hour: moment.utc(parseInt(times[index])).add({minutes: moment().utcOffset()}).format("H"),
+                    value: parseFloat(value)
+                };
+            }, values);
             return {
                 toFill: sensorId.includes("-standby"),
                 data
