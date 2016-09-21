@@ -6,6 +6,7 @@ import FaIcons from "react-native-vector-icons/FontAwesome";
 import {heightWithoutHeader} from "../lib/const";
 
 import Text from "./text-lato";
+import Icon from "../components/iwapp-icons";
 import * as colors from "../lib/colors";
 import Scroll from "./scroll";
 
@@ -37,10 +38,23 @@ const styles = StyleSheet.create({
     projectText: {
         color: colors.white
     },
+    textInputWrp: {
+        backgroundColor: colors.primaryBlue,
+        borderRadius: 100,
+        flexDirection: "row",
+        alignItems: "center",
+        marginHorizontal: 15,
+        marginVertical: 10
+    },
     textInput: {
         padding: 2,
-        height: 30
-    }
+        fontSize: 12,
+        color: colors.white
+    },
+    inputIcon: {
+        backgroundColor: colors.transparent,
+        marginHorizontal: 5
+    },
 });
 
 export default class DropDown extends Component {
@@ -124,7 +138,7 @@ export default class DropDown extends Component {
     renderList () {
         const self = this;
         const filtered = this.props.optionItems.filter(function (d) {
-            return d.title.indexOf(self.state.searchText)>-1;
+            return d.title.toLowerCase().indexOf(self.state.searchText.toLowerCase())>-1;
         });
         return isEmpty(filtered) ?
             null :(
@@ -139,15 +153,9 @@ export default class DropDown extends Component {
     }
 
     renderDropDown () {
-        const {height} = Dimensions.get("window");
+        const {height, width} = Dimensions.get("window");
         return this.state.showItems ? (
             <View>
-                <TextInput
-                    onChangeText={(searchText) => this.onChangeText(searchText)}
-                    placeholder="search"
-                    style={styles.textInput}
-                    value={this.state.searchText}
-                />
                 <Animated.View style={[
                     styles.view,
                     {
@@ -157,6 +165,25 @@ export default class DropDown extends Component {
                         }]
                     }
                 ]}>
+                    <View style={[styles.textInputWrp]}>
+                        <Icon
+                            color={colors.iconWhite}
+                            name="iw-innowatio-logo"
+                            size={width * .06}
+                            style={styles.inputIcon}
+                        />
+                        <TextInput
+                            autoCorrect={false}
+                            keyboardType={"default"}
+                            onChangeText={(searchText) => this.onChangeText(searchText)}
+                            placeholder="cerca un sito"
+                            placeholderTextColor={colors.white}
+                            style={[styles.textInput, {height: height * .04, width: width * .6}]}
+                            underlineColorAndroid={colors.transparent}
+                            value={this.state.searchText}
+                        />
+
+                    </View>
                     {this.renderList()}
                     <Scroll
                         style={{margin: height * .02, top: height * .75, alignItems: "flex-end"}}
