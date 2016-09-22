@@ -6,7 +6,7 @@ import FaIcons from "react-native-vector-icons/FontAwesome";
 import {heightWithoutHeader} from "../lib/const";
 
 import Text from "./text-lato";
-import Icon from "../components/iwapp-icons";
+// import Icon from "../components/iwapp-icons";
 import * as colors from "../lib/colors";
 import Scroll from "./scroll";
 
@@ -53,7 +53,8 @@ const styles = StyleSheet.create({
     },
     inputIcon: {
         backgroundColor: colors.transparent,
-        marginHorizontal: 5
+        marginLeft: 10,
+        marginRight: 5
     },
 });
 
@@ -151,6 +152,12 @@ export default class DropDown extends Component {
             </ScrollView>
         );
     }
+    // <Icon
+    //     color={colors.iconWhite}
+    //     name="iw-innowatio-logo"
+    //     size={width * .06}
+    //     style={styles.inputIcon}
+    // />
 
     renderDropDown () {
         const {height, width} = Dimensions.get("window");
@@ -166,23 +173,22 @@ export default class DropDown extends Component {
                     }
                 ]}>
                     <View style={[styles.textInputWrp]}>
-                        <Icon
-                            color={colors.iconWhite}
-                            name="iw-innowatio-logo"
-                            size={width * .06}
+                        <FaIcons
+                            color={colors.white}
+                            name={"search"}
+                            size={width * .04}
                             style={styles.inputIcon}
                         />
                         <TextInput
                             autoCorrect={false}
                             keyboardType={"default"}
                             onChangeText={(searchText) => this.onChangeText(searchText)}
-                            placeholder="cerca un sito"
+                            placeholder="Cerca un sito"
                             placeholderTextColor={colors.white}
-                            style={[styles.textInput, {height: height * .04, width: width * .6}]}
+                            style={[styles.textInput, {height: height * .045, width: width * .48}]}
                             underlineColorAndroid={colors.transparent}
                             value={this.state.searchText}
                         />
-
                     </View>
                     {this.renderList()}
                     <Scroll
