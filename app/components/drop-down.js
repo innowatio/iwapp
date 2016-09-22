@@ -152,12 +152,6 @@ export default class DropDown extends Component {
             </ScrollView>
         );
     }
-    // <Icon
-    //     color={colors.iconWhite}
-    //     name="iw-innowatio-logo"
-    //     size={width * .06}
-    //     style={styles.inputIcon}
-    // />
 
     renderDropDown () {
         const {height, width} = Dimensions.get("window");
