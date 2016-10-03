@@ -43,7 +43,7 @@ public class MainApplication extends Application implements ReactApplication {
             new FIRMessagingPackage(),
             new ImagePickerPackage(),
             new VectorIconsPackage(),
-            new CodePush(getString(R.string.reactNativeCodePush_androidDeploymentKey), MainApplication.this, BuildConfig.DEBUG)
+            new CodePush(BuildConfig.CODEPUSH_KEY, MainApplication.this, BuildConfig.DEBUG)
             );
         }
     };

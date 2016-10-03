@@ -13,9 +13,20 @@ var getIp = function () {
 };
 
 function getEnvirnomentVariables () {
-    return {
-        READ_BACKEND_ENDPOINT: process.env.READ_BACKEND_ENDPOINT || `ws://${getIp()}:3000/websocket`,
-        WRITE_API_ENDPOINT: process.env.WRITE_API_ENDPOINT || "https://iwwa-write-api-development.innowatio-aws.com"
+    return process.env.TRAVIS_TAG ? {
+        READ_BACKEND_ENDPOINT: process.env.READ_BACKEND_ENDPOINT_PRODUCTION,
+        WRITE_API_ENDPOINT: process.env.WRITE_API_ENDPOINT_PRODUCTION
+    } : {
+        READ_BACKEND_ENDPOINT: (
+            process.env.READ_BACKEND_ENDPOINT ||
+            process.env.READ_BACKEND_ENDPOINT_STAGING ||
+            `ws://${getIp()}:3000/websocket`
+        ),
+        WRITE_API_ENDPOINT: (
+            process.env.WRITE_API_ENDPOINT ||
+            process.env.WRITE_API_ENDPOINT_STAGING ||
+            "https://iwwa-write-api-development.innowatio-aws.com"
+        )
     };
 }
 

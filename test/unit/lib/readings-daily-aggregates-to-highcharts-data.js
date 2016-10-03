@@ -1,5 +1,5 @@
 import moment from "moment";
-import {map, range, pipe, fromPairs, unnest} from "ramda";
+import {map, range, pipe, findIndex, findLastIndex, fromPairs, update, unnest} from "ramda";
 import {fromJS} from "immutable";
 
 import readingsDailyAggregatesToHighchartsData from "lib/readings-daily-aggregates-to-highcharts-data";
@@ -34,12 +34,46 @@ describe("`readingsDailyAggregatesToHighchartsData` function", () => {
         ]
     };
     const source = ["reading", "forecast"];
+    const defaultChartArray = [
+        ["0", 0],
+        ["1", 0],
+        ["2", 0],
+        ["3", 0],
+        ["4", 0],
+        ["5", 0],
+        ["6", 0],
+        ["7", 0],
+        ["8", 0],
+        ["9", 0],
+        ["10", 0],
+        ["11", 0],
+        ["12", 0],
+        ["13", 0],
+        ["14", 0],
+        ["15", 0],
+        ["16", 0],
+        ["17", 0],
+        ["18", 0],
+        ["19", 0],
+        ["20", 0],
+        ["21", 0],
+        ["22", 0],
+        ["23", 0]
+    ];
 
     const dates = [
         "2016-09-15",
         "2016-09-16",
         "2016-09-17"
     ];
+
+    function getDataArray (times, values) {
+        return times.reduce((acc, time, index) => {
+            const hour = moment.utc(parseInt(time)).add({minutes: moment().utcOffset()}).format("H");
+            const indexHour = findIndex(a => a[0] == hour)(acc);
+            return update(indexHour, [hour, values[index] + acc[indexHour][1]], acc);
+        }, defaultChartArray);
+    }
 
     const readingsDailyAggregates = pipe(
         map(idx =>
@@ -135,34 +169,15 @@ describe("`readingsDailyAggregatesToHighchartsData` function", () => {
                 readingsDailyAggregates,
                 chartState
             );
-            expect(ret).to.deep.equal([{
-                data: [
-                    ["0", 0],
-                    ["1", 3],
-                    ["2", 12],
-                    ["3", 0],
-                    ["4", 0],
-                    ["5", 0],
-                    ["6", 0],
-                    ["7", 31],
-                    ["8", 0],
-                    ["9", 0],
-                    ["10", 0],
-                    ["11", 0],
-                    ["12", 0],
-                    ["13", 0],
-                    ["14", 0],
-                    ["15", 437],
-                    ["16", 0],
-                    ["17", 0],
-                    ["18", 0],
-                    ["19", 234],
-                    ["20", 0],
-                    ["21", 0],
-                    ["22", 0],
-                    ["23", 0]
-                ]
-            }]);
+            const totalTimes = unnest(times.reading);
+            const firstIndex = findIndex(time => parseInt(time) >= moment("2016-09-16").valueOf())(totalTimes);
+            const lastIndex = findLastIndex(time => parseInt(time) <= moment("2016-09-16").endOf("day").valueOf())(totalTimes);
+            const timesArray = totalTimes.slice(firstIndex, lastIndex + 1);
+            const valuesArray = [
+                12, 15, 16, 12, 6, 87, 332, 234, 3, 12, 15, 16, 12, 6, 87, 332, 234, 3, 12, 15, 16, 12, 6, 87, 332, 234, 3
+            ].slice(firstIndex, lastIndex + 1);
+            const data = getDataArray(timesArray, valuesArray);
+            expect(ret).to.deep.equal([{data}]);
         });
 
         it("should be an array of correct filled values", () => {
@@ -176,34 +191,22 @@ describe("`readingsDailyAggregatesToHighchartsData` function", () => {
                 standByReadingsDailyAggregates,
                 chartState
             );
-            expect(ret).to.deep.equal([{
-                data: [
-                    ["0", 0],
-                    ["1", 3],
-                    ["2", 12],
-                    ["3", 12],
-                    ["4", 12],
-                    ["5", 12],
-                    ["6", 12],
-                    ["7", 31],
-                    ["8", 31],
-                    ["9", 31],
-                    ["10", 31],
-                    ["11", 31],
-                    ["12", 31],
-                    ["13", 31],
-                    ["14", 31],
-                    ["15", 437],
-                    ["16", 437],
-                    ["17", 437],
-                    ["18", 437],
-                    ["19", 234],
-                    ["20", 234],
-                    ["21", 234],
-                    ["22", 234],
-                    ["23", 234]
-                ]
-            }]);
+            const totalTimes = unnest(times.reading);
+            const firstIndex = findIndex(time => parseInt(time) >= moment("2016-09-16").valueOf())(totalTimes);
+            const lastIndex = findLastIndex(time => parseInt(time) <= moment("2016-09-16").endOf("day").valueOf())(totalTimes);
+            const timesArray = totalTimes.slice(firstIndex, lastIndex + 1);
+            const valuesArray = [
+                12, 15, 16, 12, 6, 87, 332, 234, 3, 12, 15, 16, 12, 6, 87, 332, 234, 3, 12, 15, 16, 12, 6, 87, 332, 234, 3
+            ].slice(firstIndex, lastIndex + 1);
+            const dataArray = getDataArray(timesArray, valuesArray);
+            var lastDataNotZero = 0;
+            const data = dataArray.reduce((acc, value, index) => {
+                if (value[1] !== 0) {
+                    lastDataNotZero = value[1];
+                }
+                return update(index, [value[0], lastDataNotZero], acc);
+            }, dataArray);
+            expect(ret).to.deep.equal([{data}]);
         });
 
         it("should be an empty array", () => {

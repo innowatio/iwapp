@@ -29,6 +29,9 @@ describe("`Main` component", () => {
 
     describe("`componentDidMount` method", () => {
 
+        const AppState = {
+            addEventListener: sinon.spy()
+        };
         const codePush = {
             sync: sinon.spy(),
             InstallMode: {
@@ -41,20 +44,26 @@ describe("`Main` component", () => {
         };
         const syncStoreAndAsteroid = sinon.spy();
 
-        beforeEach(() => {
+        before(() => {
             Main.__Rewire__("codePush", codePush);
             Main.__Rewire__("FCM", FCM);
             Main.__Rewire__("syncStoreAndAsteroid", syncStoreAndAsteroid);
-            FCM.requestPermissions.reset();
-            codePush.sync.reset();
+            Main.__Rewire__("AppState", AppState);
         });
 
-        afterEach(() => {
-            codePush.sync.reset();
-            syncStoreAndAsteroid.reset();
+        after(() => {
             Main.__ResetDependency__("syncStoreAndAsteroid");
             Main.__ResetDependency__("FCM");
             Main.__ResetDependency__("codePush");
+            Main.__ResetDependency__("AppState");
+        });
+
+        beforeEach(() => {
+            FCM.requestPermissions.reset();
+            codePush.sync.reset();
+            codePush.sync.reset();
+            syncStoreAndAsteroid.reset();
+            AppState.addEventListener.reset();
         });
 
         it("call `codePush.sync` function", () => {
@@ -76,6 +85,36 @@ describe("`Main` component", () => {
         it("call `requestPermissions` function", () => {
             Main.prototype.componentDidMount();
             expect(FCM.requestPermissions).to.have.callCount(1);
+        });
+
+        it("call `addEventListener` function", () => {
+            Main.prototype.componentDidMount();
+            expect(AppState.addEventListener).to.have.callCount(1);
+        });
+
+    });
+
+    describe("`componentWillUnmount` method", () => {
+
+        const AppState = {
+            removeEventListener: sinon.spy()
+        };
+
+        before(() => {
+            Main.__Rewire__("AppState", AppState);
+        });
+
+        after(() => {
+            Main.__ResetDependency__("AppState");
+        });
+
+        beforeEach(() => {
+            AppState.removeEventListener.reset();
+        });
+
+        it("call `addEventListener` function", () => {
+            Main.prototype.componentWillUnmount();
+            expect(AppState.removeEventListener).to.have.callCount(1);
         });
 
     });

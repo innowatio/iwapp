@@ -11,4 +11,4 @@ before_script:
 
 script:
     - npm run lint
-    - npm run test && code-push-travis
+    - npm run test && code-push-travis --tag true -t 1.0.2

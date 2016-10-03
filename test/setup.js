@@ -5,7 +5,6 @@ import register from "babel-core/register";
 import chai from "chai";
 import ReactTestUtils from "react-addons-test-utils";
 import chaiEnzyme from "chai-enzyme";
-import moment from "moment-timezone";
 import ReactDOM from "react-dom";
 import sinon from "sinon";
 import sinonChai from "sinon-chai";
@@ -70,9 +69,6 @@ chai.use(chaiEnzyme());
 
 // Setup global WebSocket
 global.WebSocket = ws;
-
-// Set test timezone
-moment.tz.setDefault("Europe/Rome");
 
 // Setup mocks
 require("react-native-mock/mock");

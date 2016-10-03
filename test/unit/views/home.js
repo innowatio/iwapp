@@ -360,8 +360,8 @@ describe("`Home` view", () => {
             expect(subscribe.thirdCall).to.have.been.calledWithExactly(
                 "dailyMeasuresBySensor",
                 "sensorId",
-                "1970-01-01",
-                "1970-01-01",
+                "1969-12-31",
+                "1970-01-02",
                 "reading",
                 "maxPower"
             );
