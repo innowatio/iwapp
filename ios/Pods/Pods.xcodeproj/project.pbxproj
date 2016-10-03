@@ -7,57 +7,59 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		13D5B61802D0642E0F58523FB825CC7C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEC22C73C1608DFA5D5D78BDCB218219 /* Foundation.framework */; };
-		209BCFF256B8F2B41A4041C21131C391 /* Pods-iwappTests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = EF02267E02902051083FA4FF17D225B4 /* Pods-iwappTests-dummy.m */; };
-		D985AE03153006A02C7949BFFB38AEA1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEC22C73C1608DFA5D5D78BDCB218219 /* Foundation.framework */; };
-		E8048A134A56096C1C5B5E803FFD3863 /* Pods-iwapp-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = F2E0D06EC020414C7AC2BF83F81DA713 /* Pods-iwapp-dummy.m */; };
+		109914CDA903FD8C929B3075BD86F81B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEC22C73C1608DFA5D5D78BDCB218219 /* Foundation.framework */; };
+		80586F18AE2AC5C81C84CD2C6BE0E3F1 /* Pods-iwapp-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C5E0AF86C5B4BB8813024A2D2100D37 /* Pods-iwapp-dummy.m */; };
+		E75114378D7426F7D65ECC2A56C5FE59 /* Pods-iwappTests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 52E5FD3F9444BE1930EDCC0B44B9F408 /* Pods-iwappTests-dummy.m */; };
+		E8E7DD3FBB5E9C08622480C496156EF4 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEC22C73C1608DFA5D5D78BDCB218219 /* Foundation.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		04D02EB1443D0917FDD53AD45FF6C8AA /* Pods-iwappTests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-iwappTests-acknowledgements.plist"; sourceTree = "<group>"; };
 		0B7288E21564F280041A4C9B1271EC03 /* libPods-iwapp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-iwapp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		11D1A429AC9E0BB7D8E6F0B6C008B070 /* Pods-iwapp-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-iwapp-acknowledgements.markdown"; sourceTree = "<group>"; };
+		0C1B4FBEF52A6AD38D1F2BEB24E77857 /* Pods-iwappTests-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-iwappTests-resources.sh"; sourceTree = "<group>"; };
+		1499C1C2DF4587D3B12FE143253A483E /* Pods-iwapp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-iwapp.debug.xcconfig"; sourceTree = "<group>"; };
 		1C0B12A860104FA9B148978127550144 /* GoogleIPhoneUtilities.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleIPhoneUtilities.framework; path = Frameworks/GoogleIPhoneUtilities.framework; sourceTree = "<group>"; };
+		1FC432DDEE1EB6C8F9C95328AC773BFB /* Pods-iwapp-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-iwapp-resources.sh"; sourceTree = "<group>"; };
 		20D5254FC308E8637E37BF06101026CF /* GoogleUtilities.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleUtilities.framework; path = Frameworks/GoogleUtilities.framework; sourceTree = "<group>"; };
 		2627D0B10A819A0A6589A79987B0C9E4 /* GoogleInterchangeUtilities.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleInterchangeUtilities.framework; path = Frameworks/GoogleInterchangeUtilities.framework; sourceTree = "<group>"; };
+		324E1EF6AF6C4C7AEBD4FC31321D3736 /* Pods-iwappTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-iwappTests.debug.xcconfig"; sourceTree = "<group>"; };
+		35C694F134106ACAE9DB0B05727F4428 /* Pods-iwapp.preprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-iwapp.preprod.xcconfig"; sourceTree = "<group>"; };
+		3C5E0AF86C5B4BB8813024A2D2100D37 /* Pods-iwapp-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-iwapp-dummy.m"; sourceTree = "<group>"; };
+		3EEE3018860F56FA31696406AD502369 /* Pods-iwapp-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-iwapp-frameworks.sh"; sourceTree = "<group>"; };
 		472C4423DEC53D641C82F8FCD7D0D905 /* GoogleSymbolUtilities.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleSymbolUtilities.framework; path = Frameworks/GoogleSymbolUtilities.framework; sourceTree = "<group>"; };
-		5CA65CE0DB3AF2163E64CFFB55CC8DD2 /* Pods-iwappTests-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-iwappTests-frameworks.sh"; sourceTree = "<group>"; };
-		6B587747E5C4A60634E5BA38CF132D49 /* Pods-iwapp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-iwapp.debug.xcconfig"; sourceTree = "<group>"; };
+		4F7601211EFDE931B904A927417528B9 /* Pods-iwapp-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-iwapp-acknowledgements.markdown"; sourceTree = "<group>"; };
+		52E5FD3F9444BE1930EDCC0B44B9F408 /* Pods-iwappTests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-iwappTests-dummy.m"; sourceTree = "<group>"; };
+		6A526347E9D7A6D279DD41AE89076863 /* Pods-iwappTests-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-iwappTests-frameworks.sh"; sourceTree = "<group>"; };
+		86BD8B5E6E5FEB25672A886FCB949829 /* Pods-iwappTests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-iwappTests-acknowledgements.markdown"; sourceTree = "<group>"; };
 		88914EF9CACB16C6248A812C3E1126DC /* FIRMessaging.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FIRMessaging.h; path = Headers/Public/FIRMessaging.h; sourceTree = "<group>"; };
 		89CB577C01EDF4960AB62D60E707F501 /* FirebaseInstanceID.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FirebaseInstanceID.framework; path = Frameworks/FirebaseInstanceID.framework; sourceTree = "<group>"; };
 		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		97681334BC48C7BD5D8B2CB319A7EBC2 /* Pods-iwapp-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-iwapp-resources.sh"; sourceTree = "<group>"; };
-		A4226D056713B369472ED0E25BF783E0 /* Pods-iwappTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-iwappTests.release.xcconfig"; sourceTree = "<group>"; };
+		9BB03F894FE8601548CB7EF58A0A411A /* Pods-iwappTests.preprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-iwappTests.preprod.xcconfig"; sourceTree = "<group>"; };
+		9F6BCE15CB62DBB096FFE36742A5A45B /* Pods-iwapp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-iwapp.release.xcconfig"; sourceTree = "<group>"; };
 		B372E912F7D254802F0C7550BBDA666A /* FIRInstanceID.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FIRInstanceID.h; path = Headers/Public/FIRInstanceID.h; sourceTree = "<group>"; };
-		B93D7757070C2E1265C9927CB68D288C /* Pods-iwapp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-iwapp.release.xcconfig"; sourceTree = "<group>"; };
 		C00440DD8BE0E675A1BC2A73C025F628 /* FirebaseAnalytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FirebaseAnalytics.framework; path = Frameworks/frameworks/FirebaseAnalytics.framework; sourceTree = "<group>"; };
 		CEC22C73C1608DFA5D5D78BDCB218219 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.3.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
-		D04BA8B77F0212079B9A7DCF137D4CB4 /* Pods-iwapp-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-iwapp-acknowledgements.plist"; sourceTree = "<group>"; };
-		E1DA2C8209652EBC8FE49ACF3549F1A9 /* Pods-iwapp-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-iwapp-frameworks.sh"; sourceTree = "<group>"; };
-		E294947C1B2AB9D1C43FEDE46A9A0264 /* Pods-iwappTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-iwappTests.debug.xcconfig"; sourceTree = "<group>"; };
+		D61AA24A7F7B88C282C181B3E9CA35C8 /* Pods-iwappTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-iwappTests.release.xcconfig"; sourceTree = "<group>"; };
+		DE7F35AF43F37644ED41958EF38C72F4 /* Pods-iwapp-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-iwapp-acknowledgements.plist"; sourceTree = "<group>"; };
 		E973DE4B829CB1494882FFA38B0AFA2C /* Firebase.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = Firebase.h; path = Headers/Firebase.h; sourceTree = "<group>"; };
 		EC809289232B260C49AB5B47B0A33D0B /* libPods-iwappTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-iwappTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		EC83A9FD4703F2F4A96FFC8ABEF0A95C /* Pods-iwappTests-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-iwappTests-resources.sh"; sourceTree = "<group>"; };
-		EE7616C1C533F74E85A29C7757C99ED5 /* Pods-iwappTests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-iwappTests-acknowledgements.markdown"; sourceTree = "<group>"; };
-		EF02267E02902051083FA4FF17D225B4 /* Pods-iwappTests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-iwappTests-dummy.m"; sourceTree = "<group>"; };
-		F2E0D06EC020414C7AC2BF83F81DA713 /* Pods-iwapp-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-iwapp-dummy.m"; sourceTree = "<group>"; };
 		F2E3F68C29AC36663C4F81FE234FE9B4 /* FirebaseMessaging.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FirebaseMessaging.framework; path = Frameworks/FirebaseMessaging.framework; sourceTree = "<group>"; };
-		FB50B1CE044AE170B9366B5FB7F1BB33 /* Pods-iwappTests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-iwappTests-acknowledgements.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		4248ACCE52A03B2FD7B51ACBD0AB5775 /* Frameworks */ = {
+		7E13778E0E43CA2CF1D66244F3A1B077 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				13D5B61802D0642E0F58523FB825CC7C /* Foundation.framework in Frameworks */,
+				109914CDA903FD8C929B3075BD86F81B /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		AE5967638AD5FD7A7A4295496F7E0D1E /* Frameworks */ = {
+		DA5963FAADFC2AF95C0048D3E1CC3936 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D985AE03153006A02C7949BFFB38AEA1 /* Foundation.framework in Frameworks */,
+				E8E7DD3FBB5E9C08622480C496156EF4 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -72,6 +74,22 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		201B4B642F2D8FBDAB4BF45376CB086A /* Pods-iwapp */ = {
+			isa = PBXGroup;
+			children = (
+				4F7601211EFDE931B904A927417528B9 /* Pods-iwapp-acknowledgements.markdown */,
+				DE7F35AF43F37644ED41958EF38C72F4 /* Pods-iwapp-acknowledgements.plist */,
+				3C5E0AF86C5B4BB8813024A2D2100D37 /* Pods-iwapp-dummy.m */,
+				3EEE3018860F56FA31696406AD502369 /* Pods-iwapp-frameworks.sh */,
+				1FC432DDEE1EB6C8F9C95328AC773BFB /* Pods-iwapp-resources.sh */,
+				1499C1C2DF4587D3B12FE143253A483E /* Pods-iwapp.debug.xcconfig */,
+				35C694F134106ACAE9DB0B05727F4428 /* Pods-iwapp.preprod.xcconfig */,
+				9F6BCE15CB62DBB096FFE36742A5A45B /* Pods-iwapp.release.xcconfig */,
+			);
+			name = "Pods-iwapp";
+			path = "Target Support Files/Pods-iwapp";
+			sourceTree = "<group>";
+		};
 		23C62B7D3064D98E3927DC5FD0981C9E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -80,13 +98,20 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		247AEF8FD6B0CEAE35BE9F478DFE32A7 /* Targets Support Files */ = {
+		38566CB0687A137F304D532BEE9C47A4 /* Pods-iwappTests */ = {
 			isa = PBXGroup;
 			children = (
-				D8DB6D5723B9CFC8F7166293612E8190 /* Pods-iwapp */,
-				6B526742D35004E9F362BE5A508C3055 /* Pods-iwappTests */,
+				86BD8B5E6E5FEB25672A886FCB949829 /* Pods-iwappTests-acknowledgements.markdown */,
+				04D02EB1443D0917FDD53AD45FF6C8AA /* Pods-iwappTests-acknowledgements.plist */,
+				52E5FD3F9444BE1930EDCC0B44B9F408 /* Pods-iwappTests-dummy.m */,
+				6A526347E9D7A6D279DD41AE89076863 /* Pods-iwappTests-frameworks.sh */,
+				0C1B4FBEF52A6AD38D1F2BEB24E77857 /* Pods-iwappTests-resources.sh */,
+				324E1EF6AF6C4C7AEBD4FC31321D3736 /* Pods-iwappTests.debug.xcconfig */,
+				9BB03F894FE8601548CB7EF58A0A411A /* Pods-iwappTests.preprod.xcconfig */,
+				D61AA24A7F7B88C282C181B3E9CA35C8 /* Pods-iwappTests.release.xcconfig */,
 			);
-			name = "Targets Support Files";
+			name = "Pods-iwappTests";
+			path = "Target Support Files/Pods-iwappTests";
 			sourceTree = "<group>";
 		};
 		3DCAB2B7CDE207B3958B6CB957FCC758 /* iOS */ = {
@@ -170,21 +195,6 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		6B526742D35004E9F362BE5A508C3055 /* Pods-iwappTests */ = {
-			isa = PBXGroup;
-			children = (
-				EE7616C1C533F74E85A29C7757C99ED5 /* Pods-iwappTests-acknowledgements.markdown */,
-				FB50B1CE044AE170B9366B5FB7F1BB33 /* Pods-iwappTests-acknowledgements.plist */,
-				EF02267E02902051083FA4FF17D225B4 /* Pods-iwappTests-dummy.m */,
-				5CA65CE0DB3AF2163E64CFFB55CC8DD2 /* Pods-iwappTests-frameworks.sh */,
-				EC83A9FD4703F2F4A96FFC8ABEF0A95C /* Pods-iwappTests-resources.sh */,
-				E294947C1B2AB9D1C43FEDE46A9A0264 /* Pods-iwappTests.debug.xcconfig */,
-				A4226D056713B369472ED0E25BF783E0 /* Pods-iwappTests.release.xcconfig */,
-			);
-			name = "Pods-iwappTests";
-			path = "Target Support Files/Pods-iwappTests";
-			sourceTree = "<group>";
-		};
 		6B996E6307B3991DC5ED177A517E494D /* FirebaseAnalytics */ = {
 			isa = PBXGroup;
 			children = (
@@ -208,7 +218,7 @@
 				BC3CA7F9E30CC8F7E2DD044DD34432FC /* Frameworks */,
 				4D295DDD3DF41C4E15F489B6BD260EA2 /* Pods */,
 				5D946C7708C5459EF6DE31F6F4B7B579 /* Products */,
-				247AEF8FD6B0CEAE35BE9F478DFE32A7 /* Targets Support Files */,
+				B81D91BA8F81AB7B824942EB6200C122 /* Targets Support Files */,
 			);
 			sourceTree = "<group>";
 		};
@@ -244,27 +254,21 @@
 			path = GoogleSymbolUtilities;
 			sourceTree = "<group>";
 		};
+		B81D91BA8F81AB7B824942EB6200C122 /* Targets Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				201B4B642F2D8FBDAB4BF45376CB086A /* Pods-iwapp */,
+				38566CB0687A137F304D532BEE9C47A4 /* Pods-iwappTests */,
+			);
+			name = "Targets Support Files";
+			sourceTree = "<group>";
+		};
 		BC3CA7F9E30CC8F7E2DD044DD34432FC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
 				3DCAB2B7CDE207B3958B6CB957FCC758 /* iOS */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		D8DB6D5723B9CFC8F7166293612E8190 /* Pods-iwapp */ = {
-			isa = PBXGroup;
-			children = (
-				11D1A429AC9E0BB7D8E6F0B6C008B070 /* Pods-iwapp-acknowledgements.markdown */,
-				D04BA8B77F0212079B9A7DCF137D4CB4 /* Pods-iwapp-acknowledgements.plist */,
-				F2E0D06EC020414C7AC2BF83F81DA713 /* Pods-iwapp-dummy.m */,
-				E1DA2C8209652EBC8FE49ACF3549F1A9 /* Pods-iwapp-frameworks.sh */,
-				97681334BC48C7BD5D8B2CB319A7EBC2 /* Pods-iwapp-resources.sh */,
-				6B587747E5C4A60634E5BA38CF132D49 /* Pods-iwapp.debug.xcconfig */,
-				B93D7757070C2E1265C9927CB68D288C /* Pods-iwapp.release.xcconfig */,
-			);
-			name = "Pods-iwapp";
-			path = "Target Support Files/Pods-iwapp";
 			sourceTree = "<group>";
 		};
 		F2B96B6DC24D390B8C6791D705B52FC4 /* Frameworks */ = {
@@ -287,28 +291,12 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		8499E3EB9F524A92EF9D0CB60720AA06 /* Pods-iwapp */ = {
+		793AD1228196F297CD5AF4EA3E0A2AE1 /* Pods-iwappTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = DE2745A03DF6744D78C381CB0A119503 /* Build configuration list for PBXNativeTarget "Pods-iwapp" */;
+			buildConfigurationList = 5183C29ACFA33A3749F2E839727C42ED /* Build configuration list for PBXNativeTarget "Pods-iwappTests" */;
 			buildPhases = (
-				B68DB75AD76B022AFE8DA96C9EF9CEAD /* Sources */,
-				AE5967638AD5FD7A7A4295496F7E0D1E /* Frameworks */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = "Pods-iwapp";
-			productName = "Pods-iwapp";
-			productReference = 0B7288E21564F280041A4C9B1271EC03 /* libPods-iwapp.a */;
-			productType = "com.apple.product-type.library.static";
-		};
-		9EA32DDDA357396DBD15DDB1264E5ADF /* Pods-iwappTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 654AEE729EC088FCDEA9CB9056BB5B9D /* Build configuration list for PBXNativeTarget "Pods-iwappTests" */;
-			buildPhases = (
-				389EDD0712CF1636706494D13B876495 /* Sources */,
-				4248ACCE52A03B2FD7B51ACBD0AB5775 /* Frameworks */,
+				119FA2192FBF30FA36D327776FC8D6A3 /* Sources */,
+				7E13778E0E43CA2CF1D66244F3A1B077 /* Frameworks */,
 			);
 			buildRules = (
 			);
@@ -317,6 +305,22 @@
 			name = "Pods-iwappTests";
 			productName = "Pods-iwappTests";
 			productReference = EC809289232B260C49AB5B47B0A33D0B /* libPods-iwappTests.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		F49CFAF866212C7568BA759DEF0F1E9F /* Pods-iwapp */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E5A23A1AB80033A304FAE9DD4BF0D38A /* Build configuration list for PBXNativeTarget "Pods-iwapp" */;
+			buildPhases = (
+				DDE14175C175424CEFCCC7819AA56813 /* Sources */,
+				DA5963FAADFC2AF95C0048D3E1CC3936 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Pods-iwapp";
+			productName = "Pods-iwapp";
+			productReference = 0B7288E21564F280041A4C9B1271EC03 /* libPods-iwapp.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
@@ -340,35 +344,35 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				8499E3EB9F524A92EF9D0CB60720AA06 /* Pods-iwapp */,
-				9EA32DDDA357396DBD15DDB1264E5ADF /* Pods-iwappTests */,
+				F49CFAF866212C7568BA759DEF0F1E9F /* Pods-iwapp */,
+				793AD1228196F297CD5AF4EA3E0A2AE1 /* Pods-iwappTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXSourcesBuildPhase section */
-		389EDD0712CF1636706494D13B876495 /* Sources */ = {
+		119FA2192FBF30FA36D327776FC8D6A3 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				209BCFF256B8F2B41A4041C21131C391 /* Pods-iwappTests-dummy.m in Sources */,
+				E75114378D7426F7D65ECC2A56C5FE59 /* Pods-iwappTests-dummy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		B68DB75AD76B022AFE8DA96C9EF9CEAD /* Sources */ = {
+		DDE14175C175424CEFCCC7819AA56813 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E8048A134A56096C1C5B5E803FFD3863 /* Pods-iwapp-dummy.m in Sources */,
+				80586F18AE2AC5C81C84CD2C6BE0E3F1 /* Pods-iwapp-dummy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		1B8DCC080D78FF4F458710FA45CE865E /* Release */ = {
+		3E84B4B04287B428E00830760DC6C337 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B93D7757070C2E1265C9927CB68D288C /* Pods-iwapp.release.xcconfig */;
+			baseConfigurationReference = 9F6BCE15CB62DBB096FFE36742A5A45B /* Pods-iwapp.release.xcconfig */;
 			buildSettings = {
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -386,6 +390,43 @@
 				SKIP_INSTALL = YES;
 			};
 			name = Release;
+		};
+		3F16BD5B5D0DB61825E62F773FDBD5A3 /* PreProd */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"POD_CONFIGURATION_PRE_PROD=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				STRIP_INSTALLED_PRODUCT = NO;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = PreProd;
 		};
 		3FA2475660FFC880302AD18E29B2E5FC /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -429,9 +470,9 @@
 			};
 			name = Debug;
 		};
-		71D42FDE6D6BCF5C825D0597BB3199A6 /* Debug */ = {
+		41A28C478544A5244126DA57687ADEEC /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6B587747E5C4A60634E5BA38CF132D49 /* Pods-iwapp.debug.xcconfig */;
+			baseConfigurationReference = 324E1EF6AF6C4C7AEBD4FC31321D3736 /* Pods-iwappTests.debug.xcconfig */;
 			buildSettings = {
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -450,9 +491,30 @@
 			};
 			name = Debug;
 		};
-		A4A9636B3F6534DBA4871421053526E0 /* Release */ = {
+		4B15D9FDF0BCB8247F3615334EC705AB /* PreProd */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A4226D056713B369472ED0E25BF783E0 /* Pods-iwappTests.release.xcconfig */;
+			baseConfigurationReference = 9BB03F894FE8601548CB7EF58A0A411A /* Pods-iwappTests.preprod.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				MACH_O_TYPE = staticlib;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = PreProd;
+		};
+		6423A994B626A0880312FF9BD6989297 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = D61AA24A7F7B88C282C181B3E9CA35C8 /* Pods-iwappTests.release.xcconfig */;
 			buildSettings = {
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -471,17 +533,17 @@
 			};
 			name = Release;
 		};
-		B15DA3DEDE40358299F8965F382E4C94 /* Debug */ = {
+		A1AE458DF2EDE72B38D5B860937472CE /* PreProd */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E294947C1B2AB9D1C43FEDE46A9A0264 /* Pods-iwappTests.debug.xcconfig */;
+			baseConfigurationReference = 35C694F134106ACAE9DB0B05727F4428 /* Pods-iwapp.preprod.xcconfig */;
 			buildSettings = {
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				MACH_O_TYPE = staticlib;
-				MTL_ENABLE_DEBUG_INFO = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_LDFLAGS = "";
 				OTHER_LIBTOOLFLAGS = "";
 				PODS_ROOT = "$(SRCROOT)";
@@ -490,7 +552,7 @@
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 			};
-			name = Debug;
+			name = PreProd;
 		};
 		F325026B55060D3B22BEC0BAB5FA7344 /* Release */ = {
 			isa = XCBuildConfiguration;
@@ -530,6 +592,27 @@
 			};
 			name = Release;
 		};
+		F4FBDB8164B04CD910132DC88BDAE5DA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1499C1C2DF4587D3B12FE143253A483E /* Pods-iwapp.debug.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				MACH_O_TYPE = staticlib;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -537,25 +620,28 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				3FA2475660FFC880302AD18E29B2E5FC /* Debug */,
+				3F16BD5B5D0DB61825E62F773FDBD5A3 /* PreProd */,
 				F325026B55060D3B22BEC0BAB5FA7344 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		654AEE729EC088FCDEA9CB9056BB5B9D /* Build configuration list for PBXNativeTarget "Pods-iwappTests" */ = {
+		5183C29ACFA33A3749F2E839727C42ED /* Build configuration list for PBXNativeTarget "Pods-iwappTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				B15DA3DEDE40358299F8965F382E4C94 /* Debug */,
-				A4A9636B3F6534DBA4871421053526E0 /* Release */,
+				41A28C478544A5244126DA57687ADEEC /* Debug */,
+				4B15D9FDF0BCB8247F3615334EC705AB /* PreProd */,
+				6423A994B626A0880312FF9BD6989297 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		DE2745A03DF6744D78C381CB0A119503 /* Build configuration list for PBXNativeTarget "Pods-iwapp" */ = {
+		E5A23A1AB80033A304FAE9DD4BF0D38A /* Build configuration list for PBXNativeTarget "Pods-iwapp" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				71D42FDE6D6BCF5C825D0597BB3199A6 /* Debug */,
-				1B8DCC080D78FF4F458710FA45CE865E /* Release */,
+				F4FBDB8164B04CD910132DC88BDAE5DA /* Debug */,
+				A1AE458DF2EDE72B38D5B860937472CE /* PreProd */,
+				3E84B4B04287B428E00830760DC6C337 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
