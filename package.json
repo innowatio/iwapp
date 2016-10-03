@@ -75,7 +75,7 @@
     "chai": "^3.5.0",
     "chai-as-promised": "^5.3.0",
     "chai-enzyme": "^0.5.0",
-    "code-push-travis-cli": "^1.1.0",
+    "code-push-travis-cli": "^1.2.0",
     "dev-ip": "^1.0.1",
     "enzyme": "^2.4.1",
     "eslint": "^3.3.1",
