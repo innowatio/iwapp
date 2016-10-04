@@ -198,7 +198,7 @@
 		0E3AA8217E2F4807911C68A9 /* RNDeviceInfo.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNDeviceInfo.xcodeproj; path = "../node_modules/react-native-device-info/RNDeviceInfo.xcodeproj"; sourceTree = "<group>"; };
 		139105B61AF99BAD00B5F7CC /* RCTSettings.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTSettings.xcodeproj; path = "../node_modules/react-native/Libraries/Settings/RCTSettings.xcodeproj"; sourceTree = "<group>"; };
 		139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTWebSocket.xcodeproj; path = "../node_modules/react-native/Libraries/WebSocket/RCTWebSocket.xcodeproj"; sourceTree = "<group>"; };
-		13B07F961A680F5B00A75B9A /* iwapp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iwapp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		13B07F961A680F5B00A75B9A /* iwapp DEBUG.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "iwapp DEBUG.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = iwapp/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = iwapp/AppDelegate.m; sourceTree = "<group>"; };
 		13B07FB21A68108700A75B9A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
@@ -233,6 +233,8 @@
 		6BE5B2051CFED3B800D94AB2 /* Lato-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Regular.ttf"; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
+		928838982CC3697DA2224A68 /* Pods-iwapp.preprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iwapp.preprod.xcconfig"; path = "Pods/Target Support Files/Pods-iwapp/Pods-iwapp.preprod.xcconfig"; sourceTree = "<group>"; };
+		9468D88DFDA2961A5363F154 /* Pods-iwappTests.preprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iwappTests.preprod.xcconfig"; path = "Pods/Target Support Files/Pods-iwappTests/Pods-iwappTests.preprod.xcconfig"; sourceTree = "<group>"; };
 		A0148FCDDD1C4E4AAB3109E3 /* RNVectorIcons.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNVectorIcons.xcodeproj; path = "../node_modules/react-native-vector-icons/RNVectorIcons.xcodeproj"; sourceTree = "<group>"; };
 		AFC1CA354202B3775E109A65 /* libPods-iwappTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-iwappTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C52A87BA563A42C395B76A5F /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
@@ -401,8 +403,8 @@
 				D7779A57177D845C1D268CED /* Pods-iwapp.release.xcconfig */,
 				F6820A2E957C2C85C5B9AE50 /* Pods-iwappTests.debug.xcconfig */,
 				06EB8007460E744363FC83CF /* Pods-iwappTests.release.xcconfig */,
-				58303F855483DE30D096F906 /* Pods-iwapp.preprod.xcconfig */,
-				3138A5E21B021F144327A50E /* Pods-iwappTests.preprod.xcconfig */,
+				928838982CC3697DA2224A68 /* Pods-iwapp.preprod.xcconfig */,
+				9468D88DFDA2961A5363F154 /* Pods-iwappTests.preprod.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -421,6 +423,15 @@
 				6B188A531D40D6280064E009 /* libRNDeviceInfo.a */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		6B620A361DA3EA7300F7DA60 /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+				58303F855483DE30D096F906 /* Pods-iwapp.preprod.xcconfig */,
+				3138A5E21B021F144327A50E /* Pods-iwappTests.preprod.xcconfig */,
+			);
+			name = "Recovered References";
 			sourceTree = "<group>";
 		};
 		6B77AB4D1CE5C133001C6650 /* Products */ = {
@@ -506,6 +517,7 @@
 				CB704790333D44E7A1D5FF9F /* Resources */,
 				5940038C0786146DF2FE0CDA /* Pods */,
 				20E54000C5DFD928E0ADCC47 /* Frameworks */,
+				6B620A361DA3EA7300F7DA60 /* Recovered References */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -514,7 +526,7 @@
 		83CBBA001A601CBA00E9B192 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				13B07F961A680F5B00A75B9A /* iwapp.app */,
+				13B07F961A680F5B00A75B9A /* iwapp DEBUG.app */,
 				00E356EE1AD99517003FC87E /* iwappTests.xctest */,
 			);
 			name = Products;
@@ -587,7 +599,7 @@
 			);
 			name = iwapp;
 			productName = "Hello World";
-			productReference = 13B07F961A680F5B00A75B9A /* iwapp.app */;
+			productReference = 13B07F961A680F5B00A75B9A /* iwapp DEBUG.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -1098,7 +1110,7 @@
 					"$(inherited)",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.innowatio.iwapp;
-				PRODUCT_NAME = iwapp;
+				PRODUCT_NAME = "iwapp DEBUG";
 			};
 			name = Debug;
 		};
@@ -1207,7 +1219,7 @@
 					"$(inherited)",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.innowatio.iwapp;
-				PRODUCT_NAME = iwapp;
+				PRODUCT_NAME = "iwapp BETA";
 			};
 			name = PreProd;
 		};
