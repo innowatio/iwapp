@@ -59,13 +59,13 @@ export default class QuestionnaireProgress extends Component {
             >
                 <CircleProgress
                     percentage={questionnaire.value}
-                    size={90}
+                    size={height * .13}
                     strokeColor={questionnaire.color}
                     strokeWidth={2}
                 />
                 <TouchableOpacity
                     onPress={questionnaire.onPress}
-                    style={[styles.iconQuestionnaireWrp, {width: width * .25, height: height * .12}]}
+                    style={[styles.iconQuestionnaireWrp, {width: width * .25, height: height * .125}]}
                     transparent={true}
                 >
                     <Icon
