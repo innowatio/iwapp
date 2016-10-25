@@ -344,7 +344,8 @@ class Profile extends Component {
             }, 0) / questionnairePercentages.length);
 
         return (
-            <View style={[styles.progressBarStyleWrp, {marginBottom: height * .03}]}>
+            <View style={[styles.progressBarStyleWrp, {marginVertical: height * .03}]}>
+                <Text style={styles.titleComplete}>{"Completa il profilo"}</Text>
                 <Progress.Bar
                     borderColor={colors.secondaryBlue}
                     borderRadius={30}
@@ -382,11 +383,10 @@ class Profile extends Component {
                             {this.renderUserOption()}
                         </View>
                     </View>
-                    <View style={[styles.contentAnswerWrp, {height: height * 0.65}]}>
-                        <View style={[styles.contentAnswer, {width: width * .9}]}>
-                            <Text style={styles.titleComplete}>{"Completa il profilo"}</Text>
+                    <View ContentContainerStyle={styles.contentAnswerWrp}>
+                        <View style={styles.contentAnswer}>
                             {this.renderProfilePercentage(questionnairePercentages)}
-                            <View style={[styles.progressQuestionnairesWrp, {marginBottom: height * .03}]}>
+                            <View style={[styles.progressQuestionnairesWrp, {height: height * .56}]}>
                                 {questionnairePercentages.map(::this.renderQuestionnairesProgress)}
                             </View>
                         </View>

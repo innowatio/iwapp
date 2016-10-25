@@ -342,22 +342,24 @@ class Stats extends Component {
                     />
                 </View>
                 <View style={[styles.summaryConsumptionContainer, {height: height * .2}]}>
-                    {showThreshold ? <View key={"Daily Threshold"} style={[styles.summaryConsumptionWrp, {
-                        width: width * .5
-                    }]}>
-                        <Text style={styles.consumptionTitle}>
-                            {"Superamento soglia\ncontrattuale giornaliera"}
-                        </Text>
+                    {showThreshold ?
                         <View
-                            style={[
-                                styles.smallConsumptionWrp,
-                                {width: height * .12, height: height * .12, marginVertical: height * .01}
-                            ]}
+                            key={"Daily Threshold"}
+                            style={[styles.summaryConsumptionWrp, {width: width * .5}]}
                         >
-                            <Text style={styles.smallConsumptionValue}>{"3"}</Text>
-                            <Text style={styles.smallConsumptionMeasure}>{"volte"}</Text>
-                        </View>
-                    </View> : null}
+                            <Text style={styles.consumptionTitle}>
+                                {"Superamento soglia\ncontrattuale giornaliera"}
+                            </Text>
+                            <View
+                                style={[
+                                    styles.smallConsumptionWrp,
+                                    {width: height * .12, height: height * .12, marginVertical: height * .01}
+                                ]}
+                            >
+                                <Text style={styles.smallConsumptionValue}>{"3"}</Text>
+                                <Text style={styles.smallConsumptionMeasure}>{"volte"}</Text>
+                            </View>
+                        </View> : null}
                     <View key={"Actual Power"} style={[styles.summaryConsumptionWrp, {width: width * .5}]}>
                         <Text style={styles.consumptionTitle}>{"Potenza\nattuale"}</Text>
                         <RealTimeSpinner

@@ -14,6 +14,9 @@ const styles = StyleSheet.create({
     iconQuestionnaireWrp: {
         position: "absolute",
         left: 0,
+        right: 0,
+        top: 0,
+        bottom: 0,
         alignItems: "center",
         justifyContent: "center",
         backgroundColor: colors.transparent
@@ -48,7 +51,12 @@ export default class QuestionnaireProgress extends Component {
         const {questionnaire} = this.props;
         const {width, height} = Dimensions.get("window");
         return (
-            <View style={[styles.progressQuestionnaire, {marginHorizontal: width * .02, marginVertical: height * .015}]}>
+            <View style={[styles.progressQuestionnaire, {
+                height: width * .4,
+                marginHorizontal: width * .02,
+                marginVertical: height * .015
+            }]}
+            >
                 <CircleProgress
                     percentage={questionnaire.value}
                     size={90}
@@ -57,13 +65,14 @@ export default class QuestionnaireProgress extends Component {
                 />
                 <TouchableOpacity
                     onPress={questionnaire.onPress}
-                    style={[styles.iconQuestionnaireWrp, {top: height * .01, width: width * .25, height: height * .12}]}
+                    style={[styles.iconQuestionnaireWrp, {width: width * .25, height: height * .12}]}
                     transparent={true}
                 >
                     <Icon
                         color={questionnaire.color}
                         name={questionnaire.icon}
                         size={width * .14}
+                        style={{alignItems: "center"}}
                     />
                 </TouchableOpacity>
                 <View>

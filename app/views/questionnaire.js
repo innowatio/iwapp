@@ -292,7 +292,8 @@ class Questionnaire extends Component {
         return (
             <View key={optionIndex} style={[
                 (optionIndex === optionsLength - 1 && this.isLastSection(questionIndex)) ? styles.lastAnswer : {}
-            ]}>
+            ]}
+            >
                 <TouchableOpacity onPress={() => this.onSaveQuestionnaireAnswers(...arguments)} style={styles.answerWrp}>
                     <View style={styles.answer}>
                         {this.renderAnswerStatus(option, optionIndex, question.id)}
