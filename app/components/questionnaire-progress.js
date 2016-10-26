@@ -7,9 +7,13 @@ import Icon from "../components/iwapp-icons";
 import Text from "../components/text-lato";
 
 const styles = StyleSheet.create({
-    progressQuestionnaire: {
+    progressQuestionnaireWrp: {
         flexDirection: "column",
         alignItems: "stretch"
+    },
+    progressQuestionnaire: {
+        alignItems: "center",
+        justifyContent: "center"
     },
     iconQuestionnaireWrp: {
         position: "absolute",
@@ -18,7 +22,10 @@ const styles = StyleSheet.create({
         top: 0,
         bottom: 0,
         alignItems: "center",
-        justifyContent: "center",
+        justifyContent: "center"
+    },
+    iconQuestionnaire: {
+        textAlign: "center",
         backgroundColor: colors.transparent
     },
     titQuestionnaire: {
@@ -51,29 +58,31 @@ export default class QuestionnaireProgress extends Component {
         const {questionnaire} = this.props;
         const {width, height} = Dimensions.get("window");
         return (
-            <View style={[styles.progressQuestionnaire, {
-                height: width * .4,
+            <View style={[styles.progressQuestionnaireWrp, {
+                height: width * .35,
                 marginHorizontal: width * .02,
                 marginVertical: height * .015
             }]}
             >
-                <CircleProgress
-                    percentage={questionnaire.value}
-                    size={height * .13}
-                    strokeColor={questionnaire.color}
-                    strokeWidth={2}
-                />
                 <TouchableOpacity
                     onPress={questionnaire.onPress}
-                    style={[styles.iconQuestionnaireWrp, {width: width * .25, height: height * .125}]}
+                    style={[styles.progressQuestionnaire, {width: width * .25, height: width * .25}]}
                     transparent={true}
                 >
-                    <Icon
-                        color={questionnaire.color}
-                        name={questionnaire.icon}
-                        size={width * .14}
-                        style={{alignItems: "center"}}
+                    <CircleProgress
+                        percentage={questionnaire.value}
+                        size={height * .128}
+                        strokeColor={questionnaire.color}
+                        strokeWidth={2}
                     />
+                    <View style={[styles.iconQuestionnaireWrp, {height: width * .25, width: width * .25}]}>
+                        <Icon
+                            color={questionnaire.color}
+                            name={questionnaire.icon}
+                            size={height * .08}
+                            style={styles.iconQuestionnaire}
+                        />
+                    </View>
                 </TouchableOpacity>
                 <View>
                     <View style={{width: width * .25}}>
