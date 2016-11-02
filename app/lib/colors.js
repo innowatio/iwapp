@@ -73,5 +73,7 @@ export const greenStatus = "#C2D72D";
 export const redStatus = "#FB0035";
 export const questionnaireAnswerText = "#D2DADE";
 export const questionnaireAnswerStatusText = "#A0B0B9";
+// Info
+export const backgroundWebsite = "#eeeeee";
 // Modal
 export const backgroundModal = "rgba(255, 255, 255, 0.5)";

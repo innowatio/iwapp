@@ -110,6 +110,10 @@ class Root extends Component {
             icon: "chart",
             title: "Statistiche",
             navigateTo: "stats"
+        }, {
+            icon: "innowatio-logo",
+            title: "Info",
+            navigateTo: "info"
         }
         // coming soon™
         /*, {

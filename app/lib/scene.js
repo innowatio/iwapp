@@ -12,6 +12,7 @@ import asteroid from "./asteroid";
 import store from "./store";
 import AlarmsSettings from "../views/alarms-settings";
 import Home from "../views/home";
+import Info from "../views/info";
 import ModifyProfile from "../views/modify-profile";
 import Questionnaire from "../views/questionnaire";
 import Notifications from "../views/notifications";
@@ -75,6 +76,7 @@ const scene = (
             <Scene component={Stats} key="report" />
             <Scene component={Notifications} key="notifications" />
             <Scene component={AlarmsSettings} key="alarmsSettings" />
+            <Scene component={Info} key="info" />
             {/*Profile View */}
             <Scene component={Profile} key="profile" />
             <Scene component={Questionnaire} key="questionnaire" />
