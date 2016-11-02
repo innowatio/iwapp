@@ -365,7 +365,7 @@ class Survey extends Component {
                         {this.renderQuestionCounter()}
                     </View>
                 </View>
-                );
+            );
         }
     }
 

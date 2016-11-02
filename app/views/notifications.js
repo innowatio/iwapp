@@ -175,7 +175,7 @@ class Notifications extends Component {
                             width: width * .14,
                             height: width * .14,
                             backgroundColor: notification.bgcolor}
-                            ]}
+                        ]}
                         >
                             <Icon
                                 color={colors.iconWhite}
