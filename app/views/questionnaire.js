@@ -1,7 +1,7 @@
 import {Map} from "immutable";
 import get from "lodash.get";
 import {Content} from "native-base";
-import {isEmpty, isNil} from "ramda";
+import {isEmpty, isNil, values} from "ramda";
 import React, {Component, PropTypes} from "react";
 import IPropTypes from "react-immutable-proptypes";
 import {Dimensions, StyleSheet, TouchableOpacity, View} from "react-native";
@@ -233,6 +233,22 @@ class Questionnaire extends Component {
         );
     }
 
+    updateProgress (selectedQuestionnaire, questionnaire) {
+        const totalQuestions = get(questionnaire, "questions.length");
+        var totalAnswers = 0;
+        values(questionnaire.questions).forEach(value => {
+            this.isAlreadyAnswered(value.id) ? totalAnswers++ : null;
+        });
+        var percentage = totalAnswers/totalQuestions;
+        const questionnaireItem = {
+            ...selectedQuestionnaire,
+            value: percentage || 0,
+            totalAnswers,
+            text: ((percentage || 0) * 100).toFixed() + "% completato"
+        };
+        return questionnaireItem;
+    }
+
     renderQuestionStatus (question) {
         return (
             <View
@@ -323,8 +339,9 @@ class Questionnaire extends Component {
 
     render () {
         const {height} = Dimensions.get("window");
-        const {selectedQuestionnaire} = this.props;
         const questionnaire = this.getQuestionnaire(this.props.collections);
+        const selectedQuestionnaire = this.updateProgress(this.props.selectedQuestionnaire, questionnaire);
+
         return (
             <View style={{height: heightWithoutHeader(height)}}>
                 <Content>
@@ -338,7 +355,6 @@ class Questionnaire extends Component {
             </View>
         );
     }
-
 }
 
 function mapStateToProps (state) {
