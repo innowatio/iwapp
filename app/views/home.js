@@ -81,13 +81,22 @@ class Home extends Component {
 
     isStandbyData (nextProps) {
         const chart = nextProps.home.charts[0];
+        const day = moment.utc().format("YYYY-MM-DD");
         return !(nextProps.collections.getIn(
-                ["consumptions-yearly-aggregates", `${chart.sensorId}-standby`]
+                ["readings-daily-aggregates", `${chart.sensorId}-standby-${day}-reading-activeEnergy`]
             ) || Map()).isEmpty();
     }
 
     subscribeToMeasure (props) {
         const chart = props.home.charts[0];
+        props.asteroid.subscribe(
+            "dailyMeasuresBySensor",
+            `${chart.sensorId}-standby`,
+            moment(chart.day).subtract({day: 1}).format("YYYY-MM-DD"),
+            moment(chart.day).add({day: 1}).format("YYYY-MM-DD"),
+            "reading",
+            "activeEnergy"
+        );
         props.asteroid.subscribe(
             "dailyMeasuresBySensor",
             chart.sensorId,
@@ -122,13 +131,6 @@ class Home extends Component {
         props.asteroid.subscribe(
             "yearlyConsumptions",
             `${chart.sensorId}-peers-avg`,
-            moment.utc().format("YYYY"),
-            "reading",
-            "activeEnergy"
-        );
-        props.asteroid.subscribe(
-            "yearlyConsumptions",
-            `${chart.sensorId}-standby`,
             moment.utc().format("YYYY"),
             "reading",
             "activeEnergy"

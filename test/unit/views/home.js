@@ -274,8 +274,8 @@ describe("`Home` view", () => {
         it("return true if forecast data is present", () => {
             const ret = isStandbyData({
                 collections: fromJS({
-                    "consumptions-yearly-aggregates": {
-                        ["sensorId-standby"]: {
+                    "readings-daily-aggregates": {
+                        [`sensorId-standby-${moment.utc().format("YYYY-MM-DD")}-reading-activeEnergy`]: {
                             data: "data"
                         }
                     }
@@ -343,7 +343,7 @@ describe("`Home` view", () => {
             expect(subscribe).to.have.callCount(6);
             expect(subscribe.firstCall).to.have.been.calledWithExactly(
                 "dailyMeasuresBySensor",
-                "sensorId",
+                "sensorId-standby",
                 "1969-12-31",
                 "1970-01-02",
                 "reading",
@@ -354,7 +354,7 @@ describe("`Home` view", () => {
                 "sensorId",
                 "1969-12-31",
                 "1970-01-02",
-                "forecast",
+                "reading",
                 "activeEnergy"
             );
             expect(subscribe.thirdCall).to.have.been.calledWithExactly(
@@ -362,18 +362,17 @@ describe("`Home` view", () => {
                 "sensorId",
                 "1969-12-31",
                 "1970-01-02",
-                "reading",
-                "maxPower"
+                "forecast",
+                "activeEnergy"
             );
             expect(subscribe.lastCall).to.have.been.calledWithExactly(
                 "yearlyConsumptions",
-                "sensorId-standby",
+                "sensorId-peers-avg",
                 "1970",
                 "reading",
                 "activeEnergy"
             );
         });
-
     });
 
     describe("`getConsumptionAggregate` function", () => {
