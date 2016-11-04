@@ -111,7 +111,7 @@ class Root extends Component {
             title: "Statistiche",
             navigateTo: "stats"
         }, {
-            icon: "innowatio-logo",
+            icon: "info",
             title: "Info",
             navigateTo: "info"
         }
