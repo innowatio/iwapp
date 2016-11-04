@@ -29,7 +29,7 @@
     "axios": "^0.14.0",
     "babel-polyfill": "^6.13.0",
     "immutable": "^3.8.1",
-    "iwapp-icons": "^1.0.4",
+    "iwapp-icons": "^1.0.5",
     "lodash.debounce": "^4.0.8",
     "lodash.get": "^4.4.2",
     "moment": "^2.15.0",

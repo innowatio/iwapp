@@ -63,7 +63,8 @@ const glyphMap = {
     "iw-night-clouds": 89,
     "iw-center": 90,
     "iw-night-few-clouds": 49,
-    "iw-search": 83
+    "iw-search": 83,
+    "iw-info": 84
 };
 
 const IwappIcons = createIconSet(glyphMap, "iwapp", "iwapp.ttf");
