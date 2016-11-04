@@ -11,7 +11,8 @@ import Icon from "../components/iwapp-icons";
 import * as colors from "../lib/colors";
 import QuestionnaireProgress from "../components/questionnaire-progress";
 import Text from "../components/text-lato";
-import {getQuestionnairesDecorator, roundTwoDecimals, getQuestionnaireItems} from "../lib/questionnaire";
+import {getQuestionnairesDecorator, roundTwoDecimals} from "../lib/questionnaire";
+import getQuestionnaireItems from "../lib/questionnaire";
 
 const styles = StyleSheet.create({
     container: {
