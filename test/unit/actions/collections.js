@@ -23,7 +23,5 @@ describe("`collections` actions", () => {
             expect(troublemaker).to.throw(Error);
             expect(troublemaker).to.throw("collections should be immutable.js");
         });
-
     });
-
 });

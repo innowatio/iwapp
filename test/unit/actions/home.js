@@ -1,6 +1,6 @@
 import {toggleForecast} from "actions/home";
 
-describe("`home` actions", () => {
+describe("`home` action", () => {
 
     describe("`toggleForecast` action", () => {
 
@@ -20,7 +20,5 @@ describe("`home` actions", () => {
             expect(troublemaker).to.throw(Error);
             expect(troublemaker).to.throw(`Invalid value ${JSON.stringify(toggle, null, 2)} supplied to Boolean`);
         });
-
     });
-
 });

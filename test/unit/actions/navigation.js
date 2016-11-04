@@ -6,7 +6,7 @@ import {
     resetNavigator
 } from "actions/navigation";
 
-describe("`navigation` actions", () => {
+describe("`navigation` action", () => {
 
     describe("`pushNavigator` action", () => {
 
@@ -30,7 +30,7 @@ describe("`navigation` actions", () => {
 
     });
 
-    describe("`replaceNavigator` action", () => {
+    describe("`replaceNavigator` function", () => {
 
         it("returns the correct object with `scene` as payload", () => {
             const scene = "home";
@@ -52,7 +52,7 @@ describe("`navigation` actions", () => {
 
     });
 
-    describe("`resetNavigator` action", () => {
+    describe("`resetNavigator` function", () => {
 
         it("returns an object with type `RESET_SCENE`", () => {
             const ret = resetNavigator();
@@ -63,7 +63,7 @@ describe("`navigation` actions", () => {
 
     });
 
-    describe("`popToNavigator` action", () => {
+    describe("`popToNavigator` function", () => {
 
         it("returns the correct object with `scene` as payload", () => {
             const scene = "home";
@@ -85,8 +85,7 @@ describe("`navigation` actions", () => {
 
     });
 
-
-    describe("`popNavigator` action", () => {
+    describe("`popNavigator` function", () => {
 
         it("returns an object with type `POP_SCENE`", () => {
             const ret = popNavigator();

@@ -4,20 +4,10 @@ export const SAVE_QUESTIONNAIRE_START = "SAVE_QUESTIONNAIRE_START";
 export const SAVE_QUESTIONNAIRE_SUCCESS = "SAVE_QUESTIONNAIRE_SUCCESS";
 export const SAVE_QUESTIONNAIRE_ERROR = "SAVE_QUESTIONNAIRE_ERROR";
 
-// TODO: add tests and type checking
 export function saveQuestionnaireAnswers (answers, userId, siteId, questionnaire, visitId) {
     return async dispatch => {
         try {
             dispatch({type: SAVE_QUESTIONNAIRE_START});
-            console.log({
-                answers,
-                userId,
-                siteId,
-                questionId: questionnaire._id,
-                category: questionnaire.category,
-                type: questionnaire.type,
-                visitId
-            });
             return axios.post("/answers", {
                 answers,
                 userId,
@@ -28,7 +18,14 @@ export function saveQuestionnaireAnswers (answers, userId, siteId, questionnaire
                 visitId
             })
             .then(res => {
-                dispatch({type: SAVE_QUESTIONNAIRE_SUCCESS, payload: res.data});
+                dispatch({
+                    type: SAVE_QUESTIONNAIRE_SUCCESS,
+                    payload: {
+                        data: res.data,
+                        key:  questionnaire.category
+                    }
+
+                });
             })
             .catch(err => {
                 /*
@@ -53,5 +50,14 @@ export function saveQuestionnaireAnswers (answers, userId, siteId, questionnaire
             */
             console.error(err);
         }
+    };
+}
+
+export const QUESTIONNAIRE_STATUS = "QUESTIONNAIRE_STATUS";
+
+export function questionnaireStatus (questionnairesItem) {
+    return {
+        type: QUESTIONNAIRE_STATUS,
+        payload: questionnairesItem
     };
 }

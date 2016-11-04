@@ -26,6 +26,7 @@
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		1D0483D01D81C29800C179D3 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1D0483CF1D81C29800C179D3 /* GoogleService-Info.plist */; };
 		1DDF80AA1D0EC37A009F67FD /* iwapp.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1DDF80A91D0EC37A009F67FD /* iwapp.ttf */; };
+		39457A551DBF9C13001B424F /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 39457A541DBF9C13001B424F /* GoogleService-Info.plist */; };
 		486EBCEE26F141F28B2E1063 /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0A7CE644DF5D4AE887DFE5E4 /* Octicons.ttf */; };
 		5AF929C4274A47A0AFDC1A90 /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5E1F76705F7B49218502628E /* Zocial.ttf */; };
 		6B075EEC1D118F6100D81F66 /* libART.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B075EDE1D118F4700D81F66 /* libART.a */; };
@@ -214,6 +215,7 @@
 		3138A5E21B021F144327A50E /* Pods-iwappTests.preprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iwappTests.preprod.xcconfig"; path = "Pods/Target Support Files/Pods-iwappTests/Pods-iwappTests.preprod.xcconfig"; sourceTree = "<group>"; };
 		33BA5D9E384E4A5AAD32C855 /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
 		3442331B7403476693BE0374 /* RNFIRMessaging.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNFIRMessaging.xcodeproj; path = "../node_modules/react-native-fcm/ios/RNFIRMessaging.xcodeproj"; sourceTree = "<group>"; };
+		39457A541DBF9C13001B424F /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		3BDC02E3C9034CB5B0105345 /* RNImagePicker.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNImagePicker.xcodeproj; path = "../node_modules/react-native-image-picker/ios/RNImagePicker.xcodeproj"; sourceTree = "<group>"; };
 		43B89734CFB04500AE6D86E9 /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
 		52B822D926674D8592D56BEB /* Entypo.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Entypo.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Entypo.ttf"; sourceTree = "<group>"; };
@@ -359,6 +361,7 @@
 		13B07FAE1A68108700A75B9A /* iwapp */ = {
 			isa = PBXGroup;
 			children = (
+				39457A541DBF9C13001B424F /* GoogleService-Info.plist */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -616,7 +619,6 @@
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
-						DevelopmentTeam = V9JWVTC8N8;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 1;
@@ -870,6 +872,7 @@
 				486EBCEE26F141F28B2E1063 /* Octicons.ttf in Resources */,
 				5AF929C4274A47A0AFDC1A90 /* Zocial.ttf in Resources */,
 				B41FC66EB05F44CF9491E3FA /* Entypo.ttf in Resources */,
+				39457A551DBF9C13001B424F /* GoogleService-Info.plist in Resources */,
 				BA7F3DAAD40D4728AF0632F8 /* FontAwesome.ttf in Resources */,
 				1D0483D01D81C29800C179D3 /* GoogleService-Info.plist in Resources */,
 			);
@@ -1090,6 +1093,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEAD_CODE_STRIPPING = NO;
+				DEVELOPMENT_TEAM = "";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
@@ -1121,6 +1125,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = "";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
@@ -1199,6 +1204,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = "";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,

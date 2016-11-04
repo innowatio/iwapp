@@ -2,7 +2,7 @@ import {onLogin, onLogout} from "actions/user-id";
 
 describe("`userId` actions", () => {
 
-    describe("`onLogin` action", () => {
+    describe("`onLogin` function", () => {
 
         it("returns the correct object with the `userId` as payload", () => {
             const userId = "user";
@@ -24,7 +24,7 @@ describe("`userId` actions", () => {
 
     });
 
-    describe("`onLogout` action", () => {
+    describe("`onLogout` function", () => {
 
         it("returns an object with type `ON_LOGOUT`", () => {
             const ret = onLogout();

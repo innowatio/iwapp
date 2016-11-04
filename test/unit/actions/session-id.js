@@ -13,7 +13,7 @@ describe("`sessionId` actions", () => {
     });
 
 
-    it("`generateSessionId` action", () => {
+    it("`generateSessionId` function", () => {
 
         it("returns the correct sessionId", () => {
             const result = generateSessionId("userId");
