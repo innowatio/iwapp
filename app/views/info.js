@@ -1,14 +1,21 @@
+import moment from "moment";
 import {Content} from "native-base";
 import React, {Component} from "react";
-import {Dimensions, Linking, StyleSheet, TouchableOpacity, View} from "react-native";
+import {
+    Dimensions,
+    Linking,
+    StyleSheet,
+    TouchableOpacity,
+    View
+} from "react-native";
+import codePush from "react-native-code-push";
 import {connect} from "react-redux";
-import getDeviceInfo from "../lib/get-device-info";
-import pkg from "../../package";
-import moment from "moment";
 
+import pkg from "../../package";
 import Icon from "../components/iwapp-icons";
-import * as colors from "../lib/colors";
 import Text from "../components/text-lato";
+import * as colors from "../lib/colors";
+import getDeviceInfo from "../lib/get-device-info";
 
 const styles = StyleSheet.create({
     container: {
@@ -95,6 +102,28 @@ const styles = StyleSheet.create({
 
 class Info extends Component {
 
+    constructor (props) {
+        super(props);
+        this.state = {
+            bundleVersion: undefined,
+            error: undefined
+        };
+    }
+
+    componentWillMount () {
+        codePush.getUpdateMetadata().then(update => {
+            if (update) {
+                this.setState({
+                    bundleVersion: update.label,
+                });
+            }
+        }).catch(error => {
+            this.setState({
+                error: error
+            });
+        });
+    }
+
     renderPageContent () {
         const {width, height} = Dimensions.get("window");
         return (
@@ -140,11 +169,12 @@ class Info extends Component {
 
     renderFooter () {
         const {width, height} = Dimensions.get("window");
+        const {bundleVersion} = this.state;
         return (
             <View style={[styles.footerWrp, {width: width, height: height * .12}]}>
                 <View style={[styles.textFooterWrp, {width: width, height: height * .05}]}>
                     <Text style={styles.textFooter}>
-                        {`App Version ${getDeviceInfo().appVersion} | Bundle Version ${pkg.version}`}
+                        {`App Version ${getDeviceInfo().appVersion} | Bundle Version ${bundleVersion ? bundleVersion : pkg.version}`}
                     </Text>
                 </View>
                 <View style={[styles.textFooterWrp, {width:  width, height: height * .065}]}>
