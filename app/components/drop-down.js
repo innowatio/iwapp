@@ -142,7 +142,9 @@ export default class DropDown extends Component {
             return d.title.toLowerCase().indexOf(self.state.searchText.toLowerCase())>-1;
         });
         return isEmpty(filtered)
-        ? null :
+        ?
+        null
+        :
         (
             <ScrollView
                 onContentSizeChange={::this.onContentSizeChange}

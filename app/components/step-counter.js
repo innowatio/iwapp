@@ -58,7 +58,10 @@ export default class StepCounter extends Component {
 
     renderCounter () {
         const {height} = Dimensions.get("window");
-        return this.isLastStep() ? null : (
+        return this.isLastStep()
+        ?
+        null
+        : (
             <View
                 style={
                     [styles.questionCounter,
@@ -118,8 +121,12 @@ export default class StepCounter extends Component {
                     onPress={this.isLastStep() ? this.props.onSaveAnswers : this.props.onForwardStep}
                     style={styles.textButtonSave}
                 >
-                    {this.isLastStep() ?
-                        <Text style={styles.questionCounterText}>{"SALVA"}</Text> :
+                    {this.isLastStep()
+                        ?
+                            <Text style={styles.questionCounterText}>
+                                {"SALVA"}
+                            </Text>
+                        :
                             <FaIcons
                                 color={colors.iconWhite}
                                 name={"angle-right"}

@@ -245,15 +245,14 @@ export default class AlarmsSettings extends Component {
                         </View>
                         {this.renderTabs()}
                     </View>
-                    {this.state.option == "SETTINGS" ? (
-                        <View style={styles.alarmsContainer}>
-                            {this.getAlarm().map(this.renderAlarmsSettings)}
-                        </View>
-                    ) : (
-                        <View style={styles.alarmsContainer}>
-                            {this.getNotification().map(this.renderAlarmsNotifications)}
-                        </View>
-                    )}
+                    {this.state.option == "SETTINGS" ?
+                    (<View style={styles.alarmsContainer}>
+                        {this.getAlarm().map(this.renderAlarmsSettings)}
+                    </View>)
+                    :
+                    (<View style={styles.alarmsContainer}>
+                        {this.getNotification().map(this.renderAlarmsNotifications)}
+                    </View>)}
                 </Content>
             </View>
         );
