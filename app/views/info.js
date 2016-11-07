@@ -150,17 +150,24 @@ class Info extends Component {
                 </View>
                 <View style={[styles.textContactsWrp, {
                     width: width * .96,
-                    height: height * .35,
-                    marginTop: height * .03,
+                    height: height * .38,
                     paddingLeft: height * .08}
                 ]}
                 >
                     <Text style={[styles.titContacts, {fontWeight: "bold"}]}>
-                        {"Innowatio S.p.A.\n"}
+                        {"Innowatio S.p.A."}
                     </Text>
                     <Text style={[styles.textContacts]}>
-                        {`Sede legale e operativa:\nc/o Kilometro Rosso - Via Stezzano, 87\n24126, Bergamo\nTelefono: +39 035 3846911\nFax: +39 035 3846930\nEmail: info@innowatio.it`}
+                        {`\nSede legale e operativa:\nc/o Kilometro Rosso - Via Stezzano, 87\n24126, Bergamo\nTelefono: +39 035 3846911\nFax: +39 035 3846930`}
                     </Text>
+                    <TouchableOpacity
+                        onPress={() => Linking.openURL("mailto:info@innowatio.it")}
+                        transparent={true}
+                    >
+                        <Text style={[styles.textContacts]}>
+                            {"Email: info@innowatio.it"}
+                        </Text>
+                    </TouchableOpacity>
                 </View>
                 {this.renderFooter()}
             </View>
