@@ -30,6 +30,7 @@
     "babel-polyfill": "^6.13.0",
     "immutable": "^3.8.1",
     "iwapp-icons": "^1.0.3",
+    "iwwa-utils": "^1.0.7",
     "lodash.debounce": "^4.0.8",
     "lodash.get": "^4.4.2",
     "moment": "^2.14.1",

@@ -301,25 +301,29 @@ class Stats extends Component {
     renderProgressBar (consumptions, unit) {
         const {width, height} = Dimensions.get("window");
         return consumptions.map(consumption => {
+            if (consumption.max === 0) {
+                return null;
+            }
+            const progress = consumption.now / consumption.max;
             return (
                 <View key={consumption.key} style={[styles.progressBarStyleWrp, {margin: height * .01}]}>
                     <Text style={styles.progressBarTitle}>{consumption.title}</Text>
                     <Progress.Bar
-                        borderColor={(consumption.max / consumption.now < .8) ? colors.secondaryBlue : colors.progressBarError}
+                        borderColor={(progress < .8) ? colors.secondaryBlue : colors.progressBarError}
                         borderRadius={30}
                         borderWidth={1}
-                        color={(consumption.max / consumption.now < .8) ? colors.primaryBlue : colors.progressBarError}
+                        color={(progress < .8) ? colors.primaryBlue : colors.progressBarError}
                         height={6}
-                        progress={consumption.max / consumption.now}
+                        progress={progress}
                         width={width * 0.9}
                     />
                     <View style={styles.progressBarValuesWrp}>
                         <Text style={styles.progressBarPercentageValue}>
-                            {(consumption.max / consumption.now * 100).toFixed(0)}
+                            {(progress * 100).toFixed(0)}
                             {"%"}
                         </Text>
                         <Text style={styles.progressBarConsumptionValue}>
-                            {`${consumption.now} ${unit}`}
+                            {`${consumption.max} ${unit}`}
                         </Text>
                     </View>
                 </View>
@@ -342,9 +346,7 @@ class Stats extends Component {
                     />
                 </View>
                 <View style={[styles.summaryConsumptionContainer, {height: height * .2}]}>
-                    {showThreshold ? <View key={"Daily Threshold"} style={[styles.summaryConsumptionWrp, {
-                        width: width * .5
-                    }]}>
+                    {showThreshold ? <View key={"Daily Threshold"} style={[styles.summaryConsumptionWrp, {width: width * .5}]}>
                         <Text style={styles.consumptionTitle}>
                             {"Superamento soglia\ncontrattuale giornaliera"}
                         </Text>
@@ -375,7 +377,9 @@ class Stats extends Component {
         const {
             stats
         } = this.props;
-        const aggregate = this.getConsumptionAggregate().filter(x => x.get("sensorId") === sensorId);
+        const aggregate = this.getConsumptionAggregate().filter(agg => (
+            agg.get("sensorId") === sensorId && agg.get("measurementType") === "activeEnergy")
+        );
         if (!aggregate.isEmpty()) {
             const data = getTitleAndSubtitle(stats.chart.period, aggregate);
             const fontSize = this.mapNumberFontSize(data.sum) - 10;
@@ -402,17 +406,13 @@ class Stats extends Component {
     }
 
     renderSwiper1 () {
-        const {
-            site,
-            stats
-        } = this.props;
-        const {period} = this.props.stats.chart;
+        const {site, stats} = this.props;
         const {height} = Dimensions.get("window");
-        const aggregates = this.getConsumptionAggregate().filter(x => x.get("sensorId") == site._id);
+        const aggregates = this.getConsumptionAggregate().filter(agg => (
+            agg.get("sensorId") == site._id && agg.get("measurementType") === "activeEnergy"
+        ));
         if (!aggregates.isEmpty()) {
-            const tabAggregate = getTitleAndSubtitle(
-                stats.chart.period, this.getConsumptionAggregate().filter(x => x.get("sensorId") == site._id)
-            );
+            const tabAggregate = getTitleAndSubtitle(stats.chart.period, aggregates);
             const fontSize = this.mapNumberFontSize(tabAggregate.sum);
             return (
                 <View style={styles.contentStatsWrp}>
@@ -428,7 +428,7 @@ class Stats extends Component {
                         </View>
                     </View>
                     <View style={{height: height * .28}}>
-                        {period === "year" || period === "month" ? null : this.renderProgressBar(tabAggregate.comparisons, tabAggregate.measureUnit)}
+                        {this.renderProgressBar(tabAggregate.comparisons, tabAggregate.measureUnit)}
                     </View>
                     {this.renderAlarmSettings()}
                 </View>
