@@ -141,8 +141,9 @@ export default class DropDown extends Component {
         const filtered = this.props.optionItems.filter(function (d) {
             return d.title.toLowerCase().indexOf(self.state.searchText.toLowerCase())>-1;
         });
-        return isEmpty(filtered) ?
-            null :(
+        return isEmpty(filtered) ? (
+            null
+        ): (
             <ScrollView
                 onContentSizeChange={::this.onContentSizeChange}
                 onScroll={::this.onScroll}
@@ -164,14 +165,14 @@ export default class DropDown extends Component {
         return this.state.showItems ? (
             <View>
                 <Animated.View style={[
-                    styles.view,
-                    {
+                    styles.view, {
                         height: height - 74,
                         transform: [{
                             translateY: this.state.slidingAnimationValue
                         }]
                     }
-                ]}>
+                ]}
+                >
                     <View style={[styles.textInputWrp]}>
                         <FaIcons
                             color={colors.white}

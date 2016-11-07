@@ -175,7 +175,8 @@ class Notifications extends Component {
                             width: width * .14,
                             height: width * .14,
                             backgroundColor: notification.bgcolor}
-                        ]}>
+                        ]}
+                        >
                             <Icon
                                 color={colors.iconWhite}
                                 name={notification.icon}
@@ -185,8 +186,7 @@ class Notifications extends Component {
                         </View>
                     </View>
                     <View style={{width: width * .73}}>
-                        <View style={[styles.notificationTextWrp, {minHeight: width * .12}
-                        ]}>
+                        <View style={[styles.notificationTextWrp, {minHeight: width * .12}]}>
                             {notification.text}
                         </View>
                         <View style={styles.notificationDateWrp}>
