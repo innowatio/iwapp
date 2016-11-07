@@ -58,6 +58,7 @@
     "redux": "^3.5.2",
     "redux-action-type-validator": "^1.1.0",
     "redux-logger": "^2.6.1",
+    "redux-persist": "^4.0.0-alpha7",
     "redux-thunk": "^2.1.0",
     "tcomb": "^3.2.12"
   },
