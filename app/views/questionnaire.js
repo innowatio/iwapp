@@ -295,11 +295,10 @@ class Questionnaire extends Component {
                     style={{backgroundColor: colors.transparent, top: 2}}
                 />
             </View>
-        ) : (
-            <View style={styles.answerStatus}>
-                <Text style={styles.answerStatusText}>{optionIndex + 1}</Text>
-            </View>
-        );
+        ) :
+        (<View style={styles.answerStatus}>
+            <Text style={styles.answerStatusText}>{optionIndex + 1}</Text>
+        </View>);
     }
 
     renderAnswer ({option, optionIndex, questionIndex, question}) {

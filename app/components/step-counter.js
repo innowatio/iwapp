@@ -59,10 +59,11 @@ export default class StepCounter extends Component {
     renderCounter () {
         const {height} = Dimensions.get("window");
         return this.isLastStep() ? null : (
-            <View style={[ styles.questionCounter, {
-                height: height * .05,
-                paddingHorizontal: height * .06
-            }]}
+            <View
+                style={
+                    [styles.questionCounter,
+                    {height: height * .05, paddingHorizontal: height * .06}]
+                }
             >
                 <Text style={styles.questionCounterText}>
                     {" Step "}

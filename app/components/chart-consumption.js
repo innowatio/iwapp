@@ -138,17 +138,18 @@ export default class ChartConsumption extends Component {
             >
                 {"basati sulla tua giornata tipo"}
             </Text>
-        ) : (
-            <Text style={styles.switchText}>{"(disponibili a breve)"}</Text>
-        );
+        ) : (<Text style={styles.switchText}>
+            {"(disponibili a breve)"}
+        </Text>);
     }
 
     renderTextStandby () {
         return this.props.isStandbyData ? (
             null
-        ) : (
-            <Text style={styles.switchText}>{"(disponibili a breve)"}</Text>
-        );
+        ) :
+        (<Text style={styles.switchText}>
+            {"(disponibili a breve)"}
+        </Text>);
     }
 
     render () {
