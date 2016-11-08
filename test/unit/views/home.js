@@ -340,38 +340,7 @@ describe("`Home` view", () => {
                 }
             };
             subscribeToMeasure(props);
-            expect(subscribe).to.have.callCount(6);
-            expect(subscribe.firstCall).to.have.been.calledWithExactly(
-                "dailyMeasuresBySensor",
-                "sensorId",
-                "1969-12-31",
-                "1970-01-02",
-                "reading",
-                "activeEnergy"
-            );
-            expect(subscribe.secondCall).to.have.been.calledWithExactly(
-                "dailyMeasuresBySensor",
-                "sensorId",
-                "1969-12-31",
-                "1970-01-02",
-                "forecast",
-                "activeEnergy"
-            );
-            expect(subscribe.thirdCall).to.have.been.calledWithExactly(
-                "dailyMeasuresBySensor",
-                "sensorId",
-                "1969-12-31",
-                "1970-01-02",
-                "reading",
-                "maxPower"
-            );
-            expect(subscribe.lastCall).to.have.been.calledWithExactly(
-                "yearlyConsumptions",
-                "sensorId-standby",
-                "1970",
-                "reading",
-                "activeEnergy"
-            );
+            expect(subscribe).to.have.callCount(9);
         });
 
     });
