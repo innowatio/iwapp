@@ -241,6 +241,7 @@ class Home extends Component {
                         <View>
                             <InfoConsumption
                                 heightSwiper={heightSwiper}
+                                site={this.props.site}
                                 {...this.getInfoConsumptionData()}
                             />
                         </View>

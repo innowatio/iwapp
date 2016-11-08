@@ -4,6 +4,11 @@ import {Dimensions, StyleSheet, Image, View} from "react-native";
 import * as colors from "../lib/colors";
 import Icon from "../components/iwapp-icons";
 import Text from "../components/text-lato";
+import icoDefault from "../assets/img/ico_default.gif";
+import icoSelling from "../assets/img/ico_selling.gif";
+import icoFeedingSector from "../assets/img/ico_feeding-sector.gif";
+import icoIndustry from "../assets/img/ico_industry.gif";
+import icoOffices from "../assets/img/ico_offices.gif";
 
 const styles = StyleSheet.create({
     container: {
@@ -103,6 +108,7 @@ export default class InfoConsumption extends Component {
             avg: PropTypes.number,
             unit: PropTypes.string
         }),
+        site: PropTypes.object
     }
 
     renderSmileyBadge () {
@@ -157,6 +163,37 @@ export default class InfoConsumption extends Component {
         );
     }
 
+    renderActivityTypeIcon () {
+        const {height} = Dimensions.get("window");
+        const site = this.props.site;
+        var icon;
+        switch (site.businessType) {
+            case "Vendita all'ingrosso o al dettaglio (negozi, ecc)":
+                icon = icoSelling;
+                break;
+            case "Settore alimentazione (ristoranti, bar, panetterie, fast food, ecc)":
+                icon = icoFeedingSector;
+                break;
+            case "Industria (costruzioni, manifatturiera, agricoltura)":
+                icon = icoIndustry;
+                break;
+            case "Uffici (uffici societari, servizi finanziari, pubblica amministrazione, agenzie immobiliari, ecc)":
+                icon = icoOffices;
+                break;
+            case "Altro":
+            default:
+                icon = icoDefault;
+        }
+        return (
+            <View style={styles.iconActivityWrp}>
+                <Image
+                    source={icon}
+                    style={{width: height * .14, height: height * .14}}
+                />
+            </View>
+        );
+    }
+
     renderConsumptions (consumptions, text) {
         const {width, height} = Dimensions.get("window");
         return (
@@ -188,21 +225,16 @@ export default class InfoConsumption extends Component {
 
     render () {
         const {height, width} = Dimensions.get("window");
-        const {consumptions, peersConsumptions} = this.props;
+        const {consumptions, peersConsumptions, site} = this.props;
 
         return (
             <View style={[styles.container, {height: this.props.heightSwiper}]}>
                 <View style={[styles.infoAndConsumptionContainer, {width, height: height * .35}]}>
                     <View style={[styles.infoContainer, {height: height * .35, width: width * .41}]}>
-                        <View style={styles.iconActivityWrp}>
-                            <Image
-                                source={require("../assets/img/ico_default.gif")}
-                                style={{width: height * .14, height: height * .14}}
-                            />
-                        </View>
-                        <Text style={styles.textStandardSmall}>{"23 persone"}</Text>
-                        <Text style={styles.textStandardSmall}>{"Ufficio di 167 mq"}</Text>
-                        <Text style={styles.textStandardSmall}>{"Bergamo, Lombardia"}</Text>
+                        {this.renderActivityTypeIcon()}
+                        {site.employees ? <Text style={styles.textStandardSmall}>{`${site.employees} persone`}</Text> : null}
+                        {site.areaInMq ? <Text style={styles.textStandardSmall}>{`Attività di ${site.areaInMq} mq`}</Text> : null}
+                        {site.address ? <Text style={styles.textStandardSmall}>{`${site.address}`}</Text> : null}
                     </View>
                     <View style={[styles.meanConsumptionContainer, {height: height * .35, width: width * .59}]}>
                         {consumptions ? this.renderMyConsumptions() : null}
