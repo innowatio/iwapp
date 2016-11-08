@@ -175,7 +175,7 @@ class Home extends Component {
         }
         return {
             avg: getAverageByPeriod(aggregate, "day"),
-            unit: aggregate.get("unitOfMeasurement")
+            unit: aggregate.first().get("unitOfMeasurement")
         };
     }
 

@@ -110,9 +110,6 @@ export default class InfoConsumption extends Component {
         const {consumptions, peersConsumptions} = this.props;
         const relativeConsumption = Math.round((consumptions.avg * 100 / peersConsumptions.avg) - 100);
         let badge = {};
-        console.log(consumptions);
-        console.log(peersConsumptions);
-        console.log(relativeConsumption);
         if (relativeConsumption < -5) {
             badge = {
                 icon: "iw-good",

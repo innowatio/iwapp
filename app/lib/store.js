@@ -25,6 +25,6 @@ if (module.hot) {
     });
 }
 
-persistStore(store, {storage: AsyncStorage, whitelist: ["site"]});
+persistStore(store, {storage: AsyncStorage, whitelist: ["site", "stats", "home"]});
 
 export default store;

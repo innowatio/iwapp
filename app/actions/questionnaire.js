@@ -9,15 +9,6 @@ export function saveQuestionnaireAnswers (answers, userId, siteId, questionnaire
     return async dispatch => {
         try {
             dispatch({type: SAVE_QUESTIONNAIRE_START});
-            console.log({
-                answers,
-                userId,
-                siteId,
-                questionId: questionnaire._id,
-                category: questionnaire.category,
-                type: questionnaire.type,
-                visitId
-            });
             return axios.post("/answers", {
                 answers,
                 userId,
