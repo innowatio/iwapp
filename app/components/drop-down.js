@@ -142,17 +142,14 @@ export default class DropDown extends Component {
             return d.title.toLowerCase().indexOf(self.state.searchText.toLowerCase())>-1;
         });
         return isEmpty(filtered)
-        ?
-        null
-        :
-        (
-            <ScrollView
-                onContentSizeChange={::this.onContentSizeChange}
-                onScroll={::this.onScroll}
-                scrollEventThrottle={1000}
-            >
-                {this.renderOptionItems(filtered)}
-            </ScrollView>
+        ? null : (
+        <ScrollView
+            onContentSizeChange={::this.onContentSizeChange}
+            onScroll={::this.onScroll}
+            scrollEventThrottle={1000}
+        >
+            {this.renderOptionItems(filtered)}
+        </ScrollView>
         );
     }
 
