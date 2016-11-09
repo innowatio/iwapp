@@ -38,6 +38,8 @@ describe("`questionnaire` actions", () => {
             }
         }];
 
+        const questionIndex = 0;
+
         const questionnaire = {
             _id: "questionnaireId",
             category: "category",
@@ -68,7 +70,7 @@ describe("`questionnaire` actions", () => {
 
         it("dispatches a SAVE_QUESTIONNAIRE_START action right away", async function() {
             this.timeout(5000);
-            await saveQuestionnaireAnswers(answers, userId, siteId, questionnaire, visitId)(dispatch);
+            await saveQuestionnaireAnswers(answers, questionIndex, userId, siteId, questionnaire, visitId)(dispatch);
             const dispatchFirstCall = dispatch.getCall(0);
             expect(dispatchFirstCall.args[0]).to.deep.equal({
                 type: SAVE_QUESTIONNAIRE_START
@@ -79,7 +81,7 @@ describe("`questionnaire` actions", () => {
             const scope = nock(WRITE_API_ENDPOINT)
             .post("/answers", expectedBody)
             .reply(201, {result: "OK"});
-            await saveQuestionnaireAnswers(answers, userId, siteId, questionnaire, visitId)(dispatch);
+            await saveQuestionnaireAnswers(answers, questionIndex, userId, siteId, questionnaire, visitId)(dispatch);
             scope.done();
         });
 
@@ -87,13 +89,14 @@ describe("`questionnaire` actions", () => {
             const scope = nock(WRITE_API_ENDPOINT)
             .post("/answers", expectedBody)
             .reply(201, {result: "OK"});
-            await saveQuestionnaireAnswers(answers, userId, siteId, questionnaire, visitId)(dispatch);
+            await saveQuestionnaireAnswers(answers, questionIndex, userId, siteId, questionnaire, visitId)(dispatch);
             scope.done();
             expect(dispatch).to.have.been.calledWithExactly({
                 type: SAVE_QUESTIONNAIRE_SUCCESS,
                 payload: {
                     data: {result: "OK"},
-                    key:  "category"
+                    key:  "category",
+                    countAnswers: 1
                 }
             });
         });
@@ -102,7 +105,7 @@ describe("`questionnaire` actions", () => {
             const scope = nock(WRITE_API_ENDPOINT)
             .post("/answers", expectedBody)
             .replyWithError("Request error");
-            await saveQuestionnaireAnswers(answers, userId, siteId, questionnaire, visitId)(dispatch);
+            await saveQuestionnaireAnswers(answers, questionIndex, userId, siteId, questionnaire, visitId)(dispatch);
             scope.done();
             expect(dispatch).to.have.been.calledWithExactly({
                 type: SAVE_QUESTIONNAIRE_ERROR,
@@ -116,7 +119,7 @@ describe("`questionnaire` actions", () => {
             const scope = nock(WRITE_API_ENDPOINT)
             .post("/answers", expectedBody)
             .reply(400, "Bad request");
-            await saveQuestionnaireAnswers(answers, userId, siteId, questionnaire, visitId)(dispatch);
+            await saveQuestionnaireAnswers(answers, questionIndex, userId, siteId, questionnaire, visitId)(dispatch);
             scope.done();
             expect(dispatch).to.have.been.calledWithExactly({
                 type: SAVE_QUESTIONNAIRE_ERROR,
@@ -129,7 +132,7 @@ describe("`questionnaire` actions", () => {
             const dispatch = sinon.stub().throws(
                 new Error("Error message")
             );
-            await saveQuestionnaireAnswers(answers, userId, siteId, questionnaire, visitId)(dispatch);
+            await saveQuestionnaireAnswers(answers, questionIndex, userId, siteId, questionnaire, visitId)(dispatch);
             expect(dispatch).to.have.callCount(1);
             expect(dispatch).to.have.been.calledWith({
                 type: SAVE_QUESTIONNAIRE_START

@@ -223,9 +223,11 @@ class Questionnaire extends Component {
             option,
             questionIndex
         );
+
         this.setState({answers});
         this.props.saveQuestionnaireAnswers(
-            [answers[questionIndex]],
+            answers,
+            questionIndex,
             this.props.userId,
             this.props.site._id,
             questionnaire,

@@ -1,5 +1,4 @@
 import {combineReducers} from "redux";
-
 import {QUESTIONNAIRE_STATUS, SAVE_QUESTIONNAIRE_SUCCESS} from "../actions/questionnaire";
 import {roundTwoDecimals} from "../lib/questionnaire";
 
@@ -8,7 +7,7 @@ function status (state = [], {type, payload}) {
         case SAVE_QUESTIONNAIRE_SUCCESS:
             return state.map(value => {
                 if (value.key == payload.key) {
-                    var newTotalAnswers = value.totalAnswers + 1;
+                    var newTotalAnswers = payload.countAnswers;
                     var newValue = roundTwoDecimals(newTotalAnswers / value.totalQuestions);
                     return {
                         ...value,
