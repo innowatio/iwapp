@@ -174,11 +174,13 @@ export default class ChartConsumption extends Component {
                         />
                     </View>
                 </View>
-                <Highcharts
-                    aggregates={this.props.dailyAggregates}
-                    charts={this.props.charts}
-                    height={this.props.heightSwiper * 0.45}
-                />
+                <View style={{height: this.props.heightSwiper * 0.45}}>
+                    <Highcharts
+                        aggregates={this.props.dailyAggregates}
+                        charts={this.props.charts}
+                        height={this.props.heightSwiper * 0.45}
+                    />
+                </View>
                 <View style={[styles.bottomChartWrp, {width: width * .9, height: height * 0.08}]}>
                     <View style={styles.switchContainer}>
                         <Switch

@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: "center",
-        alignItems: "center",
+        alignItems: "stretch",
         backgroundColor: colors.transparent,
         flexDirection: "row"
     }
@@ -212,8 +212,8 @@ class Home extends Component {
         const heightSwiper = height * 0.6;
         return (
             <View style={styles.container}>
-                <Content style={{backgroundColor: colors.background}}>
-                    <View style={{height: height * 0.28}}>
+                <Content style={{backgroundColor: colors.background, height}}>
+                    <View>
                         <Weather
                             {...this.getWeatherData()}
                         />

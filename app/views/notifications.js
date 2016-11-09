@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: "center",
-        alignItems: "center",
+        alignItems: "stretch",
         backgroundColor: colors.transparent,
         flexDirection: "row"
     },
@@ -214,7 +214,7 @@ class Notifications extends Component {
         const {height} = Dimensions.get("window");
         return (
             <View style={styles.container}>
-                <Content style={{backgroundColor: colors.background, height: height}}>
+                <Content style={{backgroundColor: colors.background, height}}>
                     <View style={styles.titleBarWrp}>
                         <View style={styles.titleBar}>
                             <Text style={styles.title}>{"NOTIFICHE"}</Text>

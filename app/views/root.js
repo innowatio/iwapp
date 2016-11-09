@@ -2,7 +2,7 @@ import {Map} from "immutable";
 import {equals, isEmpty, last} from "ramda";
 import Drawer from "react-native-drawer";
 import React, {Component, PropTypes} from "react";
-import {Platform, StatusBar, StyleSheet, ScrollView, View} from "react-native";
+import {Dimensions, Platform, StatusBar, StyleSheet, ScrollView, View} from "react-native";
 import FCM from "react-native-fcm";
 import {DefaultRenderer} from "react-native-router-flux";
 import {connect} from "react-redux";
@@ -22,9 +22,6 @@ import getDeviceInfo from "../lib/get-device-info";
 import Login from "./login";
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1
-    },
     statusBarHeightIOS: {
         height: statusBarHeight,
         backgroundColor: primaryBlue
@@ -243,6 +240,7 @@ class Root extends Component {
 
     renderView () {
         const {asteroid, site, selectSite} = this.props;
+        const {height, width} = Dimensions.get("window");
         return this.props.userId ? (
             <Drawer
                 captureGestures={true}
@@ -254,7 +252,8 @@ class Root extends Component {
                         onTriggerClose={::this.closeHamburger}
                         optionItems={this.getSites()}
                         site={site}
-                    />}
+                    />
+                }
                 disabled={this.isDrawerDisabled()}
                 onClose={::this.closeHamburger}
                 open={this.state.open}
@@ -270,10 +269,12 @@ class Root extends Component {
                         survey={this.getSurvey(this.props.collections)}
                         visible={this.state.surveyModalVisible}
                     />
-                    <DefaultRenderer
-                        navigationState={this.getNavigationState()}
-                        onNavigate={this.props.onNavigate}
-                    />
+                    <View style={{height, width}}>
+                        <DefaultRenderer
+                            navigationState={this.getNavigationState()}
+                            onNavigate={this.props.onNavigate}
+                        />
+                    </View>
                 </View>
             </Drawer>
         ) :
@@ -281,11 +282,12 @@ class Root extends Component {
     }
 
     render () {
+        const {height, width} = Dimensions.get("window");
         return (
             <ScrollView
                 alwaysBounceVertical={false}
                 automaticallyAdjustContentInsets={true}
-                contentContainerStyle={styles.container}
+                contentContainerStyle={{height, width}}
                 keyboardShouldPersistTaps={true}
             >
                 <View style={Platform.OS === "ios" ? styles.statusBarHeightIOS : null}/>
