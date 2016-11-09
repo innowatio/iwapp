@@ -1,113 +1,13 @@
+import utils from "iwwa-utils";
 import moment from "moment";
 import "moment/locale/it";
 
 const PERIODS = ["day", "week", "month", "year"];
 
-export function getTimeRangeByPeriod (period) {
-    const now = moment.utc();
-    return {
-        start: now.startOf(period).format("YYYY-MM-DDTHH:mm:ssZ"),
-        end: now.endOf(period).format("YYYY-MM-DDTHH:mm:ssZ")
-    };
-}
-
-function getPreviousPeriod (subtractPeriod, rangePeriod) {
-    return {
-        start: moment.utc().subtract(1, subtractPeriod).startOf(rangePeriod).format("YYYY-MM-DDTHH:mm:ssZ"),
-        end: moment.utc().subtract(1, subtractPeriod).endOf(rangePeriod).format("YYYY-MM-DDTHH:mm:ssZ")
-    };
-}
-
-function getInYear (time, period) {
-    return getPeriodRatio(period, time.dayOfYear());
-}
-
-function getPeriodRatio (period, days) {
-    return days / getDaysIn(period);
-}
-
-function getDaysIn (period) {
-    var result = 0;
-    switch (period) {
-        case "day":
-            result = 1;
-            break;
-        case "week":
-            result = 7;
-            break;
-        case "month":
-            result = 30.41;
-            break;
-        case "year":
-            result = 365.25;
-            break;
-    }
-    return result;
-}
-
-function sumMeasurements (measurements, startDay, endDay, period) {
-    var sum = 0;
-    var max = 0;
-    for (var index = startDay; index < endDay; index++) {
-        const number = isNaN(parseFloat(measurements[index])) ? 0 : parseFloat(measurements[index]);
-        sum += number;
-        if (max < number) {
-            max = number;
-        }
-    }
-    const avg = sum / getPeriodRatio(period, endDay - startDay);
-    return avg.toFixed(0);
-}
-
-function getRangeStats (aggregates, period, periodOffset = 0, periodOffsetType = period, periodLenght = 1) {
-
-    const startTime = moment().startOf(period).subtract(periodOffset, periodOffsetType);
-    const endTime = moment().startOf(period).subtract(periodOffset, periodOffsetType).add(periodLenght, period);
-    const delta = moment.duration(endTime - startTime);
-
-    const range = {
-        startDay: startTime.dayOfYear() - 1,
-        endDay: (startTime.dayOfYear() - 1) + delta.asDays()
-    };
-
-    const aggregate = aggregates.find(x =>
-        x.get("measurementType") === "activeEnergy" &&
-        parseInt(x.get("year")) === startTime.year()
-    );
-    const measurements = aggregate ? aggregate.get("measurementValues").split(",") : [];
-
-    return sumMeasurements(measurements, range.startDay, range.endDay, period);
-}
-
-function getPeriodStats (period, aggregates) {
-
-    const aggregate = aggregates.find(x =>
-        x.get("measurementType") === "activeEnergy" &&
-        x.get("year") === moment().format("YYYY")
-    );
-    const measurements = aggregate.get("measurementValues").split(",");
-
-    const time = moment().startOf("year");
-    time.add({
-        days: measurements.length - 1
-    });
-
-    const total = measurements.reduce((x, y) => {
-        const number = isNaN(parseFloat(y)) ? 0 : parseFloat(y);
-        return x + number;
-    }, 0);
-
-    const avg = total / getInYear(time, period);
-    return {
-        avg: avg.toFixed(0)
-    };
-}
-
 export function getTitleAndSubtitle (period, aggregates) {
-    const periodDates = getTimeRangeByPeriod(period);
-    const result = getPeriodStats(period, aggregates);
-    const periodStats = (period, periodOffset, periodOffsetType) => getRangeStats(aggregates, period, periodOffset, periodOffsetType);
-    const defaultMeasurement = periodStats(period);
+    const periodDates = utils.getTimeRangeByPeriod(period);
+    const defaultNow = utils.getSumByPeriod(periodDates, aggregates);
+    const defaultMax = utils.getSumByPeriod(utils.getPreviousPeriod(period, period), aggregates);
     switch (PERIODS.indexOf(period)) {
         case 0:
             return {
@@ -118,22 +18,22 @@ export function getTitleAndSubtitle (period, aggregates) {
                 periodSubtitle: `${moment(periodDates.start).locale("it").format("DD MMMM YYYY")}`.toUpperCase(),
                 peersText: "Media dei consumi giornalieri di attività simili",
                 title: "OGGI",
-                sum: defaultMeasurement,
+                sum: defaultNow,
                 comparisons: [{
                     key: "today-1d",
                     title: "IERI",
-                    max: defaultMeasurement,
-                    now: periodStats(period, 1)
+                    max: defaultMax,
+                    now: defaultNow
                 }, {
                     key: "today-7d",
                     title: `${moment().locale("it").format("dddd")} scors${moment().day() === 6 ? "a" : "o"}`.toUpperCase(),
-                    max: defaultMeasurement,
-                    now: periodStats(period, 2)
+                    max: utils.getSumByPeriod(utils.getPreviousPeriod("week", "day"), aggregates),
+                    now: defaultNow
                 }, {
                     key: "avg-7d",
                     title: `media ${moment().locale("it").format("dddd")}`.toUpperCase(),
-                    max: defaultMeasurement,
-                    now: result.avg
+                    max: utils.getAverageByPeriod(aggregates, "days", 7),
+                    now: defaultNow
                 }]
             };
         case 1:
@@ -145,17 +45,17 @@ export function getTitleAndSubtitle (period, aggregates) {
                 periodSubtitle: `${moment(periodDates.start).format("DD")} - ${moment(periodDates.end).locale("it").format("DD MMMM YYYY")}`.toUpperCase(),
                 peersText: "Media dei consumi settimanali di attività simili",
                 title: "SETTIMANA CORRENTE",
-                sum: defaultMeasurement,
+                sum: defaultNow,
                 comparisons: [{
                     key: "week-1w",
                     title: "SETTIMANA SCORSA",
-                    max: defaultMeasurement,
-                    now: periodStats(period, 1)
+                    max: defaultMax,
+                    now: defaultNow
                 }, {
                     key: "avg-week",
                     title: "MEDIA SETTIMANALE",
-                    max: defaultMeasurement,
-                    now: result.avg
+                    max: utils.getAverageByPeriod(aggregates, "week"),
+                    now: defaultNow
                 }]
             };
         case 2:
@@ -167,22 +67,22 @@ export function getTitleAndSubtitle (period, aggregates) {
                 periodSubtitle: `${moment(periodDates.start).format("YYYY")}`,
                 peersText: "Media dei consumi mensili di attività simili",
                 title: "MESE CORRENTE",
-                sum: defaultMeasurement,
+                sum: defaultNow,
                 comparisons: [{
                     key: "month-1m",
-                    title: `${moment(getPreviousPeriod(period, period).start).locale("it").format("MMMM YYYY")}`.toUpperCase(),
-                    max: defaultMeasurement,
-                    now: periodStats(period, 1)
+                    title: `${moment(utils.getPreviousPeriod(period, period).start).locale("it").format("MMMM YYYY")}`.toUpperCase(),
+                    max: defaultMax,
+                    now: defaultNow
                 }, {
                     key: "month-1y",
-                    title: `${moment(getPreviousPeriod("year", "month").start).locale("it").format("MMMM YYYY")}`.toUpperCase(),
-                    max: defaultMeasurement,
-                    now: periodStats(period, 2)
+                    title: `${moment(utils.getPreviousPeriod("year", "month").start).locale("it").format("MMMM YYYY")}`.toUpperCase(),
+                    max: utils.getSumByPeriod(utils.getPreviousPeriod("year", "month"), aggregates),
+                    now: defaultNow
                 }, {
                     key: "avg-month",
                     title: "MEDIA DEI MESI",
-                    max: defaultMeasurement,
-                    now: result.avg
+                    max: utils.getAverageByPeriod(aggregates, "month"),
+                    now: defaultNow
                 }]
             };
         case 3:
@@ -194,12 +94,12 @@ export function getTitleAndSubtitle (period, aggregates) {
                 periodSubtitle: `${moment(periodDates.start).format("YYYY")}`.toUpperCase(),
                 peersText: "Media dei consumi annuali di attività simili",
                 title: "ANNO CORRENTE",
-                sum: defaultMeasurement,
+                sum: defaultNow,
                 comparisons: [{
                     key: "year-1y",
-                    title: `${moment(getPreviousPeriod(period, period).start).locale("it").format("YYYY")}`.toUpperCase(),
-                    max: defaultMeasurement,
-                    now: periodStats(period, 1)
+                    title: `${moment(utils.getPreviousPeriod(period, period).start).locale("it").format("YYYY")}`.toUpperCase(),
+                    max: defaultMax,
+                    now: defaultNow
                 }]
             };
         default:

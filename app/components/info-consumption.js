@@ -95,25 +95,20 @@ export default class InfoConsumption extends Component {
 
     static propTypes = {
         consumptions: PropTypes.shape({
-            days: PropTypes.number,
-            total: PropTypes.number,
+            avg: PropTypes.number,
             unit: PropTypes.string
         }),
         heightSwiper: PropTypes.number.isRequired,
         peersConsumptions: PropTypes.shape({
-            days: PropTypes.number,
-            total: PropTypes.number,
+            avg: PropTypes.number,
             unit: PropTypes.string
         }),
     }
 
     renderSmileyBadge () {
         const {width} = Dimensions.get("window");
-        const {
-            consumptions,
-            peersConsumptions
-        } = this.props;
-        const relativeConsumption = Math.round((consumptions.total * 100 / peersConsumptions.total) - 100);
+        const {consumptions, peersConsumptions} = this.props;
+        const relativeConsumption = Math.round((consumptions.avg * 100 / peersConsumptions.avg) - 100);
         let badge = {};
         if (relativeConsumption < -5) {
             badge = {
@@ -168,7 +163,7 @@ export default class InfoConsumption extends Component {
             <View style={[styles.numberOtherMeanContainer, {height: height * .175}]}>
                 <View style={styles.textContainer}>
                     <Text ellipsizeMode={"tail"} numberOfLines={1} style={[styles.textNumber, {maxWidth: width * .4}]}>
-                        {(consumptions.total / consumptions.days).toFixed(2)}
+                        {(consumptions.avg).toFixed(2)}
                     </Text>
                     <Text style={styles.textUnitOfMeasurement}>{consumptions.unit}</Text>
                 </View>
@@ -180,27 +175,20 @@ export default class InfoConsumption extends Component {
     }
 
     renderMyConsumptions () {
-        const {
-            consumptions
-        } = this.props;
+        const {consumptions} = this.props;
         const text = "Media dei miei\nconsumi giornalieri";
         return this.renderConsumptions(consumptions, text);
     }
 
     renderPeersConsumptions () {
-        const {
-            peersConsumptions
-        } = this.props;
+        const {peersConsumptions} = this.props;
         const text = "Media dei consumi\ngiornalieri di attività simili";
         return this.renderConsumptions(peersConsumptions, text);
     }
 
     render () {
         const {height, width} = Dimensions.get("window");
-        const {
-            consumptions,
-            peersConsumptions
-        } = this.props;
+        const {consumptions, peersConsumptions} = this.props;
 
         return (
             <View style={[styles.container, {height: this.props.heightSwiper}]}>

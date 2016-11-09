@@ -68,7 +68,7 @@ describe("`questionnaire` actions", () => {
             visitId
         };
 
-        it("dispatches a SAVE_QUESTIONNAIRE_START action right away", async function() {
+        it("dispatches a SAVE_QUESTIONNAIRE_START action right away", async function () {
             this.timeout(5000);
             await saveQuestionnaireAnswers(answers, questionIndex, userId, siteId, questionnaire, visitId)(dispatch);
             const dispatchFirstCall = dispatch.getCall(0);
