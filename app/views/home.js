@@ -200,7 +200,7 @@ class Home extends Component {
             const realtime = this.props.collections.get("readings-real-time-aggregates");
             if (realtime) {
                 const weatherId = realtime.find(x => x.get("measurementType") === "weather-id");
-                const weatherCloudness = realtime.find(x => x.get("measurementType") === "weather-cloudness");
+                const weatherCloudness = realtime.find(x => x.get("measurementType") === "weather-cloudeness");
                 const weatherHumidity = realtime.find(x => x.get("measurementType") === "weather-humidity");
                 const weatherTemperature = realtime.find(x => x.get("measurementType") === "weather-temperature");
                 return {
