@@ -1,15 +1,16 @@
 import axios, {AxiosError} from "../lib/axios";
-
 export const SAVE_QUESTIONNAIRE_START = "SAVE_QUESTIONNAIRE_START";
 export const SAVE_QUESTIONNAIRE_SUCCESS = "SAVE_QUESTIONNAIRE_SUCCESS";
 export const SAVE_QUESTIONNAIRE_ERROR = "SAVE_QUESTIONNAIRE_ERROR";
 
-export function saveQuestionnaireAnswers (answers, userId, siteId, questionnaire, visitId) {
+export function saveQuestionnaireAnswers (answers, questionIndex, userId, siteId, questionnaire, visitId) {
     return async dispatch => {
         try {
             dispatch({type: SAVE_QUESTIONNAIRE_START});
+            const answer = answers[questionIndex];
+            const countAnswers = answers.filter(value => value.answer).length;
             return axios.post("/answers", {
-                answers,
+                answers: [answer],
                 userId,
                 siteId,
                 questionId: questionnaire._id,
@@ -22,7 +23,8 @@ export function saveQuestionnaireAnswers (answers, userId, siteId, questionnaire
                     type: SAVE_QUESTIONNAIRE_SUCCESS,
                     payload: {
                         data: res.data,
-                        key:  questionnaire.category
+                        key:  questionnaire.category,
+                        countAnswers
                     }
 
                 });

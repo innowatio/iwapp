@@ -167,7 +167,7 @@ class Info extends Component {
                         transparent={true}
                     >
                         <Text style={[styles.textContacts]}>
-                            {"Email: info@innowatio.it"}
+                            {"Email: pilot@innowatio.com"}
                         </Text>
                     </TouchableOpacity>
                 </View>
