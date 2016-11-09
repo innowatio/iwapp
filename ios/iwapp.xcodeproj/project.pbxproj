@@ -268,6 +268,7 @@
 		6B961A021D1836B700F23043 /* ios-640x1136.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ios-640x1136.png"; sourceTree = "<group>"; };
 		6B961A031D1836B700F23043 /* ios-750x1334.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ios-750x1334.png"; sourceTree = "<group>"; };
 		6B961A041D1836B700F23043 /* ios-1242x2208.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ios-1242x2208.png"; sourceTree = "<group>"; };
+		6BA157AC1DD396A300EAD3C1 /* Lucy BETA.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = "Lucy BETA.entitlements"; path = "iwapp/Lucy BETA.entitlements"; sourceTree = "<group>"; };
 		6BC5085A1DD339AC00E6578B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		6BE5B2031CFED3B800D94AB2 /* Lato-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Bold.ttf"; sourceTree = "<group>"; };
 		6BE5B2041CFED3B800D94AB2 /* Lato-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Light.ttf"; sourceTree = "<group>"; };
@@ -402,6 +403,7 @@
 		13B07FAE1A68108700A75B9A /* iwapp */ = {
 			isa = PBXGroup;
 			children = (
+				6BA157AC1DD396A300EAD3C1 /* Lucy BETA.entitlements */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -1166,6 +1168,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_ENTITLEMENTS = "iwapp/Lucy BETA.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = V9JWVTC8N8;
@@ -1199,6 +1202,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_ENTITLEMENTS = "iwapp/Lucy BETA.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEVELOPMENT_TEAM = V9JWVTC8N8;
 				HEADER_SEARCH_PATHS = (
@@ -1281,6 +1285,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_ENTITLEMENTS = "iwapp/Lucy BETA.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEVELOPMENT_TEAM = V9JWVTC8N8;
 				HEADER_SEARCH_PATHS = (
