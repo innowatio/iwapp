@@ -2,7 +2,7 @@ import {Map} from "immutable";
 import {equals, isEmpty, last} from "ramda";
 import Drawer from "react-native-drawer";
 import React, {Component, PropTypes} from "react";
-import {Dimensions, Platform, StatusBar, StyleSheet, ScrollView, View} from "react-native";
+import {Dimensions, Platform, StatusBar, StyleSheet, View} from "react-native";
 import FCM from "react-native-fcm";
 import {DefaultRenderer} from "react-native-router-flux";
 import {connect} from "react-redux";
@@ -27,7 +27,6 @@ const styles = StyleSheet.create({
         backgroundColor: primaryBlue
     }
 });
-
 
 class Root extends Component {
 
@@ -284,12 +283,7 @@ class Root extends Component {
     render () {
         const {height, width} = Dimensions.get("window");
         return (
-            <ScrollView
-                alwaysBounceVertical={false}
-                automaticallyAdjustContentInsets={true}
-                contentContainerStyle={{height, width}}
-                keyboardShouldPersistTaps={true}
-            >
+            <View style={{height, width}}>
                 <View style={Platform.OS === "ios" ? styles.statusBarHeightIOS : null}/>
                 <StatusBar
                     backgroundColor={secondaryBlue}
@@ -297,7 +291,7 @@ class Root extends Component {
                 />
                 {this.renderView()}
                 <KeyboardSpacer />
-            </ScrollView>
+            </View>
         );
     }
 
