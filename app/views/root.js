@@ -173,7 +173,16 @@ class Root extends Component {
             FCM.getFCMToken().then(token => {
                 const deviceInfo = getDeviceInfo();
                 // store fcm token in your server
-                asteroid.call("saveFCMToken", token, deviceInfo);
+                if (token) {
+                    asteroid.call("saveFCMToken", token, deviceInfo);
+                }
+            });
+            FCM.on("refreshToken", token => {
+                // fcm token may not be available on first load, catch it here
+                const deviceInfo = getDeviceInfo();
+                if (token) {
+                    asteroid.call("saveFCMToken", token, deviceInfo);
+                }
             });
             asteroid.call("getUnreadNotifications").then(notifications => {
                 this.setState({
