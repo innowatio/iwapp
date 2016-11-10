@@ -165,7 +165,7 @@ export default class InfoConsumption extends Component {
 
     renderActivityTypeIcon () {
         const {height} = Dimensions.get("window");
-        const site = this.props.site;
+        const site = this.props.site || {};
         var icon;
         switch (site.businessType) {
             case "Vendita all'ingrosso o al dettaglio (negozi, ecc)":
@@ -232,9 +232,9 @@ export default class InfoConsumption extends Component {
                 <View style={[styles.infoAndConsumptionContainer, {width, height: height * .35}]}>
                     <View style={[styles.infoContainer, {height: height * .35, width: width * .41}]}>
                         {this.renderActivityTypeIcon()}
-                        {site.employees ? <Text style={styles.textStandardSmall}>{`${site.employees} persone`}</Text> : null}
-                        {site.areaInMq ? <Text style={styles.textStandardSmall}>{`Attività di ${site.areaInMq} mq`}</Text> : null}
-                        {site.address ? <Text style={styles.textStandardSmall}>{`${site.address}`}</Text> : null}
+                        {site && site.employees ? <Text style={styles.textStandardSmall}>{`${site.employees} persone`}</Text> : null}
+                        {site && site.areaInMq ? <Text style={styles.textStandardSmall}>{`Attività di ${site.areaInMq} mq`}</Text> : null}
+                        {site && site.address ? <Text style={styles.textStandardSmall}>{`${site.address}`}</Text> : null}
                     </View>
                     <View style={[styles.meanConsumptionContainer, {height: height * .35, width: width * .59}]}>
                         {consumptions ? this.renderMyConsumptions() : null}
