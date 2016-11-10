@@ -194,13 +194,21 @@ export default class InfoConsumption extends Component {
         );
     }
 
+    renderConsumptionData (consumptions) {
+        if (consumptions.avg.toString().split(".")[0].length >= 3) {
+            return consumptions.avg.toFixed(0);
+        } else {
+            return consumptions.avg.toFixed(1);
+        }
+    }
+
     renderConsumptions (consumptions, text) {
         const {width, height} = Dimensions.get("window");
         return (
             <View style={[styles.numberOtherMeanContainer, {height: height * .175}]}>
                 <View style={styles.textContainer}>
                     <Text ellipsizeMode={"tail"} numberOfLines={1} style={[styles.textNumber, {maxWidth: width * .4}]}>
-                        {(consumptions.avg).toFixed(2)}
+                        {this.renderConsumptionData(consumptions)}
                     </Text>
                     <Text style={styles.textUnitOfMeasurement}>{consumptions.unit}</Text>
                 </View>
