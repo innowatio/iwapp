@@ -308,7 +308,8 @@ describe("`Root` view", () => {
             setState
         };
         const FCM = {
-            getFCMToken: sinon.stub().returns(resolve("token"))
+            getFCMToken: sinon.stub().returns(resolve("token")),
+            on: sinon.stub().returns(resolve("token"))
         };
         const getDeviceInfo = sinon.stub().returns({
             device: {}
