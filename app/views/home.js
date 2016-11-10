@@ -1,4 +1,5 @@
 import {Map} from "immutable";
+import {getAverageByPeriod} from "iwwa-utils";
 import moment from "moment";
 import {Content} from "native-base";
 import React, {Component, PropTypes} from "react";
@@ -19,7 +20,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: "center",
-        alignItems: "center",
+        alignItems: "stretch",
         backgroundColor: colors.transparent,
         flexDirection: "row"
     }
@@ -130,8 +131,36 @@ class Home extends Component {
         );
         props.asteroid.subscribe(
             "yearlyConsumptions",
+            chart.sensorId,
+            moment.utc().subtract({year: 1}).format("YYYY"),
+            "reading",
+            "activeEnergy"
+        );
+        props.asteroid.subscribe(
+            "yearlyConsumptions",
             `${chart.sensorId}-peers-avg`,
             moment.utc().format("YYYY"),
+            "reading",
+            "activeEnergy"
+        );
+        props.asteroid.subscribe(
+            "yearlyConsumptions",
+            `${chart.sensorId}-peers-avg`,
+            moment.utc().subtract({year: 1}).format("YYYY"),
+            "reading",
+            "activeEnergy"
+        );
+        props.asteroid.subscribe(
+            "yearlyConsumptions",
+            `${chart.sensorId}-standby`,
+            moment.utc().format("YYYY"),
+            "reading",
+            "activeEnergy"
+        );
+        props.asteroid.subscribe(
+            "yearlyConsumptions",
+            `${chart.sensorId}-standby`,
+            moment.utc().subtract({year: 1}).format("YYYY"),
             "reading",
             "activeEnergy"
         );
@@ -145,27 +174,26 @@ class Home extends Component {
         return this.props.collections.get("readings-daily-aggregates") || Map();
     }
 
-    getYearlyAggregate (sensorId) {
-        const aggregate = this.getConsumptionAggregate().get(sensorId);
-        if (aggregate) {
-            const measurements = aggregate.get("measurementValues").split(",") ;
-            const measurementsTotal = measurements.reduce((prev, current) => {
-                return prev + (parseFloat(current) || 0);
-            }, 0);
-            return {
-                days: measurements.length,
-                total: measurementsTotal,
-                unit: aggregate.get("unitOfMeasurement")
-            };
+    getYearlyAggregate (sensorId, measurementType) {
+        const aggregate = this.getConsumptionAggregate().filter(agg => (
+            agg.get("sensorId") === sensorId &&
+            agg.get("measurementType") === measurementType)
+        );
+        if (aggregate.isEmpty()) {
+            return null;
         }
+        return {
+            avg: getAverageByPeriod(aggregate, "day"),
+            unit: aggregate.first().get("unitOfMeasurement")
+        };
     }
 
     getPeersData () {
-        return this.getYearlyAggregate(`${this.props.site._id}-peers-avg-${moment().year()}-reading-activeEnergy`);
+        return this.getYearlyAggregate(`${this.props.site._id}-peers-avg`, "activeEnergy");
     }
 
     getConsumptionData () {
-        return this.getYearlyAggregate(`${this.props.site._id}-${moment().year()}-reading-activeEnergy`);
+        return this.getYearlyAggregate(this.props.site._id, "activeEnergy");
     }
 
     getInfoConsumptionData () {
@@ -212,8 +240,8 @@ class Home extends Component {
         const heightSwiper = height * 0.6;
         return (
             <View style={styles.container}>
-                <Content style={{backgroundColor: colors.background}}>
-                    <View style={{height: height * 0.28}}>
+                <Content style={{backgroundColor: colors.background, height}}>
+                    <View>
                         <Weather
                             {...this.getWeatherData()}
                         />
@@ -222,6 +250,7 @@ class Home extends Component {
                         <View>
                             <InfoConsumption
                                 heightSwiper={heightSwiper}
+                                site={this.props.site}
                                 {...this.getInfoConsumptionData()}
                             />
                         </View>

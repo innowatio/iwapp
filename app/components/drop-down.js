@@ -141,16 +141,15 @@ export default class DropDown extends Component {
         const filtered = this.props.optionItems.filter(function (d) {
             return d.title.toLowerCase().indexOf(self.state.searchText.toLowerCase())>-1;
         });
-        return isEmpty(filtered)
-        ? null : (
-        <ScrollView
-            onContentSizeChange={::this.onContentSizeChange}
-            onScroll={::this.onScroll}
-            scrollEventThrottle={1000}
-        >
-            {this.renderOptionItems(filtered)}
-        </ScrollView>
-        );
+        return !isEmpty(filtered) ? (
+            <ScrollView
+                onContentSizeChange={::this.onContentSizeChange}
+                onScroll={::this.onScroll}
+                scrollEventThrottle={1000}
+            >
+                {this.renderOptionItems(filtered)}
+            </ScrollView>
+        ): null;
     }
 
     renderDropDown () {
@@ -158,8 +157,7 @@ export default class DropDown extends Component {
         return this.state.showItems ? (
             <View>
                 <Animated.View style={[
-                    styles.view,
-                    {
+                    styles.view, {
                         height: height - 74,
                         transform: [{
                             translateY: this.state.slidingAnimationValue

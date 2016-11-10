@@ -1,6 +1,6 @@
 import {resolve} from "bluebird";
 import {shallow} from "enzyme";
-import {ScrollView, StatusBar} from "react-native";
+import {StatusBar} from "react-native";
 import Drawer from "react-native-drawer";
 import {DefaultRenderer} from "react-native-router-flux";
 import {Map} from "immutable";
@@ -33,28 +33,6 @@ describe("`Root` view", () => {
             sceneKey: "home"
         }]
     };
-
-    it("renders a `ScrollView` with correct props", () => {
-        const rootView = shallow(
-            <RootView
-                asteroid={{}}
-                collections={Map()}
-                generateSessionId={sinon.spy()}
-                navigationScene={["home"]}
-                navigationState={navigationState}
-                onLogin={sinon.spy()}
-                onLogout={sinon.spy()}
-                onNavigate={onNavigate}
-                selectSite={sinon.spy()}
-                setNotificationsReaded={sinon.spy()}
-                userId={"userId"}
-            />
-        );
-        expect(rootView.find(ScrollView).length).to.equal(1);
-        expect(rootView.find(ScrollView).prop("alwaysBounceVertical")).to.equal(false);
-        expect(rootView.find(ScrollView).prop("automaticallyAdjustContentInsets")).to.equal(true);
-        expect(rootView.find(ScrollView).prop("keyboardShouldPersistTaps")).to.equal(true);
-    });
 
     it("renders a `StatusBar` with correct props", () => {
         const rootView = shallow(

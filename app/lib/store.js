@@ -1,4 +1,6 @@
+import {AsyncStorage} from "react-native";
 import {createStore, applyMiddleware} from "redux";
+import {persistStore, autoRehydrate} from "redux-persist";
 import thunk from "redux-thunk";
 
 import reducers from "../reducers";
@@ -13,6 +15,7 @@ if (process.env.NODE_ENV !== "test") {
 const store = createStore(
     reducers,
     applyMiddleware(...middlewares),
+    autoRehydrate()
 );
 
 if (module.hot) {
@@ -21,5 +24,7 @@ if (module.hot) {
         store.replaceReducer(nextRootReducer);
     });
 }
+
+persistStore(store, {storage: AsyncStorage, whitelist: ["site", "stats", "home"]});
 
 export default store;

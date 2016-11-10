@@ -202,7 +202,7 @@ export default class Login extends Component {
                         containerStyle={[styles.buttonLogin, {marginVertical: height * .04}]}
                         onPress={::this.onLogin}
                     >
-                        <Text style={[styles.buttonLoginText, {padding: height * .04}]}>{"ACCEDI"}</Text>
+                        <Text style={styles.buttonLoginText}>{"ACCEDI"}</Text>
                     </Button>
                 </View>
             </Image>

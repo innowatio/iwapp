@@ -4,6 +4,11 @@ import {Dimensions, StyleSheet, Image, View} from "react-native";
 import * as colors from "../lib/colors";
 import Icon from "../components/iwapp-icons";
 import Text from "../components/text-lato";
+import icoDefault from "../assets/img/ico_default.gif";
+import icoSelling from "../assets/img/ico_selling.gif";
+import icoFeedingSector from "../assets/img/ico_feeding-sector.gif";
+import icoIndustry from "../assets/img/ico_industry.gif";
+import icoOffices from "../assets/img/ico_offices.gif";
 
 const styles = StyleSheet.create({
     container: {
@@ -95,25 +100,21 @@ export default class InfoConsumption extends Component {
 
     static propTypes = {
         consumptions: PropTypes.shape({
-            days: PropTypes.number,
-            total: PropTypes.number,
+            avg: PropTypes.number,
             unit: PropTypes.string
         }),
         heightSwiper: PropTypes.number.isRequired,
         peersConsumptions: PropTypes.shape({
-            days: PropTypes.number,
-            total: PropTypes.number,
+            avg: PropTypes.number,
             unit: PropTypes.string
         }),
+        site: PropTypes.object
     }
 
     renderSmileyBadge () {
         const {width} = Dimensions.get("window");
-        const {
-            consumptions,
-            peersConsumptions
-        } = this.props;
-        const relativeConsumption = Math.round((consumptions.total * 100 / peersConsumptions.total) - 100);
+        const {consumptions, peersConsumptions} = this.props;
+        const relativeConsumption = Math.round((consumptions.avg * 100 / peersConsumptions.avg) - 100);
         let badge = {};
         if (relativeConsumption < -5) {
             badge = {
@@ -162,13 +163,44 @@ export default class InfoConsumption extends Component {
         );
     }
 
+    renderActivityTypeIcon () {
+        const {height} = Dimensions.get("window");
+        const site = this.props.site;
+        var icon;
+        switch (site.businessType) {
+            case "Vendita all'ingrosso o al dettaglio (negozi, ecc)":
+                icon = icoSelling;
+                break;
+            case "Settore alimentazione (ristoranti, bar, panetterie, fast food, ecc)":
+                icon = icoFeedingSector;
+                break;
+            case "Industria (costruzioni, manifatturiera, agricoltura)":
+                icon = icoIndustry;
+                break;
+            case "Uffici (uffici societari, servizi finanziari, pubblica amministrazione, agenzie immobiliari, ecc)":
+                icon = icoOffices;
+                break;
+            case "Altro":
+            default:
+                icon = icoDefault;
+        }
+        return (
+            <View style={styles.iconActivityWrp}>
+                <Image
+                    source={icon}
+                    style={{width: height * .14, height: height * .14}}
+                />
+            </View>
+        );
+    }
+
     renderConsumptions (consumptions, text) {
         const {width, height} = Dimensions.get("window");
         return (
             <View style={[styles.numberOtherMeanContainer, {height: height * .175}]}>
                 <View style={styles.textContainer}>
                     <Text ellipsizeMode={"tail"} numberOfLines={1} style={[styles.textNumber, {maxWidth: width * .4}]}>
-                        {(consumptions.total / consumptions.days).toFixed(2)}
+                        {(consumptions.avg).toFixed(2)}
                     </Text>
                     <Text style={styles.textUnitOfMeasurement}>{consumptions.unit}</Text>
                 </View>
@@ -180,41 +212,29 @@ export default class InfoConsumption extends Component {
     }
 
     renderMyConsumptions () {
-        const {
-            consumptions
-        } = this.props;
+        const {consumptions} = this.props;
         const text = "Media dei miei\nconsumi giornalieri";
         return this.renderConsumptions(consumptions, text);
     }
 
     renderPeersConsumptions () {
-        const {
-            peersConsumptions
-        } = this.props;
+        const {peersConsumptions} = this.props;
         const text = "Media dei consumi\ngiornalieri di attività simili";
         return this.renderConsumptions(peersConsumptions, text);
     }
 
     render () {
         const {height, width} = Dimensions.get("window");
-        const {
-            consumptions,
-            peersConsumptions
-        } = this.props;
+        const {consumptions, peersConsumptions, site} = this.props;
 
         return (
             <View style={[styles.container, {height: this.props.heightSwiper}]}>
                 <View style={[styles.infoAndConsumptionContainer, {width, height: height * .35}]}>
                     <View style={[styles.infoContainer, {height: height * .35, width: width * .41}]}>
-                        <View style={styles.iconActivityWrp}>
-                            <Image
-                                source={require("../assets/img/ico_default.gif")}
-                                style={{width: height * .14, height: height * .14}}
-                            />
-                        </View>
-                        <Text style={styles.textStandardSmall}>{"23 persone"}</Text>
-                        <Text style={styles.textStandardSmall}>{"Ufficio di 167 mq"}</Text>
-                        <Text style={styles.textStandardSmall}>{"Bergamo, Lombardia"}</Text>
+                        {this.renderActivityTypeIcon()}
+                        {site.employees ? <Text style={styles.textStandardSmall}>{`${site.employees} persone`}</Text> : null}
+                        {site.areaInMq ? <Text style={styles.textStandardSmall}>{`Attività di ${site.areaInMq} mq`}</Text> : null}
+                        {site.address ? <Text style={styles.textStandardSmall}>{`${site.address}`}</Text> : null}
                     </View>
                     <View style={[styles.meanConsumptionContainer, {height: height * .35, width: width * .59}]}>
                         {consumptions ? this.renderMyConsumptions() : null}
