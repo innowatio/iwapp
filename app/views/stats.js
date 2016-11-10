@@ -275,6 +275,20 @@ class Stats extends Component {
         }
     }
 
+    getConsumptionData (consumptions, unit) {
+        const value = consumptions.max;
+        if (value === 0) {
+            return null;
+        }
+        switch (value.toString().split(".")[0].length) {
+            case 1:
+            case 2:
+                return value.toFixed(1) + ` ${unit}`;
+            default:
+                return value.toFixed(0) + ` ${unit}`;
+        }
+    }
+
     renderAlarmSettings () {
         // TODO waiting the alarms feature
 
@@ -301,9 +315,6 @@ class Stats extends Component {
     renderProgressBar (consumptions, unit) {
         const {width, height} = Dimensions.get("window");
         return consumptions.map(consumption => {
-            if (consumption.max === 0) {
-                return null;
-            }
             const progress = consumption.now / consumption.max;
             return (
                 <View key={consumption.key} style={[styles.progressBarStyleWrp, {margin: height * .01}]}>
@@ -323,7 +334,7 @@ class Stats extends Component {
                             {"%"}
                         </Text>
                         <Text style={styles.progressBarConsumptionValue}>
-                            {`${consumption.max} ${unit}`}
+                            {this.getConsumptionData(consumption, unit)}
                         </Text>
                     </View>
                 </View>
