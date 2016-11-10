@@ -1,8 +1,6 @@
 import moment from "moment";
 
 export function mapWeatherIcon (iconId) {
-    const hours = moment().hours();
-    const evening = 17;
     switch (iconId) {
         case 200:
         case 201:
@@ -68,13 +66,13 @@ export function mapWeatherIcon (iconId) {
         case 904:
         case 951:
         case 952:
-            return hours < evening ? "iw-clear-sky" : "iw-night-clear-sky";
+            return isDay() ? "iw-clear-sky" : "iw-night-clear-sky";
         case 801:
         case 953:
         case 954:
         case 955:
         case 956:
-            return hours < evening ?  "iw-few-clouds" : "iw-night-few-clouds";
+            return isDay() ?  "iw-few-clouds" : "iw-night-few-clouds";
         case 803:
         case 900:
         case 901:
@@ -84,7 +82,7 @@ export function mapWeatherIcon (iconId) {
         case 962:
             return "iw-broken-clouds";
         default:
-            return hours < evening ? "iw-clear-sky" : "iw-night-clear-sky";
+            return isDay() ? "iw-clear-sky" : "iw-night-clear-sky";
     }
 }
 
