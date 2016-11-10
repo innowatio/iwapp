@@ -61,6 +61,9 @@ export default class Highcharts extends Component {
     }
 
     getChartConfig () {
+        const {data, categories} = this.getSeries()[0];
+        const maxValue = data.length-1;
+        const categoriesView = data.length==24 ? [] : categories;
         return {
             chart: {
                 renderTo: "chart",
@@ -92,9 +95,10 @@ export default class Highcharts extends Component {
             title: null,
             xAxis: {
                 minorGridLineWidth: 0,
-                categories: []
-                // min: moment.utc(this.props.charts[0].day).startOf("day").valueOf(),
-                // max: moment.utc(this.props.charts[0].day).endOf("day").valueOf()
+                endOnTick: true,
+                categories: categoriesView,
+                min: 0,
+                max: maxValue
             },
             yAxis: {
                 endOnTick: false,
@@ -102,7 +106,15 @@ export default class Highcharts extends Component {
                 labels: {
                     format: "{value}"
                 },
-                title: {text: null}
+                title: {
+                    align: "high",
+                    text: "kWh",
+                    margin: -20,
+                    x: 0,
+                    y: 0,
+                    rotation: 360
+
+                }
             }
         };
     }
