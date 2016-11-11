@@ -78,7 +78,6 @@ const styles = StyleSheet.create({
         marginTop: 5
     },
     consumptionCircleValue: {
-        letterSpacing: -2,
         color: colors.white,
         fontWeight: "bold",
         backgroundColor: colors.transparent
@@ -289,6 +288,15 @@ class Stats extends Component {
         }
     }
 
+    getAggregateSum (stats, aggregates) {
+        const tabAggregate = getTitleAndSubtitle(stats.chart.period, aggregates);
+        const value = tabAggregate.sum;
+        if (value.toString().split(".")[0].length >= 3) {
+            return value.toFixed(0);
+        }
+        return value.toFixed(1);
+    }
+
     renderAlarmSettings () {
         // TODO waiting the alarms feature
 
@@ -434,8 +442,12 @@ class Stats extends Component {
                     <View style={[styles.consumptionWrp, {height: height * .2}]}>
                         <Text style={styles.titleSwiper}>{tabAggregate.periodTitle}</Text>
                         <View style={[styles.consumptionCircleWrp, {width: height * .16, height: height * .16}]}>
-                            <Text ellipsizeMode={"tail"} numberOfLines={1} style={[styles.consumptionCircleValue, {fontSize, lineHeight: fontSize}]}>
-                                {tabAggregate.sum}
+                            <Text
+                                ellipsizeMode={"tail"}
+                                numberOfLines={1}
+                                style={[styles.consumptionCircleValue, {fontSize, lineHeight: fontSize}]}
+                            >
+                                {this.getAggregateSum(stats, aggregates)}
                             </Text>
                             <Text style={styles.consumptionCircleMeasure}>
                                 {tabAggregate.measureUnit}
