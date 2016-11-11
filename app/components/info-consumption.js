@@ -239,18 +239,18 @@ export default class InfoConsumption extends Component {
             <View style={[styles.container, {height: this.props.heightSwiper}]}>
                 <View style={[styles.infoAndConsumptionContainer, {width, height: height * .35}]}>
                     <View style={[styles.infoContainer, {height: height * .35, width: width * .41}]}>
-                        {this.renderActivityTypeIcon()}
+                        {site && site.businessType ? this.renderActivityTypeIcon() : null}
                         {site && site.employees ? <Text style={styles.textStandardSmall}>{`${site.employees} persone`}</Text> : null}
                         {site && site.areaInMq ? <Text style={styles.textStandardSmall}>{`Attività di ${site.areaInMq} mq`}</Text> : null}
                         {site && site.address ? <Text style={styles.textStandardSmall}>{`${site.address}`}</Text> : null}
                     </View>
                     <View style={[styles.meanConsumptionContainer, {height: height * .35, width: width * .59}]}>
                         {consumptions ? this.renderMyConsumptions() : null}
-                        {peersConsumptions ? this.renderPeersConsumptions() : null}
+                        {peersConsumptions && parseFloat(peersConsumptions.avg) !== 0 ? this.renderPeersConsumptions() : null}
                     </View>
                 </View>
                 <View style={[styles.tipsContainer, {width, height: height * .16}]}>
-                    {(consumptions && peersConsumptions) ? this.renderSmileyBadge() : null}
+                    {(consumptions && peersConsumptions && peersConsumptions.avg !== 0) ? this.renderSmileyBadge() : null}
                 </View>
             </View>
         );
