@@ -81,7 +81,7 @@ export default memoize((aggregates, chartsState) => {
 
                 measurement ? filledChartData[index] = measurement : filledChartData[index] = {
                     hour: index.toString(),
-                    value: chartData.toFill ? (filledChartData[index-1] ? filledChartData[index-1].value : 0) : 0
+                    value: chartData.toFill ? (filledChartData[index - 1] ? filledChartData[index - 1].value : chartData.data.find(x => x.value !== 0) ? chartData.data.find(x => x.value !== 0).value : 0) : 0
                 };
             }
             return filledChartData;
@@ -92,8 +92,12 @@ export default memoize((aggregates, chartsState) => {
                 return [measurement.hour, Math.round(measurement.value * 10) / 10];
             });
 
+            const categories = data.map(measurement => {
+                return [measurement.hour];
+            });
             return {
-                data: chart
+                data: chart,
+                categories: categories
             };
         });
     } else {
@@ -169,7 +173,7 @@ function completeCategories (period, categories) {
         case "month":
             var endOfMonth = moment().endOf("month").format("D")-1;
             for (x=categories.length; x<=endOfMonth; x++) {
-                categories.push(x+1);
+                categories.push((x+1).toString());
             }
             break;
         case "year":
