@@ -45,10 +45,6 @@ class Home extends Component {
 
     constructor (props) {
         super(props);
-        this.state = {
-            isForecastData: false,
-            isStandbyData: false
-        };
     }
 
     componentDidMount () {
@@ -60,10 +56,6 @@ class Home extends Component {
 
     componentWillReceiveProps (nextProps) {
         if (nextProps.site) {
-            this.setState({
-                isForecastData: this.isForecastData(nextProps),
-                isStandbyData: this.isStandbyData(nextProps)
-            });
             this.subscribeToMeasure(nextProps);
         }
     }
@@ -72,18 +64,18 @@ class Home extends Component {
         this.props.asteroid.logout();
     }
 
-    isForecastData (nextProps) {
-        const chart = nextProps.home.charts[0];
+    isForecastData () {
+        const chart = this.props.home.charts[0];
         const day = moment.utc().format("YYYY-MM-DD");
-        return !(nextProps.collections.getIn(
+        return !(this.props.collections.getIn(
                 ["readings-daily-aggregates", `${chart.sensorId}-${day}-forecast-activeEnergy`]
             ) || Map()).isEmpty();
     }
 
-    isStandbyData (nextProps) {
-        const chart = nextProps.home.charts[0];
+    isStandbyData () {
+        const chart = this.props.home.charts[0];
         const day = moment.utc().format("YYYY-MM-DD");
-        return !(nextProps.collections.getIn(
+        return !(this.props.collections.getIn(
                 ["readings-daily-aggregates", `${chart.sensorId}-standby-${day}-reading-activeEnergy`]
             ) || Map()).isEmpty();
     }
@@ -260,8 +252,8 @@ class Home extends Component {
                                 consumptionAggregates={this.getConsumptionAggregate()}
                                 dailyAggregates={this.getDailyAggregate()}
                                 heightSwiper={heightSwiper}
-                                isForecastData={this.state.isForecastData}
-                                isStandbyData={this.state.isStandbyData}
+                                isForecastData={this.isForecastData()}
+                                isStandbyData={this.isStandbyData()}
                                 onToggleSwitch={this.props.toggleForecast}
                             />
                         </View>

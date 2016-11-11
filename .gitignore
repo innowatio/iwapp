@@ -48,6 +48,7 @@ android/keystores/debug.keystore
 #Visual Studio Code
 .vscode
 tsconfig.json
+typings/
 
 # Firebase
 
