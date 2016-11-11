@@ -23,12 +23,13 @@ const styles = StyleSheet.create({
         flexDirection: "row"
     },
     lastAnswer: {
-        borderBottomWidth: .5,
+        borderBottomWidth: 1,
         borderBottomColor: colors.borderAccordion,
         paddingBottom: 20
     },
     header: {
-        borderTopWidth: .5,
+        borderTopWidth: 1,
+        borderStyle: "solid",
         borderTopColor: colors.borderAccordion,
         flexDirection: "row",
         alignItems: "center",
@@ -37,7 +38,7 @@ const styles = StyleSheet.create({
         paddingVertical: 5
     },
     lastHeader: {
-        borderBottomWidth: .5,
+        borderBottomWidth: 1,
         borderBottomColor: colors.borderAccordion
     },
     questionnaireProgressContainer: {
@@ -63,7 +64,7 @@ const styles = StyleSheet.create({
         borderRadius: 100,
         height: 22,
         width: 22,
-        borderWidth: .5,
+        borderWidth: 1,
         borderColor: colors.borderAccordion,
         marginHorizontal: 5,
         alignItems: "center"
@@ -345,7 +346,7 @@ class Questionnaire extends Component {
 
         return (
             <View style={{height: heightWithoutHeader(height)}}>
-                <Content>
+                <Content style={{backgroundColor: colors.background, height}}>
                     <View style={styles.questionnaireProgressContainer}>
                         <QuestionnaireProgress questionnaire={selectedQuestionnaire} />
                     </View>

@@ -51,7 +51,7 @@ describe("`ChartConsumption` component", () => {
                 day: "day",
                 measurementType: "measurementType"
             }],
-            height: 45
+            height: 46
         });
     });
 
