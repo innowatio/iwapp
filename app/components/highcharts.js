@@ -62,13 +62,14 @@ export default class Highcharts extends Component {
 
     getChartConfig () {
         const {categories} = this.getSeries()[0];
+        // const {width} = Dimensions.get("window");
         const endOnTick =  (categories ? categories.length>24 :false); //only for month chart;
         return {
             chart: {
                 renderTo: "chart",
                 animation: true,
                 marginRight: 10,
-                marginLeft: 36
+                marginLeft: 38
             },
             credits: {
                 enabled: false

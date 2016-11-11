@@ -167,7 +167,7 @@ function completeCategories (period, categories) {
     switch (period) {
         case "week":
             for (var x= categories.length; x<=6; x++) {
-                categories.push(moment().ISOWeekday(x).format("ddd").substring(0, 1));
+                categories.push(moment().isoWeekday(x).format("ddd").substring(0, 1));
             }
             break;
         case "month":
