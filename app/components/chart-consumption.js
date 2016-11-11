@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
-        marginHorizontal: 20
+        marginHorizontal: 10
     },
     switch: {
         marginTop: 3
@@ -61,14 +61,14 @@ const styles = StyleSheet.create({
     },
     switchTextContainer: {
         flexDirection: "column",
-        marginLeft: 4
+        paddingHorizontal: 4
     },
     switchTextHeader: {
-        fontSize: 11,
+        fontSize: 10,
         color: colors.textGrey
     },
     switchText: {
-        fontSize: 10,
+        fontSize: 9,
         color: colors.textGrey
     },
     subTitle: {
@@ -174,11 +174,11 @@ export default class ChartConsumption extends Component {
                         />
                     </View>
                 </View>
-                <View style={{height: this.props.heightSwiper * 0.45}}>
+                <View style={{height: this.props.heightSwiper * 0.44}}>
                     <Highcharts
                         aggregates={this.props.dailyAggregates}
                         charts={this.props.charts}
-                        height={this.props.heightSwiper * 0.45}
+                        height={this.props.heightSwiper * 0.46}
                     />
                 </View>
                 <View style={[styles.bottomChartWrp, {width: width * .9, height: height * 0.08}]}>

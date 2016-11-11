@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
         backgroundColor: colors.secondaryBlue,
         flexDirection: "row",
         justifyContent: "space-around",
-        borderTopWidth: 0.5,
+        borderTopWidth: 1,
         borderStyle: "solid",
         borderTopColor: colors.white
     },
@@ -128,8 +128,8 @@ const styles = StyleSheet.create({
 
     // ALERT
     // alarmsButtonWrp: {
-    //     borderTopWidth: 0.5,
-    //     borderBottomWidth: 0.5,
+    //     borderTopWidth: 1,
+    //     borderBottomWidth: 1,
     //     borderTopColor: colors.lightGrey,
     //     borderBottomColor: colors.lightGrey,
     //     marginBottom: 10
@@ -256,6 +256,9 @@ class Stats extends Component {
         }
         if (number > 99999) {
             fontSize = 22;
+        }
+        if (number > 999999) {
+            fontSize = 18;
         }
         return fontSize;
     }
