@@ -61,14 +61,14 @@ export default class Highcharts extends Component {
     }
 
     getChartConfig () {
-        const {data, categories} = this.getSeries()[0];
-        const maxValue = data.length-1;
-        const categoriesView = data.length==24 ? [] : categories;
+        const {categories} = this.getSeries()[0];
+        const endOnTick =  (categories ? categories.length>24 :false); //only for month chart;
         return {
             chart: {
                 renderTo: "chart",
                 animation: true,
-                marginRight: 40
+                marginRight: 10,
+                marginLeft: 36
             },
             credits: {
                 enabled: false
@@ -94,23 +94,17 @@ export default class Highcharts extends Component {
             series: this.getSeries(),
             title: null,
             xAxis: {
-                minorGridLineWidth: 0,
-                endOnTick: true,
-                categories: categoriesView,
-                min: 0,
-                max: maxValue
+                endOnTick: endOnTick, // only for month chart
+                categories: categories
             },
             yAxis: {
                 endOnTick: false,
                 gridLineWidth: 0,
-                labels: {
-                    format: "{value}"
-                },
                 title: {
                     align: "high",
                     text: "kWh",
-                    margin: -20,
-                    x: 0,
+                    margin: 0,
+                    x: 25,
                     y: 0,
                     rotation: 360
 

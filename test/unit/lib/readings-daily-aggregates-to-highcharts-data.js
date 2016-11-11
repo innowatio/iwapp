@@ -61,6 +61,14 @@ describe("`readingsDailyAggregatesToHighchartsData` function", () => {
         ["23", 0]
     ];
 
+    const categories = [
+        ["0"], ["1"], ["2"], ["3"], ["4"],
+        ["5"], ["6"], ["7"], ["8"], ["9"],
+        ["10"], ["11"], ["12"], ["13"], ["14"],
+        ["15"], ["16"], ["17"], ["18"], ["19"],
+        ["20"], ["21"], ["22"], ["23"]
+    ];
+
     const dates = [
         "2016-09-15",
         "2016-09-16",
@@ -127,7 +135,7 @@ describe("`readingsDailyAggregatesToHighchartsData` function", () => {
         const ret = readingsDailyAggregatesToHighchartsData(readingsDailyAggregates, chartState);
         expect(ret).to.be.an("array");
         expect(ret[0]).to.be.an("object");
-        expect(ret[0]).to.have.all.keys(["data"]);
+        expect(ret[0]).to.have.all.keys(["data", "categories"]);
         expect(ret[0].data).to.be.an("array");
         expect(ret[0].data.length).to.equal(24);
     });
@@ -149,7 +157,7 @@ describe("`readingsDailyAggregatesToHighchartsData` function", () => {
         expect(ret[0]).to.be.an("object");
         ret.map((objectResult, index) => {
             expect(ret[index]).to.be.an("object");
-            expect(ret[index]).to.have.all.keys(["data"]);
+            expect(ret[index]).to.have.all.keys(["data", "categories"]);
             expect(objectResult.data).to.be.an("array");
         });
         expect(ret[0].data.length).to.equal(24);
@@ -174,10 +182,15 @@ describe("`readingsDailyAggregatesToHighchartsData` function", () => {
             const lastIndex = findLastIndex(time => parseInt(time) <= moment("2016-09-16").endOf("day").valueOf())(totalTimes);
             const timesArray = totalTimes.slice(firstIndex, lastIndex + 1);
             const valuesArray = [
-                12, 15, 16, 12, 6, 87, 332, 234, 3, 12, 15, 16, 12, 6, 87, 332, 234, 3, 12, 15, 16, 12, 6, 87, 332, 234, 3
+                12, 12, 16, 12, 6, 87, 332, 234, 3, 12, 15, 16, 12, 6, 87, 332, 234, 3, 12, 15, 16, 12, 6, 87, 332, 234, 3
             ].slice(firstIndex, lastIndex + 1);
             const data = getDataArray(timesArray, valuesArray);
-            expect(ret).to.deep.equal([{data}]);
+            expect(ret).to.deep.equal([
+                {
+                    data: data,
+                    categories: categories
+                }
+            ]);
         });
 
         it("should be an array of correct filled values", () => {
@@ -191,22 +204,19 @@ describe("`readingsDailyAggregatesToHighchartsData` function", () => {
                 standByReadingsDailyAggregates,
                 chartState
             );
-            const totalTimes = unnest(times.reading);
-            const firstIndex = findIndex(time => parseInt(time) >= moment("2016-09-16").valueOf())(totalTimes);
-            const lastIndex = findLastIndex(time => parseInt(time) <= moment("2016-09-16").endOf("day").valueOf())(totalTimes);
-            const timesArray = totalTimes.slice(firstIndex, lastIndex + 1);
-            const valuesArray = [
-                12, 15, 16, 12, 6, 87, 332, 234, 3, 12, 15, 16, 12, 6, 87, 332, 234, 3, 12, 15, 16, 12, 6, 87, 332, 234, 3
-            ].slice(firstIndex, lastIndex + 1);
-            const dataArray = getDataArray(timesArray, valuesArray);
-            var lastDataNotZero = 0;
-            const data = dataArray.reduce((acc, value, index) => {
-                if (value[1] !== 0) {
-                    lastDataNotZero = value[1];
+            const data = [
+                [ "0", 3 ], [ "1", 3 ], [ "2", 12 ], [ "3", 12 ], [ "4", 12 ],
+                [ "5", 12 ], [ "6", 12 ], [ "7", 31 ], [ "8", 31 ], [ "9", 31 ],
+                [ "10", 31 ], [ "11", 31 ], [ "12", 31 ], [ "13", 31 ], [ "14", 31 ],
+                [ "15", 437 ], [ "16", 437 ], [ "17", 437 ], [ "18", 437 ], [ "19", 234 ],
+                [ "20", 234 ], [ "21", 234 ], [ "22", 234 ], [ "23", 234 ] ];
+
+            expect(ret).to.deep.equal([
+                {
+                    data: data,
+                    categories: categories
                 }
-                return update(index, [value[0], lastDataNotZero], acc);
-            }, dataArray);
-            expect(ret).to.deep.equal([{data}]);
+            ]);
         });
 
         it("should be an empty array", () => {
@@ -222,7 +232,8 @@ describe("`readingsDailyAggregatesToHighchartsData` function", () => {
             );
 
             expect(ret).to.deep.equal([{
-                data: []
+                data: [],
+                categories: []
             }]);
         });
 
@@ -239,7 +250,8 @@ describe("`readingsDailyAggregatesToHighchartsData` function", () => {
             );
 
             expect(ret).to.deep.equal([{
-                data: []
+                data: [],
+                categories: []
             }]);
         });
 
