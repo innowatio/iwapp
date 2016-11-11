@@ -323,6 +323,9 @@ class Stats extends Component {
     renderProgressBar (consumptions, unit) {
         const {width, height} = Dimensions.get("window");
         return consumptions.map(consumption => {
+            if (consumption.max === 0) {
+                return null;
+            }
             const progress = consumption.now / consumption.max;
             return (
                 <View key={consumption.key} style={[styles.progressBarStyleWrp, {margin: height * .01}]}>
