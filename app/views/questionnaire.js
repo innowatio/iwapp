@@ -24,8 +24,7 @@ const styles = StyleSheet.create({
     },
     lastAnswer: {
         borderBottomWidth: 1,
-        borderBottomColor: colors.borderAccordion,
-        paddingBottom: 20
+        borderBottomColor: colors.borderAccordion
     },
     header: {
         borderTopWidth: 1,
@@ -42,7 +41,7 @@ const styles = StyleSheet.create({
         borderBottomColor: colors.borderAccordion
     },
     questionnaireProgressContainer: {
-        marginBottom: 10,
+        marginBottom: 1,
         alignItems: "center"
     },
     questionStatus: {
@@ -71,7 +70,7 @@ const styles = StyleSheet.create({
     },
     answerStatusText: {
         color: colors.questionnaireAnswerStatusText,
-        top: 2,
+        top: 1,
         fontWeight: "bold"
     },
     answerWrp: {
@@ -343,10 +342,10 @@ class Questionnaire extends Component {
         const {height} = Dimensions.get("window");
         const questionnaire = this.getQuestionnaire(this.props.collections);
         const selectedQuestionnaire = this.updateProgress(this.props.selectedQuestionnaire, questionnaire);
-
+        // height: height * .875
         return (
-            <View style={{height: heightWithoutHeader(height)}}>
-                <Content style={{backgroundColor: colors.background, height}}>
+            <View style={{height: heightWithoutHeader(height * 1.038)}}>
+                <Content>
                     <View style={styles.questionnaireProgressContainer}>
                         <QuestionnaireProgress questionnaire={selectedQuestionnaire} />
                     </View>
