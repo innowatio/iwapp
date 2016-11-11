@@ -78,7 +78,6 @@ const styles = StyleSheet.create({
         marginTop: 5
     },
     consumptionCircleValue: {
-        letterSpacing: -2,
         color: colors.white,
         fontWeight: "bold",
         backgroundColor: colors.transparent
@@ -275,6 +274,29 @@ class Stats extends Component {
         }
     }
 
+    getConsumptionData (consumptions, unit) {
+        const value = consumptions.max;
+        if (value === 0) {
+            return null;
+        }
+        switch (value.toString().split(".")[0].length) {
+            case 1:
+            case 2:
+                return value.toFixed(1) + ` ${unit}`;
+            default:
+                return value.toFixed(0) + ` ${unit}`;
+        }
+    }
+
+    getAggregateSum (stats, aggregates) {
+        const tabAggregate = getTitleAndSubtitle(stats.chart.period, aggregates);
+        const value = tabAggregate.sum;
+        if (value.toString().split(".")[0].length >= 3) {
+            return value.toFixed(0);
+        }
+        return value.toFixed(1);
+    }
+
     renderAlarmSettings () {
         // TODO waiting the alarms feature
 
@@ -301,9 +323,6 @@ class Stats extends Component {
     renderProgressBar (consumptions, unit) {
         const {width, height} = Dimensions.get("window");
         return consumptions.map(consumption => {
-            if (consumption.max === 0) {
-                return null;
-            }
             const progress = consumption.now / consumption.max;
             return (
                 <View key={consumption.key} style={[styles.progressBarStyleWrp, {margin: height * .01}]}>
@@ -323,7 +342,7 @@ class Stats extends Component {
                             {"%"}
                         </Text>
                         <Text style={styles.progressBarConsumptionValue}>
-                            {`${consumption.max} ${unit}`}
+                            {this.getConsumptionData(consumption, unit)}
                         </Text>
                     </View>
                 </View>
@@ -423,8 +442,12 @@ class Stats extends Component {
                     <View style={[styles.consumptionWrp, {height: height * .2}]}>
                         <Text style={styles.titleSwiper}>{tabAggregate.periodTitle}</Text>
                         <View style={[styles.consumptionCircleWrp, {width: height * .16, height: height * .16}]}>
-                            <Text ellipsizeMode={"tail"} numberOfLines={1} style={[styles.consumptionCircleValue, {fontSize, lineHeight: fontSize}]}>
-                                {tabAggregate.sum}
+                            <Text
+                                ellipsizeMode={"tail"}
+                                numberOfLines={1}
+                                style={[styles.consumptionCircleValue, {fontSize, lineHeight: fontSize}]}
+                            >
+                                {this.getAggregateSum(stats, aggregates)}
                             </Text>
                             <Text style={styles.consumptionCircleMeasure}>
                                 {tabAggregate.measureUnit}
