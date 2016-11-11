@@ -29,9 +29,12 @@ describe("`Home` view", () => {
     const getDailySumConsumption = sinon.stub().returns(1);
     var homeView;
 
+    let clock;
+
     before(() => {
         Home.__Rewire__("Dimensions", Dimensions);
         Home.__Rewire__("getDailySumConsumption", getDailySumConsumption);
+        clock = sinon.useFakeTimers();
     });
 
     beforeEach(() => {
@@ -50,6 +53,7 @@ describe("`Home` view", () => {
     after(() => {
         Home.__ResetDependency__("Dimensions");
         Home.__ResetDependency__("getDailySumConsumption");
+        clock.restore();
     });
 
     it("renders a `Content` component", () => {
@@ -202,12 +206,6 @@ describe("`Home` view", () => {
             componentWillReceiveProps.call(instance, nextProps);
             expect(subscribeToMeasure).to.have.callCount(1);
             expect(subscribeToMeasure).to.have.been.calledWithExactly(nextProps);
-            expect(isForecastData).to.have.callCount(1);
-            expect(setState).to.have.callCount(1);
-            expect(setState).to.have.been.calledWithExactly({
-                isForecastData: true,
-                isStandbyData: true
-            });
         });
 
         it("doesn't call `subscribeToMeasure` with `props` as arguments if `site` in `nextProps` is empty", () => {
@@ -229,29 +227,53 @@ describe("`Home` view", () => {
 
         const isForecastData = HomeView.prototype.isForecastData;
 
-        it("return false if forecast data is present", () => {
-            const ret = isForecastData({
-                collections: Map(),
-                home: {
-                    charts: [{sensorId: "sensorId"}]
-                }
-            });
+        it("return false if forecast data is not present", () => {
+
+            const aggregates = fromJS({});
+
+            const instance = {
+                props: {
+                    collections: aggregates,
+                    home: {
+                        charts: [{
+                            sensorId: "sensorId",
+                            source: "reading",
+                            day: "1970-01-01",
+                            measurementType: "activeEnergy"
+                        }]
+                    }
+                },
+            };
+
+            const ret = isForecastData.call(instance);
             expect(ret).to.equal(false);
         });
 
         it("return true if forecast data is present", () => {
-            const ret = isForecastData({
-                collections: fromJS({
-                    "readings-daily-aggregates": {
-                        [`sensorId-${moment.utc().format("YYYY-MM-DD")}-forecast-activeEnergy`]: {
-                            data: "data"
-                        }
+
+            const aggregates = fromJS({
+                "readings-daily-aggregates": {
+                    "sensorId-1970-01-01-forecast-activeEnergy": {
+                        "_id": "sensorId-standby-1970-01-01-forecast-activeEnergy"
                     }
-                }),
-                home: {
-                    charts: [{sensorId: "sensorId"}]
                 }
             });
+
+            const instance = {
+                props: {
+                    collections: aggregates,
+                    home: {
+                        charts: [{
+                            sensorId: "sensorId",
+                            source: "forecast",
+                            day: "1970-01-01",
+                            measurementType: "activeEnergy"
+                        }]
+                    }
+                },
+            };
+
+            const ret = isForecastData.call(instance);
             expect(ret).to.equal(true);
         });
 
@@ -261,29 +283,53 @@ describe("`Home` view", () => {
 
         const isStandbyData = HomeView.prototype.isStandbyData;
 
-        it("return false if forecast data is present", () => {
-            const ret = isStandbyData({
-                collections: Map(),
-                home: {
-                    charts: [{sensorId: "sensorId"}]
-                }
-            });
+        it("return false if standby data is not present", () => {
+
+            const aggregates = fromJS({});
+
+            const instance = {
+                props: {
+                    collections: aggregates,
+                    home: {
+                        charts: [{
+                            sensorId: "sensorId",
+                            source: "reading",
+                            day: "1970-01-01",
+                            measurementType: "activeEnergy"
+                        }]
+                    }
+                },
+            };
+
+            const ret = isStandbyData.call(instance);
             expect(ret).to.equal(false);
         });
 
-        it("return true if forecast data is present", () => {
-            const ret = isStandbyData({
-                collections: fromJS({
-                    "readings-daily-aggregates": {
-                        [`sensorId-standby-${moment.utc().format("YYYY-MM-DD")}-reading-activeEnergy`]: {
-                            data: "data"
-                        }
+        it("return true if standby data is present", () => {
+
+            const aggregates = fromJS({
+                "readings-daily-aggregates": {
+                    "sensorId-standby-1970-01-01-reading-activeEnergy": {
+                        "_id": "sensorId-standby-1970-01-01-reading-activeEnergy"
                     }
-                }),
-                home: {
-                    charts: [{sensorId: "sensorId"}]
                 }
             });
+
+            const instance = {
+                props: {
+                    collections: aggregates,
+                    home: {
+                        charts: [{
+                            sensorId: "sensorId",
+                            source: "reading",
+                            day: "1970-01-01",
+                            measurementType: "activeEnergy"
+                        }]
+                    }
+                },
+            };
+
+            const ret = isStandbyData.call(instance);
             expect(ret).to.equal(true);
         });
 
