@@ -2,7 +2,6 @@ import {shallow} from "enzyme";
 import {Map, fromJS} from "immutable";
 import {Content} from "native-base";
 import Swiper from "react-native-swiper";
-import moment from "moment";
 
 import ChartConsumption from "components/chart-consumption";
 import Weather from "components/weather";
