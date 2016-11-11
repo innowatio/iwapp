@@ -27,17 +27,14 @@ function getDailyAggregate (dailyAggregates, chartState) {
 }
 
 export default memoize((aggregates, chartsState) => {
-
     if (aggregates.isEmpty()) {
         return [{
             data: []
         }];
     }
-
     const sortedAggregate = aggregates.sortBy(x => x.get("day"));
     const timeFromAggregate = !chartsState[0].period || chartsState[0].period === "day";
     var result;
-
     if (timeFromAggregate) {
         const chartsData = map(chartState => {
             const {sensorId, day} = chartState;
@@ -84,7 +81,7 @@ export default memoize((aggregates, chartsState) => {
 
                 measurement ? filledChartData[index] = measurement : filledChartData[index] = {
                     hour: index.toString(),
-                    value: chartData.toFill ? (filledChartData[index - 1] ? filledChartData[index - 1].value : 0) : 0
+                    value: chartData.toFill ? (filledChartData[index-1] ? filledChartData[index-1].value : 0) : 0
                 };
             }
             return filledChartData;
@@ -94,11 +91,13 @@ export default memoize((aggregates, chartsState) => {
             const chart = data.map(measurement => {
                 return [measurement.hour, Math.round(measurement.value * 10) / 10];
             });
+
             return {
                 data: chart
             };
         });
     } else {
+
         const chartData = map(chartState => {
             const {sensorId, day, measurementType, source, period} = chartState;
             const time = moment.utc(day);
@@ -112,17 +111,20 @@ export default memoize((aggregates, chartsState) => {
                 data = values.map((value, index) => {
                     const obj = {
                         period: dayTime.get(period),
+                        dayTime: dayTime,
                         formatted: getFormat(period, dayTime),
+                        formattedTooltip: getFormatTooltip(period, dayTime),
                         value: parseFloat(values[index]) || 0
                     };
                     dayTime.add(1, "day");
                     return obj;
                 }).filter(x => x.period === time.get(period));
             }
+
             if ("year" === period) {
                 data = data.reduce((state, current) => {
                     const finded = state.find(value => {
-                        return value.formatted === current.formatted;
+                        return value.formattedTooltip === current.formattedTooltip;
                     });
                     if (finded) {
                         finded.value += current.value;
@@ -139,25 +141,86 @@ export default memoize((aggregates, chartsState) => {
         }, chartsState);
 
         result = chartData.map(data => {
-            const chart = data.map(serie => {
-                return [serie.formatted, Math.round(serie.value * 10) / 10];
+            const series = data.map(serie => {
+                return [serie.formattedTooltip, Math.round(serie.value * 10) / 10];
             });
+            const categories = data.map(serie => {
+                return serie.formatted;
+            });
+
+            const completedCategories = completeCategories(chartsState[0].period, categories);
+            const completedSeries = completeChart(chartsState[0].period, series);
             return {
-                data: chart
+                data: completedSeries,
+                categories: completedCategories
             };
         });
     }
-
     return result;
 });
+
+function completeCategories (period, categories) {
+    switch (period) {
+        case "week":
+            for (var x= categories.length; x<=6; x++) {
+                categories.push(moment().weekday(x).format("ddd").substring(0, 1));
+            }
+            break;
+        case "month":
+            var endOfMonth = moment().endOf("month").format("D")-1;
+            for (x=categories.length; x<=endOfMonth; x++) {
+                categories.push(x+1);
+            }
+            break;
+        case "year":
+            for (x= categories.length; x<=11; x++) {
+                categories.push(moment().month(x).format("MMM").substring(0, 1).toUpperCase());
+            }
+            break;
+    }
+    return categories;
+}
+
+function completeChart (period, chart) {
+    switch (period) {
+        case "week":
+            for (var x= chart.length; x<=6; x++) {
+                chart.push([x, 0]);
+            }
+            break;
+        case "month":
+            var endOfMonth = moment().endOf("month").format("D") -1;
+            for (x=chart.length; x<=endOfMonth; x++) {
+                chart.push([x, 0]);
+            }
+            break;
+        case "year":
+            for (x= chart.length; x<=11; x++) {
+                chart.push([x, 0]);
+            }
+            break;
+    }
+    return chart;
+}
 
 function getFormat (period, dayTime) {
     switch (period) {
         case "week":
-            return dayTime.format("ddd");
+            return dayTime.format("ddd").substring(0, 1);
         case "month":
             return dayTime.format("D");
         case "year":
-            return dayTime.format("M");
+            return dayTime.format("MMM").substring(0, 1).toUpperCase();
+    }
+}
+
+function getFormatTooltip (period, dayTime) {
+    switch (period) {
+        case "week":
+            return dayTime.format("dddd");
+        case "month":
+            return dayTime.format("D") + " " + dayTime.format("MMMM");
+        case "year":
+            return dayTime.format("MMMM");
     }
 }
