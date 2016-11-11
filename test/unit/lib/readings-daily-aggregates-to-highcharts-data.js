@@ -204,16 +204,28 @@ describe("`readingsDailyAggregatesToHighchartsData` function", () => {
                 standByReadingsDailyAggregates,
                 chartState
             );
-            const data = [
-                [ "0", 3 ], [ "1", 3 ], [ "2", 12 ], [ "3", 12 ], [ "4", 12 ],
-                [ "5", 12 ], [ "6", 12 ], [ "7", 31 ], [ "8", 31 ], [ "9", 31 ],
-                [ "10", 31 ], [ "11", 31 ], [ "12", 31 ], [ "13", 31 ], [ "14", 31 ],
-                [ "15", 437 ], [ "16", 437 ], [ "17", 437 ], [ "18", 437 ], [ "19", 234 ],
-                [ "20", 234 ], [ "21", 234 ], [ "22", 234 ], [ "23", 234 ] ];
+            const totalTimes = unnest(times.reading);
+            const firstIndex = findIndex(time => parseInt(time) >= moment.utc("2016-09-16").valueOf())(totalTimes);
+            const lastIndex = findLastIndex(time => parseInt(time) <= moment.utc("2016-09-16").endOf("day").valueOf())(totalTimes);
+            const timesArray = totalTimes.slice(firstIndex, lastIndex + 1);
+            const valuesArray = [
+                12, 15, 16, 12, 6, 87, 332, 234, 3,
+                12, 15, 16, 12, 6, 87, 332, 234, 3,
+                12, 15, 16, 12, 6, 87, 332, 234, 3
+            ].slice(firstIndex, lastIndex + 1);
+            const dataArray = getDataArray(timesArray, valuesArray);
+
+            for (var x=0; x<dataArray.length; x++) {
+                if (x==0 && dataArray[x][1]==0) {
+                    dataArray[x][1] = dataArray.slice(x, dataArray.length-1);
+                } else if (dataArray[x][1]==0) {
+                    dataArray[x][1] = dataArray[x-1][1];
+                }
+            }
 
             expect(ret).to.deep.equal([
                 {
-                    data: data,
+                    data: dataArray,
                     categories: categories
                 }
             ]);
