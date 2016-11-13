@@ -65,7 +65,7 @@ class Root extends Component {
         asteroid.on("loggedIn", this.onLoginActions());
         asteroid.on("loggedOut", this.props.onLogout);
         asteroid.ddp.on("added", ({collection, fields, id}) => {
-            if (collection == "sites" && !this.props.site) {
+            if (collection == "sites" && (!this.props.site || this.props.site._id === id)) {
                 this.props.selectSite({
                     _id: id,
                     title: fields.name,

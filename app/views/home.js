@@ -13,6 +13,7 @@ import ChartConsumption from "../components/chart-consumption";
 import InfoConsumption from "../components/info-consumption";
 import Weather from "../components/weather";
 import {toggleForecast} from "../actions/home";
+import {selectSite} from "../actions/site";
 import * as colors from "../lib/colors";
 import {mapWeatherIcon, mapWeatherBackground} from "../lib/weather-mapper";
 
@@ -39,6 +40,7 @@ class Home extends Component {
                 day: PropTypes.string
             }))
         }).isRequired,
+        selectSite: PropTypes.func.isRequired,
         site: PropTypes.object,
         toggleForecast: PropTypes.func.isRequired
     }
@@ -274,6 +276,7 @@ function mapStateToProps (state) {
 }
 function mapDispatchToProps (dispatch) {
     return {
+        selectSite: bindActionCreators(selectSite, dispatch),
         toggleForecast: bindActionCreators(toggleForecast, dispatch)
     };
 }

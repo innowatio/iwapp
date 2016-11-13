@@ -25,6 +25,14 @@ if (module.hot) {
     });
 }
 
-persistStore(store, {storage: AsyncStorage, whitelist: ["site", "stats", "home"]});
+try {
+    Promise.resolve(AsyncStorage.removeItem("reduxPersist:home"));
+    Promise.resolve(AsyncStorage.removeItem("reduxPersist:stats"));
+    Promise.resolve(AsyncStorage.removeItem("reduxPersist:site"));
+} catch (error) {
+    // Error saving data
+}
+
+persistStore(store, {storage: AsyncStorage, whitelist: ["site"], keyPrefix: "iwapp"});
 
 export default store;
