@@ -95,12 +95,14 @@ export function getTitleAndSubtitle (period, aggregates) {
                 peersText: "Media dei consumi annuali di attività simili",
                 title: "ANNO CORRENTE",
                 sum: defaultNow,
-                comparisons: [{
-                    key: "year-1y",
-                    title: `${moment(utils.getPreviousPeriod(period, period).start).locale("it").format("YYYY")}`.toUpperCase(),
-                    max: defaultMax,
-                    now: defaultNow
-                }]
+                comparisons: [
+                    // {
+                    //     key: "year-1y",
+                    //     title: `${moment(utils.getPreviousPeriod(period, period).start).locale("it").format("YYYY")}`.toUpperCase(),
+                    //     max: defaultMax,
+                    //     now: defaultNow
+                    // }
+                ]
             };
         default:
             return {
