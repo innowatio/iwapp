@@ -1,11 +1,12 @@
 import {Map} from "immutable";
+import moment from "moment";
+import {Content} from "native-base";
 import {equals} from "ramda";
 import React, {Component, PropTypes} from "react";
-import {Dimensions, TouchableHighlight, StyleSheet, ListView, View} from "react-native";
-import {Content} from "native-base";
-import {connect} from "react-redux";
 import IPropTypes from "react-immutable-proptypes";
-import moment from "moment";
+import {Dimensions, TouchableHighlight, StyleSheet, ListView, View} from "react-native";
+import FCM from "react-native-fcm";
+import {connect} from "react-redux";
 
 import Icon from "../components/iwapp-icons";
 import Text from "../components/text-lato";
@@ -92,6 +93,7 @@ class Notifications extends Component {
     }
 
     componentDidMount () {
+        FCM.setBadgeNumber();
         this.props.asteroid.subscribe("notifications");
     }
 

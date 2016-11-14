@@ -84,80 +84,82 @@ class Home extends Component {
 
     subscribeToMeasure (props) {
         const chart = props.home.charts[0];
-        props.asteroid.subscribe(
-            "dailyMeasuresBySensor",
-            `${chart.sensorId}-standby`,
-            moment(chart.day).subtract({day: 1}).format("YYYY-MM-DD"),
-            moment(chart.day).add({day: 1}).format("YYYY-MM-DD"),
-            "reading",
-            "activeEnergy"
-        );
-        props.asteroid.subscribe(
-            "dailyMeasuresBySensor",
-            chart.sensorId,
-            moment(chart.day).subtract({day: 1}).format("YYYY-MM-DD"),
-            moment(chart.day).add({day: 1}).format("YYYY-MM-DD"),
-            "reading",
-            chart.measurementType
-        );
-        props.asteroid.subscribe(
-            "dailyMeasuresBySensor",
-            chart.sensorId,
-            moment(chart.day).subtract({day: 1}).format("YYYY-MM-DD"),
-            moment(chart.day).add({day: 1}).format("YYYY-MM-DD"),
-            "forecast",
-            chart.measurementType
-        );
-        props.asteroid.subscribe(
-            "dailyMeasuresBySensor",
-            chart.sensorId,
-            moment(chart.day).subtract({day: 1}).format("YYYY-MM-DD"),
-            moment(chart.day).add({day: 1}).format("YYYY-MM-DD"),
-            "reading",
-            "maxPower"
-        );
-        props.asteroid.subscribe(
-            "yearlyConsumptions",
-            chart.sensorId,
-            moment.utc().format("YYYY"),
-            "reading",
-            "activeEnergy"
-        );
-        props.asteroid.subscribe(
-            "yearlyConsumptions",
-            chart.sensorId,
-            moment.utc().subtract({year: 1}).format("YYYY"),
-            "reading",
-            "activeEnergy"
-        );
-        props.asteroid.subscribe(
-            "yearlyConsumptions",
-            `${chart.sensorId}-peers-avg`,
-            moment.utc().format("YYYY"),
-            "reading",
-            "activeEnergy"
-        );
-        props.asteroid.subscribe(
-            "yearlyConsumptions",
-            `${chart.sensorId}-peers-avg`,
-            moment.utc().subtract({year: 1}).format("YYYY"),
-            "reading",
-            "activeEnergy"
-        );
-        props.asteroid.subscribe(
-            "yearlyConsumptions",
-            `${chart.sensorId}-standby`,
-            moment.utc().format("YYYY"),
-            "reading",
-            "activeEnergy"
-        );
-        props.asteroid.subscribe(
-            "yearlyConsumptions",
-            `${chart.sensorId}-standby`,
-            moment.utc().subtract({year: 1}).format("YYYY"),
-            "reading",
-            "activeEnergy"
-        );
+        if (chart.sensorId) {
+            props.asteroid.subscribe(
+                "dailyMeasuresBySensor",
+                `${chart.sensorId}-standby`,
+                moment(chart.day).subtract({day: 1}).format("YYYY-MM-DD"),
+                moment(chart.day).add({day: 1}).format("YYYY-MM-DD"),
+                "reading",
+                "activeEnergy"
+            );
+            props.asteroid.subscribe(
+                "dailyMeasuresBySensor",
+                chart.sensorId,
+                moment(chart.day).subtract({day: 1}).format("YYYY-MM-DD"),
+                moment(chart.day).add({day: 1}).format("YYYY-MM-DD"),
+                "reading",
+                chart.measurementType
+            );
+            props.asteroid.subscribe(
+                "dailyMeasuresBySensor",
+                chart.sensorId,
+                moment(chart.day).subtract({day: 1}).format("YYYY-MM-DD"),
+                moment(chart.day).add({day: 1}).format("YYYY-MM-DD"),
+                "forecast",
+                chart.measurementType
+            );
+            props.asteroid.subscribe(
+                "dailyMeasuresBySensor",
+                chart.sensorId,
+                moment(chart.day).subtract({day: 1}).format("YYYY-MM-DD"),
+                moment(chart.day).add({day: 1}).format("YYYY-MM-DD"),
+                "reading",
+                "maxPower"
+            );
+            props.asteroid.subscribe(
+                "yearlyConsumptions",
+                chart.sensorId,
+                moment.utc().format("YYYY"),
+                "reading",
+                "activeEnergy"
+            );
+            props.asteroid.subscribe(
+                "yearlyConsumptions",
+                chart.sensorId,
+                moment.utc().subtract({year: 1}).format("YYYY"),
+                "reading",
+                "activeEnergy"
+            );
+            props.asteroid.subscribe(
+                "yearlyConsumptions",
+                `${chart.sensorId}-peers-avg`,
+                moment.utc().format("YYYY"),
+                "reading",
+                "activeEnergy"
+            );
+            props.asteroid.subscribe(
+                "yearlyConsumptions",
+                `${chart.sensorId}-peers-avg`,
+                moment.utc().subtract({year: 1}).format("YYYY"),
+                "reading",
+                "activeEnergy"
+            );
+            props.asteroid.subscribe(
+                "yearlyConsumptions",
+                `${chart.sensorId}-standby`,
+                moment.utc().format("YYYY"),
+                "reading",
+                "activeEnergy"
+            );
+            props.asteroid.subscribe(
+                "yearlyConsumptions",
+                `${chart.sensorId}-standby`,
+                moment.utc().subtract({year: 1}).format("YYYY"),
+                "reading",
+                "activeEnergy"
+            );
+        }
     }
 
     getConsumptionAggregate () {
