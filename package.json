@@ -41,7 +41,7 @@
     "react-immutable-proptypes": "^2.1.0",
     "react-native": "^0.37.0",
     "react-native-button": "^1.7.1",
-    "react-native-code-push": "^1.15.1-beta",
+    "react-native-code-push": "github:microsoft/react-native-code-push#3b35d422d8ffe06e8fe6dfc3aa60fa19f3a6d18c",
     "react-native-collapsible": "github:dhansiddh/react-native-collapsible#8f1d33ee6120eba9c798bc88eafdaaf024d5edee",
     "react-native-device-info": "^0.9.6",
     "react-native-drawer": "^2.3.0",
