@@ -49,7 +49,6 @@
 -keepclassmembers class *  { @com.facebook.react.uimanager.annotations.ReactPropGroup <methods>; }
 
 -dontwarn com.facebook.react.**
--dontwarn com.horcrux.svg.RNSVGTextShadowNode
 
 # okhttp
 
