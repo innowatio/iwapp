@@ -117,10 +117,6 @@ class Questionnaire extends Component {
         this.subscribeToQuestions();
     }
 
-    componentWillReceiveProps (nextProps) {
-        this.setAnswersState(nextProps);
-    }
-
     setAnswersState (props) {
         const questionnaire = this.getQuestionnaire(props.collections);
         const answersCollection = this.getAnswersFromCollection(props.collections).toJS();
