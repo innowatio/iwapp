@@ -166,7 +166,7 @@ export default memoize((aggregates, chartsState) => {
 function completeCategories (period, categories) {
     switch (period) {
         case "week":
-            for (var x= categories.length; x<=6; x++) {
+            for (var x= categories.length + 1; x<=7; x++) {
                 categories.push(moment().isoWeekday(x).format("ddd").substring(0, 1));
             }
             break;
