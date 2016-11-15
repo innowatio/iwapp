@@ -52,11 +52,11 @@ export default class Highcharts extends Component {
             animation: index === 0 ? false : true,
             color: (coordinates.length > 1) && index === (coordinates.length - 1) ? lineStandby : colors[index],
             turboThreshold: 0,
-            type: types[index],
+            type: (coordinates.length > 1) && index === (coordinates.length - 1) ? "line" : types[index],
             marker: {
                 enabled: true,
-                radius: 1
-            },
+                radius: 2
+            }
         }));
     }
 
