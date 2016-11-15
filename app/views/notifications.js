@@ -4,7 +4,7 @@ import {Content} from "native-base";
 import {equals} from "ramda";
 import React, {Component, PropTypes} from "react";
 import IPropTypes from "react-immutable-proptypes";
-import {Dimensions, TouchableHighlight, StyleSheet, ListView, View} from "react-native";
+import {Dimensions, TouchableHighlight, StyleSheet, ListView, Platform, View} from "react-native";
 import FCM from "react-native-fcm";
 import {connect} from "react-redux";
 
@@ -93,7 +93,7 @@ class Notifications extends Component {
     }
 
     componentDidMount () {
-        FCM.setBadgeNumber();
+        Platform.OS == "ios" ? FCM.setBadgeNumber() : null;
         this.props.asteroid.subscribe("notifications");
     }
 
