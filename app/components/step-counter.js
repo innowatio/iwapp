@@ -116,12 +116,12 @@ export default class StepCounter extends Component {
                     {this.isLastStep() ? (
                         <Text style={styles.questionCounterText}>{"SALVA"}</Text>
                     ) : (
-                    <FaIcons
-                        color={colors.iconWhite}
-                        name={"angle-right"}
-                        size={height * .04}
-                        style={{backgroundColor: colors.transparent}}
-                    />
+                        <FaIcons
+                            color={colors.iconWhite}
+                            name={"angle-right"}
+                            size={height * .04}
+                            style={{backgroundColor: colors.transparent}}
+                        />
                     )}
                 </Button>
             </View>
