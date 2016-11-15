@@ -88,7 +88,7 @@ class Home extends Component {
             props.asteroid.subscribe(
                 "dailyMeasuresBySensor",
                 `${chart.sensorId}-standby`,
-                moment(chart.day).subtract({day: 1}).format("YYYY-MM-DD"),
+                moment(chart.day).format("YYYY-MM-DD"),
                 moment(chart.day).add({day: 1}).format("YYYY-MM-DD"),
                 "reading",
                 "activeEnergy"
