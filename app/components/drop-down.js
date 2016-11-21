@@ -139,7 +139,8 @@ export default class DropDown extends Component {
     renderList () {
         const self = this;
         const filtered = this.props.optionItems.filter(function (d) {
-            return d.title.toLowerCase().indexOf(self.state.searchText.toLowerCase())>-1;
+            const title = d.title ? d.title : "undefined";
+            return title.toLowerCase().indexOf(self.state.searchText.toLowerCase())>-1;
         });
         return !isEmpty(filtered) ? (
             <ScrollView
