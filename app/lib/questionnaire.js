@@ -1,4 +1,3 @@
-import {Actions} from "react-native-router-flux";
 import {List, Map} from "immutable";
 import {uniq} from "ramda";
 
@@ -48,17 +47,12 @@ export default function getQuestionnaireItems (questions, answers, siteId) {
     const questionnaireDecorator = getQuestionnairesDecorator();
     return questionnaireDecorator.map(questionnaire => {
         const {percentage, totalQuestions, totalAnswers} = getPercentage(questions, answers, questionnaire.key, "questionnaire", siteId);
-        const questionnaireItem = {
+        return {
             ...questionnaire,
             value: percentage || 0,
             totalQuestions,
             totalAnswers,
             text: ((percentage || 0) * 100).toFixed() + "% completato"
-        };
-        // selectedQuestionnaires don't have onPress method
-        return {
-            ...questionnaireItem,
-            onPress: () => Actions.questionnaire({selectedQuestionnaire: questionnaireItem})
         };
     });
 }

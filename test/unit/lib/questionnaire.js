@@ -131,7 +131,6 @@ describe("`questionnaire` library", () => {
                 expect(value).to.have.property("icon");
                 expect(value).to.have.property("key");
                 expect(value).to.have.property("name");
-                expect(value).to.have.property("onPress");
                 expect(value).to.have.property("text");
                 expect(value).to.have.property("totalAnswers");
                 expect(value).to.have.property("totalQuestions");

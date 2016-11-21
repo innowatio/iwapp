@@ -1,7 +1,9 @@
 import {Map} from "immutable";
 import {Content} from "native-base";
+import {equals} from "ramda";
 import React, {Component, PropTypes} from "react";
 import {Dimensions, Linking, StyleSheet, TouchableOpacity, View} from "react-native";
+import {Actions} from "react-native-router-flux";
 import * as Progress from "react-native-progress";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
@@ -150,9 +152,14 @@ class Profile extends Component {
 
     componentWillReceiveProps (nextProps) {
         this.doSubscriptions(nextProps);
-        if (nextProps.questionnaireState.status.length < 1) {
-            const answers = nextProps.collections.get("answers") || Map();
-            const questions = nextProps.collections.get("questions") || Map();
+        const answers = nextProps.collections.get("answers") || Map();
+        const questions = nextProps.collections.get("questions") || Map();
+        const questionnaireItemDefault = getQuestionnaireItems(questions, Map(), nextProps.site._id);
+        if ((
+            answers.filter(agg => agg.get("siteId") === nextProps.site._id).size > 0 &&
+            equals(nextProps.questionnaireState.status, questionnaireItemDefault)
+        ) || nextProps.questionnaireState.status.length < 1
+        ) {
             const questionnaireItem = getQuestionnaireItems(questions, answers, nextProps.site._id);
             this.props.questionnaireStatus(questionnaireItem);
         }
@@ -302,7 +309,11 @@ class Profile extends Component {
 
     renderQuestionnairesProgress (questionnaire) {
         return (
-            <QuestionnaireProgress key={questionnaire.key} questionnaire={questionnaire} />
+            <QuestionnaireProgress
+                key={questionnaire.key}
+                onQuestionnairePress={selectedQuestionnaire => Actions.questionnaire({selectedQuestionnaire})}
+                questionnaire={questionnaire}
+            />
         );
     }
 

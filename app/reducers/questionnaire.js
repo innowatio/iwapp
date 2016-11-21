@@ -1,5 +1,6 @@
 import {combineReducers} from "redux";
 import {QUESTIONNAIRE_STATUS, SAVE_QUESTIONNAIRE_SUCCESS} from "../actions/questionnaire";
+import {SELECT_SITE} from "../actions/site";
 import {roundTwoDecimals} from "../lib/questionnaire";
 
 function status (state = [], {type, payload}) {
@@ -20,6 +21,8 @@ function status (state = [], {type, payload}) {
             });
         case QUESTIONNAIRE_STATUS:
             return payload;
+        case SELECT_SITE:
+            return [];
         default:
             return state;
     }

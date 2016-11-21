@@ -44,14 +44,14 @@ const styles = StyleSheet.create({
 export default class QuestionnaireProgress extends Component {
 
     static propTypes = {
+        onQuestionnairePress: PropTypes.func,
         questionnaire: PropTypes.shape({
             key: PropTypes.string,
             color: PropTypes.string,
             value: PropTypes.number,
             icon: PropTypes.string,
             name: PropTypes.string,
-            onPress: PropTypes.func
-        }).isRequired
+        }).isRequired,
     }
 
     render () {
@@ -65,7 +65,7 @@ export default class QuestionnaireProgress extends Component {
             }]}
             >
                 <TouchableOpacity
-                    onPress={questionnaire.onPress}
+                    onPress={() => this.props.onQuestionnairePress(questionnaire)}
                     style={[styles.progressQuestionnaire, {width: width * .25, height: width * .25}]}
                     transparent={true}
                 >
