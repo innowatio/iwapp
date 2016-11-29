@@ -71,6 +71,10 @@ const styles = StyleSheet.create({
         fontSize: 9,
         color: colors.textGrey
     },
+    switchTextRed: {
+        fontSize: 9,
+        color: colors.lineStandby
+    },
     subTitle: {
         fontSize: 11,
         color: colors.textGrey
@@ -144,12 +148,28 @@ export default class ChartConsumption extends Component {
     }
 
     renderTextStandby () {
-        return this.props.isStandbyData ? (
-            null
-        ) :
-        (<Text style={styles.switchText}>
-            {"(disponibili a breve)"}
-        </Text>);
+        console.log(121323232322322);
+
+        if (this.props.isStandbyData) {
+            const sensorId = this.props.charts[0].sensorId;
+
+            const standby = this.props.dailyAggregates.get(`${sensorId}-standby-2016-11-29-reading-activeEnergy`);
+            const prova = standby.get("measurementValues");
+            console.log("\n\n\n\n");
+            console.log(prova);
+
+            return (
+                <Text style={styles.switchTextRed}>
+                    {`${prova} kW`}
+                </Text>
+            );
+        } else {
+            return (
+                <Text style={styles.switchText}>
+                    {"(disponibili a breve)"}
+                </Text>
+            );
+        }
     }
 
     render () {
