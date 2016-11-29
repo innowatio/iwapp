@@ -5,13 +5,14 @@ describe("`getStyle` function", () => {
     const getByID = sinon.stub().returns({
         height: 100
     });
+    const ReactNativePropRegistry = {getByID};
 
     before(() => {
-        getStyle.__Rewire__("getByID", getByID);
+        getStyle.__Rewire__("ReactNativePropRegistry", ReactNativePropRegistry);
     });
 
     after(() => {
-        getStyle.__ResetDependency__("getByID");
+        getStyle.__ResetDependency__("ReactNativePropRegistry");
     });
 
     beforeEach(() => {

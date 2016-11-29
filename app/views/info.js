@@ -158,7 +158,7 @@ class Info extends Component {
                         {"Innowatio S.p.A."}
                     </Text>
                     <Text style={[styles.textContacts]}>
-                        {`\nSede legale e operativa:\nc/o Kilometro Rosso - Via Stezzano, 87\n24126, Bergamo\nTelefono: +39 035 3846911\nFax: +39 035 3846930`}
+                        {"\nSede legale e operativa:\nc/o Kilometro Rosso - Via Stezzano, 87\n24126, Bergamo\nTelefono: +39 035 3846911\nFax: +39 035 3846930"}
                     </Text>
                     <TouchableOpacity
                         onPress={() =>
