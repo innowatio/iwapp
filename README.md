@@ -14,19 +14,21 @@ N.B. `iwapp` need backend service (iwwa-back) running on local 3000 port.
 
 ## Config
 
-### FCM
+### android
 
-In [`Firebase console`](https://console.firebase.google.com/), you can get `google-services.json` file and place it in `android/app` directory and get `GoogleService-Info.plist` file and place it in `/ios/iwapp` directory (next to your `Info.plist`).
+There are three development configuration: `debug`, `beta` and `main`.
 
-### ios
+#### FCM
 
-All the modify to ios code should be from `iwapp.xcworkspace` and NOT `iwapp.xcodeproj`:
+###### debug
 
-```sh
-open iwapp.xcworkspace
-```
+In [`Firebase console`](https://console.firebase.google.com/), you can get the `google-services.json` file for package name `com.innowatio.iwapp.debug` and place it in `android/app/src/debug/` directory.
 
-### apk generation
+###### beta and main
+
+In [`Firebase console`](https://console.firebase.google.com/), you can get the `google-services.json` file for package name `com.innowatio.iwapp` and place it in `android/app/` directory.
+
+##### apk generation
 
 Create a signing key with this command:
 
@@ -37,3 +39,17 @@ keytool -genkey -v -keystore iwapp-release.keystore -alias iwapp-release -keyalg
 This command prompts you for passwords for the keystore and key, and to provide the Distinguished Name fields for your key. It then generates the keystore as a file called my-release-key.keystore.
 
 You should [set the signing key](https://github.com/innowatio/iwapp/blob/master/android/app/build.gradle#L92) in your `Keychain Access`, click the add button and insert `Keychain Item Name` as `iwapp-release` and `Account Name` as `Innowatio Spa`. For other info, see [React Native docs](https://facebook.github.io/react-native/docs/signed-apk-android.html) and [safer password in gradle post](https://pilloxa.gitlab.io/posts/safer-passwords-in-gradle/).
+
+#### iOS
+
+All the modify to iOS code should be from `iwapp.xcworkspace` and NOT `iwapp.xcodeproj`:
+
+```sh
+open iwapp.xcworkspace
+```
+
+There are three development configuration: `Debug`, `Preprod` and `Release`.
+
+##### FCM
+
+In [`Firebase console`](https://console.firebase.google.com/), you can get the `GoogleService-Info.plist` file and place it in `/ios/iwapp` directory (next to your `Info.plist`).
