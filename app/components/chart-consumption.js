@@ -160,7 +160,7 @@ export default class ChartConsumption extends Component {
 
             return (
                 <Text style={styles.switchTextRed}>
-                    {`${prova} kW`}
+                    {`${prova} kWh`}
                 </Text>
             );
         } else {
