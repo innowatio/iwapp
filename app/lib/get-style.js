@@ -1,6 +1,6 @@
 import {is} from "ramda";
-import {getByID} from "react/lib/ReactNativePropRegistry";
+import ReactNativePropRegistry from "react-native/Libraries/Renderer/src/renderers/native/ReactNativePropRegistry";
 
 export default function getStyle (style = {}) {
-    return is(Number, style) ? getByID(style) : style;
+    return is(Number, style) ? ReactNativePropRegistry.getByID(style) : style;
 }
