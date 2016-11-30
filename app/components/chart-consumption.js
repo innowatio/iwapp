@@ -148,19 +148,15 @@ export default class ChartConsumption extends Component {
     }
 
     renderTextStandby () {
-        console.log(121323232322322);
+        const date = moment().format("YYYY-MM-DD");
+        const sensorId = this.props.charts[0].sensorId;
+        const standby = this.props.dailyAggregates.get(`${sensorId}-standby-${date}-reading-activeEnergy`);
 
-        if (this.props.isStandbyData) {
-            const sensorId = this.props.charts[0].sensorId;
-
-            const standby = this.props.dailyAggregates.get(`${sensorId}-standby-2016-11-29-reading-activeEnergy`);
-            const prova = standby.get("measurementValues");
-            console.log("\n\n\n\n");
-            console.log(prova);
-
+        if (this.props.isStandbyData && standby) {
+            const measure = standby.get("measurementValues");
             return (
                 <Text style={styles.switchTextRed}>
-                    {`${prova} kWh`}
+                    {`${measure} kWh`}
                 </Text>
             );
         } else {
