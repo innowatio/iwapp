@@ -1175,7 +1175,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Lucy BETA.app/Lucy BETA";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Lucy.app/Lucy";
 			};
 			name = Debug;
 		};
@@ -1203,7 +1203,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Lucy BETA.app/Lucy BETA";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Lucy.app/Lucy";
 			};
 			name = Release;
 		};
@@ -1381,7 +1381,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Lucy BETA.app/Lucy BETA";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Lucy.app/Lucy";
 			};
 			name = PreProd;
 		};
