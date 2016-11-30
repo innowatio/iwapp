@@ -184,14 +184,26 @@ export default class InfoConsumption extends Component {
             default:
                 icon = icoDefault;
         }
-        return (
-            <View style={styles.iconActivityWrp}>
-                <Image
-                    source={icon}
-                    style={{width: height * .14, height: height * .14}}
-                />
-            </View>
-        );
+
+        if (site && site.businessType) {
+            return (
+                <View style={styles.iconActivityWrp}>
+                    <Image
+                        source={icon}
+                        style={{width: height * .14, height: height * .14}}
+                    />
+                </View>
+            );
+        } else {
+            return (
+                <View style={styles.iconActivityWrp}>
+                    <Image
+                        source={icoDefault}
+                        style={{width: height * .14, height: height * .14}}
+                    />
+                </View>
+            );
+        }
     }
 
     renderConsumptionData (consumptions) {
@@ -234,12 +246,11 @@ export default class InfoConsumption extends Component {
     render () {
         const {height, width} = Dimensions.get("window");
         const {consumptions, peersConsumptions, site} = this.props;
-
         return (
             <View style={[styles.container, {height: this.props.heightSwiper}]}>
                 <View style={[styles.infoAndConsumptionContainer, {width, height: height * .35}]}>
                     <View style={[styles.infoContainer, {height: height * .35, width: width * .41}]}>
-                        {site && site.businessType ? this.renderActivityTypeIcon() : null}
+                        {this.renderActivityTypeIcon()}
                         {site && site.employees ? <Text style={styles.textStandardSmall}>{`${site.employees} persone`}</Text> : null}
                         {site && site.areaInMq ? <Text style={styles.textStandardSmall}>{`Attività di ${site.areaInMq} mq`}</Text> : null}
                         {site && site.address ? <Text style={styles.textStandardSmall}>{`${site.address}`}</Text> : null}
