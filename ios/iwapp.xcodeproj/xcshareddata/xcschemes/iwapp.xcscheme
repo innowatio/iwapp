@@ -66,19 +66,11 @@
       </AdditionalOptions>
    </TestAction>
    <LaunchAction
-<<<<<<< HEAD
       buildConfiguration = "Release"
-=======
-<<<<<<< Updated upstream
       buildConfiguration = "PreProd"
->>>>>>> 1.0.2
-      selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
-      selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
-=======
       buildConfiguration = "Debug"
       selectedDebuggerIdentifier = ""
       selectedLauncherIdentifier = "Xcode.IDEFoundation.Launcher.PosixSpawn"
->>>>>>> Stashed changes
       launchStyle = "0"
       useCustomWorkingDirectory = "NO"
       ignoresPersistentStateOnLaunch = "NO"
