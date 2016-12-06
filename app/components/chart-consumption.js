@@ -133,6 +133,17 @@ export default class ChartConsumption extends Component {
         );
     }
 
+    getStandbyData (standby) {
+        const measure = parseFloat(standby.get("measurementValues"));
+        switch (measure.toString().split(".")[0].length) {
+            case 1:
+            case 2:
+                return measure.toFixed(1);
+            default:
+                return measure.toFixed(0);
+        }
+    }
+
     renderTextForecast () {
         return this.props.isForecastData ? (
             <Text
@@ -153,10 +164,9 @@ export default class ChartConsumption extends Component {
         const standby = this.props.dailyAggregates.get(`${sensorId}-standby-${date}-reading-activeEnergy`);
 
         if (this.props.isStandbyData && standby) {
-            const measure = standby.get("measurementValues");
             return (
                 <Text style={styles.switchTextRed}>
-                    {`${measure} kWh`}
+                    {`${this.getStandbyData(standby)} kWh`}
                 </Text>
             );
         } else {
