@@ -11,4 +11,4 @@ before_script:
 
 script:
     - npm run lint
-    - npm run test && code-push-travis -d Production --tag true -t 1.0.2
+    - npm run test && code-push-travis -b 1.0.3 --tag true -t 1.0.3
