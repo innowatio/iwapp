@@ -2,7 +2,7 @@ import React, {Component, PropTypes} from "react";
 import {Dimensions, StyleSheet, Image, View} from "react-native";
 
 import * as colors from "../lib/colors";
-import Icon from "../components/iwapp-icons";
+// import Icon from "../components/iwapp-icons";
 import Text from "../components/text-lato";
 import icoDefault from "../assets/img/ico_default.gif";
 import icoSelling from "../assets/img/ico_selling.gif";
@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
     meanConsumptionContainer: {
         flexDirection: "column",
         paddingHorizontal: 15,
-        justifyContent: "center",
+        // justifyContent: "center",
         overflow: "hidden"
     },
     numberOtherMeanContainer: {
@@ -67,6 +67,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center"
     },
+/*
     tipsWrp: {
         backgroundColor: colors.secondaryBlue,
         flexDirection: "row",
@@ -74,6 +75,7 @@ const styles = StyleSheet.create({
         borderRadius: 14,
         paddingVertical: 6
     },
+
     textTipsWrp: {
         flexDirection: "column",
         marginHorizontal: 4
@@ -84,16 +86,19 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         backgroundColor: colors.transparent
     },
+
     textTipsDescription: {
         color: colors.white,
         fontSize: 12,
         paddingRight: 4,
         backgroundColor: colors.transparent
     },
+
     iconContainer: {
         alignSelf: "center",
         marginLeft: 4
     }
+*/
 });
 
 export default class InfoConsumption extends Component {
@@ -113,6 +118,7 @@ export default class InfoConsumption extends Component {
 
     renderSmileyBadge () {
         const {width} = Dimensions.get("window");
+    /*
         const {consumptions, peersConsumptions} = this.props;
         const relativeConsumption = Math.round((consumptions.avg * 100 / peersConsumptions.avg) - 100);
         let badge = {};
@@ -160,6 +166,10 @@ export default class InfoConsumption extends Component {
                     </Text>
                 </View>
             </View>
+        );
+        */
+        return (
+            <View style={{width: width * 0.96}}>{}</View>
         );
     }
 
@@ -257,7 +267,7 @@ export default class InfoConsumption extends Component {
                     </View>
                     <View style={[styles.meanConsumptionContainer, {height: height * .35, width: width * .59}]}>
                         {consumptions ? this.renderMyConsumptions() : null}
-                        {peersConsumptions && parseFloat(peersConsumptions.avg) !== 0 ? this.renderPeersConsumptions() : null}
+                        {/*peersConsumptions && parseFloat(peersConsumptions.avg) !== 0 ? this.renderPeersConsumptions() : null*/}
                     </View>
                 </View>
                 <View style={[styles.tipsContainer, {width, height: height * .16}]}>
