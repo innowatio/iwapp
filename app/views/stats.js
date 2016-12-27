@@ -113,17 +113,29 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "space-between"
     },
+    progressBarColumnTitle: {
+        color: colors.secondaryBlue,
+        flexDirection: "column",
+        fontWeight: "bold",
+        fontSize: 9,
+        textAlign: "left"
+
+    },
     progressBarTitle: {
         color: colors.textGrey,
-        fontSize: 12
+        fontSize: 10
     },
     progressBarPercentageValue: {
         fontSize: 10,
         color: colors.grey
     },
-    progressBarConsumptionValue: {
-        fontSize: 10,
-        color: colors.secondaryBlue
+    progressBarContainer: {
+        flexDirection: "row",
+        justifyContent: "space-around",
+        alignItems: "center"
+    },
+    progressBarColumn: {
+        flexDirection: "column"
     },
 
     // ALERT
@@ -227,6 +239,22 @@ class Stats extends Component {
         }
     }
 
+    getAggregates (sensorId) {
+        const aggregates = this.getDailyAggregate().filter(agg => (
+            agg.get("sensorId") == sensorId && agg.get("measurementType") === "activeEnergy"
+            && agg.get("source")=="reading"
+        ));
+
+        const aggregatesPrevPeriod = this.getConsumptionAggregate().filter(agg => (
+            agg.get("sensorId") === sensorId && agg.get("measurementType") === "activeEnergy")
+        );
+
+        return {
+            aggregates,
+            aggregatesPrevPeriod
+        };
+    }
+
     subscribeToMeasurements (props) {
         if (props.site) {
             props.asteroid.subscribe(
@@ -278,7 +306,7 @@ class Stats extends Component {
     }
 
     getConsumptionData (consumptions, unit) {
-        const value = consumptions.max;
+        const value = consumptions.now;
         if (value === 0) {
             return null;
         }
@@ -291,13 +319,26 @@ class Stats extends Component {
         }
     }
 
-    getAggregateSum (stats, aggregates) {
-        const tabAggregate = getTitleAndSubtitle(stats.chart.period, aggregates);
+    getAggregateSum (stats, aggregates, aggregatesPrevPeriod) {
+        const tabAggregate = getTitleAndSubtitle(stats.chart.period, aggregates, aggregatesPrevPeriod);
         const value = tabAggregate.sum;
         if (value.toString().split(".")[0].length >= 3) {
             return value.toFixed(0);
         }
         return value.toFixed(1);
+    }
+
+
+    isDangerEnable (key) {
+        switch (key) {
+            case "today":
+            case "yesterday":
+            case "week-toNow":
+            case "week-1w":
+                return true;
+            default:
+                return false;
+        }
     }
 
     renderAlarmSettings () {
@@ -323,37 +364,79 @@ class Stats extends Component {
         // );
     }
 
-    renderProgressBar (consumptions, unit) {
-        const {width, height} = Dimensions.get("window");
-        return consumptions.map(consumption => {
-            if (consumption.max === 0) {
-                return null;
+    renderProgressBar (consumptions, unit, width, isPreviousPeriod = false) {
+        const {height} = Dimensions.get("window");
+        var max = 0;
+
+        //get max value
+        consumptions.map(consumption => {
+            if (consumption.now > max) {
+                max = consumption.now;
             }
-            const progress = consumption.now / consumption.max;
+        });
+
+        return consumptions.map(consumption => {
+            const isDangerEnable = this.isDangerEnable(consumption.key);
+            const progress = max==0 ? 0 : consumption.now / max;
+            const text = !isPreviousPeriod ? (progress * 100).toFixed(0) + "% - " + this.getConsumptionData(consumption, unit) :
+                        this.getConsumptionData(consumption, unit);
+            const color = isDangerEnable ? (progress < 1 ? colors.primaryBlue : colors.progressBarError) : colors.primaryBlue;
+
             return (
                 <View key={consumption.key} style={[styles.progressBarStyleWrp, {margin: height * .01}]}>
                     <Text style={styles.progressBarTitle}>{consumption.title}</Text>
                     <Progress.Bar
-                        borderColor={(progress < .8) ? colors.secondaryBlue : colors.progressBarError}
+                        borderColor={color}
                         borderRadius={30}
                         borderWidth={1}
-                        color={(progress < .8) ? colors.primaryBlue : colors.progressBarError}
+                        color={color}
                         height={6}
                         progress={progress}
                         width={width * 0.9}
                     />
                     <View style={styles.progressBarValuesWrp}>
                         <Text style={styles.progressBarPercentageValue}>
-                            {(progress * 100).toFixed(0)}
-                            {"%"}
-                        </Text>
-                        <Text style={styles.progressBarConsumptionValue}>
-                            {this.getConsumptionData(consumption, unit)}
+                            {text}
                         </Text>
                     </View>
                 </View>
             );
         });
+    }
+
+    renderProgressBarArea (tabAggregate) {
+        const {height, width} = Dimensions.get("window");
+        const {key, comparisons, comparisonsPrevPeriod, measureUnit} = tabAggregate;
+        if (key=="day" || key=="week") {
+            const title1 = key=="day" ? "Confronta i consumi di oggi aggiornati all'ora corrente" : "Confronta i consumi della settimana aggiornati all'ora corrente";
+            const title2 = key=="day" ? "Confronta i consumi di ieri" : "Confronta i consumi della scorsa settimana";
+            return (
+                <View>
+                    <View style={[styles.progressBarContainer, {width: width}]}>
+                        <View style={[styles.progressBarContainer, {width: width / 2}]}>
+                            <Text style={styles.progressBarColumnTitle}>{title1}</Text>
+                        </View>
+                        <View style={[styles.progressBarContainer, {width: width / 2}]}>
+                            <Text style={styles.progressBarColumnTitle}>{title2}</Text>
+                        </View>
+                    </View>
+                    <View style={[styles.progressBarContainer, {height: height * .28, width: width}]}>
+                        <View style={[styles.progressBarColumn, {height: height * .28, width: width / 2}]}>
+                            {this.renderProgressBar(comparisons, measureUnit, (width/2))}
+                        </View>
+                        <View style={[styles.progressBarColumn, {height: height * .28, width: width / 2}]}>
+                            {this.renderProgressBar(comparisonsPrevPeriod, measureUnit, (width/2), true)}
+                        </View>
+                    </View>
+                </View>
+            );
+        } else {
+            return (
+                <View style={{height: height * .28, width: width}}>
+                    {this.renderProgressBar(comparisonsPrevPeriod, measureUnit, width, true)}
+                </View>
+            );
+        }
     }
 
     renderSwiper2 () {
@@ -403,14 +486,11 @@ class Stats extends Component {
 
     renderConsumptionsData (sensorId, text) {
         const {width, height} = Dimensions.get("window");
-        const {
-            stats
-        } = this.props;
-        const aggregate = this.getConsumptionAggregate().filter(agg => (
-            agg.get("sensorId") === sensorId && agg.get("measurementType") === "activeEnergy")
-        );
-        if (!aggregate.isEmpty()) {
-            const data = getTitleAndSubtitle(stats.chart.period, aggregate);
+        const {stats} = this.props;
+        const {aggregates, aggregatesPrevPeriod} = this.getAggregates(sensorId);
+
+        if (!aggregatesPrevPeriod.isEmpty()) {
+            const data = getTitleAndSubtitle(stats.chart.period, aggregates, aggregatesPrevPeriod);
             const fontSize = this.mapNumberFontSize(data.sum) - 10;
             return (
                 <View style={[styles.summaryConsumptionWrp, {width: width * .45}]}>
@@ -437,12 +517,12 @@ class Stats extends Component {
     renderSwiper1 () {
         const {site, stats} = this.props;
         const {height} = Dimensions.get("window");
-        const aggregates = this.getConsumptionAggregate().filter(agg => (
-            agg.get("sensorId") == site._id && agg.get("measurementType") === "activeEnergy"
-        ));
-        if (!aggregates.isEmpty()) {
-            const tabAggregate = getTitleAndSubtitle(stats.chart.period, aggregates);
+        const {aggregates, aggregatesPrevPeriod} = this.getAggregates(site._id);
+
+        if (!aggregatesPrevPeriod.isEmpty()) {
+            const tabAggregate = getTitleAndSubtitle(stats.chart.period, aggregates, aggregatesPrevPeriod);
             const fontSize = this.mapNumberFontSize(tabAggregate.sum);
+            this.renderProgressBarArea(tabAggregate);
             return (
                 <View style={styles.contentStatsWrp}>
                     <View style={[styles.consumptionWrp, {height: height * .2}]}>
@@ -453,7 +533,7 @@ class Stats extends Component {
                                 numberOfLines={1}
                                 style={[styles.consumptionCircleValue, {fontSize, lineHeight: fontSize}]}
                             >
-                                {this.getAggregateSum(stats, aggregates)}
+                                {this.getAggregateSum(stats, aggregates, aggregatesPrevPeriod)}
                             </Text>
                             <Text style={styles.consumptionCircleMeasure}>
                                 {tabAggregate.measureUnit}
@@ -461,7 +541,7 @@ class Stats extends Component {
                         </View>
                     </View>
                     <View style={{height: height * .28}}>
-                        {this.renderProgressBar(tabAggregate.comparisons, tabAggregate.measureUnit)}
+                        {this.renderProgressBarArea(tabAggregate)}
                     </View>
                     {this.renderAlarmSettings()}
                 </View>

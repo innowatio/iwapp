@@ -96,7 +96,7 @@ class Home extends Component {
             props.asteroid.subscribe(
                 "dailyMeasuresBySensor",
                 chart.sensorId,
-                moment(chart.day).subtract({day: 1}).format("YYYY-MM-DD"),
+                moment(chart.day).subtract({week: 7}).format("YYYY-MM-DD"),
                 moment(chart.day).add({day: 1}).format("YYYY-MM-DD"),
                 "reading",
                 chart.measurementType
