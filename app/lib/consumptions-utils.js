@@ -10,7 +10,7 @@ function getLabel (key, day) {
             return "OGGI";
         case "today-7d-toNow":
         case "yesterday":
-            return `${day.format("dddd")}`.toUpperCase();
+            return `${day.format("dddd")} scors${moment().isoWeekday() === 7 ? "a" : "o"}`.toUpperCase();
         case "avg-8-prev-today":
         case "avg-8-prev-yesterday":
             return `media ${day.isoWeekday() === 7
@@ -51,13 +51,13 @@ export function getTitleAndSubtitle (period, aggregates, aggregatesPrevPeriod) {
                     title: "OGGI",
                     now: defaultToNow
                 }, {
-                    key: "avg-8-prev-today",
-                    title: getLabel("avg-8-prev-today", today),
-                    now: utils.getAverageByPeriodToNow(aggregates, "days", 7)
-                }, {
                     key: "today-7d-toNow",
                     title: getLabel("today-7d-toNow", today),
                     now: utils.getSumByPeriodToNow(utils.getPreviousPeriod("week", period, true), aggregates)
+                }, {
+                    key: "avg-8-prev-today",
+                    title: getLabel("avg-8-prev-today", today),
+                    now: utils.getAverageByPeriodToNow(aggregates, "days", 7)
                 }],
                 comparisonsPrevPeriod: [{
                     key: "yesterday",
