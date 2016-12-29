@@ -13,9 +13,13 @@ function getLabel (key, day) {
             return `${day.format("dddd")} scors${moment().isoWeekday() === 7 ? "a" : "o"}`.toUpperCase();
         case "avg-8-prev-today":
         case "avg-8-prev-yesterday":
-            return `media ${day.isoWeekday() === 7
-                ? "delle ultime 8 domeniche"
-                : "degli ultimi 8 " + day.format("dddd")}`.toUpperCase();
+            if (day.isoWeekday() === 7) {
+                return "media delle ultime 8 domeniche";
+            }
+            if (day.isoWeekday() === 6) {
+                return "media degli ultimi 8 sabati";
+            }
+            return ("media degli ultimi 8 " + day.format("dddd")).toUpperCase();
         default:
     }
 }
@@ -84,13 +88,13 @@ export function getTitleAndSubtitle (period, aggregates, aggregatesPrevPeriod) {
                     title: "SETTIMANA CORRENTE",
                     now: defaultToNow
                 }, {
-                    key: "avg-8w-toNow",
-                    title: "MEDIA DELLE ULTIME 8 SETTIMANALE",
-                    now: utils.getAverageByPeriodToNow(aggregates, period, 1)
-                }, {
                     key: "week-1w-toNow",
                     title: "SETTIMANA SCORSA",
                     now: utils.getSumByPeriodToNow(utils.getPreviousPeriod(period, period, true), aggregates)
+                }, {
+                    key: "avg-8w-toNow",
+                    title: "MEDIA DELLE ULTIME 8 SETTIMANE",
+                    now: utils.getAverageByPeriodToNow(aggregates, period, 1)
                 }],
                 comparisonsPrevPeriod: [{
                     key: "week-1w",
@@ -98,7 +102,7 @@ export function getTitleAndSubtitle (period, aggregates, aggregatesPrevPeriod) {
                     now: utils.getSumByPeriod(previousPeriodDates, aggregatesPrevPeriod)
                 }, {
                     key: "avg-8w",
-                    title: "TOTALE IN MEDIA DELLE ULTIME 8 SETTIMANA",
+                    title: "TOTALE IN MEDIA DELLE ULTIME 8 SETTIMANE",
                     now: utils.getAverageByPeriod(aggregatesPrevPeriod, period, 1)
                 }]
             };
