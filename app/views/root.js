@@ -11,7 +11,7 @@ import {bindActionCreators} from "redux";
 import {setNotificationsReaded} from "../actions/notifications";
 import {selectSite} from "../actions/site";
 import {generateSessionId} from "../actions/session-id";
-import {onLogin, onLogout} from "../actions/user";
+import {onLogin, onLogout, setUserInfo} from "../actions/user";
 import Header from "../components/header";
 import KeyboardSpacer from "../components/keyboard-spacer";
 import SideMenu from "../components/side-menu";
@@ -43,6 +43,7 @@ class Root extends Component {
         onNavigate: PropTypes.func.isRequired,
         selectSite: PropTypes.func.isRequired,
         setNotificationsReaded: PropTypes.func.isRequired,
+        setUserInfo: PropTypes.func.isRequired,
         site: PropTypes.object,
         survey: PropTypes.arrayOf(PropTypes.object),
         user: PropTypes.object
@@ -163,19 +164,9 @@ class Root extends Component {
         return async (userId) => {
             this.props.onLogin(userId);
             this.props.generateSessionId(userId);
-            if (user.username && user.email && user.name) {
-                this.setState({
-                    username: user.username,
-                    email: user.email,
-                    name: user.name
-                });
-            } else {
+            if (!user.username || !user.email || !user.name || user.userId !== userId) {
                 asteroid.call("getUserInfo").then(userInfo => {
-                    this.setState({
-                        username: userInfo.username,
-                        email: userInfo.mail[0],
-                        name: userInfo.givenName[0]
-                    });
+                    this.props.setUserInfo(userInfo.username, userInfo.mail[0], userInfo.givenName[0]);
                 });
             }
             FCM.getFCMToken().then(token => {
@@ -241,11 +232,13 @@ class Root extends Component {
     }
 
     renderHeader () {
-        const {username, email, notifications} = this.state;
+        const {user} = this.props;
+        const username = user.username && user.username[0] || "";
+        const email = user.email && user.email[0] || "";
         return (
             <Header
                 headerViews={this.getHeaderViews()}
-                notifications={notifications}
+                notifications={this.state.notifications}
                 notificationsAction={::this.resetNotifications}
                 onToggleHamburger={::this.toggleHamburger}
                 selectedView={this.props.navigationScene}
@@ -330,7 +323,8 @@ function mapDispatchToProps (dispatch) {
         onLogin: bindActionCreators(onLogin, dispatch),
         onLogout: bindActionCreators(onLogout, dispatch),
         selectSite: bindActionCreators(selectSite, dispatch),
-        setNotificationsReaded: bindActionCreators(setNotificationsReaded, dispatch)
+        setNotificationsReaded: bindActionCreators(setNotificationsReaded, dispatch),
+        setUserInfo: bindActionCreators(setUserInfo, dispatch)
     };
 }
 

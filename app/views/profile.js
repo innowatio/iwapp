@@ -134,30 +134,8 @@ class Profile extends Component {
     constructor (props) {
         super(props);
         this.state = {
-            avatarSource: {},
-            username: " ",
-            email: " ",
-            name: " "
+            avatarSource: {}
         };
-    }
-
-    componentWillMount () {
-        const {user} = this.props;
-        if (user.username && user.email && user.name) {
-            this.setState({
-                username: user.username,
-                email: user.email,
-                name: user.name
-            });
-        } else {
-            this.props.asteroid.call("getUserInfo").then(userInfo => {
-                this.setState({
-                    username: userInfo.username,
-                    email: userInfo.mail[0],
-                    name: userInfo.givenName[0]
-                });
-            });
-        }
     }
 
     componentDidMount () {
@@ -249,7 +227,7 @@ class Profile extends Component {
 
     renderUserImage () {
         const {width, height} = Dimensions.get("window");
-        const {username, email} = this.state;
+        const {username, email} = this.props.user;
         return (
             <View style={[styles.userPhotoWrp, {width: width * .76}]}>
                 <TouchableOpacity
@@ -334,7 +312,6 @@ class Profile extends Component {
     render () {
         const {height, width} = Dimensions.get("window");
         const {questionnaireState} = this.props;
-        console.log(questionnaireState);
         return (
             <View style={styles.container}>
                 <Content style={{backgroundColor: colors.background, height}}>

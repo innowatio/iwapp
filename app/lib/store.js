@@ -25,6 +25,12 @@ if (module.hot) {
     });
 }
 
-persistStore(store, {storage: AsyncStorage, whitelist: ["site"], keyPrefix: "iwapp"});
+// try {
+//     Promise.resolve(AsyncStorage.removeItem("iwapp:user"));
+// } catch (error) {
+//     // Error saving data
+// }
+
+persistStore(store, {storage: AsyncStorage, whitelist: ["site", "user"], keyPrefix: "iwapp"});
 
 export default store;

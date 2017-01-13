@@ -4,6 +4,7 @@ export default function user (state = {}, {type, payload}) {
     switch (type) {
         case ON_LOGIN: {
             return {
+                ...state,
                 userId: payload
             };
         }
