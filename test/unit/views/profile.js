@@ -33,6 +33,7 @@ describe("`Profile` view", () => {
         ]};
 
     const showImagePickerSpy = spy();
+    const user = {};
     const ProfileView = Profile.__get__("Profile");
     var profile;
 
@@ -47,6 +48,7 @@ describe("`Profile` view", () => {
                 collections={collections}
                 questionnaireState={questionnaireState}
                 site={site}
+                user={user}
             />);
     });
 

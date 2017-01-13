@@ -410,7 +410,7 @@ function mapStateToProps (state) {
         errorMessage: last(state.survey).errorMessage,
         fetch: last(state.survey).fetch,
         sessionId: state.sessionId,
-        userId: state.userId
+        userId: state.user.userId
     };
 }
 

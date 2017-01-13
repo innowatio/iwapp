@@ -1,4 +1,4 @@
-import {onLogin, onLogout} from "actions/user-id";
+import {onLogin, onLogout, setUserInfo} from "actions/user";
 
 describe("`userId` actions", () => {
 
@@ -34,5 +34,25 @@ describe("`userId` actions", () => {
         });
 
     });
+
+    describe("`setUserInfo` function", () => {
+
+        it("returns the correct object", () => {
+            const username = "username";
+            const name = "name";
+            const email = "test@email.com";
+            const ret = setUserInfo(username, email, name);
+            expect(ret).to.deep.equal({
+                type: "SET_USER_INFO",
+                payload: {
+                    username,
+                    name,
+                    email
+                }
+            });
+        });
+
+    });
+
 
 });

@@ -47,7 +47,7 @@ describe("`Root` view", () => {
                 onNavigate={onNavigate}
                 selectSite={sinon.spy()}
                 setNotificationsReaded={sinon.spy()}
-                userId={"userId"}
+                user={{userId: "userId"}}
             />
         );
         expect(rootView.find(StatusBar).length).to.equal(1);
@@ -71,7 +71,7 @@ describe("`Root` view", () => {
                 onNavigate={onNavigate}
                 selectSite={sinon.spy()}
                 setNotificationsReaded={sinon.spy()}
-                userId={null}
+                user={{}}
             />
         );
         expect(rootView.find(Login)).to.have.length(1);
@@ -93,7 +93,7 @@ describe("`Root` view", () => {
                 onNavigate={onNavigate}
                 selectSite={sinon.spy()}
                 setNotificationsReaded={sinon.spy()}
-                userId={"userId"}
+                user={{userId: "userId"}}
             />
         );
         expect(rootView.find(DefaultRenderer)).to.have.length(1);
@@ -116,7 +116,7 @@ describe("`Root` view", () => {
                 onNavigate={onNavigate}
                 selectSite={sinon.spy()}
                 setNotificationsReaded={sinon.spy()}
-                userId={"userId"}
+                user={{userId: "userId"}}
             />
         );
         expect(rootView.find(Drawer).prop("disabled")).to.equal(true);
@@ -136,7 +136,7 @@ describe("`Root` view", () => {
                 onNavigate={onNavigate}
                 selectSite={sinon.spy()}
                 setNotificationsReaded={sinon.spy()}
-                userId={"userId"}
+                user={{userId: "userId"}}
             />
         );
         expect(rootView.find(Drawer).prop("disabled")).to.equal(false);
@@ -156,7 +156,7 @@ describe("`Root` view", () => {
                 onNavigate={onNavigate}
                 selectSite={sinon.spy()}
                 setNotificationsReaded={sinon.spy()}
-                userId={"userId"}
+                user={{userId: "userId"}}
             />
         );
         expect(rootView.find(Drawer).prop("disabled")).to.equal(false);
@@ -333,19 +333,43 @@ describe("`Root` view", () => {
             instance.props.onLogin.reset();
         });
 
-        const onLoginActions = RootView.prototype.onLoginActions.call(instance);
-
         it("call `onLogin` with correct parameter", () => {
+            const onLoginActions = RootView.prototype.onLoginActions.call(instance);
             onLoginActions("userId");
             expect(instance.props.onLogin).to.have.been.calledWith("userId");
         });
 
         it("call `generateSessionId` with correct parameter", () => {
+            const onLoginActions = RootView.prototype.onLoginActions.call(instance);
             onLoginActions("userId");
             expect(instance.props.generateSessionId).to.have.been.calledWith("userId");
         });
 
         it("call `setState` twice with correct parameter", () => {
+            instance.props.user = {
+                username: "username",
+                name: "name",
+                email: "test@email.com"
+            };
+            const onLoginActions = RootView.prototype.onLoginActions.call(instance);
+            onLoginActions("userId");
+            return asteroid.call().then(() => {
+                expect(setState).to.have.callCount(2);
+                expect(setState.firstCall).to.have.been.calledWithExactly({
+                    username: "username",
+                    email: "test@email.com",
+                    name: "name"
+                });
+                expect(setState.secondCall).to.have.been.calledWithExactly({
+                    notifications: 2,
+                    notificationsId: ["notification1", "notification2"]
+                });
+            });
+        });
+
+        it("call `setState` twice with correct parameter", () => {
+            instance.props.user = {};
+            const onLoginActions = RootView.prototype.onLoginActions.call(instance);
             onLoginActions("userId");
             return asteroid.call().then(() => {
                 expect(setState).to.have.callCount(2);

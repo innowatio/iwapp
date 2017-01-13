@@ -9,7 +9,7 @@ import sessionId from "./session-id";
 import site from "./site";
 import stats from "./stats";
 import survey from "./survey";
-import userId from "./user-id";
+import user from "./user";
 
 const rootReducer = combineReducers({
     analytics,
@@ -21,7 +21,7 @@ const rootReducer = combineReducers({
     site,
     stats,
     survey,
-    userId
+    user
 });
 
 export default rootReducer;

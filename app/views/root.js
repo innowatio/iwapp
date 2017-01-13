@@ -11,7 +11,7 @@ import {bindActionCreators} from "redux";
 import {setNotificationsReaded} from "../actions/notifications";
 import {selectSite} from "../actions/site";
 import {generateSessionId} from "../actions/session-id";
-import {onLogin, onLogout} from "../actions/user-id";
+import {onLogin, onLogout} from "../actions/user";
 import Header from "../components/header";
 import KeyboardSpacer from "../components/keyboard-spacer";
 import SideMenu from "../components/side-menu";
@@ -45,7 +45,7 @@ class Root extends Component {
         setNotificationsReaded: PropTypes.func.isRequired,
         site: PropTypes.object,
         survey: PropTypes.arrayOf(PropTypes.object),
-        userId: PropTypes.string
+        user: PropTypes.object
     }
 
     constructor () {
@@ -159,17 +159,25 @@ class Root extends Component {
     }
 
     onLoginActions () {
-        const {asteroid} = this.props;
+        const {asteroid, user} = this.props;
         return async (userId) => {
             this.props.onLogin(userId);
             this.props.generateSessionId(userId);
-            asteroid.call("getUserInfo").then(userInfo => {
+            if (user.username && user.email && user.name) {
                 this.setState({
-                    username: userInfo.username,
-                    email: userInfo.mail[0],
-                    name: userInfo.givenName[0]
+                    username: user.username,
+                    email: user.email,
+                    name: user.name
                 });
-            });
+            } else {
+                asteroid.call("getUserInfo").then(userInfo => {
+                    this.setState({
+                        username: userInfo.username,
+                        email: userInfo.mail[0],
+                        name: userInfo.givenName[0]
+                    });
+                });
+            }
             FCM.getFCMToken().then(token => {
                 const deviceInfo = getDeviceInfo();
                 // store fcm token in your server
@@ -247,9 +255,9 @@ class Root extends Component {
     }
 
     renderView () {
-        const {asteroid, site, selectSite} = this.props;
+        const {asteroid, site, selectSite, user} = this.props;
         const {height, width} = Dimensions.get("window");
-        return this.props.userId ? (
+        return user.userId ? (
             <Drawer
                 captureGestures={true}
                 content={
@@ -312,7 +320,7 @@ function mapStateToProps (state) {
         navigationScene: state.navigation,
         site: state.site,
         survey: state.survey,
-        userId: state.userId
+        user: state.user
     };
 }
 

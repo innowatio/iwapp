@@ -123,7 +123,12 @@ class Profile extends Component {
         questionnaireState: PropTypes.object.isRequired,
         questionnaireStatus: PropTypes.func.isRequired,
         site: PropTypes.object,
-        userId: PropTypes.string,
+        user: PropTypes.shape({
+            userId: PropTypes.string.isRequired,
+            username: PropTypes.string,
+            name: PropTypes.string,
+            email: PropTypes.string
+        }).isRequired,
     }
 
     constructor (props) {
@@ -137,13 +142,22 @@ class Profile extends Component {
     }
 
     componentWillMount () {
-        this.props.asteroid.call("getUserInfo").then(userInfo => {
+        const {user} = this.props;
+        if (user.username && user.email && user.name) {
             this.setState({
-                username: userInfo.username,
-                email: userInfo.mail[0],
-                name: userInfo.givenName[0]
+                username: user.username,
+                email: user.email,
+                name: user.name
             });
-        });
+        } else {
+            this.props.asteroid.call("getUserInfo").then(userInfo => {
+                this.setState({
+                    username: userInfo.username,
+                    email: userInfo.mail[0],
+                    name: userInfo.givenName[0]
+                });
+            });
+        }
     }
 
     componentDidMount () {
@@ -320,6 +334,7 @@ class Profile extends Component {
     render () {
         const {height, width} = Dimensions.get("window");
         const {questionnaireState} = this.props;
+        console.log(questionnaireState);
         return (
             <View style={styles.container}>
                 <Content style={{backgroundColor: colors.background, height}}>
@@ -353,7 +368,7 @@ function mapStateToProps (state) {
         collections: state.collections,
         questionnaireState: state.questionnaire,
         site: state.site,
-        userId: state.userId
+        user: state.user
     };
 }
 

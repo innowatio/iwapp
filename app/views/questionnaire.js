@@ -359,7 +359,7 @@ function mapStateToProps (state) {
         collections: state.collections,
         sessionId: state.sessionId,
         site: state.site,
-        userId: state.userId
+        userId: state.user.userId
     };
 }
 function mapDispatchToProps (dispatch) {
