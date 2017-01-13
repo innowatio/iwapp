@@ -14,7 +14,8 @@
         "expect": true,
         "enzyme": true,
         "sinon": true,
-        "TestUtils": true
+        "TestUtils": true,
+        "__DEV__": true
     },
     "plugins": [
         "react",

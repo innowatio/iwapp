@@ -7,7 +7,7 @@ import reducers from "../reducers";
 
 const middlewares = [thunk];
 
-if (process.env.NODE_ENV !== "test") {
+if (process.env.NODE_ENV !== "test" && __DEV__) {
     var logger = require("./redux-logger");
     middlewares.push(logger);
 }
@@ -23,14 +23,6 @@ if (module.hot) {
         const nextRootReducer = require("../reducers/index").default;
         store.replaceReducer(nextRootReducer);
     });
-}
-
-try {
-    Promise.resolve(AsyncStorage.removeItem("reduxPersist:home"));
-    Promise.resolve(AsyncStorage.removeItem("reduxPersist:stats"));
-    Promise.resolve(AsyncStorage.removeItem("reduxPersist:site"));
-} catch (error) {
-    // Error saving data
 }
 
 persistStore(store, {storage: AsyncStorage, whitelist: ["site"], keyPrefix: "iwapp"});
