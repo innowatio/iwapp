@@ -227,7 +227,7 @@ class Profile extends Component {
 
     renderUserImage () {
         const {width, height} = Dimensions.get("window");
-        const {username, email} = this.props.user;
+        const {username = " ", email = " "} = this.props.user;
         return (
             <View style={[styles.userPhotoWrp, {width: width * .76}]}>
                 <TouchableOpacity

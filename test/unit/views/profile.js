@@ -9,17 +9,7 @@ import Profile from "views/profile";
 describe("`Profile` view", () => {
 
     const asteroid =  () => {
-        return {
-            then: () => {
-                return {
-                    getUserInfo: sinon.stub().returns({
-                        username: "user",
-                        mail: ["user@email.com"],
-                        givenName: ["user1"]
-                    })
-                };
-            }
-        };
+        return {};
     };
     const collections = fromJS({});
     const site = {_id: "32"};
@@ -49,7 +39,8 @@ describe("`Profile` view", () => {
                 questionnaireState={questionnaireState}
                 site={site}
                 user={user}
-            />);
+            />
+        );
     });
 
     after(() => {

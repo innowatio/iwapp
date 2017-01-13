@@ -284,6 +284,7 @@ describe("`Root` view", () => {
         const setState = sinon.spy();
         const generateSessionId = sinon.spy();
         const onLogin = sinon.spy();
+        const setUserInfo = sinon.spy();
         const asteroid = {
             call: function (method) {
                 if (method === "getUserInfo") {
@@ -303,7 +304,8 @@ describe("`Root` view", () => {
             props: {
                 asteroid,
                 onLogin,
-                generateSessionId
+                generateSessionId,
+                setUserInfo
             },
             setState
         };
@@ -331,6 +333,7 @@ describe("`Root` view", () => {
             setState.reset();
             instance.props.generateSessionId.reset();
             instance.props.onLogin.reset();
+            setUserInfo.reset();
         });
 
         it("call `onLogin` with correct parameter", () => {
@@ -345,40 +348,35 @@ describe("`Root` view", () => {
             expect(instance.props.generateSessionId).to.have.been.calledWith("userId");
         });
 
-        it("call `setState` twice with correct parameter", () => {
+        it("call `setState` twice with correct parameter with user filled and userId passed is different", () => {
             instance.props.user = {
                 username: "username",
                 name: "name",
-                email: "test@email.com"
+                email: "test@email.com",
+                userId: "userId1"
             };
             const onLoginActions = RootView.prototype.onLoginActions.call(instance);
             onLoginActions("userId");
             return asteroid.call().then(() => {
-                expect(setState).to.have.callCount(2);
-                expect(setState.firstCall).to.have.been.calledWithExactly({
-                    username: "username",
-                    email: "test@email.com",
-                    name: "name"
-                });
-                expect(setState.secondCall).to.have.been.calledWithExactly({
+                expect(setState).to.have.callCount(1);
+                expect(setUserInfo).to.have.callCount(1);
+                expect(setUserInfo).to.have.been.calledWithExactly("username", "mail", "name");
+                expect(setState).to.have.been.calledWithExactly({
                     notifications: 2,
                     notificationsId: ["notification1", "notification2"]
                 });
             });
         });
 
-        it("call `setState` twice with correct parameter", () => {
+        it("call `setState` twice with correct parameter with user props empty", () => {
             instance.props.user = {};
             const onLoginActions = RootView.prototype.onLoginActions.call(instance);
             onLoginActions("userId");
             return asteroid.call().then(() => {
-                expect(setState).to.have.callCount(2);
-                expect(setState.firstCall).to.have.been.calledWithExactly({
-                    username: "username",
-                    email: "mail",
-                    name: "name"
-                });
-                expect(setState.secondCall).to.have.been.calledWithExactly({
+                expect(setState).to.have.callCount(1);
+                expect(setUserInfo).to.have.callCount(1);
+                expect(setUserInfo).to.have.been.calledWithExactly("username", "mail", "name");
+                expect(setState).to.have.been.calledWithExactly({
                     notifications: 2,
                     notificationsId: ["notification1", "notification2"]
                 });

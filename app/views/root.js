@@ -52,10 +52,8 @@ class Root extends Component {
     constructor () {
         super();
         this.state = {
-            email: " ",
             open: false,
             surveyModalVisible: false,
-            username: " ",
             notifications: 0,
             notificationsId: []
         };
@@ -160,15 +158,13 @@ class Root extends Component {
     }
 
     onLoginActions () {
-        const {asteroid, user} = this.props;
+        const {asteroid} = this.props;
         return async (userId) => {
             this.props.onLogin(userId);
             this.props.generateSessionId(userId);
-            if (!user.username || !user.email || !user.name || user.userId !== userId) {
-                asteroid.call("getUserInfo").then(userInfo => {
-                    this.props.setUserInfo(userInfo.username, userInfo.mail[0], userInfo.givenName[0]);
-                });
-            }
+            asteroid.call("getUserInfo").then(userInfo => {
+                this.props.setUserInfo(userInfo.username, userInfo.mail[0], userInfo.givenName[0]);
+            });
             FCM.getFCMToken().then(token => {
                 const deviceInfo = getDeviceInfo();
                 // store fcm token in your server
