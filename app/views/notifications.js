@@ -169,6 +169,7 @@ class Notifications extends Component {
                 onPress={() => {
                     ::this.pressRow(index);
                 }}
+                style={{overflow: "hidden"}}
                 underlayColor={colors.white}
             >
                 <View style={[styles.notificationWrp, {width: width * .9}]}>
@@ -206,7 +207,10 @@ class Notifications extends Component {
             <ListView
                 dataSource={this.state.dataSource}
                 enableEmptySections={true}
+                initialListSize={7}
+                pageSize={1}
                 renderRow={::this.renderNotification}
+                scrollRenderAheadDistance={100}
                 style={styles.containerView}
             />
         );
