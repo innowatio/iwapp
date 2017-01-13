@@ -4,9 +4,6 @@
     "env": {
         "test": {
             "plugins": ["rewire"]
-        },
-        "production": {
-            "plugins": ["transform-remove-console"]
         }
     }
 }

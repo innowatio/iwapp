@@ -7,10 +7,10 @@ import reducers from "../reducers";
 
 const middlewares = [thunk];
 
-if (process.env.NODE_ENV !== "test" && __DEV__) {
-    var logger = require("./redux-logger");
-    middlewares.push(logger);
-}
+// if (process.env.NODE_ENV !== "test" && __DEV__) {
+//     var logger = require("./redux-logger");
+//     middlewares.push(logger);
+// }
 
 const store = createStore(
     reducers,
@@ -24,12 +24,6 @@ if (module.hot) {
         store.replaceReducer(nextRootReducer);
     });
 }
-
-// try {
-//     Promise.resolve(AsyncStorage.removeItem("iwapp:user"));
-// } catch (error) {
-//     // Error saving data
-// }
 
 persistStore(store, {storage: AsyncStorage, whitelist: ["site", "user"], keyPrefix: "iwapp"});
 
