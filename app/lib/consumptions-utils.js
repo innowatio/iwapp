@@ -1,6 +1,7 @@
 import utils from "iwwa-utils";
 import moment from "moment";
 import "moment/locale/it";
+import {memoize} from "ramda";
 
 const PERIODS = ["day", "week", "month", "year"];
 
@@ -24,7 +25,7 @@ function getLabel (key, day) {
     }
 }
 
-export function getTitleAndSubtitle (period, aggregates, aggregatesPrevPeriod) {
+export const getTitleAndSubtitle = memoize(function getTitleAndSubtitle (period, aggregates, aggregatesPrevPeriod) {
     const periodDates = utils.getTimeRangeByPeriod(period);
     const periodDatesToNow = utils.getTimeRangeByPeriod(period, true);
     const previousPeriodDates = utils.getPreviousPeriod(period, period);
@@ -40,7 +41,7 @@ export function getTitleAndSubtitle (period, aggregates, aggregatesPrevPeriod) {
     const yesterday = moment().subtract(1, "day");
 
     switch (PERIODS.indexOf(period)) {
-        case 0:
+        case 0: {
             return {
                 key: period,
                 measureUnit: "kWh",
@@ -73,7 +74,8 @@ export function getTitleAndSubtitle (period, aggregates, aggregatesPrevPeriod) {
                     now: utils.getAverageByPeriod(aggregatesPrevPeriod, "days", 8)
                 }]
             };
-        case 1:
+        }
+        case 1: {
             return {
                 key: period,
                 measureUnit: "kWh",
@@ -106,7 +108,8 @@ export function getTitleAndSubtitle (period, aggregates, aggregatesPrevPeriod) {
                     now: utils.getAverageByPeriod(aggregatesPrevPeriod, period, 1)
                 }]
             };
-        case 2:
+        }
+        case 2: {
             return {
                 key: period,
                 measureUnit: "kWh",
@@ -131,7 +134,8 @@ export function getTitleAndSubtitle (period, aggregates, aggregatesPrevPeriod) {
                     now: utils.getSumByPeriod(previousPeriod3Dates, aggregatesPrevPeriod)
                 }]
             };
-        case 3:
+        }
+        case 3: {
             return {
                 key: period,
                 measureUnit: "kWh",
@@ -155,7 +159,8 @@ export function getTitleAndSubtitle (period, aggregates, aggregatesPrevPeriod) {
                     }
                 ]
             };
-        default:
+        }
+        default: {
             return {
                 key: period,
                 measureUnit: "kWh",
@@ -166,5 +171,6 @@ export function getTitleAndSubtitle (period, aggregates, aggregatesPrevPeriod) {
                 title: "",
                 comparisons: []
             };
+        }
     }
-}
+});

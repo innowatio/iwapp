@@ -9,6 +9,7 @@ import Button from "react-native-button";
 import {connect} from "react-redux";
 import Swiper from "react-native-swiper";
 import {bindActionCreators} from "redux";
+import PureRenderMixin from "react-addons-pure-render-mixin";
 
 import {selectPeriod} from "../actions/stats";
 import Highcharts from "../components/highcharts";
@@ -202,6 +203,11 @@ class Stats extends Component {
                 period: PropTypes.string
             })
         }).isRequired
+    }
+
+    constructor (props) {
+        super(props);
+        this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
     }
 
     componentDidMount () {
@@ -522,7 +528,6 @@ class Stats extends Component {
         if (!aggregatesPrevPeriod.isEmpty()) {
             const tabAggregate = getTitleAndSubtitle(stats.chart.period, aggregates, aggregatesPrevPeriod);
             const fontSize = this.mapNumberFontSize(tabAggregate.sum);
-            this.renderProgressBarArea(tabAggregate);
             return (
                 <View style={styles.contentStatsWrp}>
                     <View style={[styles.consumptionWrp, {height: height * .2}]}>
