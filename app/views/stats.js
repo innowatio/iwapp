@@ -117,12 +117,18 @@ const styles = StyleSheet.create({
         color: colors.secondaryBlue,
         alignSelf: "flex-start",
         fontWeight: "bold",
-        fontSize: 11,
+        fontSize: 12,
+        textAlign: "left"
+    },
+    progressBarColumnClarification:  {
+        color: colors.secondaryBlue,
+        fontSize: 10,
         textAlign: "left"
     },
     progressBarTitle: {
         color: colors.textGrey,
-        fontSize: 10
+        fontSize: 11,
+        paddingBottom: 3
     },
     progressBarPercentageValue: {
         fontSize: 9,
@@ -135,7 +141,7 @@ const styles = StyleSheet.create({
     },
     progressBarColumnWrp: {
         alignItems: "center",
-        justifyContent: "center",
+        justifyContent: "space-around",
         borderWidth: 1,
         borderColor: colors.secondaryBlue,
         borderRadius: 5
@@ -385,14 +391,15 @@ class Stats extends Component {
 
         return consumptions.map(consumption => {
             const isDangerEnable = this.isDangerEnable(consumption.key);
-            const progress = max==0 ? 0 : consumption.now / max;
-            const text = !isPreviousPeriod ? (progress * 100).toFixed(0) + "% - " + this.getConsumptionData(consumption, unit) :
-                        this.getConsumptionData(consumption, unit);
+            const progress = max === 0 ? 0 : consumption.now / max;
+            const separator = progress > 0 ? " - " : "";
+            const consumptionData = this.getConsumptionData(consumption, unit) ? this.getConsumptionData(consumption, unit) : "";
+            const text = !isPreviousPeriod ? (progress * 100).toFixed(0) + "%" + separator + consumptionData : consumptionData;
             const color = isDangerEnable ? (progress < 1 ? colors.primaryBlue : colors.progressBarError) : colors.primaryBlue;
 
             return (
                 <View key={consumption.key} style={[styles.progressBarStyleWrp, {margin: height * .01}]}>
-                    <Text style={[styles.progressBarTitle, {paddingBottom: height * .005}]}>{consumption.title}</Text>
+                    <Text style={styles.progressBarTitle}>{consumption.title}</Text>
                     <Progress.Bar
                         borderColor={color}
                         borderRadius={30}
@@ -416,24 +423,33 @@ class Stats extends Component {
         const {height, width} = Dimensions.get("window");
         const {key, comparisons, comparisonsPrevPeriod, measureUnit} = tabAggregate;
         if (key=="day" || key=="week") {
-            const title1 = key=="day" ? "Confronta i consumi di oggi aggiornati all'ora corrente" : "Confronta i consumi della settimana aggiornati all'ora corrente";
+            const title1 = key=="day" ? "Confronta i consumi di oggi" : "Confronta i consumi della settimana";
             const title2 = key=="day" ? "Confronta i consumi di ieri" : "Confronta i consumi della scorsa settimana";
             return (
-                <View style={{width: width, height: height * .45, justifyContent: "center"}}>
+                <View style={{width: width, height: height * .48, justifyContent: "center"}}>
                     <View style={styles.progressBarContainer}>
-                        <View style={[styles.progressBarColumnWrp, {width: width * .48, height: height * .36}]}>
-                            <Text style={[styles.progressBarColumnTitle, {width: width * .44, height: height * .07, paddingHorizontal: width * .02}]}>
-                                {title1}
-                            </Text>
-                            <View style={[styles.progressBarColumn, {height: height * .25}]}>
+                        <View style={[styles.progressBarColumnWrp, {width: width * .48, height: height * .38}]}>
+                            <View style={{justifyContent: "center", width: width * .44, height: height * .1}}>
+                                <Text>
+                                    <Text style={styles.progressBarColumnTitle}>
+                                        {title1}
+                                    </Text>
+                                    <Text style={styles.progressBarColumnClarification}>
+                                        {" (aggiornati all'ora corrente)"}
+                                    </Text>
+                                </Text>
+                            </View>
+                            <View style={[styles.progressBarColumn, {height: height * .28}]}>
                                 {this.renderProgressBar(comparisons, measureUnit, (width/2.1))}
                             </View>
                         </View>
-                        <View style={[styles.progressBarColumnWrp, {width: width * .48, height: height * .36}]}>
-                            <Text style={[styles.progressBarColumnTitle, {width: width * .44, height: height * .07, paddingHorizontal: width * .02}]}>
-                                {title2}
-                            </Text>
-                            <View style={[styles.progressBarColumn, {height: height * .25}]}>
+                        <View style={[styles.progressBarColumnWrp, {width: width * .48, height: height * .38}]}>
+                            <View style={{justifyContent: "center", width: width * .44, height: height * .1}}>
+                                <Text style={styles.progressBarColumnTitle}>
+                                    {title2}
+                                </Text>
+                            </View>
+                            <View style={[styles.progressBarColumn, {height: height * .28}]}>
                                 {this.renderProgressBar(comparisonsPrevPeriod, measureUnit, (width/2.1), true)}
                             </View>
                         </View>
