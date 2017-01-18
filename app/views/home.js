@@ -85,6 +85,7 @@ class Home extends Component {
     subscribeToMeasure (props) {
         const chart = props.home.charts[0];
         if (chart.sensorId) {
+            //TODO qui deve fare la subsctiption giornaliera
             props.asteroid.subscribe(
                 "dailyMeasuresBySensor",
                 `${chart.sensorId}-standby`,

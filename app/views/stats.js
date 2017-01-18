@@ -257,6 +257,7 @@ class Stats extends Component {
 
     subscribeToMeasurements (props) {
         if (props.site) {
+            //TODO usare qua
             props.asteroid.subscribe(
                 "yearlyConsumptions",
                 props.site._id,
