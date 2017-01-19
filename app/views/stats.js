@@ -1,4 +1,5 @@
 import {Map} from "immutable";
+import {subscribeDaily} from "iwwa-utils";
 import moment from "moment";
 import {Content} from "native-base";
 import React, {Component, PropTypes} from "react";
@@ -277,21 +278,22 @@ class Stats extends Component {
 
     subscribeToMeasurements (props) {
         if (props.site) {
-            //TODO usare qua
-            props.asteroid.subscribe(
-                "yearlyConsumptions",
-                props.site._id,
-                moment.utc().year().toString(),
-                "reading",
-                "activeEnergy"
-            );
-            props.asteroid.subscribe(
-                "yearlyConsumptions",
-                props.site._id,
-                (moment.utc().year() - 1).toString(),
-                "reading",
-                "activeEnergy"
-            );
+            subscribeDaily(() => {
+                props.asteroid.subscribe(
+                    "yearlyConsumptions",
+                    props.site._id,
+                    moment.utc().year().toString(),
+                    "reading",
+                    "activeEnergy"
+                );
+                props.asteroid.subscribe(
+                    "yearlyConsumptions",
+                    props.site._id,
+                    (moment.utc().year() - 1).toString(),
+                    "reading",
+                    "activeEnergy"
+                );
+            });
         }
     }
 
