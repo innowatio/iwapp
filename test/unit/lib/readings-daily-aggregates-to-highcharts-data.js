@@ -77,7 +77,7 @@ describe("`readingsDailyAggregatesToHighchartsData` function", () => {
 
     function getDataArray (times, values) {
         return times.reduce((acc, time, index) => {
-            const hour = moment.utc(parseInt(time)).add({minutes: moment().utcOffset()}).format("H");
+            const hour = moment.utc(parseInt(time)).format("H");
             const indexHour = findIndex(a => a[0] == hour)(acc);
             return update(indexHour, [hour, values[index] + acc[indexHour][1]], acc);
         }, defaultChartArray);
@@ -178,8 +178,8 @@ describe("`readingsDailyAggregatesToHighchartsData` function", () => {
                 chartState
             );
             const totalTimes = unnest(times.reading);
-            const firstIndex = findIndex(time => parseInt(time) >= moment("2016-09-16").valueOf())(totalTimes);
-            const lastIndex = findLastIndex(time => parseInt(time) <= moment("2016-09-16").endOf("day").valueOf())(totalTimes);
+            const firstIndex = findIndex(time => parseInt(time) >= moment.utc("2016-09-16").valueOf())(totalTimes);
+            const lastIndex = findLastIndex(time => parseInt(time) <= moment.utc("2016-09-16").endOf("day").valueOf())(totalTimes);
             const timesArray = totalTimes.slice(firstIndex, lastIndex + 1);
             const valuesArray = [
                 12, 12, 16, 12, 6, 87, 332, 234, 3, 12, 15, 16, 12, 6, 87, 332, 234, 3, 12, 15, 16, 12, 6, 87, 332, 234, 3
@@ -214,14 +214,21 @@ describe("`readingsDailyAggregatesToHighchartsData` function", () => {
                 12, 15, 16, 12, 6, 87, 332, 234, 3
             ].slice(firstIndex, lastIndex + 1);
             const dataArray = getDataArray(timesArray, valuesArray);
+            console.log("test data before adapting");
+            console.log(dataArray);
 
-            for (var x=0; x<dataArray.length; x++) {
-                if (x==0 && dataArray[x][1]==0) {
-                    dataArray[x][1] = dataArray.slice(x, dataArray.length-1);
-                } else if (dataArray[x][1]==0) {
+            for (var x = 0; x < dataArray.length; x++) {
+                if (x == 0 && dataArray[x][1] == 0) {
+                    dataArray[x][1] = dataArray[findIndex(d => d[1]!== 0)(dataArray)][1];
+                } else if (dataArray[x][1] == 0) {
                     dataArray[x][1] = dataArray[x-1][1];
                 }
             }
+
+            console.log("test data after adapting");
+            console.log(dataArray);
+            console.log("lib data");
+            console.log(ret[0].data);
 
             expect(ret).to.deep.equal([
                 {
@@ -266,6 +273,7 @@ describe("`readingsDailyAggregatesToHighchartsData` function", () => {
                 categories: []
             }]);
         });
+
 
     });
 

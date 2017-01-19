@@ -9,6 +9,7 @@ import Button from "react-native-button";
 import {connect} from "react-redux";
 import Swiper from "react-native-swiper";
 import {bindActionCreators} from "redux";
+import PureRenderMixin from "react-addons-pure-render-mixin";
 
 import {selectPeriod} from "../actions/stats";
 import Highcharts from "../components/highcharts";
@@ -71,7 +72,7 @@ const styles = StyleSheet.create({
 
     // CONSUMPTION CIRCLE Swiper 1
     consumptionCircleWrp: {
-        backgroundColor: colors.secondaryBlue,
+        backgroundColor: colors.buttonPrimary,
         borderRadius: 100,
         alignItems: "center",
         justifyContent: "center",
@@ -115,27 +116,41 @@ const styles = StyleSheet.create({
     },
     progressBarColumnTitle: {
         color: colors.secondaryBlue,
-        flexDirection: "column",
+        alignSelf: "flex-start",
         fontWeight: "bold",
-        fontSize: 9,
+        fontSize: 12,
         textAlign: "left"
-
+    },
+    progressBarColumnClarification:  {
+        color: colors.secondaryBlue,
+        fontSize: 10,
+        textAlign: "left"
     },
     progressBarTitle: {
         color: colors.textGrey,
-        fontSize: 10
+        fontSize: 11,
+        paddingBottom: 3
     },
     progressBarPercentageValue: {
-        fontSize: 10,
-        color: colors.grey
+        fontSize: 9,
+        color: colors.secondaryBlue
     },
     progressBarContainer: {
         flexDirection: "row",
         justifyContent: "space-around",
         alignItems: "center"
     },
+    progressBarColumnWrp: {
+        alignItems: "center",
+        justifyContent: "space-around",
+        borderWidth: 1,
+        borderColor: colors.secondaryBlue,
+        borderRadius: 5
+    },
     progressBarColumn: {
-        flexDirection: "column"
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "flex-start"
     },
 
     // ALERT
@@ -202,6 +217,11 @@ class Stats extends Component {
                 period: PropTypes.string
             })
         }).isRequired
+    }
+
+    constructor (props) {
+        super(props);
+        this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
     }
 
     componentDidMount () {
@@ -378,9 +398,10 @@ class Stats extends Component {
 
         return consumptions.map(consumption => {
             const isDangerEnable = this.isDangerEnable(consumption.key);
-            const progress = max==0 ? 0 : consumption.now / max;
-            const text = !isPreviousPeriod ? (progress * 100).toFixed(0) + "% - " + this.getConsumptionData(consumption, unit) :
-                        this.getConsumptionData(consumption, unit);
+            const progress = max === 0 ? 0 : consumption.now / max;
+            const separator = progress > 0 ? " - " : "";
+            const consumptionData = this.getConsumptionData(consumption, unit) ? this.getConsumptionData(consumption, unit) : "";
+            const text = !isPreviousPeriod ? (progress * 100).toFixed(0) + "%" + separator + consumptionData : consumptionData;
             const color = isDangerEnable ? (progress < 1 ? colors.primaryBlue : colors.progressBarError) : colors.primaryBlue;
 
             return (
@@ -409,32 +430,52 @@ class Stats extends Component {
         const {height, width} = Dimensions.get("window");
         const {key, comparisons, comparisonsPrevPeriod, measureUnit} = tabAggregate;
         if (key=="day" || key=="week") {
-            const title1 = key=="day" ? "Confronta i consumi di oggi aggiornati all'ora corrente" : "Confronta i consumi della settimana aggiornati all'ora corrente";
+            const title1 = key=="day" ? "Confronta i consumi di oggi" : "Confronta i consumi della settimana";
             const title2 = key=="day" ? "Confronta i consumi di ieri" : "Confronta i consumi della scorsa settimana";
             return (
-                <View>
-                    <View style={[styles.progressBarContainer, {width: width}]}>
-                        <View style={[styles.progressBarContainer, {width: width / 2}]}>
-                            <Text style={styles.progressBarColumnTitle}>{title1}</Text>
+                <View style={{width: width, height: height * .48, justifyContent: "center"}}>
+                    <View style={styles.progressBarContainer}>
+                        <View style={[styles.progressBarColumnWrp, {width: width * .48, height: height * .38}]}>
+                            <View style={{justifyContent: "center", width: width * .44, height: height * .1}}>
+                                <Text>
+                                    <Text style={styles.progressBarColumnTitle}>
+                                        {title1}
+                                    </Text>
+                                    <Text style={styles.progressBarColumnClarification}>
+                                        {" (aggiornati all'ora corrente)"}
+                                    </Text>
+                                </Text>
+                            </View>
+                            <View style={[styles.progressBarColumn, {height: height * .28}]}>
+                                {this.renderProgressBar(comparisons, measureUnit, (width/2.1))}
+                            </View>
                         </View>
-                        <View style={[styles.progressBarContainer, {width: width / 2}]}>
-                            <Text style={styles.progressBarColumnTitle}>{title2}</Text>
-                        </View>
-                    </View>
-                    <View style={[styles.progressBarContainer, {height: height * .28, width: width}]}>
-                        <View style={[styles.progressBarColumn, {height: height * .28, width: width / 2}]}>
-                            {this.renderProgressBar(comparisons, measureUnit, (width/2))}
-                        </View>
-                        <View style={[styles.progressBarColumn, {height: height * .28, width: width / 2}]}>
-                            {this.renderProgressBar(comparisonsPrevPeriod, measureUnit, (width/2), true)}
+                        <View style={[styles.progressBarColumnWrp, {width: width * .48, height: height * .38}]}>
+                            <View style={{justifyContent: "center", width: width * .44, height: height * .1}}>
+                                <Text style={styles.progressBarColumnTitle}>
+                                    {title2}
+                                </Text>
+                            </View>
+                            <View style={[styles.progressBarColumn, {height: height * .28}]}>
+                                {this.renderProgressBar(comparisonsPrevPeriod, measureUnit, (width/2.1), true)}
+                            </View>
                         </View>
                     </View>
                 </View>
             );
         } else {
             return (
-                <View style={{height: height * .28, width: width}}>
-                    {this.renderProgressBar(comparisonsPrevPeriod, measureUnit, width, true)}
+                <View style={{
+                    justifyContent: "center",
+                    alignItems: "center",
+                    height: height * .28,
+                    width: width * .95,
+                    borderWidth: 1,
+                    borderColor: colors.secondaryBlue,
+                    borderRadius: 5
+                }}
+                >
+                    {this.renderProgressBar(comparisonsPrevPeriod, measureUnit, (width * .98), true)}
                 </View>
             );
         }
@@ -523,7 +564,6 @@ class Stats extends Component {
         if (!aggregatesPrevPeriod.isEmpty()) {
             const tabAggregate = getTitleAndSubtitle(stats.chart.period, aggregates, aggregatesPrevPeriod);
             const fontSize = this.mapNumberFontSize(tabAggregate.sum);
-            this.renderProgressBarArea(tabAggregate);
             return (
                 <View style={styles.contentStatsWrp}>
                     <View style={[styles.consumptionWrp, {height: height * .2}]}>
@@ -541,7 +581,7 @@ class Stats extends Component {
                             </Text>
                         </View>
                     </View>
-                    <View style={{height: height * .28}}>
+                    <View style={{height: height * .48, justifyContent: "center"}}>
                         {this.renderProgressBarArea(tabAggregate)}
                     </View>
                     {this.renderAlarmSettings()}
