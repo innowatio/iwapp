@@ -56,13 +56,13 @@ export const getTitleAndSubtitle = memoize(function getTitleAndSubtitle (period,
                     title: "OGGI",
                     now: defaultToNow
                 }, {
-                    key: "today-7d-toNow",
-                    title: getLabel("today-7d-toNow", today),
-                    now: utils.getSumByPeriodToNow(utils.getPreviousPeriod("week", period, true), aggregates)
-                }, {
                     key: "avg-8-prev-today",
                     title: getLabel("avg-8-prev-today", today),
                     now: utils.getAverageByPeriodToNow(aggregates, "days", 7)
+                }, {
+                    key: "today-7d-toNow",
+                    title: getLabel("today-7d-toNow", today),
+                    now: utils.getSumByPeriodToNow(utils.getPreviousPeriod("week", period, true), aggregates)
                 }],
                 comparisonsPrevPeriod: [{
                     key: "yesterday",
@@ -90,13 +90,13 @@ export const getTitleAndSubtitle = memoize(function getTitleAndSubtitle (period,
                     title: "SETTIMANA CORRENTE",
                     now: defaultToNow
                 }, {
-                    key: "week-1w-toNow",
-                    title: "SETTIMANA SCORSA",
-                    now: utils.getSumByPeriodToNow(utils.getPreviousPeriod(period, period, true), aggregates)
-                }, {
                     key: "avg-8w-toNow",
                     title: "MEDIA DELLE ULTIME 8 SETTIMANE",
                     now: utils.getAverageByPeriodToNow(aggregates, period, 1)
+                }, {
+                    key: "week-1w-toNow",
+                    title: "SETTIMANA SCORSA",
+                    now: utils.getSumByPeriodToNow(utils.getPreviousPeriod(period, period, true), aggregates)
                 }],
                 comparisonsPrevPeriod: [{
                     key: "week-1w",
