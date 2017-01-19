@@ -41,10 +41,10 @@ export default memoize((aggregates, chartsState) => {
             // Get daily aggregate with correct offset per timezone
             const aggregate = getDailyAggregate(sortedAggregate, chartState);
             const firstIndex = findIndex(time =>
-                parseInt(time) >= moment(day).valueOf()
+                parseInt(time) >= moment.utc(day).valueOf()
             )(aggregate.times);
             var lastIndex = findLastIndex(time =>
-                parseInt(time) <= moment(day).endOf("day").valueOf()
+                parseInt(time) <= moment.utc(day).endOf("day").valueOf()
             )(aggregate.times);
             if (lastIndex < 0 && firstIndex >= 0) {
                 lastIndex = aggregate.values.length;
@@ -54,7 +54,7 @@ export default memoize((aggregates, chartsState) => {
             var data = [];
             data = mapIndexed((value, index) => {
                 return {
-                    hour: moment.utc(parseInt(times[index])).add({minutes: moment().utcOffset()}).format("H"),
+                    hour: moment.utc(parseInt(times[index])).format("H"),
                     value: parseFloat(value)
                 };
             }, values);
