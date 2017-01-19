@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
     },
     progressBarTitle: {
         color: colors.textGrey,
-        fontSize: 11,
+        fontSize: 10.5,
         paddingBottom: 3
     },
     progressBarPercentageValue: {
@@ -434,8 +434,8 @@ class Stats extends Component {
             return (
                 <View style={{width: width, height: height * .48, justifyContent: "center"}}>
                     <View style={styles.progressBarContainer}>
-                        <View style={[styles.progressBarColumnWrp, {width: width * .48, height: height * .38}]}>
-                            <View style={{justifyContent: "center", width: width * .44, height: height * .1}}>
+                        <View style={[styles.progressBarColumnWrp, {width: width * .48, height: height * .42}]}>
+                            <View style={{justifyContent: "center", width: width * .44, height: height * .12}}>
                                 <Text>
                                     <Text style={styles.progressBarColumnTitle}>
                                         {title1}
@@ -445,17 +445,17 @@ class Stats extends Component {
                                     </Text>
                                 </Text>
                             </View>
-                            <View style={[styles.progressBarColumn, {height: height * .28}]}>
+                            <View style={[styles.progressBarColumn, {height: height * .3}]}>
                                 {this.renderProgressBar(comparisons, measureUnit, (width/2.1))}
                             </View>
                         </View>
-                        <View style={[styles.progressBarColumnWrp, {width: width * .48, height: height * .38}]}>
-                            <View style={{justifyContent: "center", width: width * .44, height: height * .1}}>
+                        <View style={[styles.progressBarColumnWrp, {width: width * .48, height: height * .42}]}>
+                            <View style={{justifyContent: "center", width: width * .44, height: height * .12}}>
                                 <Text style={styles.progressBarColumnTitle}>
                                     {title2}
                                 </Text>
                             </View>
-                            <View style={[styles.progressBarColumn, {height: height * .28}]}>
+                            <View style={[styles.progressBarColumn, {height: height * .3}]}>
                                 {this.renderProgressBar(comparisonsPrevPeriod, measureUnit, (width/2.1), true)}
                             </View>
                         </View>
