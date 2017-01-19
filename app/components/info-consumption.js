@@ -21,84 +21,60 @@ const styles = StyleSheet.create({
         fontSize: 10
     },
     textStandard: {
-        color: colors.textGrey,
-        fontSize: 12
+        color: colors.white,
+        fontSize: 13
     },
     infoAndConsumptionContainer: {
-        flexDirection: "row",
+        flexDirection: "column",
         justifyContent: "space-around",
         alignItems: "center"
     },
     infoContainer: {
-        flexDirection: "column",
+        flexDirection: "row",
         paddingLeft: 15,
-        justifyContent: "center"
+        justifyContent: "center",
+        alignItems: "center"
     },
     iconActivityWrp: {
         marginVertical: 5
     },
     meanConsumptionContainer: {
         flexDirection: "column",
-        paddingHorizontal: 15,
-        // justifyContent: "center",
-        overflow: "hidden"
-    },
-    numberOtherMeanContainer: {
+        overflow: "hidden",
+        paddingHorizontal: 0,
         justifyContent: "center"
+    },
+    consumptionWrp: {
+        borderWidth: 1,
+        borderColor: colors.primaryBlue,
+        borderRadius: 5,
+        padding: 4,
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: colors.secondaryBlue
+    },
+    //
+    numberOtherMeanContainer: {
+        justifyContent: "center",
+        alignItems: "center",
     },
     textNumber: {
         paddingRight: 5,
-        fontSize: 30,
+        fontSize: 55,
         fontWeight: "bold",
-        color: colors.secondaryBlue,
-        overflow: "hidden"
+        overflow: "hidden",
+        color: colors.white
     },
     textUnitOfMeasurement: {
-        color: colors.secondaryBlue,
         alignSelf: "flex-end",
         marginBottom: 4,
-        fontSize: 14
+        color: colors.white,
+        fontSize: 32
     },
     textContainer: {
         flexDirection: "row",
         alignItems: "center"
     },
-    tipsContainer: {
-        alignItems: "center",
-        justifyContent: "center"
-    },
-/*
-    tipsWrp: {
-        backgroundColor: colors.secondaryBlue,
-        flexDirection: "row",
-        alignSelf: "center",
-        borderRadius: 14,
-        paddingVertical: 6
-    },
-
-    textTipsWrp: {
-        flexDirection: "column",
-        marginHorizontal: 4
-    },
-    textTips: {
-        color: colors.white,
-        fontSize: 16,
-        fontWeight: "bold",
-        backgroundColor: colors.transparent
-    },
-
-    textTipsDescription: {
-        color: colors.white,
-        fontSize: 12,
-        paddingRight: 4,
-        backgroundColor: colors.transparent
-    },
-
-    iconContainer: {
-        alignSelf: "center",
-        marginLeft: 4
-    }
-*/
 });
 
 export default class InfoConsumption extends Component {
@@ -115,64 +91,6 @@ export default class InfoConsumption extends Component {
         }),
         site: PropTypes.object
     }
-
-    renderSmileyBadge () {
-        const {width} = Dimensions.get("window");
-    /*
-        const {consumptions, peersConsumptions} = this.props;
-        const relativeConsumption = Math.round((consumptions.avg * 100 / peersConsumptions.avg) - 100);
-        let badge = {};
-        if (relativeConsumption < -5) {
-            badge = {
-                icon: "iw-good",
-                iconColor: colors.iconGood,
-                title: "GRANDE!",
-                text: `Stai andando molto bene.  Hai usato il ${Math.abs(relativeConsumption)}% di energia in meno di attività simili alla tua.`
-            };
-        }
-        if (relativeConsumption >= -5 && relativeConsumption <= 0) {
-            badge = {
-                icon: "iw-middling",
-                iconColor: colors.iconMiddling,
-                title: "OK!",
-                text: `Sei in linea con il consumo energetico di attività simili alla tua: hai consumato il ${Math.abs(relativeConsumption)}% di energia in meno.`
-            };
-        }
-        if (relativeConsumption > 0 && relativeConsumption <= 5) {
-            badge = {
-                icon: "iw-middling",
-                iconColor: colors.iconMiddling,
-                title: "OK!",
-                text: `Sei in linea con il consumo energetico di attività simili alla tua: hai consumato il ${relativeConsumption}% di energia in più.`
-            };
-        }
-        if (relativeConsumption > 5) {
-            badge = {
-                icon: "iw-bad",
-                iconColor: colors.iconBad,
-                title: "ATTENZIONE!",
-                text: `Hai usato il ${relativeConsumption}% di energia in più rispetto ad attività simili alla tua.`
-            };
-        }
-        return (
-            <View style={[styles.tipsWrp, {width: width * 0.96}]}>
-                <View style={styles.iconContainer}>
-                    <Icon color={badge.iconColor} name={badge.icon} size={width * 0.13} />
-                </View>
-                <View style={styles.textTipsWrp}>
-                    <Text style={styles.textTips}>{badge.title}</Text>
-                    <Text style={[styles.textTipsDescription, {width: width * 0.78}]}>
-                        {badge.text}
-                    </Text>
-                </View>
-            </View>
-        );
-        */
-        return (
-            <View style={{width: width * 0.96}}>{}</View>
-        );
-    }
-
     renderActivityTypeIcon () {
         const {height} = Dimensions.get("window");
         const site = this.props.site || {};
@@ -243,7 +161,7 @@ export default class InfoConsumption extends Component {
 
     renderMyConsumptions () {
         const {consumptions} = this.props;
-        const text = "Media dei miei\nconsumi giornalieri";
+        const text = "Media dei miei consumi giornalieri";
         return this.renderConsumptions(consumptions, text);
     }
 
@@ -255,23 +173,23 @@ export default class InfoConsumption extends Component {
 
     render () {
         const {height, width} = Dimensions.get("window");
-        const {consumptions, peersConsumptions, site} = this.props;
+        const {consumptions, site} = this.props;
         return (
             <View style={[styles.container, {height: this.props.heightSwiper}]}>
-                <View style={[styles.infoAndConsumptionContainer, {width, height: height * .35}]}>
-                    <View style={[styles.infoContainer, {height: height * .35, width: width * .41}]}>
+                <View style={[styles.infoAndConsumptionContainer, {width, height: height * .5}]}>
+                    <View style={[styles.infoContainer, {height: height * .3, width: width * .9}]}>
                         {this.renderActivityTypeIcon()}
-                        {site && site.employees ? <Text style={styles.textStandardSmall}>{`${site.employees} persone`}</Text> : null}
-                        {site && site.areaInMq ? <Text style={styles.textStandardSmall}>{`Attività di ${site.areaInMq} mq`}</Text> : null}
-                        {site && site.address ? <Text style={styles.textStandardSmall}>{`${site.address}`}</Text> : null}
+                        <View style={{width: width * .55, marginLeft: width * .02}}>
+                            {site && site.employees ? <Text style={styles.textStandardSmall}>{`${site.employees} persone`}</Text> : null}
+                            {site && site.areaInMq ? <Text style={styles.textStandardSmall}>{`Attività di ${site.areaInMq} mq`}</Text> : null}
+                            {site && site.address ? <Text style={styles.textStandardSmall}>{`${site.address}`}</Text> : null}
+                        </View>
                     </View>
-                    <View style={[styles.meanConsumptionContainer, {height: height * .35, width: width * .59}]}>
-                        {consumptions ? this.renderMyConsumptions() : null}
-                        {/*peersConsumptions && parseFloat(peersConsumptions.avg) !== 0 ? this.renderPeersConsumptions() : null*/}
+                    <View style={[styles.meanConsumptionContainer, {height: height * .3, width: width * .9}]}>
+                        <View style={styles.consumptionWrp}>
+                            {consumptions ? this.renderMyConsumptions() : null}
+                        </View>
                     </View>
-                </View>
-                <View style={[styles.tipsContainer, {width, height: height * .16}]}>
-                    {(consumptions && peersConsumptions && peersConsumptions.avg !== 0) ? this.renderSmileyBadge() : null}
                 </View>
             </View>
         );
