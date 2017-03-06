@@ -75,10 +75,9 @@ export default memoize((aggregates, chartsState) => {
                 let measurement = measurements.reduce((state, current) => {
                     return {
                         hour: current.hour,
-                        value: state ? state.value + current.value : current.value
+                        value: state ? parseFloat((state.value + current.value).toFixed(3)) : current.value
                     };
                 }, null);
-
                 measurement ? filledChartData[index] = measurement : filledChartData[index] = {
                     hour: index.toString(),
                     value: chartData.toFill ? (filledChartData[index - 1] ? filledChartData[index - 1].value : chartData.data.find(x => x.value !== 0) ? chartData.data.find(x => x.value !== 0).value : 0) : 0
@@ -89,7 +88,7 @@ export default memoize((aggregates, chartsState) => {
 
         result = filledChartsData.map(data => {
             const chart = data.map(measurement => {
-                return [measurement.hour, Math.round(measurement.value * 1000) / 1000]; 
+                return [measurement.hour, Math.round(measurement.value * 1000) / 1000];
             });
 
             const categories = data.map(measurement => {
